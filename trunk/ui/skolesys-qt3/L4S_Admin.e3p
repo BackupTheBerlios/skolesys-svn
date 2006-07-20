@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Project SYSTEM "Project-3.8.dtd">
+<!-- Project file for project L4S_Admin -->
+<!-- Saved: 2006-07-20, 02:17:19 -->
+<!-- Copyright (C) 2006 Jakob Simon-Gaarde, jakob@simon-gaarde.dk -->
+<Project version="3.8">
+  <ProgLanguage mixed="0">Python</ProgLanguage>
+  <UIType>Qt</UIType>
+  <Description></Description>
+  <Version>0.1</Version>
+  <Author>Jakob Simon-Gaarde</Author>
+  <Email>jakob@simon-gaarde.dk</Email>
+  <Sources>
+    <Source>
+      <Name>main.py</Name>
+    </Source>
+    <Source>
+      <Name>usermanagerwdg.py</Name>
+    </Source>
+    <Source>
+      <Name>usermanagerwdgbase.py</Name>
+    </Source>
+    <Source>
+      <Name>createuserwdgbase.py</Name>
+    </Source>
+    <Source>
+      <Name>widgetdialog.py</Name>
+    </Source>
+    <Source>
+      <Name>launchdlgbase.py</Name>
+    </Source>
+    <Source>
+      <Name>connectionmanager.py</Name>
+    </Source>
+    <Source>
+      <Name>launchdlg.py</Name>
+    </Source>
+    <Source>
+      <Name>launcher.py</Name>
+    </Source>
+    <Source>
+      <Name>createuserwdg.py</Name>
+    </Source>
+  </Sources>
+  <Forms>
+    <Form>
+      <Name>usermanagerwdgbase.ui</Name>
+    </Form>
+    <Form>
+      <Name>createuserwdgbase.ui</Name>
+    </Form>
+    <Form>
+      <Name>launchdlgbase.ui</Name>
+    </Form>
+  </Forms>
+  <Translations>
+  </Translations>
+  <Interfaces>
+  </Interfaces>
+  <Others>
+  </Others>
+  <MainScript>
+    <Name>main.py</Name>
+  </MainScript>
+  <Vcs>
+    <VcsType>None</VcsType>
+  </Vcs>
+  <FiletypeAssociations>
+    <FiletypeAssociation pattern="*.ui.h" type="FORMS" />
+    <FiletypeAssociation pattern="*.ui" type="FORMS" />
+    <FiletypeAssociation pattern="*.idl" type="INTERFACES" />
+    <FiletypeAssociation pattern="*.ptl" type="SOURCES" />
+    <FiletypeAssociation pattern="*.py" type="SOURCES" />
+  </FiletypeAssociations>
+</Project>

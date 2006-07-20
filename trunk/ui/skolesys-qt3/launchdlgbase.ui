@@ -1,0 +1,61 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>LaunchDlgBase</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>LaunchDlgBase</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>131</width>
+            <height>154</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Form</string>
+    </property>
+    <vbox>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QPushButton">
+            <property name="name">
+                <cstring>pushButton1</cstring>
+            </property>
+            <property name="text">
+                <string>User Manager</string>
+            </property>
+        </widget>
+        <spacer>
+            <property name="name">
+                <cstring>spacer1</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Vertical</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Expanding</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>21</width>
+                    <height>241</height>
+                </size>
+            </property>
+        </spacer>
+    </vbox>
+</widget>
+<connections>
+    <connection>
+        <sender>pushButton1</sender>
+        <signal>clicked()</signal>
+        <receiver>LaunchDlgBase</receiver>
+        <slot>userManager()</slot>
+    </connection>
+</connections>
+<slots>
+    <slot>userManager()</slot>
+</slots>
+<layoutdefaults spacing="6" margin="6"/>
+</UI>
