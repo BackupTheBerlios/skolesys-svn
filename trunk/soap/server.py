@@ -119,26 +119,30 @@ class MyServer(SOAPpy.SOAPServer):
         return True
 
 def startserver():
-    l4s_basepath = os.path.split(inspect.getsourcefile(lin4schools))[0]
-    certfile = os.path.join(l4s_basepath,'cert',"l4s_cert_%s.pem" % conf.get("DOMAIN","domain_name"))
-    keyfile = os.path.join(l4s_basepath,'cert',"l4s_key_%s.pem" % conf.get("DOMAIN","domain_name"))
-    netif = conf.get("SOAP_SERVICE","interface")
-    addr = get_ip_address(netif)
-    if not addr:
-        print "Interface %s has not been configured. No SOAP service started" % netif
-        exit(0)
-    ssl_context = SSL.Context()
-    ssl_context.load_cert(certfile,keyfile=keyfile)
-    server = MyServer((addr, 8443),ssl_context = ssl_context)
-    print "Starting SOAP service on interface %s (%s)" % (netif,addr)
+	l4s_basepath = os.path.split(inspect.getsourcefile(lin4schools))[0]
+	certfile = os.path.join(l4s_basepath,'cert',"l4s_cert_%s.pem" % conf.get("DOMAIN","domain_name"))
+	keyfile = os.path.join(l4s_basepath,'cert',"l4s_key_%s.pem" % conf.get("DOMAIN","domain_name"))
+	netif = conf.get("SOAP_SERVICE","interface")
+	addr = get_ip_address(netif)
+	if not addr:
+		print "Interface %s has not been configured. No SOAP service started" % netif
+		exit(0)
+	ssl_context = SSL.Context()
+	ssl_context.load_cert(certfile,keyfile=keyfile)
+	server = MyServer((addr, 8443),ssl_context = ssl_context)
+	print "Starting SOAP service on interface %s (%s)" % (netif,addr)
 
-    server.registerFunction(get_id)
-    server.registerFunction(challenge_response_key)
-    server.registerFunction(bind)
-    server.registerFunction(list_users)
-    server.registerFunction(createuser)
-    server.registerFunction(removeuser)
-    server.registerFunction(test_session_id)
-    server.registerFunction(test_binded)
-    server.serve_forever()
+	# Securitty
+	server.registerFunction(get_id)
+	server.registerFunction(challenge_response_key)
+	server.registerFunction(bind)
+	server.registerFunction(test_session_id)
+	server.registerFunction(test_binded)
+
+	# Real functionality
+	server.registerFunction(domain_name)
+	server.registerFunction(list_users)
+	server.registerFunction(createuser)
+	server.registerFunction(removeuser)
+	server.serve_forever()
 
