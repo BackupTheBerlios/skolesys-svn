@@ -12,6 +12,7 @@ from ldiftools import LDIFImporter
 from optparse import OptionParser
 from mkpasswd import mkpasswd
 
+# User types
 TEACHER = 1
 STUDENT = 2
 PARENT = 3
