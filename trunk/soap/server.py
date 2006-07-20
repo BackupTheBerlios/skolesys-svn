@@ -72,6 +72,14 @@ def challenge_response_key(session_id):
     sessions[session_id]['challenge_count']+=1
     return pdump(nonce)
 
+
+# The real functionality starts here
+def domain_name(session_id):
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+	domain_name = conf.get('DOMAIN','domain_name')
+	return pdump(domain_name)
+
 def list_users(session_id,usertype):
     if not session_valid(pload(session_id)):
         return pdump(False)
