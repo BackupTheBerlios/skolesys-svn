@@ -18,6 +18,7 @@ PARENT = 3
 OTHER = 4
 
 def check_username(username):
+	"Check the user name syntax"
 	# lowercase the username nicely
 	username = username.lower()
 	def valid_characters(str):
