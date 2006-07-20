@@ -147,8 +147,7 @@ class GroupManager (LDAPUtil):
 
 
 if __name__=='__main__':
-	
-	
+	# Commandline implementation
 	commands = {'creategroup': 'Create a new system group and a group directory',
 	            'removegroup': 'Remove a system group',
 	            'listgroups': 'Show a list of system groups'}
