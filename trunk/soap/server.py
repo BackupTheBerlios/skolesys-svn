@@ -122,7 +122,7 @@ def removeuser(session_id,uid,backup_home,remove_home):
 
 def test(str):
 	str = pload(str)
-	print str
+	print pdump(str)
 
 class MyServer(SOAPpy.SOAPServer):
     def __init__(self,addr=('localhost', 8000), ssl_context=None):
