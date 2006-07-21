@@ -71,6 +71,9 @@ class L4S_Client:
 	def removeuser(self,uid,backup_home=False,remove_home=False):
 		return pload(self.server.removeuser(pdump(self.session_id),pdump(uid),pdump(backup_home),pdump(remove_home)))
 
+	def test(self,str):
+		self.server.test(pdump(str))
+
 if __name__=='__main__':
     c=L4S_Client('https://127.0.0.1',8443)
     print c.bind('secret')

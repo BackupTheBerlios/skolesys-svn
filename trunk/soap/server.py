@@ -120,6 +120,10 @@ def removeuser(session_id,uid,backup_home,remove_home):
 	um = userman.UserManager()
 	return pdump(um.deluser(uid,backup_home,remove_home))
 
+def test(str):
+	str = pload(str)
+	print str
+
 class MyServer(SOAPpy.SOAPServer):
     def __init__(self,addr=('localhost', 8000), ssl_context=None):
         SOAPpy.SOAPServer.__init__(self,addr,ssl_context=ssl_context)
@@ -142,7 +146,7 @@ def startserver():
 	ssl_context.load_cert(certfile,keyfile=keyfile)
 	server = MyServer((addr, 8443),ssl_context = ssl_context)
 	print "Starting SOAP service on interface %s (%s)" % (netif,addr)
-
+	
 	# Securitty
 	server.registerFunction(get_id)
 	server.registerFunction(challenge_response_key)
@@ -156,5 +160,9 @@ def startserver():
 	server.registerFunction(list_users)
 	server.registerFunction(createuser)
 	server.registerFunction(removeuser)
+	
+	# Test
+	server.registerFunction(test)
+
 	server.serve_forever()
 
