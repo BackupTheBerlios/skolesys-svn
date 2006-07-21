@@ -3,43 +3,43 @@
     <name>CreateUserWdg</name>
     <message>
         <source>User information</source>
-        <translation type="unfinished"></translation>
+        <translation>Bruger information</translation>
     </message>
     <message>
         <source>Teacher</source>
-        <translation type="unfinished"></translation>
+        <translation>Lærer</translation>
     </message>
     <message>
         <source>Student</source>
-        <translation type="unfinished"></translation>
+        <translation>Elev</translation>
     </message>
     <message>
         <source>Parent</source>
-        <translation type="unfinished"></translation>
+        <translation>Forældre</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>Extern</translation>
     </message>
     <message>
         <source>Create user</source>
-        <translation type="unfinished"></translation>
+        <translation>Opret bruger</translation>
     </message>
     <message>
         <source>The user login &quot;%1&quot; already exists on the system - choose another.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bruger kontoen &quot;%1&quot; eksisterer allerede på systemet, vælg et andet kontonavn.</translation>
     </message>
     <message>
         <source>Users must have a full name registered.</source>
-        <translation type="unfinished"></translation>
+        <translation>Brugerens fulde navn skal registreres.</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Adgangskode</translation>
     </message>
     <message>
         <source>Confirm the user&apos;s password</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekræft brugerens adgangskode</translation>
     </message>
 </context>
 <context>
@@ -50,34 +50,34 @@
     </message>
     <message>
         <source>First name</source>
-        <translation type="unfinished"></translation>
+        <translation>Fornavn</translation>
     </message>
     <message>
         <source>User type</source>
-        <translation type="unfinished"></translation>
+        <translation>Brugertype</translation>
     </message>
     <message>
         <source>Last name</source>
-        <translation type="unfinished"></translation>
+        <translation>Efternavn</translation>
     </message>
     <message>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Adgangskode</translation>
     </message>
 </context>
 <context>
     <name>General</name>
     <message>
         <source>lin4schools Administration</source>
-        <translation type="unfinished"></translation>
+        <translation>lin4schools Administrationsprogram</translation>
     </message>
     <message>
         <source>Enter administrator password</source>
-        <translation type="unfinished"></translation>
+        <translation>Angiv administratorens adgangskode</translation>
     </message>
 </context>
 <context>
@@ -88,34 +88,34 @@
     </message>
     <message>
         <source>User Manager</source>
-        <translation type="unfinished"></translation>
+        <translation>Brugerhåndtering</translation>
     </message>
 </context>
 <context>
     <name>UserManagerWdg</name>
     <message>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Navn</translation>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Type</translation>
     </message>
     <message>
         <source>Login</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto</translation>
     </message>
     <message>
         <source>Create user...</source>
-        <translation type="unfinished"></translation>
+        <translation>Opret bruger...</translation>
     </message>
     <message>
         <source>Remove user...</source>
-        <translation type="unfinished"></translation>
+        <translation>Fjern bruger...</translation>
     </message>
     <message>
         <source>Users</source>
-        <translation type="unfinished"></translation>
+        <translation>Brugere</translation>
     </message>
 </context>
 <context>
@@ -126,7 +126,7 @@
     </message>
     <message>
         <source>User type filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Brugertypefilter</translation>
     </message>
 </context>
 <context>
@@ -137,19 +137,19 @@
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Annuller</translation>
     </message>
     <message>
         <source>Alt+C</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+A</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;OK</translation>
     </message>
     <message>
         <source>Alt+O</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+O</translation>
     </message>
 </context>
 </TS>
