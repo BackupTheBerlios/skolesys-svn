@@ -56,6 +56,14 @@ class L4S_Client:
 		"""
 		return pload(self.server.list_users(pdump(self.session_id),pdump(type)))
 
+	def user_exists(self,uid):
+		"""
+		Do a quick lookup in the mainserver LDAP to see if a 
+		certain uid exists.
+		"""
+		return pload(self.server.user_exists(pdump(self.session_id),pdump(uid)))
+	
+	
 	def createuser(self,uid,givenname,familyname,passwd,usertype):
 		return pload(self.server.createuser(pdump(self.session_id),pdump(uid),pdump(givenname),\
 			pdump(familyname),pdump(passwd),pdump(usertype)))

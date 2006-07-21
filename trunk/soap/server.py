@@ -19,58 +19,58 @@ random.seed(time.time())
 sessions = {}
 
 def session_valid(session_id):
-    if sessions.has_key(session_id):
-        if sessions[session_id].has_key('authenticated'):
-            return sessions[session_id]['authenticated']
-    return False
+	if sessions.has_key(session_id):
+		if sessions[session_id].has_key('authenticated'):
+			return sessions[session_id]['authenticated']
+	return False
 
 def test_session_id(session_id):
-    session_id=pload(session_id)
-    if sessions.has_key(session_id):
-        return pdump(True)
-    return pdump(False)
-            
+	session_id=pload(session_id)
+	if sessions.has_key(session_id):
+		return pdump(True)
+	return pdump(False)
+
 def test_binded(session_id):
-    session_id=pload(session_id)
-    if sessions.has_key(session_id):
-        if sessions[session_id].has_key('authenticated'):
-            return pdump(sessions[session_id]['authenticated'])
-    return pdump(False)
+	session_id=pload(session_id)
+	if sessions.has_key(session_id):
+		if sessions[session_id].has_key('authenticated'):
+			return pdump(sessions[session_id]['authenticated'])
+	return pdump(False)
 
 def bind(session_id,encrypted_passwd):
-    session_id=pload(session_id)
-    encrypted_passwd=pload(encrypted_passwd)
+	session_id=pload(session_id)
+	encrypted_passwd=pload(encrypted_passwd)
 
-    if not sessions.has_key(session_id):
-        return pdump(False)
-    if not sessions[session_id].has_key('nonce'):
-        return pdump(False)
-    
-    um = userman.UserManager()
-    plain = p2_decrypt(encrypted_passwd,sessions[session_id].pop('nonce'))
-    if plain==conf.get('SOAP_SERVICE','passwd'):
-        sessions[session_id]['authenticated'] = True
-        return pdump(True)
-    sessions[session_id]['authenticated'] = False
-    return pdump(False)
+	if not sessions.has_key(session_id):
+		return pdump(False)
+	if not sessions[session_id].has_key('nonce'):
+		return pdump(False)
+	
+	um = userman.UserManager()
+	plain = p2_decrypt(encrypted_passwd,sessions[session_id].pop('nonce'))
+	if plain==conf.get('SOAP_SERVICE','passwd'):
+		sessions[session_id]['authenticated'] = True
+		return pdump(True)
+	sessions[session_id]['authenticated'] = False
+	return pdump(False)
 
 def get_id():
-    new_id = md5.new(str(time.time())*random.randint(0,100000)).hexdigest()
-    sessions[new_id] = {'authenticated': False}
-    return pdump(new_id)
+	new_id = md5.new(str(time.time())*random.randint(0,100000)).hexdigest()
+	sessions[new_id] = {'authenticated': False}
+	return pdump(new_id)
 
 def challenge_response_key(session_id):
-    session_id=pload(session_id)
-    if not sessions.has_key(session_id):
-        return pdump(None)
-    if not sessions[session_id].has_key('challenge_count'):
-        sessions[session_id]['challenge_count']=0
-    if sessions[session_id]['challenge_count'] >= 3:
-        return pdump(False)
-    nonce = md5.new(str(str(time.time())*random.randint(0,100000))+session_id).hexdigest()
-    sessions[session_id]['nonce'] = nonce
-    sessions[session_id]['challenge_count']+=1
-    return pdump(nonce)
+	session_id=pload(session_id)
+	if not sessions.has_key(session_id):
+		return pdump(None)
+	if not sessions[session_id].has_key('challenge_count'):
+		sessions[session_id]['challenge_count']=0
+	if sessions[session_id]['challenge_count'] >= 3:
+		return pdump(False)
+	nonce = md5.new(str(str(time.time())*random.randint(0,100000))+session_id).hexdigest()
+	sessions[session_id]['nonce'] = nonce
+	sessions[session_id]['challenge_count']+=1
+	return pdump(nonce)
 
 
 # The real functionality starts here
@@ -81,33 +81,44 @@ def domain_name(session_id):
 	return pdump(domain_name)
 
 def list_users(session_id,usertype):
-    if not session_valid(pload(session_id)):
-        return pdump(False)
-    usertype = pload(usertype)
-    um = userman.UserManager()
-    return pdump(um.list_users(usertype))
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+	usertype = pload(usertype)
+	um = userman.UserManager()
+	return pdump(um.list_users(usertype))
+
+def user_exists(session_id,uid):
+	"""
+	Do a quick lookup in the mainserver LDAP to see if a 
+	certain uid exists.
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+	uid=pload(uid)
+	um = userman.UserManager()
+	return pdump(um.user_exists(uid))
 
 def createuser(session_id,uid,givenname,familyname,passwd,usertype):
-    if not session_valid(pload(session_id)):
-        return pdump(False)
-    uid=pload(uid)
-    givenname=pload(givenname)
-    familyname=pload(familyname)
-    passwd=pload(passwd)
-    usertype=pload(usertype)
-    
-    um = userman.UserManager()
-    return pdump(um.createuser(uid,givenname,familyname,passwd,usertype))
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+	uid=pload(uid)
+	givenname=pload(givenname)
+	familyname=pload(familyname)
+	passwd=pload(passwd)
+	usertype=pload(usertype)
+	
+	um = userman.UserManager()
+	return pdump(um.createuser(uid,givenname,familyname,passwd,usertype))
 
 def removeuser(session_id,uid,backup_home,remove_home):
-    if not session_valid(pload(session_id)):
-        return pdump(False)
-    uid=pload(uid)
-    backup_home=pload(backup_home)
-    remove_home=pload(remove_home)
-    
-    um = userman.UserManager()
-    return pdump(um.deluser(uid,backup_home,remove_home))
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+	uid=pload(uid)
+	backup_home=pload(backup_home)
+	remove_home=pload(remove_home)
+	
+	um = userman.UserManager()
+	return pdump(um.deluser(uid,backup_home,remove_home))
 
 class MyServer(SOAPpy.SOAPServer):
     def __init__(self,addr=('localhost', 8000), ssl_context=None):
@@ -141,6 +152,7 @@ def startserver():
 
 	# Real functionality
 	server.registerFunction(domain_name)
+	server.registerFunction(user_exists)
 	server.registerFunction(list_users)
 	server.registerFunction(createuser)
 	server.registerFunction(removeuser)
