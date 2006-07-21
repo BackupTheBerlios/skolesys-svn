@@ -35,6 +35,9 @@
             <property name="allColumnsShowFocus">
                 <bool>true</bool>
             </property>
+            <property name="showSortIndicator">
+                <bool>true</bool>
+            </property>
         </widget>
         <spacer row="0" column="2">
             <property name="name">
@@ -63,9 +66,20 @@
         </widget>
     </grid>
 </widget>
+<connections>
+    <connection>
+        <sender>m_cb_usertype_filter</sender>
+        <signal>activated(int)</signal>
+        <receiver>UserManagerWdgBase</receiver>
+        <slot>slotFilterActivated(int)</slot>
+    </connection>
+</connections>
 <tabstops>
     <tabstop>m_cb_usertype_filter</tabstop>
     <tabstop>m_lv_userlist</tabstop>
 </tabstops>
+<slots>
+    <slot>slotFilterActivated(int)</slot>
+</slots>
 <layoutdefaults spacing="6" margin="0"/>
 </UI>

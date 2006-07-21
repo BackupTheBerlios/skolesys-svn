@@ -117,6 +117,30 @@
         <source>Users</source>
         <translation>Brugere</translation>
     </message>
+    <message>
+        <source>Teachers</source>
+        <translation>Lærerer</translation>
+    </message>
+    <message>
+        <source>Students</source>
+        <translation>Elever</translation>
+    </message>
+    <message>
+        <source>Parents</source>
+        <translation>Forældre</translation>
+    </message>
+    <message>
+        <source>Others</source>
+        <translation>Externe</translation>
+    </message>
+    <message>
+        <source>All</source>
+        <translation>Alle</translation>
+    </message>
+    <message>
+        <source>User Manager</source>
+        <translation>Brugerhåndtering</translation>
+    </message>
 </context>
 <context>
     <name>UserManagerWdgBase</name>

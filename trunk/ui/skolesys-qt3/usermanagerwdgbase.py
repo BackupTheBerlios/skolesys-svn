@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/refsvindinge.dk/jakob@refsvindinge.dk/Projects/l4s_admin/usermanagerwdgbase.ui'
 #
-# Created: fre jul 21 03:03:01 2006
+# Created: lør jul 22 01:01:00 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -29,6 +29,7 @@ class UserManagerWdgBase(QWidget):
         self.m_lv_userlist = QListView(self,"m_lv_userlist")
         self.m_lv_userlist.setSelectionMode(QListView.Single)
         self.m_lv_userlist.setAllColumnsShowFocus(1)
+        self.m_lv_userlist.setShowSortIndicator(1)
 
         UserManagerWdgBaseLayout.addMultiCellWidget(self.m_lv_userlist,1,1,0,2)
         spacer1 = QSpacerItem(123,20,QSizePolicy.Expanding,QSizePolicy.Minimum)
@@ -43,6 +44,8 @@ class UserManagerWdgBase(QWidget):
         self.resize(QSize(386,202).expandedTo(self.minimumSizeHint()))
         self.clearWState(Qt.WState_Polished)
 
+        self.connect(self.m_cb_usertype_filter,SIGNAL("activated(int)"),self.slotFilterActivated)
+
         self.setTabOrder(self.m_cb_usertype_filter,self.m_lv_userlist)
 
 
@@ -50,6 +53,9 @@ class UserManagerWdgBase(QWidget):
         self.setCaption(self.__tr("Form2"))
         self.textLabel1.setText(self.__tr("User type filter"))
 
+
+    def slotFilterActivated(self,a0):
+        print "UserManagerWdgBase.slotFilterActivated(int): Not implemented yet"
 
     def __tr(self,s,c = None):
         return qApp.translate("UserManagerWdgBase",s,c)

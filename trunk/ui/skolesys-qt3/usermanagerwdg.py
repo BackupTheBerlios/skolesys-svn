@@ -40,6 +40,20 @@ class UserManagerWdg(UserManagerWdgBase):
 		self.userlist = []
 		self.update_list()
 
+		self.typedict={self.tr('All').latin1():None,
+			self.tr('Teachers').latin1():1,\
+			self.tr('Students').latin1():2,\
+			self.tr('Parents').latin1():3,\
+			self.tr('Others').latin1():4}
+		
+		order = [self.tr('All').latin1(),self.tr('Teachers').latin1(),\
+			self.tr('Students').latin1(),self.tr('Parents').latin1(),self.tr('Others').latin1()]
+		for usertype in order:
+			self.m_cb_usertype_filter.insertItem(usertype)
+		
+	def slotFilterActivated(self,idx):
+		self.update_list(self.typedict[self.m_cb_usertype_filter.currentText().latin1()])
+	
 	def update_list(self,usertype=None):
 		userlist = self.soapproxy.list_users(usertype)
 		self.m_lv_userlist.clear()
@@ -53,5 +67,10 @@ class UserManagerWdg(UserManagerWdgBase):
 		self.update_list()
 
 	def removeUser(self):
-		launcher.execRemoveUser(self.conn)
+		item = self.m_lv_userlist.selectedItem()
+		if not item:
+			return
+		uid = self.m_lv_userlist.selectedItem().login
+		launcher.execRemoveUser(self.conn,uid)
+		self.update_list()
 
