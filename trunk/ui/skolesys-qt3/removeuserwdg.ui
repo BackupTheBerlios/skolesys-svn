@@ -1,6 +1,0 @@
-from removeuserwdgbase import RemoveUserWdgBase
-from qt import *
-
-class RemoveUserWdg(RemoveUserWdgBase):
-	def __init__(self,conn,parent = None,name = None,fl = 0):
-		RemoveUserWdgBase.__init__(self,parent,name,fl)
