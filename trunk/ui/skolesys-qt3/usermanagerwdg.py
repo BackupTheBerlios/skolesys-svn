@@ -45,7 +45,8 @@ class UserManagerWdg(UserManagerWdgBase):
 		self.m_lv_userlist.clear()
 		self.userlist = []
 		for user in userlist.keys():
-			self.userlist+=[UserListViewItem(self.m_lv_userlist,userlist[user]['cn'],'Todo!',user)]
+			name = QString.fromUtf8(userlist[user]['cn'])
+			self.userlist+=[UserListViewItem(self.m_lv_userlist,name,'Todo!',user)]
 	
 	def createUser(self):
 		launcher.execCreateUser(self.conn)

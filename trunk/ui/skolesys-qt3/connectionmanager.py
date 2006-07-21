@@ -13,7 +13,7 @@ class ConnectionManager:
 			passwd = QInputDialog.getText(qApp.translate("General","lin4schools Administration"), qApp.translate("General","Enter administrator password"), QLineEdit.Password)
 			if passwd[1]==False:
 				sys.exit(0)
-			if self.proxy.bind(passwd[0].latin1()):
+			if self.proxy.bind(str(passwd[0].utf8())):
 				break
 			counter+=1
 		if counter>=3:

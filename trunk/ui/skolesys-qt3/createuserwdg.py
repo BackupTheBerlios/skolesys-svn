@@ -32,8 +32,8 @@ class CreateUserWdg(CreateUserWdgBase):
 			self.ed_login.setFocus()
 			self.ed_login.selectAll()
 			return False
-		firstname=self.ed_firstname.text().latin1()
-		lastname=self.ed_lastname.text().latin1()
+		firstname=str(self.ed_firstname.text().utf8())
+		lastname=str(self.ed_lastname.text().utf8())
 		if not len(firstname) or not len(lastname):
 			QMessageBox.information(self,
 				self.tr('Create user'),
