@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/admin/l4s_admin/launchdlgbase.ui'
+# Form implementation generated from reading ui file '/home/refsvindinge.dk/jakob@refsvindinge.dk/Projects/l4s_admin/launchdlgbase.ui'
 #
-# Created: tor jul 20 02:49:58 2006
+# Created: fre jul 21 03:03:02 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!

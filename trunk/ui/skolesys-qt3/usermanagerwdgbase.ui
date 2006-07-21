@@ -63,7 +63,9 @@
         </widget>
     </grid>
 </widget>
-<connections>
-</connections>
+<tabstops>
+    <tabstop>m_cb_usertype_filter</tabstop>
+    <tabstop>m_lv_userlist</tabstop>
+</tabstops>
 <layoutdefaults spacing="6" margin="0"/>
 </UI>

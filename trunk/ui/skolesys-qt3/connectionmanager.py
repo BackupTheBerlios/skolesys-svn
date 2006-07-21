@@ -1,6 +1,7 @@
 import sys
 from qt import *
 from lin4schools.soap.client import L4S_Client
+import pickle
 
 class ConnectionManager:
 	def __init__(self,host,port):
@@ -10,7 +11,9 @@ class ConnectionManager:
 		counter = 0
 		while not self.proxy.test_binded() and counter<3:
 			passwd = QInputDialog.getText(qApp.translate("General","lin4schools Administration"), qApp.translate("General","Enter administrator password"), QLineEdit.Password)
-			if self.proxy.bind(passwd[0].ascii()):
+			if passwd[1]==False:
+				sys.exit(0)
+			if self.proxy.bind(passwd[0].latin1()):
 				break
 			counter+=1
 		if counter>=3:
