@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/refsvindinge.dk/jakob@refsvindinge.dk/Projects/l4s_admin/usermanagerwdgbase.ui'
 #
-# Created: lør jul 22 01:01:00 2006
+# Created: lør jul 22 01:21:31 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!

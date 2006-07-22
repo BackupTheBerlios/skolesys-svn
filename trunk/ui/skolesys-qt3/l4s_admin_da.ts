@@ -41,6 +41,10 @@
         <source>Confirm the user&apos;s password</source>
         <translation>Bekræft brugerens adgangskode</translation>
     </message>
+    <message>
+        <source>Create User</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CreateUserWdgBase</name>
@@ -89,6 +93,36 @@
     <message>
         <source>User Manager</source>
         <translation>Brugerhåndtering</translation>
+    </message>
+</context>
+<context>
+    <name>RemoveUserWdg</name>
+    <message>
+        <source>Remove User [%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove user</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to remove &quot;%1&quot;?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RemoveUserWdgBase</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Backup the user&apos;s home directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove the users home directory</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
