@@ -123,8 +123,8 @@ class UserManager (LDAPUtil):
 			'cn':'%s %s' % (givenname,familyname),
 			'gidNumber':'1000',
 			'uidnumber': str(self.max(conf.get('LDAPSERVER','basedn'),
-			                 'objectclass=posixaccount','uidNumber',
-											 int(conf.get('DOMAIN','uid_start')))+1),
+				'objectclass=posixaccount','uidNumber',
+				int(conf.get('DOMAIN','uid_start')))+1),
 			'homeDirectory':'/home/%s/%s' % (conf.get('DOMAIN','domain_name'),uid),
 			'sn':'%s' % givenname,
 			'objectclass':('inetOrgPerson','organizationalPerson','posixAccount','shadowAccount','person', 'top'),
@@ -165,7 +165,7 @@ class UserManager (LDAPUtil):
 			return -2
 		
 		res = self.l.search(conf.get('LDAPSERVER','basedn'),ldap.SCOPE_SUBTREE,
-		                    '(& (objectclass=posixgroup) (memberuid=%s))'%uid,['cn'])
+			'(& (objectclass=posixgroup) (memberuid=%s))'%uid,['cn'])
 		
 		rm_groups = []
 		while 1:
@@ -235,7 +235,7 @@ class UserManager (LDAPUtil):
 			os.makedirs(user_group_dir)
 		if not os.path.exists('%s/%s' % (user_group_dir,groupname)):
 			os.symlink('%s/%s/%s' % (conf.get('DOMAIN','homes_root'),conf.get('DOMAIN','domain_name'),groupname),
-			           '%s/%s' % (user_group_dir,groupname))
+				'%s/%s' % (user_group_dir,groupname))
 		
 		return 1
 
@@ -272,7 +272,24 @@ class UserManager (LDAPUtil):
 				os.remove('%s/%s' % (user_group_dir,groupname))
 		
 		return 1
+	
+	def list_usergroups(self,uid):
+		if self.user_exists(uid):
+			return -1 # User does not exist
+		path =	conf.get('LDAPSERVER','basedn')
+		res = self.l.search(path,ldap.SCOPE_SUBTREE,'(& (objectClass=posixGroup) (memberUid=%s))' % uid,['cn'])
+
+		grouplist = []
+		while 1:
+			sres = self.l.result(res,0)
+			if sres[1]==[]:
+				break
+			if not sres[1][0][1].has_key('cn'):
+				continue
+			cn = sres[1][0][1]['cn'][0]
+			grouplist += [cn]
 		
+		return grouplist
 
 if __name__=='__main__':
 	
@@ -280,7 +297,8 @@ if __name__=='__main__':
 	            'removeuser': 'Remove a user from',
 	            'groupadd' :'Add a user to a group',
 	            'groupdel': 'Remove a user to a group',
-	            'listusers': 'Show a list of system users'}
+	            'listusers': 'Show a list of system users',
+	            'listusergroups': 'Show a list of groups a certain user is member of'}
 	
 	usage = "usage: usermanager [command] [options] arg1, arg2"
 	if len(argv)<2 or not commands.has_key(argv[1]):
@@ -383,7 +401,7 @@ if __name__=='__main__':
 		parser.add_option("-b", "--backup",
 		                  action="store_true", dest="backup", default=False,
 		                  help="backup the user's homefolder")
-			
+		
 		(options, args) = parser.parse_args()
 		if len(args)<2:
 			print "Missing username for adduser operation"
@@ -525,3 +543,24 @@ if __name__=='__main__':
 		ul = um.list_users(options.usertype)
 		for k in ul.keys():
 			print k
+
+	if cmd == "listgroups":
+		parser.set_usage("usage: usermanager %s username" % cmd)
+
+		(options, args) = parser.parse_args()
+		if len(args)<2:
+			print "Missing username for listgroups operation"
+			exit(0)
+
+		username = check_username(args[1])
+		if not username:
+			print "The given username is invalid."
+			exit(0)
+
+		um = UserManager()
+		res = um.list_groups(username)
+		if res==-1:
+			print "User does not exist"
+			exit(0)
+		for group in res:
+			print group
