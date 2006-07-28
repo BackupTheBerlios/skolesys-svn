@@ -49,12 +49,12 @@ class L4S_Client:
 		"""
 		return pload(self.server.domain_name(pdump(self.session_id)))
 
-	def list_users(self,type=None):
+	def list_users(self,usertype=None):
 		"""
 		Get a list of LDAP posixusers located on the mainserver. Optionally the
 		list can be filtered by the user type.
 		"""
-		return pload(self.server.list_users(pdump(self.session_id),pdump(type)))
+		return pload(self.server.list_users(pdump(self.session_id),pdump(usertype)))
 
 	def user_exists(self,uid):
 		"""
@@ -71,12 +71,12 @@ class L4S_Client:
 	def removeuser(self,uid,backup_home=False,remove_home=False):
 		return pload(self.server.removeuser(pdump(self.session_id),pdump(uid),pdump(backup_home),pdump(remove_home)))
 
-	def list_groups(self,type=None):
+	def list_groups(self,usertype=None):
 		"""
 		Get a list of LDAP posixgroups located on the mainserver. Optionally the
 		list can be filtered by the user type.
 		"""
-		return pload(self.server.list_groups(pdump(self.session_id),pdump(type)))
+		return pload(self.server.list_groups(pdump(self.session_id),pdump(usertype)))
 
 	def group_exists(self,groupname):
 		"""
