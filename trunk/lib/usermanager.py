@@ -549,7 +549,7 @@ if __name__=='__main__':
 
 		(options, args) = parser.parse_args()
 		if len(args)<2:
-			print "Missing username for listgroups operation"
+			print "Missing username for %s operation" % cmd
 			exit(0)
 
 		username = check_username(args[1])
