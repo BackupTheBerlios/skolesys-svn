@@ -136,7 +136,7 @@ def list_groups(session_id,grouptype):
 def group_exists(session_id,groupname):
 	"""
 	Do a quick lookup in the mainserver LDAP to see if a 
-	certain uid exists.
+	certain groupname exists.
 	"""
 	if not session_valid(pload(session_id)):
 		return pdump(False)
@@ -166,10 +166,6 @@ def removeuser(session_id,uid,backup_home,remove_home):
 	um = userman.UserManager()
 	return pdump(um.deluser(uid,backup_home,remove_home))
 
-
-def test(str):
-	str = pload(str)
-	print pdump(str)
 
 class MyServer(SOAPpy.SOAPServer):
     def __init__(self,addr=('localhost', 8000), ssl_context=None):

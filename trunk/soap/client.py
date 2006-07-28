@@ -71,8 +71,19 @@ class L4S_Client:
 	def removeuser(self,uid,backup_home=False,remove_home=False):
 		return pload(self.server.removeuser(pdump(self.session_id),pdump(uid),pdump(backup_home),pdump(remove_home)))
 
-	def test(self,str):
-		self.server.test(pdump(str))
+	def list_groups(self,type=None):
+		"""
+		Get a list of LDAP posixgroups located on the mainserver. Optionally the
+		list can be filtered by the user type.
+		"""
+		return pload(self.server.list_groups(pdump(self.session_id),pdump(type)))
+
+	def group_exists(self,groupname):
+		"""
+		Do a quick lookup in the mainserver LDAP to see if a 
+		certain uid exists.
+		"""
+		return pload(self.server.group_exists(pdump(self.session_id),pdump(groupname)))
 
 if __name__=='__main__':
     c=L4S_Client('https://127.0.0.1',8443)
