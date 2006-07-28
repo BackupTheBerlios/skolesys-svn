@@ -156,7 +156,7 @@ def creategroup(session_id,uid,givenname,familyname,passwd,usertype):
 	um = userman.UserManager()
 	return pdump(um.createuser(uid,givenname,familyname,passwd,usertype))
 
-def removeuser(session_id,uid,backup_home,remove_home):
+def removegroup(session_id,uid,backup_home,remove_home):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	uid=pload(uid)
@@ -204,8 +204,10 @@ def startserver():
 	server.registerFunction(createuser)
 	server.registerFunction(removeuser)
 	
-	# Test
-	server.registerFunction(test)
+	server.registerFunction(group_exists)
+	server.registerFunction(list_groups)
+	server.registerFunction(creategroup)
+	server.registerFunction(removegroup)
 
 	server.serve_forever()
 
