@@ -140,7 +140,7 @@ def group_exists(session_id,groupname):
 	"""
 	if not session_valid(pload(session_id)):
 		return pdump(False)
-	uid=pload(groupname)
+	groupname=pload(groupname)
 	gm = grpman.GroupManager()
 	return pdump(gm.group_exists(groupname))
 
