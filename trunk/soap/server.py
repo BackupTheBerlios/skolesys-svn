@@ -144,15 +144,14 @@ def group_exists(session_id,groupname):
 	gm = grpman.GroupManager()
 	return pdump(gm.group_exists(groupname))
 
-def creategroup(session_id,groupname,passwd,usertype):
+def creategroup(session_id,groupname,usertype):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	groupname=pload(groupname)
-	passwd=pload(passwd)
 	usertype=pload(usertype)
 	
 	gm = grpman.GroupManager()
-	return pdump(gm.creategroup(groupname,passwd,usertype))
+	return pdump(gm.creategroup(groupname,usertype))
 
 def removegroup(session_id,groupname,backup_home,remove_home):
 	if not session_valid(pload(session_id)):
