@@ -84,7 +84,7 @@ class L4S_Client:
 		"""
 		return pload(self.server.list_groups(pdump(self.session_id),pdump(usertype)))
 
-	def list_usergroups(self,groupname):
+	def list_members(self,groupname):
 		"""
 		Get a member list of LDAP posixusers located on the mainserver for a certain group "groupname".
 		"""
