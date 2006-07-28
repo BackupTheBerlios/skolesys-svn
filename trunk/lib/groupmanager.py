@@ -345,5 +345,5 @@ if __name__=='__main__':
 			exit(0)
 
 		gm = GroupManager()
-		gl = gm.list_members(arg[1])
+		gl = gm.list_members(args[1])
 		print gl
