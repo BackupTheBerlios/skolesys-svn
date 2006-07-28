@@ -135,6 +135,24 @@ def removeuser(session_id,uid,backup_home,remove_home):
 	um = userman.UserManager()
 	return pdump(um.deluser(uid,backup_home,remove_home))
 
+def groupadd(session_id,uid,groupname):
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+	uid=pload(uid)
+	groupname=pload(groupname)
+
+	um = userman.UserManager()
+	return pdump(um.groupadd(uid,groupname))
+
+def groupdel(session_id,uid,groupname):
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+	uid=pload(uid)
+	groupname=pload(groupname)
+
+	um = userman.UserManager()
+	return pdump(um.groupdel(uid,groupname))
+
 # Groups
 def list_groups(session_id,usertype):
 	if not session_valid(pload(session_id)):
@@ -215,13 +233,17 @@ def startserver():
 	server.registerFunction(test_binded)
 
 	# Real functionality
+	# User
 	server.registerFunction(domain_name)
 	server.registerFunction(user_exists)
 	server.registerFunction(list_users)
 	server.registerFunction(list_usergroups)
 	server.registerFunction(createuser)
 	server.registerFunction(removeuser)
+	server.registerFunction(groupadd)
+	server.registerFunction(groupdel)
 	
+	# Group
 	server.registerFunction(group_exists)
 	server.registerFunction(list_groups)
 	server.registerFunction(list_members)

@@ -77,6 +77,18 @@ class L4S_Client:
 	def removeuser(self,uid,backup_home=False,remove_home=False):
 		return pload(self.server.removeuser(pdump(self.session_id),pdump(uid),pdump(backup_home),pdump(remove_home)))
 
+	def groupadd(self,uid,groupname):
+		"""
+		Add a group membership to between "uid" and "groupname"
+		"""
+		return pload(self.server.groupadd(pdump(self.session_id),pdump(uid),pdump(groupname)))
+		
+	def groupdel(self,uid,groupname):
+		"""
+		Remove a group membership to between "uid" and "groupname"
+		"""
+		return pload(self.server.groupdel(pdump(self.session_id),pdump(uid),pdump(groupname)))
+
 	def list_groups(self,usertype=None):
 		"""
 		Get a list of LDAP posixgroups located on the mainserver. Optionally the
