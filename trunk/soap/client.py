@@ -98,6 +98,7 @@ class L4S_Client:
 		2. Maybe backup the group home directory
 		3. Maybe remove the group home directory
 		"""
+		print groupname,backup_home,remove_home
 		return pload(self.server.removegroup(pdump(self.session_id),pdump(groupname),pdump(backup_home),pdump(remove_home)))
 
 
