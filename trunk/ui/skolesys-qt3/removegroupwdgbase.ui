@@ -9,56 +9,47 @@
             <x>0</x>
             <y>0</y>
             <width>331</width>
-            <height>77</height>
+            <height>213</height>
         </rect>
     </property>
     <property name="caption">
         <string>Form</string>
     </property>
-    <vbox>
+    <grid>
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
-        <widget class="QCheckBox">
+        <widget class="QListBox" row="0" column="0">
+            <property name="name">
+                <cstring>lb_groupnames</cstring>
+            </property>
+            <property name="selectionMode">
+                <enum>NoSelection</enum>
+            </property>
+        </widget>
+        <widget class="QCheckBox" row="1" column="0">
             <property name="name">
                 <cstring>chb_backup_home</cstring>
             </property>
             <property name="text">
-                <string>Backup the group's home directory</string>
+                <string>Backup the group home directories</string>
             </property>
             <property name="checked">
                 <bool>true</bool>
             </property>
         </widget>
-        <widget class="QCheckBox">
+        <widget class="QCheckBox" row="2" column="0">
             <property name="name">
                 <cstring>chb_remove_home</cstring>
             </property>
             <property name="text">
-                <string>Remove the group's home directory</string>
+                <string>Remove the group home directories</string>
             </property>
             <property name="checked">
                 <bool>true</bool>
             </property>
         </widget>
-        <spacer>
-            <property name="name">
-                <cstring>spacer1</cstring>
-            </property>
-            <property name="orientation">
-                <enum>Vertical</enum>
-            </property>
-            <property name="sizeType">
-                <enum>Expanding</enum>
-            </property>
-            <property name="sizeHint">
-                <size>
-                    <width>20</width>
-                    <height>71</height>
-                </size>
-            </property>
-        </spacer>
-    </vbox>
+    </grid>
 </widget>
 <tabstops>
     <tabstop>chb_backup_home</tabstop>

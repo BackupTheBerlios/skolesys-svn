@@ -6,7 +6,7 @@ CustomButton1 = 1
 CustomButton2 = 2
 
 class WidgetDialog(QDialog):
-	def __init__(self,parent=None,name=None,buttons=0,custombuttons_left=1,modal=0,fl=0):
+	def __init__(self,parent=None,name=None,buttons=0,custombuttons_left=1,cancel_btn=True,modal=0,fl=0):
 		QDialog.__init__(self,parent,name,modal,fl)
 		self.widget = None
 		if not name:
@@ -33,10 +33,13 @@ class WidgetDialog(QDialog):
 		self.btnOK = QPushButton( self, "m_btnOK" )
 		self.layout1.addWidget( self.btnOK )
 		self.connect( self.btnOK, SIGNAL( "clicked()" ), self, SLOT( "accept()" ) )
-	
-		self.btnCancel = QPushButton( self, "m_btnCancel" )
-		self.layout1.addWidget( self.btnCancel )
-		self.connect(self.btnCancel, SIGNAL( "clicked()" ), self, SLOT( "reject()" ) )
+
+		self.cancel_btn = cancel_btn
+		if cancel_btn:
+			self.btnCancel = QPushButton( self, "m_btnCancel" )
+			self.layout1.addWidget( self.btnCancel )
+			self.connect(self.btnCancel, SIGNAL( "clicked()" ), self, SLOT( "reject()" ) )
+
 		self.languageChange()
 	
 		r = self.layout1.geometry()
@@ -47,8 +50,9 @@ class WidgetDialog(QDialog):
 
 	def languageChange(self):
 		self.setCaption( self.tr( "TRDialog" ) )
-		self.btnCancel.setText( self.tr( "&Cancel" ) )
-		self.btnCancel.setAccel( QKeySequence( self.tr( "Alt+C" ) ) )
+		if self.cancel_btn:
+			self.btnCancel.setText( self.tr( "&Cancel" ) )
+			self.btnCancel.setAccel( QKeySequence( self.tr( "Alt+C" ) ) )
 		self.btnOK.setText( self.tr( "&OK" ) )
 		self.btnOK.setAccel( QKeySequence( self.tr( "Alt+O" ) ) )
 

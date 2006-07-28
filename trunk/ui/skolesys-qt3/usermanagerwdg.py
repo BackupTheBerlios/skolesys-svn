@@ -67,6 +67,16 @@ class UserManagerWdg(UserManagerWdgBase):
 		self.update_list()
 
 	def removeUser(self):
+		uids = []
+		item = self.m_lv_userlist.firstChild()
+		while item:
+			if item.isSelected():
+				uids += [item.login]
+			item = item.itemBelow()
+		launcher.execRemoveUser(self.conn,uids)
+		self.update_list()
+
+		return
 		item = self.m_lv_userlist.selectedItem()
 		if not item:
 			return

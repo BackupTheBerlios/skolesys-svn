@@ -63,6 +63,16 @@ class GroupManagerWdg(GroupManagerWdgBase):
 		self.update_list()
 
 	def removeGroup(self):
+		groupnames = []
+		item = self.m_lv_grouplist.firstChild()
+		while item:
+			if item.isSelected():
+				groupnames += [str(item.groupname.utf8())]
+			item = item.itemBelow()
+		launcher.execRemoveGroup(self.conn,groupnames)
+		self.update_list()
+		return
+		
 		item = self.m_lv_grouplist.selectedItem()
 		if not item:
 			return

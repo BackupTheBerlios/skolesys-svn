@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/refsvindinge.dk/jakob@refsvindinge.dk/Projects/l4s_admin/removeuserwdgbase.ui'
 #
-# Created: fre jul 28 19:23:00 2006
+# Created: lør jul 29 00:46:44 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -22,6 +22,9 @@ class RemoveUserWdgBase(QWidget):
 
         RemoveUserWdgBaseLayout = QVBoxLayout(self,0,6,"RemoveUserWdgBaseLayout")
 
+        self.lb_users = QListBox(self,"lb_users")
+        RemoveUserWdgBaseLayout.addWidget(self.lb_users)
+
         self.chb_backup_home = QCheckBox(self,"chb_backup_home")
         self.chb_backup_home.setChecked(1)
         RemoveUserWdgBaseLayout.addWidget(self.chb_backup_home)
@@ -29,12 +32,10 @@ class RemoveUserWdgBase(QWidget):
         self.chb_remove_home = QCheckBox(self,"chb_remove_home")
         self.chb_remove_home.setChecked(1)
         RemoveUserWdgBaseLayout.addWidget(self.chb_remove_home)
-        spacer1 = QSpacerItem(20,71,QSizePolicy.Minimum,QSizePolicy.Expanding)
-        RemoveUserWdgBaseLayout.addItem(spacer1)
 
         self.languageChange()
 
-        self.resize(QSize(331,77).expandedTo(self.minimumSizeHint()))
+        self.resize(QSize(331,185).expandedTo(self.minimumSizeHint()))
         self.clearWState(Qt.WState_Polished)
 
         self.setTabOrder(self.chb_backup_home,self.chb_remove_home)
@@ -42,8 +43,8 @@ class RemoveUserWdgBase(QWidget):
 
     def languageChange(self):
         self.setCaption(self.__tr("Form"))
-        self.chb_backup_home.setText(self.__tr("Backup the user's home directory"))
-        self.chb_remove_home.setText(self.__tr("Remove the users home directory"))
+        self.chb_backup_home.setText(self.__tr("Backup the user home directories"))
+        self.chb_remove_home.setText(self.__tr("Remove the user home directories"))
 
 
     def __tr(self,s,c = None):

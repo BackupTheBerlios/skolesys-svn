@@ -30,7 +30,7 @@
                 <cstring>m_lv_userlist</cstring>
             </property>
             <property name="selectionMode">
-                <enum>Single</enum>
+                <enum>Extended</enum>
             </property>
             <property name="allColumnsShowFocus">
                 <bool>true</bool>

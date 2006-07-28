@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/refsvindinge.dk/jakob@refsvindinge.dk/Projects/l4s_admin/launchdlgbase.ui'
 #
-# Created: fre jul 28 19:23:00 2006
+# Created: lør jul 29 00:46:43 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!

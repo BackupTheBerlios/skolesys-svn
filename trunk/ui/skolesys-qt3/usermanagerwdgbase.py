@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/refsvindinge.dk/jakob@refsvindinge.dk/Projects/l4s_admin/usermanagerwdgbase.ui'
 #
-# Created: fre jul 28 19:22:59 2006
+# Created: lør jul 29 00:46:42 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -27,7 +27,7 @@ class UserManagerWdgBase(QWidget):
         UserManagerWdgBaseLayout.addWidget(self.m_cb_usertype_filter,0,1)
 
         self.m_lv_userlist = QListView(self,"m_lv_userlist")
-        self.m_lv_userlist.setSelectionMode(QListView.Single)
+        self.m_lv_userlist.setSelectionMode(QListView.Extended)
         self.m_lv_userlist.setAllColumnsShowFocus(1)
         self.m_lv_userlist.setShowSortIndicator(1)
 

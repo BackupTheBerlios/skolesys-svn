@@ -12,10 +12,14 @@ from creategroupwdg import CreateGroupWdg
 from removegroupwdg import RemoveGroupWdg
 
 def execUserManager(conn):
-	dlg = WidgetDialog(buttons=3)
+	# Setup dialog
+	dlg = WidgetDialog(buttons=3,cancel_btn=False)
 	dlg.setCaption(qApp.translate("UserManagerWdg","User Manager"))
 	dlg.btnCustom1.setText(qApp.translate("UserManagerWdg","Create user..."))
-	dlg.btnCustom2.setText(qApp.translate("UserManagerWdg","Remove user..."))
+	dlg.btnCustom2.setText(qApp.translate("UserManagerWdg","Remove user(s)..."))
+	dlg.btnOK.setText(qApp.translate("UserManagerWdg","Close"))
+	
+	# Inner widget
 	userman = UserManagerWdg(conn,None,"UserManagerWdg")
 	dlg.setWidget(userman,True,qApp.translate("UserManagerWdg","Users"))
 	QObject.connect(dlg.btnCustom1,SIGNAL("clicked()"),userman.createUser)
@@ -29,18 +33,22 @@ def execCreateUser(conn):
 	dlg.setWidget(createuser,True,qApp.translate("CreateUserWdg","User information"))
 	dlg.exec_loop()
 
-def execRemoveUser(conn,uid):
+def execRemoveUser(conn,uids):
 	dlg = WidgetDialog()
-	dlg.setCaption(qApp.translate("RemoveUserWdg","Remove User [%1]").arg(uid))
-	removeuser = RemoveUserWdg(conn,uid)
+	dlg.setCaption(qApp.translate("RemoveUserWdg","Remove User(s)"))
+	removeuser = RemoveUserWdg(conn,uids)
 	dlg.setWidget(removeuser,True,qApp.translate("CreateUserWdg","User information"))
 	dlg.exec_loop()
 
 def execGroupManager(conn):
-	dlg = WidgetDialog(buttons=3)
+	# Setup dialog
+	dlg = WidgetDialog(buttons=3,cancel_btn=False)
 	dlg.setCaption(qApp.translate("GroupManagerWdg","Group Manager"))
 	dlg.btnCustom1.setText(qApp.translate("GroupManagerWdg","Create group..."))
-	dlg.btnCustom2.setText(qApp.translate("GroupManagerWdg","Remove group..."))
+	dlg.btnCustom2.setText(qApp.translate("GroupManagerWdg","Remove group(s)..."))
+	dlg.btnOK.setText(qApp.translate("GroupManagerWdg","Close"))
+	
+	# Inner widget
 	grpman = GroupManagerWdg(conn,None,"GroupManagerWdg")
 	dlg.setWidget(grpman,True,qApp.translate("GroupManagerWdg","Groups"))
 	QObject.connect(dlg.btnCustom1,SIGNAL("clicked()"),grpman.createGroup)
@@ -54,9 +62,9 @@ def execCreateGroup(conn):
 	dlg.setWidget(creategroup,True,qApp.translate("CreateUserWdg","Group information"))
 	dlg.exec_loop()
 
-def execRemoveGroup(conn,groupname):
+def execRemoveGroup(conn,groupnames):
 	dlg = WidgetDialog()
-	dlg.setCaption(qApp.translate("RemoveGroupWdg","Remove Group [%1]").arg(groupname))
-	removegroup = RemoveGroupWdg(conn,groupname)
+	dlg.setCaption(qApp.translate("RemoveGroupWdg","Remove Group(s)"))
+	removegroup = RemoveGroupWdg(conn,groupnames)
 	dlg.setWidget(removegroup,True,qApp.translate("CreateGroupWdg","Group information"))
 	dlg.exec_loop()
