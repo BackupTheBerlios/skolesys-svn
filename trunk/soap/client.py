@@ -85,6 +85,23 @@ class L4S_Client:
 		"""
 		return pload(self.server.group_exists(pdump(self.session_id),pdump(groupname)))
 
+	def creategroup(self,groupname,passwd,usertype):
+		"""
+		1. Create a new posixgroup in the mainserver LDAP DB.
+		2. Create a group home directory
+		"""
+		return pload(self.server.creategroup(pdump(self.session_id),pdump(groupname),\
+			pdump(passwd),pdump(usertype)))
+
+	def removegroup(self,groupname,backup_home=False,remove_home=False):
+		"""
+		1. Delete the posixgroup "groupname" from the mainserver LDAP db
+		2. Maybe backup the group home directory
+		3. Maybe remove the group home directory
+		"""
+		return pload(self.server.removegroup(pdump(self.session_id),pdump(groupname),pdump(backup_home),pdump(remove_home)))
+
+
 if __name__=='__main__':
     c=L4S_Client('https://127.0.0.1',8443)
     print c.bind('secret')

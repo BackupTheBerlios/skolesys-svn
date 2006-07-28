@@ -144,27 +144,25 @@ def group_exists(session_id,groupname):
 	gm = grpman.GroupManager()
 	return pdump(gm.group_exists(groupname))
 
-def creategroup(session_id,uid,givenname,familyname,passwd,usertype):
+def creategroup(session_id,groupname,passwd,usertype):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
-	uid=pload(uid)
-	givenname=pload(givenname)
-	familyname=pload(familyname)
+	groupname=pload(groupname)
 	passwd=pload(passwd)
 	usertype=pload(usertype)
 	
-	um = userman.UserManager()
-	return pdump(um.createuser(uid,givenname,familyname,passwd,usertype))
+	gm = grpman.GroupManager()
+	return pdump(gm.creategroup(groupname,passwd,usertype))
 
-def removegroup(session_id,uid,backup_home,remove_home):
+def removegroup(session_id,groupname,backup_home,remove_home):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
-	uid=pload(uid)
+	groupname=pload(groupname)
 	backup_home=pload(backup_home)
 	remove_home=pload(remove_home)
 	
-	um = userman.UserManager()
-	return pdump(um.deluser(uid,backup_home,remove_home))
+	gm = grpman.GroupManager()
+	return pdump(gm.removegroup(groupname,backup_home,remove_home))
 
 
 class MyServer(SOAPpy.SOAPServer):
