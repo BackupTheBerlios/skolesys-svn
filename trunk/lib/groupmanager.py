@@ -175,7 +175,9 @@ class GroupManager (LDAPUtil):
 		members = []
 		sres = self.l.result(res,0)
 		if sres[1]==[]:
-			return []
+			return -1 # Group does not exist
+		if not sres[1][0][1].has_key('memberUid'):
+			return [] # no members
 		return sres[1][0][1]['memberUid']
 	
 
@@ -344,5 +346,10 @@ if __name__=='__main__':
 			exit(0)
 
 		gm = GroupManager()
-		gl = gm.list_members(args[1])
-		print gl
+		res = gm.list_members(args[1])
+		if res==-1:
+			print "Group does not exist"
+			exit(0)
+		for member in res:
+			print member
+		
