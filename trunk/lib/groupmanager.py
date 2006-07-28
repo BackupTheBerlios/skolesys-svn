@@ -168,13 +168,25 @@ class GroupManager (LDAPUtil):
 		
 		return 1
 		
+	def groupmembers(self,groupname):
+		res = self.l.search(conf.get('LDAPSERVER','basedn'),\
+			ldap.SCOPE_SUBTREE,'(& (cn=%s)(objectclass=posixgroup))'%groupname,['memberuid'])
+		
+		members = []
+		while 1:
+			sres = self.l.result(res,0)
+			if sres[1]==[]:
+				break
+			print sres
+	
 
 
 if __name__=='__main__':
 	# Commandline implementation
 	commands = {'creategroup': 'Create a new system group and a group directory',
-	            'removegroup': 'Remove a system group',
-	            'listgroups': 'Show a list of system groups'}
+		'removegroup': 'Remove a system group',
+		'listgroups': 'Show a list of system groups',
+		'groupmembers': 'Show members of a certain group'}
 	
 	usage = "usage: groupmanager [command] [options] args"
 	if len(argv)<2 or not commands.has_key(argv[1]):
@@ -323,3 +335,15 @@ if __name__=='__main__':
 		gl = gm.list_groups(options.usertype)
 		for k in gl.keys():
 			print k
+
+	if cmd == "listgroups":
+		parser.set_usage("usage: groupmanager %s groupname" % cmd)
+
+		(options, args) = parser.parse_args()
+		if len(args)<2:
+			print "Missing group name for groupmembers operation"
+			exit(0)
+
+		gm = GroupManager()
+		gl = gm.groupmembers(arg[1])
+		print gl
