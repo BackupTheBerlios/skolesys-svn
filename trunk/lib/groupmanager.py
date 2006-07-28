@@ -173,11 +173,10 @@ class GroupManager (LDAPUtil):
 			ldap.SCOPE_SUBTREE,'(& (cn=%s)(objectclass=posixgroup))'%groupname,['memberuid'])
 		
 		members = []
-		while 1:
-			sres = self.l.result(res,0)
-			if sres[1]==[]:
-				break
-			print sres
+		sres = self.l.result(res,0)
+		if sres[1]==[]:
+			return []
+		return sres[1][0][1]['memberUid']
 	
 
 
