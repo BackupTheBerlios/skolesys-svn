@@ -63,6 +63,7 @@ class GroupManager (LDAPUtil):
 	
 	def group_exists(self,groupname):
 		# check if the group exists already
+		print "Groupname: %s" % groupname
 		res = self.l.search(conf.get('LDAPSERVER','basedn'),\
 		                   ldap.SCOPE_SUBTREE,'(& (cn=%s)(objectclass=posixgroup))'%groupname,['cn'])
 		sres = self.l.result(res,0)
