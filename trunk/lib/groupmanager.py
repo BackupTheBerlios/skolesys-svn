@@ -76,7 +76,7 @@ class GroupManager (LDAPUtil):
 		The usertype must be one of the constants TEACHER,STUDENT,PARENT or OTHER
 		"""
 		# check if the group exists already
-		if group_exists(groupname):
+		if self.group_exists(groupname):
 			return -1
 		
 		if (usertype==TEACHER):
