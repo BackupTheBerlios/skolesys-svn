@@ -558,7 +558,7 @@ if __name__=='__main__':
 			exit(0)
 
 		um = UserManager()
-		res = um.list_groups(username)
+		res = um.list_usergroups(username)
 		if res==-1:
 			print "User does not exist"
 			exit(0)
