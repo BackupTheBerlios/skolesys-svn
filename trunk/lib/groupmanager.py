@@ -66,6 +66,7 @@ class GroupManager (LDAPUtil):
 		res = self.l.search(conf.get('LDAPSERVER','basedn'),\
 		                   ldap.SCOPE_SUBTREE,'(& (cn=%s)(objectclass=posixgroup))'%groupname,['cn'])
 		sres = self.l.result(res,0)
+		print sres
 		if sres[1]==[]:
 			return False
 		return True
