@@ -169,6 +169,9 @@ class GroupManager (LDAPUtil):
 		return 1
 		
 	def list_members(self,groupname):
+		"""
+		List the members of a certain group "groupname"
+		"""
 		res = self.l.search(conf.get('LDAPSERVER','basedn'),\
 			ldap.SCOPE_SUBTREE,'(& (cn=%s)(objectclass=posixgroup))'%groupname,['memberuid'])
 		

@@ -274,6 +274,9 @@ class UserManager (LDAPUtil):
 		return 1
 	
 	def list_usergroups(self,uid):
+		"""
+		List the groups of a certain user "uid"
+		"""
 		if not self.user_exists(uid):
 			return -1 # User does not exist
 		path =	conf.get('LDAPSERVER','basedn')
