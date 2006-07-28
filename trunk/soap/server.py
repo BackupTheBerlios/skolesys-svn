@@ -5,6 +5,7 @@ import md5
 import pickle
 import lin4schools
 import lin4schools.lib.usermanager as userman
+import lin4schools.lib.groupmanager as grpman
 from lin4schools.lib.conf import conf
 from M2Crypto import SSL
 from p2 import p2_decrypt
@@ -25,6 +26,9 @@ def session_valid(session_id):
 	return False
 
 def test_session_id(session_id):
+	"""
+	Test if the given session ID is still valid
+	"""
 	session_id=pload(session_id)
 	if sessions.has_key(session_id):
 		return pdump(True)
@@ -80,6 +84,7 @@ def domain_name(session_id):
 	domain_name = conf.get('DOMAIN','domain_name')
 	return pdump(domain_name)
 
+# Users
 def list_users(session_id,usertype):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
@@ -120,6 +125,48 @@ def removeuser(session_id,uid,backup_home,remove_home):
 	um = userman.UserManager()
 	return pdump(um.deluser(uid,backup_home,remove_home))
 
+# Groups
+def list_groups(session_id,grouptype):
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+	usertype = pload(usertype)
+	gm = grpman.GroupManager()
+	return pdump(gm.list_groups(usertype))
+
+def group_exists(session_id,groupname):
+	"""
+	Do a quick lookup in the mainserver LDAP to see if a 
+	certain uid exists.
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+	uid=pload(groupname)
+	gm = grpman.GroupManager()
+	return pdump(gm.group_exists(groupname))
+
+def creategroup(session_id,uid,givenname,familyname,passwd,usertype):
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+	uid=pload(uid)
+	givenname=pload(givenname)
+	familyname=pload(familyname)
+	passwd=pload(passwd)
+	usertype=pload(usertype)
+	
+	um = userman.UserManager()
+	return pdump(um.createuser(uid,givenname,familyname,passwd,usertype))
+
+def removeuser(session_id,uid,backup_home,remove_home):
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+	uid=pload(uid)
+	backup_home=pload(backup_home)
+	remove_home=pload(remove_home)
+	
+	um = userman.UserManager()
+	return pdump(um.deluser(uid,backup_home,remove_home))
+
+
 def test(str):
 	str = pload(str)
 	print pdump(str)
@@ -127,7 +174,7 @@ def test(str):
 class MyServer(SOAPpy.SOAPServer):
     def __init__(self,addr=('localhost', 8000), ssl_context=None):
         SOAPpy.SOAPServer.__init__(self,addr,ssl_context=ssl_context)
-        
+
     def verify_request(self,request,clientaddr):
         #print request.get_session().as_text()
         #print clientaddr

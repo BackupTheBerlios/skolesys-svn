@@ -61,16 +61,22 @@ class GroupManager (LDAPUtil):
 					group_dict[cn][k] = v
 		return group_dict
 	
+	def group_exists(self,groupname):
+		# check if the group exists already
+		res = self.l.search(conf.get('LDAPSERVER','basedn'),\
+		                   ldap.SCOPE_SUBTREE,'(& (cn=%s)(objectclass=posixgroup))'%groupname,['cn'])
+		sres = self.l.result(res,0)
+		if sres[1]==[]:
+			return False
+		return True
+	
 	def creategroup(self,groupname,usertype):
 		"""
 		Add a user to the schools authentication directory service.
 		The usertype must be one of the constants TEACHER,STUDENT,PARENT or OTHER
 		"""
 		# check if the group exists already
-		res = self.l.search(conf.get('LDAPSERVER','basedn'),\
-		                   ldap.SCOPE_SUBTREE,'(& (cn=%s)(objectclass=posixgroup))'%groupname,['cn'])
-		sres = self.l.result(res,0)
-		if not sres[1]==[]:
+		if group_exists(groupname):
 			return -1
 		
 		if (usertype==TEACHER):
