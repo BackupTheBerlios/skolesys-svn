@@ -100,6 +100,24 @@ class GroupManager (LDAPUtil):
 		
 		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
 		self.touch_by_dict({path:group_info})
+		
+		try:
+			gid = grp.getgrnam(groupname)[2]
+		except Exception, e:
+			print e
+			return -2
+		
+		try:
+			home_path = "%s/%s/%s" % (conf.get('DOMAIN','homes_root'),conf.get('DOMAIN','domain_name'),groupname)
+			if not os.path.exists(os.path.normpath(home_path)):
+				os.mkdir(os.path.normpath(home_path))
+			
+			os.system('chgrp %d %s -R -f' % (gid,os.path.normpath(home_path)))
+			os.system('chmod g+wrx %s -R -f' % (os.path.normpath(home_path)))
+		except Exception, e:
+			print e
+			return -3
+		
 		return 1
 
 	def removegroup(self,groupname,backup_home,remove_home):
@@ -228,22 +246,15 @@ if __name__=='__main__':
 		if groupadd_res==-1:
 			print "The group %s already exists" % groupname
 			exit(0)
-		
-		try:
-			gid = grp.getgrnam(groupname)[2]
-		except Exception, e:
+		if groupadd_res==-2:
 			print "The system could not map the group to an gid (groupid)"
-			print e
+			exit(0)
+		if groupadd_res==-3:
+			print "A problem occured while creating the groups's home directory"
 			exit(0)
 			
-		home_path = "%s/%s/%s" % (conf.get('DOMAIN','homes_root'),conf.get('DOMAIN','domain_name'),groupname)
-		if not os.path.exists(os.path.normpath(home_path)):
-			os.mkdir(os.path.normpath(home_path))
-		
-		os.system('chgrp %d %s -R -f' % (gid,os.path.normpath(home_path)))
-		os.system('chmod g+wrx %s -R -f' % (os.path.normpath(home_path)))
 		print "Group created..."
-
+			
 
 	if cmd == "removegroup":
 		if os.getuid()!=0:
