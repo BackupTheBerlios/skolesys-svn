@@ -126,7 +126,7 @@ def removeuser(session_id,uid,backup_home,remove_home):
 	return pdump(um.deluser(uid,backup_home,remove_home))
 
 # Groups
-def list_groups(session_id,grouptype):
+def list_groups(session_id,usertype):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	usertype = pload(usertype)
