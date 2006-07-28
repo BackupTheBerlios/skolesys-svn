@@ -60,6 +60,5 @@ class CreateUserWdg(CreateUserWdgBase):
 			self.ed_passwd.setFocus()
 			self.ed_passwd.selectAll()
 			return False
-		print "wiejfwef"
 		print self.proxy.createuser(login,firstname,lastname,self.ed_passwd.text().latin1(),usertype)
 		return True

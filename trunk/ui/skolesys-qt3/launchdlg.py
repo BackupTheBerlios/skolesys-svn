@@ -8,3 +8,6 @@ class LaunchDlg(LaunchDlgBase):
 		
 	def userManager(self):
 		execUserManager(self.conn)
+
+	def groupManager(self):
+		execGroupManager(self.conn)

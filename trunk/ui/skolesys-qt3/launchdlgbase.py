@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/refsvindinge.dk/jakob@refsvindinge.dk/Projects/l4s_admin/launchdlgbase.ui'
 #
-# Created: lør jul 22 01:21:32 2006
+# Created: fre jul 28 19:23:00 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -24,24 +24,32 @@ class LaunchDlgBase(QDialog):
 
         self.pushButton1 = QPushButton(self,"pushButton1")
         LaunchDlgBaseLayout.addWidget(self.pushButton1)
-        spacer1 = QSpacerItem(21,241,QSizePolicy.Minimum,QSizePolicy.Expanding)
+
+        self.pushButton2 = QPushButton(self,"pushButton2")
+        LaunchDlgBaseLayout.addWidget(self.pushButton2)
+        spacer1 = QSpacerItem(21,60,QSizePolicy.Minimum,QSizePolicy.Expanding)
         LaunchDlgBaseLayout.addItem(spacer1)
 
         self.languageChange()
 
-        self.resize(QSize(131,154).expandedTo(self.minimumSizeHint()))
+        self.resize(QSize(141,154).expandedTo(self.minimumSizeHint()))
         self.clearWState(Qt.WState_Polished)
 
         self.connect(self.pushButton1,SIGNAL("clicked()"),self.userManager)
+        self.connect(self.pushButton2,SIGNAL("clicked()"),self.groupManager)
 
 
     def languageChange(self):
         self.setCaption(self.__tr("Form"))
         self.pushButton1.setText(self.__tr("User Manager"))
+        self.pushButton2.setText(self.__tr("Group Manager"))
 
 
     def userManager(self):
         print "LaunchDlgBase.userManager(): Not implemented yet"
+
+    def groupManager(self):
+        print "LaunchDlgBase.groupManager(): Not implemented yet"
 
     def __tr(self,s,c = None):
         return qApp.translate("LaunchDlgBase",s,c)

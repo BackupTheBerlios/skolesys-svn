@@ -1,15 +1,15 @@
 <!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>LaunchDlgBase</class>
-<widget class="QDialog">
+<class>RemoveGroupWdgBase</class>
+<widget class="QWidget">
     <property name="name">
-        <cstring>LaunchDlgBase</cstring>
+        <cstring>RemoveGroupWdgBase</cstring>
     </property>
     <property name="geometry">
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>141</width>
-            <height>154</height>
+            <width>331</width>
+            <height>77</height>
         </rect>
     </property>
     <property name="caption">
@@ -19,20 +19,26 @@
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
-        <widget class="QPushButton">
+        <widget class="QCheckBox">
             <property name="name">
-                <cstring>pushButton1</cstring>
+                <cstring>chb_backup_home</cstring>
             </property>
             <property name="text">
-                <string>User Manager</string>
+                <string>Backup the group's home directory</string>
+            </property>
+            <property name="checked">
+                <bool>true</bool>
             </property>
         </widget>
-        <widget class="QPushButton">
+        <widget class="QCheckBox">
             <property name="name">
-                <cstring>pushButton2</cstring>
+                <cstring>chb_remove_home</cstring>
             </property>
             <property name="text">
-                <string>Group Manager</string>
+                <string>Remove the group's home directory</string>
+            </property>
+            <property name="checked">
+                <bool>true</bool>
             </property>
         </widget>
         <spacer>
@@ -47,30 +53,16 @@
             </property>
             <property name="sizeHint">
                 <size>
-                    <width>21</width>
-                    <height>60</height>
+                    <width>20</width>
+                    <height>71</height>
                 </size>
             </property>
         </spacer>
     </vbox>
 </widget>
-<connections>
-    <connection>
-        <sender>pushButton1</sender>
-        <signal>clicked()</signal>
-        <receiver>LaunchDlgBase</receiver>
-        <slot>userManager()</slot>
-    </connection>
-    <connection>
-        <sender>pushButton2</sender>
-        <signal>clicked()</signal>
-        <receiver>LaunchDlgBase</receiver>
-        <slot>groupManager()</slot>
-    </connection>
-</connections>
-<slots>
-    <slot>userManager()</slot>
-    <slot>groupManager()</slot>
-</slots>
-<layoutdefaults spacing="6" margin="6"/>
+<tabstops>
+    <tabstop>chb_backup_home</tabstop>
+    <tabstop>chb_remove_home</tabstop>
+</tabstops>
+<layoutdefaults spacing="6" margin="0"/>
 </UI>

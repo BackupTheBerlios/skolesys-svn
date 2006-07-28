@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-3.8.dtd">
 <!-- Project file for project L4S_Admin -->
-<!-- Saved: 2006-07-22, 01:22:28 -->
+<!-- Saved: 2006-07-28, 19:54:05 -->
 <!-- Copyright (C) 2006 Jakob Simon-Gaarde, jakob@simon-gaarde.dk -->
 <Project version="3.8">
   <ProgLanguage mixed="0">Python</ProgLanguage>
@@ -47,6 +47,24 @@
     <Source>
       <Name>l4s_admin.py</Name>
     </Source>
+    <Source>
+      <Name>groupmanagerwdgbase.py</Name>
+    </Source>
+    <Source>
+      <Name>creategroupwdgbase.py</Name>
+    </Source>
+    <Source>
+      <Name>creategroupwdg.py</Name>
+    </Source>
+    <Source>
+      <Name>removegroupwdgbase.py</Name>
+    </Source>
+    <Source>
+      <Name>removegroupwdg.py</Name>
+    </Source>
+    <Source>
+      <Name>groupmanagerwdg.py</Name>
+    </Source>
   </Sources>
   <Forms>
     <Form>
@@ -60,6 +78,15 @@
     </Form>
     <Form>
       <Name>removeuserwdgbase.ui</Name>
+    </Form>
+    <Form>
+      <Name>groupmanagerwdgbase.ui</Name>
+    </Form>
+    <Form>
+      <Name>creategroupwdgbase.ui</Name>
+    </Form>
+    <Form>
+      <Name>removegroupwdgbase.ui</Name>
     </Form>
   </Forms>
   <Translations>
@@ -75,10 +102,10 @@
     <VcsType>None</VcsType>
   </Vcs>
   <FiletypeAssociations>
-    <FiletypeAssociation pattern="*.py" type="SOURCES" />
     <FiletypeAssociation pattern="*.ui.h" type="FORMS" />
-    <FiletypeAssociation pattern="*.idl" type="INTERFACES" />
     <FiletypeAssociation pattern="*.ui" type="FORMS" />
+    <FiletypeAssociation pattern="*.idl" type="INTERFACES" />
+    <FiletypeAssociation pattern="*.py" type="SOURCES" />
     <FiletypeAssociation pattern="*.ptl" type="SOURCES" />
   </FiletypeAssociations>
 </Project>
