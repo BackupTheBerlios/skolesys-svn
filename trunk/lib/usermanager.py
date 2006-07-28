@@ -544,7 +544,7 @@ if __name__=='__main__':
 		for k in ul.keys():
 			print k
 
-	if cmd == "listgroups":
+	if cmd == "listusergroups":
 		parser.set_usage("usage: usermanager %s username" % cmd)
 
 		(options, args) = parser.parse_args()
