@@ -56,6 +56,12 @@ class L4S_Client:
 		"""
 		return pload(self.server.list_users(pdump(self.session_id),pdump(usertype)))
 
+	def list_usergroups(self,uid):
+		"""
+		Get a list of LDAP posixgroups located on the mainserver for a certain user "uid".
+		"""
+		return pload(self.server.list_usergroups(pdump(self.session_id),pdump(uid)))
+
 	def user_exists(self,uid):
 		"""
 		Do a quick lookup in the mainserver LDAP to see if a 
@@ -77,6 +83,12 @@ class L4S_Client:
 		list can be filtered by the user type.
 		"""
 		return pload(self.server.list_groups(pdump(self.session_id),pdump(usertype)))
+
+	def list_usergroups(self,groupname):
+		"""
+		Get a member list of LDAP posixusers located on the mainserver for a certain group "groupname".
+		"""
+		return pload(self.server.list_members(pdump(self.session_id),pdump(groupname)))
 
 	def group_exists(self,groupname):
 		"""

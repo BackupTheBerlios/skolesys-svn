@@ -92,6 +92,16 @@ def list_users(session_id,usertype):
 	um = userman.UserManager()
 	return pdump(um.list_users(usertype))
 
+def list_usergroups(session_id,uid):
+	"""
+	List groups of a certain user "uid"
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+	uid = pload(uid)
+	um = userman.UserManager()
+	return pdump(um.list_usergroups(uid))
+
 def user_exists(session_id,uid):
 	"""
 	Do a quick lookup in the mainserver LDAP to see if a 
@@ -132,6 +142,16 @@ def list_groups(session_id,usertype):
 	usertype = pload(usertype)
 	gm = grpman.GroupManager()
 	return pdump(gm.list_groups(usertype))
+
+def list_members(session_id,groupname):
+	"""
+	List members of a certain group "groupname"
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+	groupname = pload(groupname)
+	gm = grpman.GroupManager()
+	return pdump(gm.list_members(groupname))
 
 def group_exists(session_id,groupname):
 	"""
@@ -198,13 +218,16 @@ def startserver():
 	server.registerFunction(domain_name)
 	server.registerFunction(user_exists)
 	server.registerFunction(list_users)
+	server.registerFunction(list_usergroups)
 	server.registerFunction(createuser)
 	server.registerFunction(removeuser)
 	
 	server.registerFunction(group_exists)
 	server.registerFunction(list_groups)
+	server.registerFunction(list_members)
 	server.registerFunction(creategroup)
 	server.registerFunction(removegroup)
+	
 
 	server.serve_forever()
 
