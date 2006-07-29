@@ -5,11 +5,13 @@ from widgetdialog import WidgetDialog
 from usermanagerwdg import UserManagerWdg
 from createuserwdg import CreateUserWdg
 from removeuserwdg import RemoveUserWdg
+from addremoveusergroupswdg import AddRemoveUserGroupsWdg
 
 # Group manager
 from groupmanagerwdg import GroupManagerWdg
 from creategroupwdg import CreateGroupWdg
 from removegroupwdg import RemoveGroupWdg
+from addremovegroupuserswdg import AddRemoveGroupUsersWdg
 
 def execUserManager(conn):
 	# Setup dialog
@@ -67,4 +69,18 @@ def execRemoveGroup(conn,groupnames):
 	dlg.setCaption(qApp.translate("RemoveGroupWdg","Remove Group(s)"))
 	removegroup = RemoveGroupWdg(conn,groupnames)
 	dlg.setWidget(removegroup,True,qApp.translate("CreateGroupWdg","Group information"))
+	dlg.exec_loop()
+
+def execAddRemoveUserGroups(conn,uids):
+	dlg = WidgetDialog()
+	dlg.setCaption(qApp.translate("AddRemoveUserGroupsWdg","Alter Group Memberships"))
+	wdg = AddRemoveUserGroupsWdg(conn,uids)
+	dlg.setWidget(wdg,True,qApp.translate("AddRemoveUserGroupsWdg","Alter the group membership of the following user(s)"))
+	dlg.exec_loop()
+
+def execAddRemoveGroupUsers(conn,groupnames):
+	dlg = WidgetDialog()
+	dlg.setCaption(qApp.translate("AddRemoveGroupUsersWdg","Alter Group Members"))
+	wdg = AddRemoveGroupUsersWdg(conn,groupnames)
+	dlg.setWidget(wdg,True,qApp.translate("AddRemoveGroupUsersWdg","Alter the members of the following group(s)"))
 	dlg.exec_loop()

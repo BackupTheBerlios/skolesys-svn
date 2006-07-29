@@ -35,6 +35,7 @@ class GroupManagerWdg(GroupManagerWdgBase):
 		self.soapproxy = conn.get_proxy_handle()
 		self.grouplist = []
 		self.update_list()
+		self.contextmenu_enabled = True
 
 		self.typedict={self.tr('All').latin1():None,
 			self.tr('Teachers').latin1():1,\
@@ -62,21 +63,29 @@ class GroupManagerWdg(GroupManagerWdgBase):
 		launcher.execCreateGroup(self.conn)
 		self.update_list()
 
-	def removeGroup(self):
+	def selectedGroupnames(self):
 		groupnames = []
 		item = self.m_lv_grouplist.firstChild()
 		while item:
 			if item.isSelected():
 				groupnames += [str(item.groupname.utf8())]
-			item = item.itemBelow()
+			item = item.itemBelow()	
+		return groupnames
+	
+	def removeGroup(self):
+		groupnames = self.selectedGroupnames()
 		launcher.execRemoveGroup(self.conn,groupnames)
 		self.update_list()
 		return
-		
-		item = self.m_lv_grouplist.selectedItem()
-		if not item:
-			return
-		groupname = str(self.m_lv_grouplist.selectedItem().groupname.utf8())
-		launcher.execRemoveGroup(self.conn,groupname)
-		self.update_list()
-
+	
+	def slotContextMenuRequested(self):
+		groupnames = self.selectedGroupnames()
+		if len(groupnames) and self.contextmenu_enabled:
+			ctxmenu = QPopupMenu(self,"userManagerContextMenu")
+			edit_memberships = ctxmenu.insertItem(self.tr("Edit user memberships..."))
+			ctxmenu.insertSeparator()
+			remove_groups = ctxmenu.insertItem(self.tr("Remove group(s)..."))
+			res = ctxmenu.exec_loop(QCursor.pos())
+			if res == edit_memberships:
+				launcher.execAddRemoveGroupUsers(self.conn,groupnames)
+	

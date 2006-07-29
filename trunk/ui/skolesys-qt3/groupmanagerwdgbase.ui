@@ -73,6 +73,12 @@
         <receiver>GroupManagerWdgBase</receiver>
         <slot>slotFilterActivated(int)</slot>
     </connection>
+    <connection>
+        <sender>m_lv_grouplist</sender>
+        <signal>contextMenuRequested(QListViewItem*,const QPoint&amp;,int)</signal>
+        <receiver>GroupManagerWdgBase</receiver>
+        <slot>slotContextMenuRequested()</slot>
+    </connection>
 </connections>
 <tabstops>
     <tabstop>m_cb_usertype_filter</tabstop>
@@ -80,6 +86,7 @@
 </tabstops>
 <slots>
     <slot>slotFilterActivated(int)</slot>
+    <slot>slotContextMenuRequested()</slot>
 </slots>
 <layoutdefaults spacing="6" margin="0"/>
 </UI>

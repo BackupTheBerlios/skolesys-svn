@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/refsvindinge.dk/jakob@refsvindinge.dk/Projects/l4s_admin/usermanagerwdgbase.ui'
 #
-# Created: lør jul 29 00:46:42 2006
+# Created: lør jul 29 12:39:53 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -45,6 +45,7 @@ class UserManagerWdgBase(QWidget):
         self.clearWState(Qt.WState_Polished)
 
         self.connect(self.m_cb_usertype_filter,SIGNAL("activated(int)"),self.slotFilterActivated)
+        self.connect(self.m_lv_userlist,SIGNAL("contextMenuRequested(QListViewItem*,const QPoint&,int)"),self.slotContextMenuRequested)
 
         self.setTabOrder(self.m_cb_usertype_filter,self.m_lv_userlist)
 
@@ -56,6 +57,9 @@ class UserManagerWdgBase(QWidget):
 
     def slotFilterActivated(self,a0):
         print "UserManagerWdgBase.slotFilterActivated(int): Not implemented yet"
+
+    def slotContextMenuRequested(self):
+        print "UserManagerWdgBase.slotContextMenuRequested(): Not implemented yet"
 
     def __tr(self,s,c = None):
         return qApp.translate("UserManagerWdgBase",s,c)

@@ -39,6 +39,7 @@ class UserManagerWdg(UserManagerWdgBase):
 		self.soapproxy = conn.get_proxy_handle()
 		self.userlist = []
 		self.update_list()
+		self.contextmenu_enabled = True
 
 		self.typedict={self.tr('All').latin1():None,
 			self.tr('Teachers').latin1():1,\
@@ -66,21 +67,29 @@ class UserManagerWdg(UserManagerWdgBase):
 		launcher.execCreateUser(self.conn)
 		self.update_list()
 
-	def removeUser(self):
+	def selectedUids(self):
 		uids = []
 		item = self.m_lv_userlist.firstChild()
 		while item:
 			if item.isSelected():
 				uids += [item.login]
 			item = item.itemBelow()
+		return uids
+	
+	def removeUser(self):
+		uids = self.selectedUids()
 		launcher.execRemoveUser(self.conn,uids)
 		self.update_list()
-
 		return
-		item = self.m_lv_userlist.selectedItem()
-		if not item:
-			return
-		uid = self.m_lv_userlist.selectedItem().login
-		launcher.execRemoveUser(self.conn,uid)
-		self.update_list()
 
+	def slotContextMenuRequested(self):
+		uids = self.selectedUids()
+		if len(uids) and self.contextmenu_enabled:
+			ctxmenu = QPopupMenu(self,"userManagerContextMenu")
+			edit_memberships = ctxmenu.insertItem(self.tr("Edit group memberships..."))
+			ctxmenu.insertSeparator()
+			remove_users = ctxmenu.insertItem(self.tr("Remove user(s)..."))
+			res = ctxmenu.exec_loop(QCursor.pos())
+			if res == edit_memberships:
+				launcher.execAddRemoveUserGroups(self.conn,uids)
+			
