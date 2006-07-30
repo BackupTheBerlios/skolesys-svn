@@ -70,7 +70,7 @@ class GroupManager (LDAPUtil):
 			return False
 		return True
 	
-	def creategroup(self,groupname,usertype):
+	def creategroup(self,groupname,usertype,description=None):
 		"""
 		Add a user to the schools authentication directory service.
 		The usertype must be one of the constants TEACHER,STUDENT,PARENT or OTHER
@@ -96,7 +96,8 @@ class GroupManager (LDAPUtil):
 			'gidNumber':str(self.max(conf.get('LDAPSERVER','basedn'),
 			                 'objectclass=posixgroup','gidNumber',
 			                  int(conf.get('DOMAIN','gid_start')))+1),
-			'objectclass':('posixGroup','top')}
+			'objectclass':('posixGroup','top'),
+			'description':description}
 		
 		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
 		self.touch_by_dict({path:group_info})
@@ -228,7 +229,9 @@ if __name__=='__main__':
 			
 		parser.set_usage("usage: groupmanager %s [options] groupname" % cmd)
 		parser.add_option("-r", "--groupRelation", dest="grouprelation",default=None,
-		                  help="the group's relationship (teacher,student,parent or other)", metavar="GROUPRELATION")
+			help="the group's relationship (teacher,student,parent or other)", metavar="GROUPRELATION")
+		parser.add_option("-d", "--description", dest="description",default=None,
+			help="the group's description", metavar="DESCRIPTION")
 		(options, args) = parser.parse_args()
 		
 		if len(args)<2:
@@ -254,7 +257,7 @@ if __name__=='__main__':
 
 		gm = GroupManager()
 		try:
-			groupadd_res = gm.creategroup(groupname,options.grouprelation)
+			groupadd_res = gm.creategroup(groupname,options.grouprelation,options.description)
 		except Exception, e:
 			print "An error occured while writing to the user LDAP database"
 			print e
