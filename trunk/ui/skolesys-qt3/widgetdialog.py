@@ -4,15 +4,25 @@ import inspect
 
 CustomButton1 = 1
 CustomButton2 = 2
+ExtensionButton = 4
 
 class WidgetDialog(QDialog):
 	def __init__(self,parent=None,name=None,buttons=0,custombuttons_left=1,cancel_btn=True,modal=0,fl=0):
 		QDialog.__init__(self,parent,name,modal,fl)
 		self.widget = None
+		self.btnExtension = None
+		self.foldedExtention = None
 		if not name:
 			self.setName( "TRDialog" )
 		self.dlg_layout = QVBoxLayout( self, 11, 6, "TRDialogLayout")
 		self.layout1 = QHBoxLayout( None, 0, 6, "layout1")
+		self.foldedExtensionLayout = QHBoxLayout( None, 0, 6, "extensionLayout")
+		
+		if buttons & ExtensionButton:
+			self.btnExtension = QPushButton( self, "m_btnExtension" )
+			self.btnExtension.setToggleButton(True)
+			self.layout1.addWidget( self.btnExtension )
+			self.connect( self.btnExtension, SIGNAL("toggled(bool)"), self.unfoldExtension)
 
 		spacer1 = QSpacerItem( 181, 20, QSizePolicy.Expanding, QSizePolicy.Minimum )
 		if not custombuttons_left:
@@ -55,6 +65,10 @@ class WidgetDialog(QDialog):
 			self.btnCancel.setAccel( QKeySequence( self.tr( "Alt+C" ) ) )
 		self.btnOK.setText( self.tr( "&OK" ) )
 		self.btnOK.setAccel( QKeySequence( self.tr( "Alt+O" ) ) )
+		if self.btnExtension:
+			self.btnExtension.setText( self.tr( "&Extension" ) );
+			self.btnExtension.setAccel( QKeySequence( self.tr( "Alt+E" ) ) );
+
 
 	def setWidget(self,widget,embedInGroupbox=False,groupBoxTitle="",margin=6,buttonsEnabled=True):
 		meta_parent = self
@@ -87,7 +101,7 @@ class WidgetDialog(QDialog):
 			self.widget = widget
 			meta_layout.addWidget( widget )
 			
-			#self.dlg_layout.addLayout(m_foldedExtensionLayout);
+			self.dlg_layout.addLayout(self.foldedExtensionLayout);
 			
 			if buttonsEnabled:
 				self.dlg_layout.addLayout( self.layout1 )
@@ -117,6 +131,47 @@ class WidgetDialog(QDialog):
 			except:
 					pass
 		QDialog.reject(self)
+
+	def unfoldExtension(self,unfold):
+		if not self.foldedExtension:
+			return;
+		if unfold:
+			self.foldedExtension.reparent(self,QPoint(0,0))
+		
+			self.foldedExtensionLayout.addWidget(self.foldedExtension)
+			self.foldedExtension.show()
+			self.foldedExtensionLayout.invalidate()
+			
+		else:
+			
+			self.foldedExtensionLayout.remove(self.foldedExtension)
+			self.foldedExtension.hide()
+			self.foldedExtensionLayout.invalidate()
+			self.foldedExtension.reparent(None,QPoint(0,0))
+			self.dlg_layout.invalidate()
+			
+		toplayout = self.topLevelWidget().layout()
+		if toplayout:
+			toplayout.invalidate()
+		
+
+	def toggleFoldedExtension(self):
+		"""
+		Toggle whether the extension widget should be visible or not
+		"""
+		if not self.foldedExtension:
+			return;
+		if self.foldedExtension.isHidden():
+			unfoldExtension(True)
+		else:
+			unfoldExtension(False)
+
+	
+	def setFoldedExtension(self, wdg):
+		"""
+		Set the extension widget if a such should be present.
+		"""
+		self.foldedExtension = wdg
 	
 if __name__=="__main__":
 	# Test

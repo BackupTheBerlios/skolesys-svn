@@ -2,6 +2,7 @@ import sys
 from qt import *
 from addremovewdgbase import AddRemoveWdgBase
 from usermanagerwdg import *
+from progressdlg import ProgressDlg
 
 class AddRemoveGroupUsersWdg(AddRemoveWdgBase):
 	"""
@@ -59,16 +60,22 @@ class AddRemoveGroupUsersWdg(AddRemoveWdgBase):
 		if answer==QMessageBox.No:
 			return False
 			
-		progdlg = QProgressDialog(self.tr("Altering memberships..."),self.tr("Cancel"),\
-			len(self.groupnames)*(self.lb_add.count()+self.lb_remove.count()),self,"progress",True)
+		progdlg = ProgressDlg(self.tr("Altering memberships..."),self,"progress",True)
+		progdlg.setTotalSteps(len(self.groupnames)*(self.lb_add.count()+self.lb_remove.count())-1)
 		progdlg.show()
 		progress = 0
 		for groupname in self.groupnames:
 			# Add groups
-			progdlg.setLabelText(self.tr("Altering memberships of %1").arg(groupname))
+			progdlg.setLabelText(self.tr("Altering memberships of %1").arg(QString.fromUtf8(groupname)))
 			for idx in xrange(self.lb_add.count()):
 				adduid = str(self.lb_add.text(idx))
-				self.soapproxy.groupadd(adduid,groupname)
+				details = self.tr('Adding user "%1" to the group "%2" ... ').arg(adduid).arg(QString.fromUtf8(groupname))
+				res = self.soapproxy.groupadd(adduid,groupname)
+				if res==1:			
+					details += self.tr('USER ADDED')
+				if res==-3:
+					details += self.tr('USER ALREADY MEMBER')
+				progdlg.addDetails(details)
 				progdlg.setProgress(progress)
 				progress+=1
 				qApp.processEvents()
@@ -76,8 +83,18 @@ class AddRemoveGroupUsersWdg(AddRemoveWdgBase):
 			# Remove groups
 			for idx in xrange(self.lb_remove.count()):
 				rmuid = str(self.lb_remove.text(idx))
-				self.soapproxy.groupdel(rmuid,groupname)
+				details = self.tr('Removing user "%1" from the group "%2" ... ').arg(rmuid).arg(QString.fromUtf8(groupname))
+				res = self.soapproxy.groupdel(rmuid,groupname)
+				if res==1:			
+					details += self.tr('USER REMOVED')
+				if res==-3:
+					details += self.tr('USER NOT MEMBER')
+				progdlg.addDetails(details)
 				progdlg.setProgress(progress)
 				progress+=1
 				qApp.processEvents()
+				
+		progdlg.setLabelText(self.tr("Done."))
+		progdlg.setProgress(progdlg.steps)
+		progdlg.exec_loop()
 		return True

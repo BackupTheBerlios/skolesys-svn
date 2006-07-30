@@ -10,12 +10,15 @@
 
 import sys
 from qt import *
+import inspect
+import os.path
 
 
 class AddRemoveWdgBase(QWidget):
 	def __init__(self,parent = None,name = None,fl = 0):
 		QWidget.__init__(self,parent,name,fl)
 
+		basepath = os.path.split(__file__)[0]
 		if not name:
 			self.setName("AddRemoveWdgBase")
 
@@ -63,10 +66,10 @@ class AddRemoveWdgBase(QWidget):
 		self.languageChange()
 
 		pix = QPixmap()
-		pix.load("green_left.png","PNG")
+		pix.load("%s/green_left.png" % basepath,"PNG")
 		self.btn_remove_remove.setIconSet(QIconSet(pix))
 		self.btn_remove_add.setIconSet(QIconSet(pix))
-		pix.load("green_right.png","PNG")
+		pix.load("%s/green_right.png" % basepath,"PNG")
 		self.btn_add_add.setIconSet(QIconSet(pix))
 		self.btn_add_remove.setIconSet(QIconSet(pix))
 

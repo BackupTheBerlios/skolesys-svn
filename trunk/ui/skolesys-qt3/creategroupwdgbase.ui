@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>373</width>
-            <height>77</height>
+            <height>200</height>
         </rect>
     </property>
     <property name="caption">
@@ -34,7 +34,7 @@
                 <cstring>textLabel1</cstring>
             </property>
             <property name="text">
-                <string>First name</string>
+                <string>Group name</string>
             </property>
         </widget>
         <widget class="QLabel" row="0" column="0">
@@ -42,26 +42,28 @@
                 <cstring>textLabel2</cstring>
             </property>
             <property name="text">
-                <string>User type</string>
+                <string>User type reference</string>
             </property>
         </widget>
-        <spacer row="2" column="1">
+        <widget class="QTextEdit" row="3" column="0" rowspan="1" colspan="2">
             <property name="name">
-                <cstring>spacer2</cstring>
+                <cstring>te_description</cstring>
             </property>
-            <property name="orientation">
-                <enum>Vertical</enum>
+            <property name="textFormat">
+                <enum>PlainText</enum>
             </property>
-            <property name="sizeType">
-                <enum>Expanding</enum>
+            <property name="autoFormatting">
+                <set>AutoNone</set>
             </property>
-            <property name="sizeHint">
-                <size>
-                    <width>20</width>
-                    <height>31</height>
-                </size>
+        </widget>
+        <widget class="QLabel" row="2" column="0">
+            <property name="name">
+                <cstring>textLabel1_2</cstring>
             </property>
-        </spacer>
+            <property name="text">
+                <string>Group description</string>
+            </property>
+        </widget>
     </grid>
 </widget>
 <tabstops>

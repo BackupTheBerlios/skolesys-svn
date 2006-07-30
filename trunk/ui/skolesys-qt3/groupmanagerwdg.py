@@ -57,7 +57,10 @@ class GroupManagerWdg(GroupManagerWdgBase):
 		self.grouplist = []
 		for group in grouplist.keys():
 			name = QString.fromUtf8(grouplist[group]['cn'])
-			self.grouplist+=[GroupListViewItem(self.m_lv_grouplist,name,'Todo!')]
+			desc = ''
+			if grouplist[group].has_key('description'):
+				desc = QString.fromUtf8(grouplist[group]['description'])
+			self.grouplist+=[GroupListViewItem(self.m_lv_grouplist,name,desc)]
 	
 	def createGroup(self):
 		launcher.execCreateGroup(self.conn)

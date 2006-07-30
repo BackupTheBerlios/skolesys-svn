@@ -15,7 +15,7 @@ from addremovegroupuserswdg import AddRemoveGroupUsersWdg
 
 def execUserManager(conn):
 	# Setup dialog
-	dlg = WidgetDialog(buttons=3,cancel_btn=False)
+	dlg = WidgetDialog(buttons=7,custombuttons_left=0,cancel_btn=False)
 	dlg.setCaption(qApp.translate("UserManagerWdg","User Manager"))
 	dlg.btnCustom1.setText(qApp.translate("UserManagerWdg","Create user..."))
 	dlg.btnCustom2.setText(qApp.translate("UserManagerWdg","Remove user(s)..."))
@@ -26,7 +26,14 @@ def execUserManager(conn):
 	dlg.setWidget(userman,True,qApp.translate("UserManagerWdg","Users"))
 	QObject.connect(dlg.btnCustom1,SIGNAL("clicked()"),userman.createUser)
 	QObject.connect(dlg.btnCustom2,SIGNAL("clicked()"),userman.removeUser)
+	
+	# Extension
+	a = QFileDialog()
+	dlg.setFoldedExtension(a)
+	
 	dlg.exec_loop()
+	
+	
 
 def execCreateUser(conn):
 	dlg = WidgetDialog()

@@ -40,5 +40,6 @@ class CreateGroupWdg(CreateGroupWdgBase):
 			return False
 		# user type
 		usertype = self.typedict[self.cmb_usertype.currentText().latin1()]
-		print self.proxy.creategroup(groupname,usertype)
+		desc = str(self.te_description.text().utf8())[:1020]
+		print self.proxy.creategroup(groupname,usertype,desc)
 		return True

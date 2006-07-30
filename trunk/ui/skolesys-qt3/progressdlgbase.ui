@@ -1,0 +1,96 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>ProgressDlgBase</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>ProgressDlgBase</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>406</width>
+            <height>229</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Form</string>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QPushButton" row="2" column="0">
+            <property name="name">
+                <cstring>btn_details</cstring>
+            </property>
+            <property name="text">
+                <string>Details</string>
+            </property>
+            <property name="toggleButton">
+                <bool>true</bool>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="2">
+            <property name="name">
+                <cstring>btn_ok</cstring>
+            </property>
+            <property name="text">
+                <string>OK</string>
+            </property>
+        </widget>
+        <widget class="QProgressBar" row="1" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>pb_progress_bar</cstring>
+            </property>
+        </widget>
+        <widget class="QTextEdit" row="3" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>te_details</cstring>
+            </property>
+        </widget>
+        <widget class="QLabel" row="0" column="0" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>lb_progress_label</cstring>
+            </property>
+            <property name="text">
+                <string>Progess Label</string>
+            </property>
+            <property name="alignment">
+                <set>AlignCenter</set>
+            </property>
+        </widget>
+        <spacer row="2" column="1">
+            <property name="name">
+                <cstring>spacer1</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Horizontal</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Expanding</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>110</width>
+                    <height>21</height>
+                </size>
+            </property>
+        </spacer>
+    </grid>
+</widget>
+<connections>
+    <connection>
+        <sender>btn_details</sender>
+        <signal>toggled(bool)</signal>
+        <receiver>te_details</receiver>
+        <slot>setShown(bool)</slot>
+    </connection>
+    <connection>
+        <sender>btn_ok</sender>
+        <signal>clicked()</signal>
+        <receiver>ProgressDlgBase</receiver>
+        <slot>accept()</slot>
+    </connection>
+</connections>
+<layoutdefaults spacing="6" margin="6"/>
+</UI>

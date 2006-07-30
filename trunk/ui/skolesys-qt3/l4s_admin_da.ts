@@ -1,5 +1,141 @@
 <!DOCTYPE TS><TS>
 <context>
+    <name>AddRemoveGroupUsersWdg</name>
+    <message>
+        <source>Alter Group Members</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alter the members of the following group(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Form1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alter group memberships</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to perform this operation?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Altering memberships...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Altering memberships of %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AddRemoveUserGroupsWdg</name>
+    <message>
+        <source>Alter Group Memberships</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alter the group membership of the following user(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Form1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alter group memberships</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to perform this operation?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Altering memberships...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Altering memberships of %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CreateGroupWdg</name>
+    <message>
+        <source>Create Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation type="unfinished">Lærer</translation>
+    </message>
+    <message>
+        <source>Student</source>
+        <translation type="unfinished">Elev</translation>
+    </message>
+    <message>
+        <source>Parent</source>
+        <translation type="unfinished">Forældre</translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation type="unfinished">Extern</translation>
+    </message>
+    <message>
+        <source>Create group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The group &quot;%1&quot; already exists on the system - choose another.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CreateGroupWdgBase</name>
+    <message>
+        <source>Form1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First name</source>
+        <translation type="unfinished">Fornavn</translation>
+    </message>
+    <message>
+        <source>User type</source>
+        <translation type="unfinished">Brugertype</translation>
+    </message>
+</context>
+<context>
     <name>CreateUserWdg</name>
     <message>
         <source>User information</source>
@@ -45,6 +181,10 @@
         <source>Create User</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Group information</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CreateUserWdgBase</name>
@@ -85,6 +225,72 @@
     </message>
 </context>
 <context>
+    <name>GroupManagerWdg</name>
+    <message>
+        <source>Group Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create group...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove group(s)...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished">Navn</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished">Type</translation>
+    </message>
+    <message>
+        <source>All</source>
+        <translation type="unfinished">Alle</translation>
+    </message>
+    <message>
+        <source>Teachers</source>
+        <translation type="unfinished">Lærerer</translation>
+    </message>
+    <message>
+        <source>Students</source>
+        <translation type="unfinished">Elever</translation>
+    </message>
+    <message>
+        <source>Parents</source>
+        <translation type="unfinished">Forældre</translation>
+    </message>
+    <message>
+        <source>Others</source>
+        <translation type="unfinished">Externe</translation>
+    </message>
+    <message>
+        <source>Edit user memberships...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>GroupManagerWdgBase</name>
+    <message>
+        <source>Form2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group type filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>LaunchDlgBase</name>
     <message>
         <source>Form</source>
@@ -94,19 +300,53 @@
         <source>User Manager</source>
         <translation>Brugerhåndtering</translation>
     </message>
+    <message>
+        <source>Group Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RemoveGroupWdg</name>
+    <message>
+        <source>Remove Group(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove group(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to perform this remove operation?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RemoveGroupWdgBase</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Backup the group home directories</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove the group home directories</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RemoveUserWdg</name>
     <message>
-        <source>Remove User [%1]</source>
+        <source>Remove User(s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Remove user</source>
+        <source>Remove user(s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to remove &quot;%1&quot;?</source>
+        <source>Are you sure you want to perform this remove operation?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -117,11 +357,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Backup the user&apos;s home directory</source>
+        <source>Backup the user home directories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Remove the users home directory</source>
+        <source>Remove the user home directories</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -142,10 +382,6 @@
     <message>
         <source>Create user...</source>
         <translation>Opret bruger...</translation>
-    </message>
-    <message>
-        <source>Remove user...</source>
-        <translation>Fjern bruger...</translation>
     </message>
     <message>
         <source>Users</source>
@@ -175,6 +411,18 @@
         <source>User Manager</source>
         <translation>Brugerhåndtering</translation>
     </message>
+    <message>
+        <source>Edit group memberships...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove user(s)...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UserManagerWdgBase</name>
@@ -185,6 +433,25 @@
     <message>
         <source>User type filter</source>
         <translation>Brugertypefilter</translation>
+    </message>
+</context>
+<context>
+    <name>UserTypes</name>
+    <message>
+        <source>Student</source>
+        <translation>Elev</translation>
+    </message>
+    <message>
+        <source>Teacher</source>
+        <translation>Lærer</translation>
+    </message>
+    <message>
+        <source>Parent</source>
+        <translation>Forældre</translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation>Extern</translation>
     </message>
 </context>
 <context>
