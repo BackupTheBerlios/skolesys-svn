@@ -3,6 +3,7 @@ from qt import *
 from addremovewdgbase import AddRemoveWdgBase
 from usermanagerwdg import *
 from progressdlg import ProgressDlg
+from settings import glob_settings
 
 class AddRemoveGroupUsersWdg(AddRemoveWdgBase):
 	"""
@@ -62,7 +63,11 @@ class AddRemoveGroupUsersWdg(AddRemoveWdgBase):
 			
 		progdlg = ProgressDlg(self.tr("Altering memberships..."),self,"progress",True)
 		progdlg.setTotalSteps(len(self.groupnames)*(self.lb_add.count()+self.lb_remove.count())-1)
+
+		glob_settings.widgetGeometry('ssys_admin/AddRemoveGroupUsers/ProgressDlg',progdlg)
 		progdlg.show()
+		show_details = glob_settings.intEntry('ssys_admin/AddRemoveGroupUsers/ProgressDlg/show_details',0)[0]
+		progdlg.showDetails(show_details)
 		progress = 0
 		for groupname in self.groupnames:
 			# Add groups
@@ -71,7 +76,7 @@ class AddRemoveGroupUsersWdg(AddRemoveWdgBase):
 				adduid = str(self.lb_add.text(idx))
 				details = self.tr('Adding user "%1" to the group "%2" ... ').arg(adduid).arg(QString.fromUtf8(groupname))
 				res = self.soapproxy.groupadd(adduid,groupname)
-				if res==1:			
+				if res==1:
 					details += self.tr('USER ADDED')
 				if res==-3:
 					details += self.tr('USER ALREADY MEMBER')
@@ -97,4 +102,9 @@ class AddRemoveGroupUsersWdg(AddRemoveWdgBase):
 		progdlg.setLabelText(self.tr("Done."))
 		progdlg.setProgress(progdlg.steps)
 		progdlg.exec_loop()
+		glob_settings.setWidgetGeometry('ssys_admin/AddRemoveGroupUsers/ProgressDlg',progdlg)
+		show_details = 0
+		if progdlg.btn_details.isOn():
+			show_details = 1
+		glob_settings.setIntEntry('ssys_admin/AddRemoveGroupUsers/ProgressDlg/show_details',show_details)
 		return True

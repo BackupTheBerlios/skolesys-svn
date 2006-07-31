@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-3.8.dtd">
 <!-- Project file for project L4S_Admin -->
-<!-- Saved: 2006-07-30, 21:11:05 -->
+<!-- Saved: 2006-07-31, 01:16:04 -->
 <!-- Copyright (C) 2006 Jakob Simon-Gaarde, jakob@simon-gaarde.dk -->
 <Project version="3.8">
   <ProgLanguage mixed="0">Python</ProgLanguage>
@@ -77,6 +77,12 @@
     <Source>
       <Name>lang.py</Name>
     </Source>
+    <Source>
+      <Name>progressdlgbase.py</Name>
+    </Source>
+    <Source>
+      <Name>progressdlg.py</Name>
+    </Source>
   </Sources>
   <Forms>
     <Form>
@@ -101,7 +107,7 @@
       <Name>removegroupwdgbase.ui</Name>
     </Form>
     <Form>
-      <Name>progresswdgbase.ui</Name>
+      <Name>progressdlgbase.ui</Name>
     </Form>
   </Forms>
   <Translations>
@@ -121,9 +127,9 @@
   </Vcs>
   <FiletypeAssociations>
     <FiletypeAssociation pattern="*.ui.h" type="FORMS" />
-    <FiletypeAssociation pattern="*.ui" type="FORMS" />
-    <FiletypeAssociation pattern="*.idl" type="INTERFACES" />
-    <FiletypeAssociation pattern="*.py" type="SOURCES" />
     <FiletypeAssociation pattern="*.ptl" type="SOURCES" />
+    <FiletypeAssociation pattern="*.idl" type="INTERFACES" />
+    <FiletypeAssociation pattern="*.ui" type="FORMS" />
+    <FiletypeAssociation pattern="*.py" type="SOURCES" />
   </FiletypeAssociations>
 </Project>

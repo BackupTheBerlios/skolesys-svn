@@ -5,6 +5,7 @@ from qt import *
 from launchdlg import LaunchDlg
 from connectionmanager import ConnectionManager
 from lin4schools.soap.client import L4S_Client
+from settings import glob_settings
 
 a = QApplication(sys.argv)
 
@@ -20,5 +21,7 @@ conn = ConnectionManager('https://mainserver',8443)
 w = LaunchDlg(conn)
 a.setMainWidget(w)
 w.show()
+glob_settings.widgetGeometry('ssys_admin/MainWindow',w)
 a.exec_loop()
-
+glob_settings.setWidgetGeometry('ssys_admin/MainWindow',w)
+glob_settings.saveSettings()

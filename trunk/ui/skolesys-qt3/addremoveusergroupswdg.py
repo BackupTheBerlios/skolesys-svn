@@ -2,6 +2,9 @@ import sys
 from qt import *
 from addremovewdgbase import AddRemoveWdgBase
 from groupmanagerwdg import *
+from progressdlg import ProgressDlg
+from settings import glob_settings
+
 
 class AddRemoveUserGroupsWdg(AddRemoveWdgBase):
 	"""
@@ -60,16 +63,28 @@ class AddRemoveUserGroupsWdg(AddRemoveWdgBase):
 		if answer==QMessageBox.No:
 			return False
 			
-		progdlg = QProgressDialog(self.tr("Altering memberships..."),self.tr("Cancel"),\
-			len(self.uids)*(self.lb_add.count()+self.lb_remove.count()),self,"progress",True)
+		progdlg = ProgressDlg(self.tr("Altering memberships..."),self,"progress",True)
+		progdlg.setTotalSteps(len(self.uids)*(self.lb_add.count()+self.lb_remove.count())-1)
+		
+		glob_settings.widgetGeometry('ssys_admin/AddRemoveUserGroups/ProgressDlg',progdlg)
 		progdlg.show()
+		show_details = glob_settings.intEntry('ssys_admin/AddRemoveUserGroups/ProgressDlg/show_details',0)[0]
+		progdlg.showDetails(show_details)
+
 		progress = 0
 		for uid in self.uids:
 			# Add groups
 			progdlg.setLabelText(self.tr("Altering memberships of %1").arg(uid))
-			for idx in xrange(self.lb_add.count()):
+			for idx in xrange(self.lb_add.count()):	
 				addgroup = str(self.lb_add.text(idx).utf8())
-				self.soapproxy.groupadd(uid,addgroup)
+				details = self.tr('Adding user "%1" to the group "%2" ... ').arg(uid).arg(QString.fromUtf8(addgroup))			
+				res = self.soapproxy.groupadd(uid,addgroup)
+				if res==1:
+					details += self.tr('USER ADDED')
+				if res==-3:
+					details += self.tr('USER ALREADY MEMBER')
+				progdlg.addDetails(details)
+				
 				progdlg.setProgress(progress)
 				progress+=1
 				qApp.processEvents()
@@ -77,8 +92,23 @@ class AddRemoveUserGroupsWdg(AddRemoveWdgBase):
 			# Remove groups
 			for idx in xrange(self.lb_remove.count()):
 				rmgroup = str(self.lb_remove.text(idx).utf8())
-				self.soapproxy.groupdel(uid,rmgroup)
+				details = self.tr('Removing user "%1" from the group "%2" ... ').arg(uid).arg(QString.fromUtf8(rmgroup))			
+				res = self.soapproxy.groupdel(uid,rmgroup)
+				if res==1:			
+					details += self.tr('USER REMOVED')
+				if res==-3:
+					details += self.tr('USER NOT MEMBER')	
+				progdlg.addDetails(details)			
 				progdlg.setProgress(progress)
 				progress+=1
 				qApp.processEvents()
+
+		progdlg.setLabelText(self.tr("Done."))
+		progdlg.setProgress(progdlg.steps)
+		progdlg.exec_loop()
+		glob_settings.setWidgetGeometry('ssys_admin/AddRemoveUserGroups/ProgressDlg',progdlg)
+		show_details = 0
+		if progdlg.btn_details.isOn():
+			show_details = 1
+		glob_settings.setIntEntry('ssys_admin/AddRemoveUserGroups/ProgressDlg/show_details',show_details)		
 		return True

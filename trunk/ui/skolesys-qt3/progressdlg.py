@@ -29,6 +29,15 @@ class ProgressDlg(ProgressDlgBase):
 	def addDetails(self,txt):
 		self.te_details.append(txt)
 		
+	def showDetails(self,show):
+		if show:
+			self.te_details.setShown(True)
+			self.btn_details.setState(QButton.On)
+		else:
+			self.te_details.setShown(False)
+			self.btn_details.setState(QButton.Off)
+		
+		
 if __name__ == "__main__":
     a = QApplication(sys.argv)
     QObject.connect(a,SIGNAL("lastWindowClosed()"),a,SLOT("quit()"))
