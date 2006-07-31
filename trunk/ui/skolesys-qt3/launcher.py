@@ -79,9 +79,9 @@ def execCreateGroup(conn):
 	dlg.setCaption(qApp.translate("CreateGroupWdg","Create Group"))
 	creategroup = CreateGroupWdg(conn)
 	dlg.setWidget(creategroup,True,qApp.translate("CreateUserWdg","Group information"))
-	glob_settings.widgetGeometry('ssys_admin/GroupManager',dlg)
+	glob_settings.widgetGeometry('ssys_admin/CreateGroup',dlg)
 	dlg.exec_loop()
-	glob_settings.setWidgetGeometry('ssys_admin/GroupManager',dlg)
+	glob_settings.setWidgetGeometry('ssys_admin/CreateGroup',dlg)
 
 def execRemoveGroup(conn,groupnames):
 	dlg = WidgetDialog()
