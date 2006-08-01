@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/refsvindinge.dk/jakob@refsvindinge.dk/Projects/l4s_admin/usermanagerwdgbase.ui'
+# Form implementation generated from reading ui file 'usermanagerwdgbase.ui'
 #
-# Created: lør jul 29 12:39:53 2006
-#      by: The PyQt User Interface Compiler (pyuic) 3.15.1
+# Created: Tue Aug 1 06:51:31 2006
+#      by: The PyQt User Interface Compiler (pyuic) 3.13
 #
 # WARNING! All changes made in this file will be lost!
 
 
-import sys
 from qt import *
 
 
@@ -63,11 +62,3 @@ class UserManagerWdgBase(QWidget):
 
     def __tr(self,s,c = None):
         return qApp.translate("UserManagerWdgBase",s,c)
-
-if __name__ == "__main__":
-    a = QApplication(sys.argv)
-    QObject.connect(a,SIGNAL("lastWindowClosed()"),a,SLOT("quit()"))
-    w = UserManagerWdgBase()
-    a.setMainWidget(w)
-    w.show()
-    a.exec_loop()
