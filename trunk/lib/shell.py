@@ -115,7 +115,7 @@ if __name__=='__main__':
 			options.primarygroup = raw_input("Input the user's primary group (type \"?\" to see view all groups): ")
 			if options.primarygroup.strip() == '?':
 				gm = GroupManager()
-				print gm.list_groups()
+				print gm.list_groups(None)
 				options.primarygroup = ''
 		if not options.password:
 			options.password = getpass("User's password: ")
