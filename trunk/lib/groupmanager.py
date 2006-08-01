@@ -35,7 +35,7 @@ class GroupManager (LDAPUtil):
 				conf.get('LDAPSERVER','basedn'))
 		
 		res = self.l.search(path,ldap.SCOPE_SUBTREE,'(& (cn=*) (objectclass=posixgroup))',\
-			['cn','description'])
+			['cn','description','gidNumber'])
 
 		group_dict = {}
 		while 1:
