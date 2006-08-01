@@ -10,6 +10,7 @@ from ldaptools import LDAPUtil
 from ldiftools import LDIFImporter
 from optparse import OptionParser
 from mkpasswd import mkpasswd
+from groupmanager import GroupManager
 
 # User types
 TEACHER = 1
@@ -327,6 +328,8 @@ if __name__=='__main__':
 		                  help="the user's family name/last name", metavar="FAMILYNAME")
 		parser.add_option("-t", "--userType", dest="usertype",default=None,
 		                  help="the user's account type (teacher,student,parent or other)", metavar="USERTYPE")
+		parser.add_option("-G", "--primaryGroup", dest="primarygroup",default=None,
+		                  help="the user's primary group", metavar="PRIMARYGROUP")
 		parser.add_option("-p", "--password", dest="password",default=None,
 		                  help="users password - avoid using this we dont like passwords in clear text!",
 		                  metavar="PASSWORD")
@@ -364,6 +367,12 @@ if __name__=='__main__':
 		else:
 			print "Invalid usertype"
 			exit(0)
+		while not options.primarygroup:
+			options.primarygroup = raw_input("Input the user's primary group (type \"?\" to see view all groups): ")
+			if options.primarygroup.strip() == '?':
+				gm = GroupManager()
+				gm.listgroups()
+				options.primarygroup = ''
 		if not options.password:
 			options.password = getpass("User's password: ")
 			again = getpass("Cornfirm password: ")
