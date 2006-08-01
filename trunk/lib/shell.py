@@ -111,8 +111,10 @@ if __name__=='__main__':
 		else:
 			print "Invalid usertype"
 			exit(0)
+		
+		gl = gm.list_groups(None)
 		while not options.primarygroup:
-			options.primarygroup = raw_input("Input the user's primary group (type \"?\" to see view all groups): ")
+			options.primarygroup = raw_input("Input the user's primary group (type \"?\" to view all groups): ")
 			if options.primarygroup.strip() == '?':
 				gm = GroupManager()
 				gl = gm.list_groups(None)
@@ -122,6 +124,12 @@ if __name__=='__main__':
 						desc = gl[group]['description']
 					print "%-7s %-24s %-40s" % (gl[group]['gidNumber'],group,desc)
 				options.primarygroup = ''
+		if gl.has_key(options.primarygroup):
+			options.primarygroup = gl[options.primarygroup]['gidNumber']
+		else:
+			print "Group does not exist"
+			exit(0)
+			
 		if not options.password:
 			options.password = getpass("User's password: ")
 			again = getpass("Cornfirm password: ")
