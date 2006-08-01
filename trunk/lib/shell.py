@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from sys import argv,exit
 import re,grp,os,ldap
 from getpass import getpass,getuser
