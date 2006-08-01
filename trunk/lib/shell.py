@@ -112,11 +112,11 @@ if __name__=='__main__':
 			print "Invalid usertype"
 			exit(0)
 		
+		gm = GroupManager()
 		gl = gm.list_groups(None)
 		while not options.primarygroup:
 			options.primarygroup = raw_input("Input the user's primary group (type \"?\" to view all groups): ")
 			if options.primarygroup.strip() == '?':
-				gm = GroupManager()
 				gl = gm.list_groups(None)
 				for group in gl.keys():
 					desc = ''
