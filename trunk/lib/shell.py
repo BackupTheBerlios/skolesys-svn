@@ -138,7 +138,7 @@ if __name__=='__main__':
 				exit(0)
 		
 		try:
-			useradd_res = um.createuser(username,options.givenname,options.familyname,options.password,options.usertype,option.primarygroup)
+			useradd_res = um.createuser(username,options.givenname,options.familyname,options.password,options.usertype,options.primarygroup)
 		except Exception, e:
 			print "An error occured while writing to the user LDAP database"
 			print e
