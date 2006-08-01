@@ -117,7 +117,10 @@ if __name__=='__main__':
 				gm = GroupManager()
 				gl = gm.list_groups(None)
 				for group in gl.keys():
-					print "%-7s %-24s %-40s" % (gl[group]['gidNumber'],group,gl[group]['description'])
+					desc = ''
+					if gl[group].has_key('description'):
+						desc = gl[group]['description']
+					print "%-7s %-24s %-40s" % (gl[group]['gidNumber'],group,desc)
 				options.primarygroup = ''
 		if not options.password:
 			options.password = getpass("User's password: ")
