@@ -64,7 +64,7 @@ class UserManager (LDAPUtil):
 		return True
 
 	
-	def createuser(self,uid,givenname,familyname,passwd,usertype):
+	def createuser(self,uid,givenname,familyname,passwd,usertype,primarygroup=1000):
 		"""
 		Add a user to the schools authentication directory service.
 		The usertype must be one of the constants TEACHER,STUDENT,PARENT or OTHER
@@ -94,7 +94,7 @@ class UserManager (LDAPUtil):
 		user_info = {'uid':uid,
 			'givenname':'%s' % givenname,
 			'cn':'%s %s' % (givenname,familyname),
-			'gidNumber':'1000',
+			'gidNumber': primarygroup,
 			'uidnumber': str(self.max(conf.get('LDAPSERVER','basedn'),
 				'objectclass=posixaccount','uidNumber',
 				int(conf.get('DOMAIN','uid_start')))+1),
