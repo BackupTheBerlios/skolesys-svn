@@ -3,9 +3,8 @@ from sys import argv,exit
 import re,grp,os,ldap
 from getpass import getpass,getuser
 from optparse import OptionParser
-
-from usermanager import UserManager
-from groupmanager import GroupManager
+from conf import conf
+from usermanager import UserManager,GroupManager
 
 # User types
 TEACHER = 1
