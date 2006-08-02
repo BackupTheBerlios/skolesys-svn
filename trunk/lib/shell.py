@@ -1,6 +1,14 @@
 #!/usr/bin/python
-from sys import argv,exit
+
 import re,grp,os,ldap
+from sys import argv,exit
+
+# Check root privilegdes
+if not os.getuid()==0:
+	print "This command needs root priviledges"
+	exit(0)
+	
+	
 from getpass import getpass,getuser
 from optparse import OptionParser
 from conf import conf
@@ -46,8 +54,9 @@ if __name__=='__main__':
 		'listgroups': 'Show a list of system groups',
 		'listmembers': 'Show members of a certain group'}
 
+	shell_cmd_name = os.path.split(argv[0])[-1:][0]
 	
-	usage = "usage: l4sadmin [command] [options] arg1, arg2"
+	usage = "usage: %s [command] [options] arg1, arg2" % shell_cmd_name
 	if len(argv)<2 or not commands.has_key(argv[1]):
 		print usage
 		print 
@@ -64,7 +73,7 @@ if __name__=='__main__':
 		if os.getuid()!=0:
 			print "You must be root to add users"
 			exit(0)
-		parser.set_usage("usage: l4sadmin %s [options] username" % cmd)
+		parser.set_usage("usage: %s %s [options] username" % (shell_cmd_name,cmd))
 		parser.add_option("-g", "--givenName", dest="givenname",default=None,
 		                  help="the user's given name/first name", metavar="GIVENNAME")
 		parser.add_option("-f", "--familyName", dest="familyname",default=None,
@@ -167,7 +176,7 @@ if __name__=='__main__':
 			print "You must be root to delete users"
 			exit(0)
 		
-		parser.set_usage("usage: l4sadmin %s [options] username" % cmd)
+		parser.set_usage("usage: %s %s [options] username" % (shell_cmd_name,cmd))
 		parser.add_option("-r", "--remove",
 		                  action="store_true", dest="remove", default=False,
 		                  help="remove the user's homefolder")
@@ -213,7 +222,7 @@ if __name__=='__main__':
 			print "You must be root to add users to groups"
 			exit(0)
 		
-		parser.set_usage("usage: l4sadmin %s username groupname" % cmd)
+		parser.set_usage("usage: %s %s username groupname" % (shell_cmd_name,cmd))
 		(options, args) = parser.parse_args()
 		if len(args)<3:
 			print "Missing username or groupname for groupadd operation"
@@ -254,7 +263,7 @@ if __name__=='__main__':
 			print "You must be root to remove users from groups"
 			exit(0)
 		
-		parser.set_usage("usage: l4sadmin %s username groupname" % cmd)
+		parser.set_usage("usage: %s %s username groupname" % (shell_cmd_name,cmd))
 		(options, args) = parser.parse_args()
 		if len(args)<3:
 			print "Missing username or groupname for groupadd operation"
@@ -295,7 +304,7 @@ if __name__=='__main__':
 			print "You must be root to add users"
 			exit(0)
 		
-		parser.set_usage("usage: l4sadmin %s [options]" % cmd)
+		parser.set_usage("usage: %s %s [options]" % (shell_cmd_name,cmd))
 		parser.add_option("-t", "--userType", dest="usertype",default=None,
 		                  help="only list users of a certain type (teacher,student,parent or other)", metavar="USERTYPE")
 		
@@ -318,7 +327,7 @@ if __name__=='__main__':
 			print k
 
 	if cmd == "listusergroups":
-		parser.set_usage("usage: l4sadmin %s username" % cmd)
+		parser.set_usage("usage: %s %s username" % (shell_cmd_name,cmd))
 
 		(options, args) = parser.parse_args()
 		if len(args)<2:
@@ -343,7 +352,7 @@ if __name__=='__main__':
 			print "You must be root to add groups"
 			exit(0)
 			
-		parser.set_usage("usage: l4sadmin %s [options] groupname" % cmd)
+		parser.set_usage("usage: %s %s [options] groupname" % (shell_cmd_name,cmd))
 		parser.add_option("-r", "--groupRelation", dest="grouprelation",default=None,
 			help="the group's relationship (teacher,student,parent or other)", metavar="GROUPRELATION")
 		parser.add_option("-d", "--description", dest="description",default=None,
@@ -396,7 +405,7 @@ if __name__=='__main__':
 			print "You must be root to remove groups"
 			exit(0)
 			
-		parser.set_usage("usage: l4sadmin %s [options] groupname" % cmd)
+		parser.set_usage("usage: %s %s [options] groupname" % (shell_cmd_name,cmd))
 		parser.add_option("-r", "--remove",
 		                  action="store_true", dest="remove", default=False,
 		                  help="remove the group home folder")
@@ -436,7 +445,7 @@ if __name__=='__main__':
 			print "You must be root to add users"
 			exit(0)
 		
-		parser.set_usage("usage: l4sadmin %s [options]" % cmd)
+		parser.set_usage("usage: %s %s [options]" % (shell_cmd_name,cmd))
 		parser.add_option("-t", "--userType", dest="usertype",default=None,
 		                  help="only list groups of a certain type (teacher,student,parent or other)", metavar="GROUPTYPE")
 		
@@ -460,7 +469,7 @@ if __name__=='__main__':
 			print k
 
 	if cmd == "listmembers":
-		parser.set_usage("usage: l4sadmin %s groupname" % cmd)
+		parser.set_usage("usage: %s %s groupname" % (shell_cmd_name,cmd))
 
 		(options, args) = parser.parse_args()
 		if len(args)<2:
