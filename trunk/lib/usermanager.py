@@ -11,6 +11,9 @@ STUDENT = 2
 PARENT = 3
 OTHER = 4
 
+######################################################################################
+# GroupManager
+
 class GroupManager (LDAPUtil):
 	def __init__(self):
 		global conf
@@ -179,7 +182,20 @@ class GroupManager (LDAPUtil):
 
 
 
+####################################################################################
+# UserManager
+
 class UserManager (LDAPUtil):
+	"""
+	UserManager handles all operations related to user management. The class is also
+	responsible for creating and user home directories and creating links in user home
+	directories to connected groups.
+	This includes:
+		* Creating/modifying users
+		* Removing users
+		* Listing users
+		* Connecting users and groups
+	"""
 	def __init__(self):
 		global conf
 		LDAPUtil.__init__(self,conf.get('LDAPSERVER','host'))
@@ -232,7 +248,7 @@ class UserManager (LDAPUtil):
 		return True
 
 	
-	def createuser(self,uid,givenname,familyname,passwd,usertype,primarygroup='1000'):
+	def createuser(self,uid,givenname,familyname,passwd,usertype,primarygid=1000):
 		"""
 		Add a user to the schools authentication directory service.
 		The usertype must be one of the constants TEACHER,STUDENT,PARENT or OTHER
@@ -259,10 +275,20 @@ class UserManager (LDAPUtil):
 		   conf.get('LDAPSERVER','logins_ou'),\
 		   conf.get('LDAPSERVER',usertype_ou),\
 		   conf.get('LDAPSERVER','basedn'))
+		
+		# Check the group for existance
+		gm = GroupManager()
+		gl = gm.list_groups(None)
+		glgid = {}
+		for groupname in gl.keys():
+			glgid[gl[groupname]['gidNumber']]=groupname
+		if not glgid.has_key(primarygid):
+			return -4
+		
 		user_info = {'uid':uid,
 			'givenname':'%s' % givenname,
 			'cn':'%s %s' % (givenname,familyname),
-			'gidNumber': primarygroup,
+			'gidNumber': str(primarygid),
 			'uidnumber': str(self.max(conf.get('LDAPSERVER','basedn'),
 				'objectclass=posixaccount','uidNumber',
 				int(conf.get('DOMAIN','uid_start')))+1),

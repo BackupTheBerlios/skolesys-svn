@@ -5,7 +5,6 @@ import md5
 import pickle
 import lin4schools
 import lin4schools.lib.usermanager as userman
-import lin4schools.lib.groupmanager as grpman
 from lin4schools.lib.conf import conf
 from M2Crypto import SSL
 from p2 import p2_decrypt
@@ -158,7 +157,7 @@ def list_groups(session_id,usertype):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	usertype = pload(usertype)
-	gm = grpman.GroupManager()
+	gm = userman.GroupManager()
 	return pdump(gm.list_groups(usertype))
 
 def list_members(session_id,groupname):
@@ -168,7 +167,7 @@ def list_members(session_id,groupname):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	groupname = pload(groupname)
-	gm = grpman.GroupManager()
+	gm = userman.GroupManager()
 	return pdump(gm.list_members(groupname))
 
 def group_exists(session_id,groupname):
@@ -179,7 +178,7 @@ def group_exists(session_id,groupname):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	groupname=pload(groupname)
-	gm = grpman.GroupManager()
+	gm = userman.GroupManager()
 	return pdump(gm.group_exists(groupname))
 
 def creategroup(session_id,groupname,usertype,description):
@@ -189,7 +188,7 @@ def creategroup(session_id,groupname,usertype,description):
 	usertype=pload(usertype)
 	description=pload(description)
 	
-	gm = grpman.GroupManager()
+	gm = userman.GroupManager()
 	return pdump(gm.creategroup(groupname,usertype,description))
 
 def removegroup(session_id,groupname,backup_home,remove_home):
@@ -199,7 +198,7 @@ def removegroup(session_id,groupname,backup_home,remove_home):
 	backup_home=pload(backup_home)
 	remove_home=pload(remove_home)
 	
-	gm = grpman.GroupManager()
+	gm = userman.GroupManager()
 	return pdump(gm.removegroup(groupname,backup_home,remove_home))
 
 

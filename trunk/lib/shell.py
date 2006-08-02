@@ -124,6 +124,7 @@ if __name__=='__main__':
 					print "%-7s %-24s %-40s" % (gl[group]['gidNumber'],group,desc)
 				options.primarygroup = ''
 		if gl.has_key(options.primarygroup):
+			primarygroupname = options.primarygroup
 			options.primarygroup = gl[options.primarygroup]['gidNumber']
 		else:
 			print "Group does not exist"
@@ -139,8 +140,8 @@ if __name__=='__main__':
 		try:
 			useradd_res = um.createuser(username,options.givenname,options.familyname,options.password,options.usertype,options.primarygroup)
 		except Exception, e:
-			print "An error occured while writing to the user LDAP database"
 			print e
+			print "An error occured while writing to the user LDAP database"
 			exit(0)
 		
 		if useradd_res==-1:
@@ -155,6 +156,10 @@ if __name__=='__main__':
 			print "A problem occured while creating the user's home folder"
 			exit(0)
 		
+		if useradd_res==-4:
+			print "The group \"%s\" does not exist" % primarygroupname
+			exit(0)
+			
 		print "User created..."
 
 	if cmd == "removeuser":
