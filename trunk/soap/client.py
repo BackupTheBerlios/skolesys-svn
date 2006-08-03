@@ -70,9 +70,9 @@ class L4S_Client:
 		return pload(self.server.user_exists(pdump(self.session_id),pdump(uid)))
 	
 	
-	def createuser(self,uid,givenname,familyname,passwd,usertype):
+	def createuser(self,uid,givenname,familyname,passwd,usertype,primarygroup):
 		return pload(self.server.createuser(pdump(self.session_id),pdump(uid),pdump(givenname),\
-			pdump(familyname),pdump(passwd),pdump(usertype)))
+			pdump(familyname),pdump(passwd),pdump(usertype),pdump(primarygroup)))
 
 	def removeuser(self,uid,backup_home=False,remove_home=False):
 		return pload(self.server.removeuser(pdump(self.session_id),pdump(uid),pdump(backup_home),pdump(remove_home)))

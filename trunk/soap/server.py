@@ -112,7 +112,7 @@ def user_exists(session_id,uid):
 	um = userman.UserManager()
 	return pdump(um.user_exists(uid))
 
-def createuser(session_id,uid,givenname,familyname,passwd,usertype):
+def createuser(session_id,uid,givenname,familyname,passwd,usertype,primarygroup):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	uid=pload(uid)
@@ -120,9 +120,10 @@ def createuser(session_id,uid,givenname,familyname,passwd,usertype):
 	familyname=pload(familyname)
 	passwd=pload(passwd)
 	usertype=pload(usertype)
+	primarygroup=pload(primarygroup)
 	
 	um = userman.UserManager()
-	return pdump(um.createuser(uid,givenname,familyname,passwd,usertype))
+	return pdump(um.createuser(uid,givenname,familyname,passwd,usertype,primarygroup))
 
 def removeuser(session_id,uid,backup_home,remove_home):
 	if not session_valid(pload(session_id)):
