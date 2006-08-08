@@ -19,6 +19,8 @@ if len(sys.argv)>1:
 QObject.connect(a,SIGNAL("lastWindowClosed()"),a,SLOT("quit()"))
 conn = ConnectionManager('https://mainserver',8443)
 w = LaunchDlg(conn)
+pix = QPixmap('app_logo.png')
+w.setIcon(pix)
 a.setMainWidget(w)
 w.show()
 glob_settings.widgetGeometry('ssys_admin/MainWindow',w)

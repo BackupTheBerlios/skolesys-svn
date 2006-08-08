@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>373</width>
-            <height>172</height>
+            <width>371</width>
+            <height>226</height>
         </rect>
     </property>
     <property name="caption">
@@ -50,7 +50,15 @@
                 <cstring>ed_lastname</cstring>
             </property>
         </widget>
-        <spacer row="6" column="1">
+        <widget class="QLabel" row="2" column="0">
+            <property name="name">
+                <cstring>textLabel1_2</cstring>
+            </property>
+            <property name="text">
+                <string>Last name</string>
+            </property>
+        </widget>
+        <spacer row="8" column="1">
             <property name="name">
                 <cstring>spacer1</cstring>
             </property>
@@ -63,11 +71,11 @@
             <property name="sizeHint">
                 <size>
                     <width>20</width>
-                    <height>16</height>
+                    <height>20</height>
                 </size>
             </property>
         </spacer>
-        <widget class="QLabel" row="4" column="2">
+        <widget class="QLabel" row="6" column="2">
             <property name="name">
                 <cstring>lbl_domain_name</cstring>
             </property>
@@ -75,15 +83,23 @@
                 <string></string>
             </property>
         </widget>
-        <widget class="QLabel" row="2" column="0">
+        <widget class="QLineEdit" row="7" column="1" rowspan="1" colspan="2">
             <property name="name">
-                <cstring>textLabel1_2</cstring>
+                <cstring>ed_passwd</cstring>
             </property>
-            <property name="text">
-                <string>Last name</string>
+            <property name="echoMode">
+                <enum>Password</enum>
             </property>
         </widget>
-        <widget class="Line" row="3" column="0" rowspan="1" colspan="3">
+        <widget class="QLabel" row="6" column="0">
+            <property name="name">
+                <cstring>textLabel3</cstring>
+            </property>
+            <property name="text">
+                <string>Login</string>
+            </property>
+        </widget>
+        <widget class="Line" row="5" column="0" rowspan="1" colspan="3">
             <property name="name">
                 <cstring>line1</cstring>
             </property>
@@ -97,33 +113,46 @@
                 <enum>Horizontal</enum>
             </property>
         </widget>
-        <widget class="QLineEdit" row="5" column="1" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>ed_passwd</cstring>
-            </property>
-            <property name="echoMode">
-                <enum>Password</enum>
-            </property>
-        </widget>
-        <widget class="QLabel" row="4" column="0">
-            <property name="name">
-                <cstring>textLabel3</cstring>
-            </property>
-            <property name="text">
-                <string>Login</string>
-            </property>
-        </widget>
-        <widget class="QLineEdit" row="4" column="1">
+        <widget class="QLineEdit" row="6" column="1">
             <property name="name">
                 <cstring>ed_login</cstring>
             </property>
         </widget>
-        <widget class="QLabel" row="5" column="0">
+        <widget class="QLabel" row="7" column="0">
             <property name="name">
                 <cstring>textLabel1_3</cstring>
             </property>
             <property name="text">
                 <string>Password</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" row="3" column="1" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>cmb_primarygroup</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>3</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+        </widget>
+        <widget class="QLabel" row="3" column="0">
+            <property name="name">
+                <cstring>textLabel1_4</cstring>
+            </property>
+            <property name="text">
+                <string>Primary group</string>
+            </property>
+        </widget>
+        <widget class="QCheckBox" row="4" column="1" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>cb_allgroups</cstring>
+            </property>
+            <property name="text">
+                <string>Show all groups</string>
             </property>
         </widget>
     </grid>
