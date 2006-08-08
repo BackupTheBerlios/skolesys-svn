@@ -6,6 +6,7 @@ from launchdlg import LaunchDlg
 from connectionmanager import ConnectionManager
 from lin4schools.soap.client import L4S_Client
 from settings import glob_settings
+from imageloader import load_pixmap
 
 a = QApplication(sys.argv)
 
@@ -19,8 +20,7 @@ if len(sys.argv)>1:
 QObject.connect(a,SIGNAL("lastWindowClosed()"),a,SLOT("quit()"))
 conn = ConnectionManager('https://mainserver',8443)
 w = LaunchDlg(conn)
-pix = QPixmap('app_logo.png')
-w.setIcon(pix)
+w.setIcon(load_pixmap('app_logo.png'))
 a.setMainWidget(w)
 w.show()
 glob_settings.widgetGeometry('ssys_admin/MainWindow',w)
