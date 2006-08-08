@@ -11,14 +11,13 @@
 import sys
 from qt import *
 import inspect
-import os.path
+from imageloader import load_pixmap
 
 
 class AddRemoveWdgBase(QWidget):
 	def __init__(self,parent = None,name = None,fl = 0):
 		QWidget.__init__(self,parent,name,fl)
 
-		basepath = os.path.split(__file__)[0]
 		if not name:
 			self.setName("AddRemoveWdgBase")
 
@@ -65,11 +64,10 @@ class AddRemoveWdgBase(QWidget):
 
 		self.languageChange()
 
-		pix = QPixmap()
-		pix.load("%s/green_left.png" % basepath,"PNG")
+		pix = load_pixmap('green_left.png')
 		self.btn_remove_remove.setIconSet(QIconSet(pix))
 		self.btn_remove_add.setIconSet(QIconSet(pix))
-		pix.load("%s/green_right.png" % basepath,"PNG")
+		pix = load_pixmap('green_right.png')
 		self.btn_add_add.setIconSet(QIconSet(pix))
 		self.btn_add_remove.setIconSet(QIconSet(pix))
 
