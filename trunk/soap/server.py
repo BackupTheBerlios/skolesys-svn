@@ -209,7 +209,7 @@ class MyServer(SOAPpy.SOAPServer):
 
     def verify_request(self,request,clientaddr):
         #print request.get_session().as_text()
-        print netinfo.ip2hwaddr((clientaddr[0])
+        print netinfo.ip2hwaddr(clientaddr[0])
         return True
 
 def startserver():
