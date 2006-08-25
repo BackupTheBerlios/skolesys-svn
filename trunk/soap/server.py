@@ -209,7 +209,7 @@ class MyServer(SOAPpy.SOAPServer):
 
     def verify_request(self,request,clientaddr):
         #print request.get_session().as_text()
-        print "Incomming request from %s " % clientaddr
+        print clientaddr
         return True
 
 def startserver():
