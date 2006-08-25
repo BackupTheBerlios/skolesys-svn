@@ -209,7 +209,7 @@ class MyServer(SOAPpy.SOAPServer):
 
     def verify_request(self,request,clientaddr):
         #print request.get_session().as_text()
-        print clientaddr
+        print netinfo.ip2hwaddr((clientaddr[0])
         return True
 
 def startserver():
@@ -217,7 +217,7 @@ def startserver():
 	certfile = os.path.join(l4s_basepath,'cert',"l4s_cert_%s.pem" % conf.get("DOMAIN","domain_name"))
 	keyfile = os.path.join(l4s_basepath,'cert',"l4s_key_%s.pem" % conf.get("DOMAIN","domain_name"))
 	netif = conf.get("SOAP_SERVICE","interface")
-	addr = get_ip_address(netif)
+	addr = if2ip(netif)
 	if not addr:
 		print "Interface %s has not been configured. No SOAP service started" % netif
 		exit(0)
