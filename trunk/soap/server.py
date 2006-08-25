@@ -11,7 +11,7 @@ from p2 import p2_decrypt
 import time
 import random
 from marshall import pdump,pload
-from netinfo import get_ip_address
+from netinfo import if2ip,ip2hwaddr
 from sys import exit
 
 random.seed(time.time())
@@ -209,7 +209,7 @@ class MyServer(SOAPpy.SOAPServer):
 
     def verify_request(self,request,clientaddr):
         #print request.get_session().as_text()
-        print netinfo.ip2hwaddr(clientaddr[0])
+        print ip2hwaddr(clientaddr[0])
         return True
 
 def startserver():
