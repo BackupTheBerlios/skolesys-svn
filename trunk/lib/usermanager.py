@@ -4,6 +4,7 @@ from ldaptools import LDAPUtil
 from ldiftools import LDIFImporter
 import re,grp,pwd,os,ldap
 from mkpasswd import mkpasswd
+from pickle import dumps
 
 # User types
 TEACHER = 1
@@ -95,7 +96,8 @@ class GroupManager (LDAPUtil):
 			                 'objectclass=posixgroup','gidNumber',
 			                  int(conf.get('DOMAIN','gid_start')))+1),
 			'objectclass':('posixGroup','top')}
-		if not description:
+		
+		if description:
 			group_info['description'] = description
 		
 		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
