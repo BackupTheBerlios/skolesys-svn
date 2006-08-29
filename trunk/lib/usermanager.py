@@ -71,6 +71,8 @@ class GroupManager (LDAPUtil):
 		Add a user to the schools authentication directory service.
 		The usertype must be one of the constants TEACHER,STUDENT,PARENT or OTHER
 		"""
+		if description=='':
+			description=None
 		# check if the group exists already
 		if self.group_exists(groupname):
 			return -1
