@@ -1,12 +1,12 @@
 import os.path
 from ConfigParser import ConfigParser
-if os.path.exists('./lin4schools.conf'):
+if os.path.exists('./skolesys.conf'):
 	conf = ConfigParser()
-	conf.readfp(open('./lin4schools.conf'))
+	conf.readfp(open('./skolesys.conf'))
 	
-elif os.path.exists('/etc/lin4schools.conf'):
+elif os.path.exists('/etc/skolesys.conf'):
 	conf = ConfigParser()
-	conf.readfp(open('/etc/lin4schools.conf'))
+	conf.readfp(open('/etc/skolesys.conf'))
 else:
-	print "lin4schools.conf could be read"
+	print "skolesys.conf could be read"
 
