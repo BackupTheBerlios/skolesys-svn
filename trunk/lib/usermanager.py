@@ -105,7 +105,7 @@ class GroupManager (LDAPUtil):
 			return -2
 		
 		try:
-			home_path = "%s/%s/%s" % (conf.get('DOMAIN','homes_root'),conf.get('DOMAIN','domain_name'),groupname)
+			home_path = "%s/%s/groups/%s" % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),groupname)
 			if not os.path.exists(os.path.normpath(home_path)):
 				os.mkdir(os.path.normpath(home_path))
 			
@@ -138,7 +138,7 @@ class GroupManager (LDAPUtil):
 		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
 		self.delete(path)
 		
-		group_path = "%s/%s/%s" % (conf.get('DOMAIN','homes_root'),conf.get('DOMAIN','domain_name'),groupname)
+		group_path = "%s/%s/groups/%s" % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),groupname)
 		if os.path.exists(os.path.normpath(group_path)):
 			if backup_home:
 				try:
@@ -292,7 +292,7 @@ class UserManager (LDAPUtil):
 			'uidnumber': str(self.max(conf.get('LDAPSERVER','basedn'),
 				'objectclass=posixaccount','uidNumber',
 				int(conf.get('DOMAIN','uid_start')))+1),
-			'homeDirectory':'/home/%s/%s' % (conf.get('DOMAIN','domain_name'),uid),
+			'homeDirectory':'%s/%s/users/%s' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid),
 			'sn':'%s' % givenname,
 			'objectclass':('inetOrgPerson','organizationalPerson','posixAccount','shadowAccount','person', 'top'),
 			'mail': uid,
@@ -309,7 +309,7 @@ class UserManager (LDAPUtil):
 			return -2
 		
 		try:
-			home_path = "%s/%s/%s" % (conf.get('DOMAIN','homes_root'),conf.get('DOMAIN','domain_name'),uid)
+			home_path = "%s/%s/users/%s" % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
 			if not os.path.exists(os.path.normpath(home_path)):
 				os.mkdir(os.path.normpath(home_path))
 		
@@ -345,7 +345,7 @@ class UserManager (LDAPUtil):
 			self.groupdel(uid,group)
 		
 		# backup and remove home directory
-		home_path = "%s/%s/%s" % (conf.get('DOMAIN','homes_root'),conf.get('DOMAIN','domain_name'),uid)
+		home_path = "%s/%s/users/%s" % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
 		if os.path.exists(os.path.normpath(home_path)):
 			if backup_home:
 				try:
@@ -397,11 +397,11 @@ class UserManager (LDAPUtil):
 			return -4
 		
 		# Create user symlink to the group
-		user_group_dir = '%s/%s/%s/groups' % (conf.get('DOMAIN','homes_root'),conf.get('DOMAIN','domain_name'),uid)
+		user_group_dir = '%s/%s/users/%s/Groups' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
 		if not os.path.exists(user_group_dir):
 			os.makedirs(user_group_dir)
 		if not os.path.exists('%s/%s' % (user_group_dir,groupname)):
-			os.symlink('%s/%s/%s' % (conf.get('DOMAIN','homes_root'),conf.get('DOMAIN','domain_name'),groupname),
+			os.symlink('%s/%s/groups/%s' % (conf.get('DOMAIN','domsin_root'),conf.get('DOMAIN','domain_name'),groupname),
 				'%s/%s' % (user_group_dir,groupname))
 		
 		return 1
@@ -433,7 +433,7 @@ class UserManager (LDAPUtil):
 			return -4
 		
 		# Remove user symlink to the group
-		user_group_dir = '%s/%s/%s/groups' % (conf.get('DOMAIN','homes_root'),conf.get('DOMAIN','domain_name'),uid)
+		user_group_dir = '%s/%s/users/%s/groups' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
 		if os.path.exists(user_group_dir):
 			if os.path.exists('%s/%s' % (user_group_dir,groupname)):
 				os.remove('%s/%s' % (user_group_dir,groupname))
