@@ -401,7 +401,7 @@ class UserManager (LDAPUtil):
 		if not os.path.exists(user_group_dir):
 			os.makedirs(user_group_dir)
 		if not os.path.exists('%s/%s' % (user_group_dir,groupname)):
-			os.symlink('%s/%s/groups/%s' % (conf.get('DOMAIN','domsin_root'),conf.get('DOMAIN','domain_name'),groupname),
+			os.symlink('%s/%s/groups/%s' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),groupname),
 				'%s/%s' % (user_group_dir,groupname))
 		
 		return 1
