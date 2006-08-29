@@ -188,8 +188,6 @@ def creategroup(session_id,groupname,usertype,description):
 	groupname=pload(groupname)
 	usertype=pload(usertype)
 	description=pload(description)
-	print "desc-val: %s" % str(description)
-	print "desc-typ: %s" % type(description)
 	
 	gm = userman.GroupManager()
 	return pdump(gm.creategroup(groupname,usertype,description))
@@ -211,7 +209,7 @@ class MyServer(SOAPpy.SOAPServer):
 
     def verify_request(self,request,clientaddr):
         #print request.get_session().as_text()
-        print ip2hwaddr(clientaddr[0])
+        #print ip2hwaddr(clientaddr[0])
         return True
 
 def startserver():
