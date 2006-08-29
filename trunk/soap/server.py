@@ -188,7 +188,8 @@ def creategroup(session_id,groupname,usertype,description):
 	groupname=pload(groupname)
 	usertype=pload(usertype)
 	description=pload(description)
-	print description
+	print "desc-val: %s" % str(description)
+	print "desc-typ: %s" % type(description)
 	
 	gm = userman.GroupManager()
 	return pdump(gm.creategroup(groupname,usertype,description))
