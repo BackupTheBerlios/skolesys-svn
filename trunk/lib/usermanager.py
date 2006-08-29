@@ -94,8 +94,9 @@ class GroupManager (LDAPUtil):
 			'gidNumber':str(self.max(conf.get('LDAPSERVER','basedn'),
 			                 'objectclass=posixgroup','gidNumber',
 			                  int(conf.get('DOMAIN','gid_start')))+1),
-			'objectclass':('posixGroup','top'),
-			'description':description}
+			'objectclass':('posixGroup','top')}
+		if not description:
+			group_info['description'] = description
 		
 		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
 		self.touch_by_dict({path:group_info})
