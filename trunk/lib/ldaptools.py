@@ -84,23 +84,6 @@ class LDAPUtil:
 				max = int(sres[1][0][1][attr][0])
 		return max
 
-#path = 'ou=People,dc=minskole,dc=lin4schools,dc=org'
-#user_info = {'uid':'hans@minskole.dk',
-#	'givenname':'Hans',
-#	'cn':'Hans Simon-Gaarde',
-#	'gidNumber':'1000',
-#	#'uidnumber':'2002',
-#	'homeDirectory':'/home/minskole.dk/hans@minskole.dk',
-#	'sn':'Hans',
-#	'telephonenumber':'86929622',
-#	'objectclass':('inetOrgPerson','organizationalPerson','posixAccount','shadowAccount','person', 'Top'),
-#	'mail':'hans@simon-gaarde.dk',
-#	'title':'programmer',
-#	'userPassword':mkpasswd('bdnprrfe',3,'crypt')}
-
-#id='uid=%s,%s' % (user_info['uid'],path)
-#attributes=[ (k,va) for k,v in user_info.items() ]
-#l.add_s(id,attributes)
 
 if __name__=='__main__':
 	test = LDAPUtil('ldapserver')

@@ -3,9 +3,9 @@ import os.path
 import SOAPpy
 import md5
 import pickle
-import lin4schools
-import lin4schools.lib.usermanager as userman
-from lin4schools.lib.conf import conf
+import skolesys
+import skolesys.lib.usermanager as userman
+from skolesys.lib.conf import conf
 from M2Crypto import SSL
 from p2 import p2_decrypt
 import time
@@ -213,7 +213,7 @@ class MyServer(SOAPpy.SOAPServer):
         return True
 
 def startserver():
-	l4s_basepath = os.path.split(inspect.getsourcefile(lin4schools))[0]
+	l4s_basepath = os.path.split(inspect.getsourcefile(skolesys))[0]
 	certfile = os.path.join(l4s_basepath,'cert',"cert_%s.pem" % conf.get("DOMAIN","domain_name"))
 	keyfile = os.path.join(l4s_basepath,'cert',"key_%s.pem" % conf.get("DOMAIN","domain_name"))
 	netif = conf.get("SOAP_SERVICE","interface")
