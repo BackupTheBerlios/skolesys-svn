@@ -4,7 +4,7 @@ from p2 import p2_encrypt
 from marshall import pdump,pload
 import sys
 
-class L4S_Client:
+class SkoleSYS_Client:
 	def __init__(self,host,port=None,log=sys.stderr):
 		self.logfile = log
 		if port:
@@ -127,7 +127,7 @@ class L4S_Client:
 
 
 if __name__=='__main__':
-    c=L4S_Client('https://127.0.0.1',8443)
+    c=SkoleSYS_Client('https://127.0.0.1',8443)
     print c.bind('secret')
     userdict = c.list_users(4)
     for user in userdict.keys():

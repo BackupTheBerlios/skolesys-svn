@@ -213,9 +213,9 @@ class MyServer(SOAPpy.SOAPServer):
         return True
 
 def startserver():
-	l4s_basepath = os.path.split(inspect.getsourcefile(skolesys))[0]
-	certfile = os.path.join(l4s_basepath,'cert',"cert_%s.pem" % conf.get("DOMAIN","domain_name"))
-	keyfile = os.path.join(l4s_basepath,'cert',"key_%s.pem" % conf.get("DOMAIN","domain_name"))
+	skolesys_basepath = os.path.split(inspect.getsourcefile(skolesys))[0]
+	certfile = os.path.join(skolesys_basepath,'cert',"cert_%s.pem" % conf.get("DOMAIN","domain_name"))
+	keyfile = os.path.join(skolesys_basepath,'cert',"key_%s.pem" % conf.get("DOMAIN","domain_name"))
 	netif = conf.get("SOAP_SERVICE","interface")
 	addr = if2ip(netif)
 	if not addr:
