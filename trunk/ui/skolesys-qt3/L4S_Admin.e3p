@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-3.8.dtd">
-<!-- Project file for project L4S_Admin -->
+<!-- Project file for project skolesys_ui -->
 <!-- Saved: 2006-08-08, 22:30:12 -->
 <!-- Copyright (C) 2006 Jakob Simon-Gaarde, jakob@simon-gaarde.dk -->
 <Project version="3.8">
@@ -45,7 +45,7 @@
       <Name>removeuserwdgbase.py</Name>
     </Source>
     <Source>
-      <Name>l4s_admin.py</Name>
+      <Name>skolesys_ui.py</Name>
     </Source>
     <Source>
       <Name>groupmanagerwdgbase.py</Name>
@@ -118,7 +118,7 @@
   </Forms>
   <Translations>
     <Translation>
-      <Name>l4s_admin_da.ts</Name>
+      <Name>skolesys_ui_da.ts</Name>
     </Translation>
   </Translations>
   <Interfaces>
@@ -126,7 +126,7 @@
   <Others>
   </Others>
   <MainScript>
-    <Name>l4s_admin.py</Name>
+    <Name>skolesys_ui.py</Name>
   </MainScript>
   <Vcs>
     <VcsType>None</VcsType>

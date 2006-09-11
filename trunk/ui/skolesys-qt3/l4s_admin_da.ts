@@ -216,8 +216,8 @@
 <context>
     <name>General</name>
     <message>
-        <source>lin4schools Administration</source>
-        <translation>lin4schools Administrationsprogram</translation>
+        <source>SkoleSYS Administration</source>
+        <translation>SkoleSYS Administrationsprogram</translation>
     </message>
     <message>
         <source>Enter administrator password</source>

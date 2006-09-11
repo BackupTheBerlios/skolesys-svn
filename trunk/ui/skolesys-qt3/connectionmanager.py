@@ -1,16 +1,16 @@
 import sys
 from qt import *
-from lin4schools.soap.client import L4S_Client
+from skolesys.soap.client import SkoleSYS_Client
 import pickle
 
 class ConnectionManager:
 	def __init__(self,host,port):
-		self.proxy = L4S_Client(host,port)
+		self.proxy = SkoleSYS_Client(host,port)
 		
 	def get_proxy_handle(self):
 		counter = 0
 		while not self.proxy.test_binded() and counter<3:
-			passwd = QInputDialog.getText(qApp.translate("General","lin4schools Administration"), qApp.translate("General","Enter administrator password"), QLineEdit.Password)
+			passwd = QInputDialog.getText(qApp.translate("General","SkoleSYS Administration"), qApp.translate("General","Enter administrator password"), QLineEdit.Password)
 			if passwd[1]==False:
 				sys.exit(0)
 			if self.proxy.bind(str(passwd[0].utf8())):

@@ -4,7 +4,7 @@ import os.path
 from qt import *
 from launchdlg import LaunchDlg
 from connectionmanager import ConnectionManager
-from lin4schools.soap.client import L4S_Client
+from skolesys.soap.client import SkoleSYS_Client
 from settings import glob_settings
 from imageloader import load_pixmap
 
@@ -14,7 +14,7 @@ a = QApplication(sys.argv)
 if len(sys.argv)>1:
 	trans_ext = sys.argv[-1:][0]
 	trans = QTranslator()
-	trans.load('l4s_admin_%s.qm' % trans_ext)
+	trans.load('skolesys_ui_%s.qm' % trans_ext)
 	a.installTranslator(trans)
 	
 QObject.connect(a,SIGNAL("lastWindowClosed()"),a,SLOT("quit()"))

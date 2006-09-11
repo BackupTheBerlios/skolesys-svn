@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/refsvindinge.dk/jakob@refsvindinge.dk/Projects/l4s_admin/addremovewdgbase.ui'
+# Form implementation generated from reading ui file '/home/refsvindinge.dk/jakob@refsvindinge.dk/Projects/skolesys_ui/addremovewdgbase.ui'
 #
 # Created: lør jul 29 10:16:20 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1

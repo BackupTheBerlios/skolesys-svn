@@ -1,7 +1,7 @@
 import sys
 from qt import *
 from groupmanagerwdgbase import GroupManagerWdgBase
-from lin4schools.soap.client import L4S_Client
+from skolesys.soap.client import SkoleSYS_Client
 import launcher
 
 columns = {'groupname':0,'usertype':1}

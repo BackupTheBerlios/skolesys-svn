@@ -1,7 +1,7 @@
 import sys
 from qt import *
 from usermanagerwdgbase import UserManagerWdgBase
-from lin4schools.soap.client import L4S_Client
+from skolesys.soap.client import SkoleSYS_Client
 import launcher
 
 columns = {'username':0,'usertype':1,'login':2}
