@@ -23,7 +23,7 @@ class ConnectionManager:
 
 if __name__=='__main__':
 	a = QApplication(sys.argv)
-	cm = ConnectionManager('https://mainserver',8443)
+	cm = ConnectionManager('https://mainserver.skolesys.local',8443)
 	if cm.get_proxy_handle():
 		print "OK"
 
