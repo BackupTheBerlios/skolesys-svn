@@ -1,0 +1,12 @@
+#!/usr/bin/python
+
+import os.path
+import os
+import sys
+
+if not os.path.exists('rep'):
+	os.mkdir('rep')
+os.chdir('rep')
+
+os.system('svn co file:///var/lib/svn/skolesys')
+
