@@ -2,6 +2,7 @@
 
 # Check root privilegdes
 import os
+from sys import exit
 if not os.getuid()==0:
 	print "This command needs requires priviledges"
 	exit(0)
@@ -20,7 +21,6 @@ import time
 import random
 from marshall import pdump,pload
 from netinfo import if2ip,ip2hwaddr
-from sys import exit
 
 random.seed(time.time())
 
