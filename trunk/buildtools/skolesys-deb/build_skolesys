@@ -3,10 +3,43 @@
 import os.path
 import os
 import sys
+from optparse import OptionParser
 
-if not os.path.exists('rep'):
+usage = "Usage: build_skolesys --svnbase=file:///var/lib/svn module"
+parser = OptionParser(usage=usage)
+
+if __name__=='__main__':
+	
+	parser.add_option("-b", "--svnbase", dest="svnbase",default=None,
+		help="The base folder containing skolesys svn repositories", metavar="SKOLESYS_SVNBASE")
+	
+	(options, args) = parser.parse_args()
+	
+	if not options.svnbase:
+		options.svnbase = raw_input("Input the base folder containing the SkoleSYS svn repositories: ")	
+	if len(args)==0:
+		module = raw_input("Which module is to be build: ")	
+	else:
+		module = args[0]
+		
+	if os.path.exists('rep'):
+		os.system('sudo rm rep -R -f')
 	os.mkdir('rep')
-os.chdir('rep')
-
-os.system('svn co file:///var/lib/svn/skolesys')
+	
+	if os.path.exists('debian'):
+		os.system('sudo rm debian -R -f')
+	os.mkdir('debian')
+	
+	os.system('svn co %s rep' % os.path.join(options.svnbase,module))
+	
+	if not os.path.exists('%s_debinfo.py' % module):
+		print "ERROR: %s_debfile.py is missing" % module
+		sys.exit(0)
+	
+	debinfo = __import__('%s_debinfo' % module)
+	for src in debinfo.copy.keys():
+		if not os.path.exists('debian/%s' % debinfo.copy[src]):
+			os.makedirs(os.path.normpath('debian/%s' % debinfo.copy[src]))
+		os.system('cp rep/%s debian/%s -R -f' % (src,debinfo.copy[src]))
+	
 
