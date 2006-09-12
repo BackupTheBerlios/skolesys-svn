@@ -10,18 +10,7 @@ parser = OptionParser(usage=usage)
 
 if __name__=='__main__':
 	
-	parser.add_option("-b", "--svnbase", dest="svnbase",default=None,
-		help="The base folder containing skolesys svn repositories", metavar="SKOLESYS_SVNBASE")
-	
-	(options, args) = parser.parse_args()
-	
-	if not options.svnbase:
-		options.svnbase = raw_input("Input the base folder containing the SkoleSYS svn repositories: ")	
-	if len(args)==0:
-		module = raw_input("Which module is to be build: ")	
-	else:
-		module = args[0]
-		
+	# Clean workspaces	
 	if os.path.exists('rep'):
 		os.system('sudo rm rep -R -f')
 	os.mkdir('rep')
@@ -30,33 +19,84 @@ if __name__=='__main__':
 		os.system('sudo rm debian -R -f')
 	os.makedirs('debian/DEBIAN')
 	
-	os.system('svn co %s rep' % os.path.join(options.svnbase,module))
+	parser.add_option("-r", "--svnbase", dest="svnbase",default=None,
+		help="The base folder containing skolesys svn repositories", metavar="SKOLESYS_SVNBASE")
+	parser.add_option("-l", "--iso-location", dest="iso_location",default=None,
+		help="The folder containing the iso file", metavar="SKOLESYS_ISO-LOCATION")
 	
+	(options, args) = parser.parse_args()
+	
+	if len(args)==0:
+		module = raw_input("Which module is to be build: ")	
+	else:
+		module = args[0]
+	
+	
+	# Load debinfo
 	if not os.path.exists('%s_debinfo.py' % module):
 		print "ERROR: %s_debfile.py is missing" % module
 		sys.exit(0)
-	
 	debinfo = __import__('%s_debinfo' % module)
 	
-	# Check validity
+	
+	# Check debinfo validity
 	if not dir(debinfo).count('control'):
-		print "ERROR: %s_debfile.py requires the control member to be assigned" % module
+		print "ERROR: %s_debfile.py requires the member 'control' to be assigned" % module
+	if not debinfo.control.has_key('Package'):
+		print "ERROR: %s_debfile.py requires the member 'control' to have key 'Package'" % module
+	if not debinfo.control.has_key('Version'):
+		print "ERROR: %s_debfile.py requires the member 'control' to have key 'Version'" % module
+	if not dir(debinfo).count('fetch_method'):
+		print "ERROR: %s_debfile.py requires the member 'fetch_method'" % module
+	
 
-	# Permishions
+	# Fetch by subversion
+	if debinfo.fetch_method=='svn': 
+		if not options.svnbase:
+			options.svnbase = raw_input("Input the folder containing the svn module %s: " % module)	
+		
+		os.system('svn co %s rep' % os.path.join(options.svnbase,module))
+		os.system('find rep | grep "\\.svn" | xargs rm -R -f')
+		
+	if debinfo.fetch_method=='iso':
+		if not options.iso_location:
+			options.iso_location = raw_input("Input the folder containing the iso file %s.iso: " % module)	
+		if not os.path.exists("%s.iso" % os.path.join(options.iso_location,module)):
+			print "ERROR: %s.iso does not exist" % os.path.join(options.iso_location,module)
+			sys.exit(0)
+		if os.path.exists('isomount'):
+			os.system('sudo rm isomount -R -f')	
+		os.system('mkdir isomount')
+		os.system("sudo mount -t iso9660 -o loop %s.iso isomount" % os.path.join(options.iso_location,module))
+		os.system("cp isomount/* rep -R -f")
+		os.system("sudo umount isomount")
+		
+	package_name = debinfo.control['Package']
+	package_ver = debinfo.control['Version']
+
+	if dir(debinfo).count('prebuild_script'):
+		exec(debinfo.prebuild_script)
+
+
+	# Permissions
 	if dir(debinfo).count('perm'):
 		for src in debinfo.perm.keys():
 			os.system('chmod %s rep/%s' % (debinfo.perm[src],src))
 			print "setting file permissions on %s to %s" % (debinfo.perm[src],src)
+	
 	
 	# File copy
 	if dir(debinfo).count('copy'):
 		for src in debinfo.copy.keys():
 			if not os.path.exists('debian/%s' % debinfo.copy[src]):
 				os.makedirs(os.path.normpath('debian/%s' % debinfo.copy[src]))
-			os.system('cp rep/%s debian/%s -R -f' % (src,debinfo.copy[src]))
 			print "copying files %s -> %s " % (src,debinfo.copy[src])
+			os.system('cp rep/%s debian/%s -R -f' % (src,debinfo.copy[src]))
 			
-		os.system('find debian | grep "\\.svn" | xargs rm -R -f')
+		f=os.popen("find debian -type f | xargs md5sum | sed 's/  debian\//  /'")
+		md5sums = f.read()
+		f=os.popen("sudo du -s debian | awk '$1 ~ /[0-9]+/ { print $1 }'")
+		inst_size = f.read().strip()
 	
 	
 	# Make symbolic links
@@ -71,10 +111,25 @@ if __name__=='__main__':
 			os.system('ln -s %s %s' % (os.path.normpath(debinfo.links[src]),os.path.join(directory,linkname)))
 			print "creating symbolic link %s -> %s" % (os.path.join(directory,linkname),os.path.normpath(debinfo.links[src]))
 
-
+	
 	# Copy controlfiles
+	control_seq = ('Package','Version','Section''Priority','Architecture','Depends',\
+		'Recommends','Installed-Size','Maintainer','Description')
+	debinfo.control['Installed-Size'] = inst_size
+	
 	f = open('debian/DEBIAN/control','w')
-	f.write(debinfo.control)
+	for control_tag in control_seq:
+		if debinfo.control.has_key(control_tag):
+			f.write("%s: %s\n" % (control_tag,debinfo.control[control_tag]))	
+	
+	if debinfo.control.has_key('longdesc'):
+		f.write("%s" % debinfo.control['longdesc'])	
+	f.close()
+	
+	
+	# MD5 Sum
+	f = open('debian/DEBIAN/md5sums','w')
+	f.write(md5sums)
 	f.close()
 	
 	if dir(debinfo).count('postinst'):
@@ -87,3 +142,22 @@ if __name__=='__main__':
 		f.write(debinfo.control)
 		f.close()
 
+
+	# Clean up
+	if os.path.exists('debian.deb'):
+		os.system('sudo rm debian.deb')
+	if os.path.exists('%s_%s.deb' % (package_name,package_ver)):
+		os.system('sudo rm %s_%s.deb' % (package_name,package_ver))
+	
+	
+	# Create the debian package
+	os.system('dpkg-deb --build debian')
+	
+	
+	# Name it after conventions
+	if os.path.exists('debian.deb'):
+		os.system('mv debian.deb %s_%s.deb' % (package_name,package_ver))
+		print 'Renaming debian.deb to %s_%s.deb' % (package_name,package_ver)
+	else:
+		print "ERROR: The debian file was not created for some reason..."
+	
