@@ -14,8 +14,15 @@ Description: This is the base control library of the SkoleSYS linux distribution
  and registering thin client servers (LTSP).
 """
 
+perm = {'soap/server.py': '755',
+	'lib/shell.py': '755'}
+
 copy = {
 	'__init__.py': '/usr/lib/python2.4/site-packages/skolesys/',
 	'lib': '/usr/lib/python2.4/site-packages/skolesys/',
 	'soap': '/usr/lib/python2.4/site-packages/skolesys/',
 	'cert': '/usr/lib/python2.4/site-packages/skolesys/'}
+
+links = {
+	'/usr/sbin/ss_admin': '../lib/python2.4/site-packages/skolesys/lib/shell.py',
+	'/usr/sbin/ss_soapserver': '../lib/python2.4/site-packages/skolesys/soap/server.py'}

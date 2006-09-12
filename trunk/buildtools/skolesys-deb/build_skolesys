@@ -28,7 +28,7 @@ if __name__=='__main__':
 	
 	if os.path.exists('debian'):
 		os.system('sudo rm debian -R -f')
-	os.mkdir('debian')
+	os.makedirs('debian/DEBIAN')
 	
 	os.system('svn co %s rep' % os.path.join(options.svnbase,module))
 	
@@ -37,9 +37,53 @@ if __name__=='__main__':
 		sys.exit(0)
 	
 	debinfo = __import__('%s_debinfo' % module)
-	for src in debinfo.copy.keys():
-		if not os.path.exists('debian/%s' % debinfo.copy[src]):
-			os.makedirs(os.path.normpath('debian/%s' % debinfo.copy[src]))
-		os.system('cp rep/%s debian/%s -R -f' % (src,debinfo.copy[src]))
 	
+	# Check validity
+	if not dir(debinfo).count('control'):
+		print "ERROR: %s_debfile.py requires the control member to be assigned" % module
+
+	# Permishions
+	if dir(debinfo).count('perm'):
+		for src in debinfo.perm.keys():
+			os.system('chmod %s rep/%s' % (debinfo.perm[src],src))
+			print "setting file permissions on %s to %s" % (debinfo.perm[src],src)
+	
+	# File copy
+	if dir(debinfo).count('copy'):
+		for src in debinfo.copy.keys():
+			if not os.path.exists('debian/%s' % debinfo.copy[src]):
+				os.makedirs(os.path.normpath('debian/%s' % debinfo.copy[src]))
+			os.system('cp rep/%s debian/%s -R -f' % (src,debinfo.copy[src]))
+			print "copying files %s -> %s " % (src,debinfo.copy[src])
+			
+		os.system('find debian | grep "\\.svn" | xargs rm -R -f')
+	
+	
+	# Make symbolic links
+	if dir(debinfo).count('links'):
+		for src in debinfo.links.keys():
+			parts = os.path.split(os.path.normpath('debian/%s' % src))
+			directory = os.path.join(parts[:-1])[0]
+			linkname = parts[-1:][0]
+			if not os.path.exists(directory):
+				os.makedirs(directory)
+			
+			os.system('ln -s %s %s' % (os.path.normpath(debinfo.links[src]),os.path.join(directory,linkname)))
+			print "creating symbolic link %s -> %s" % (os.path.join(directory,linkname),os.path.normpath(debinfo.links[src]))
+
+
+	# Copy controlfiles
+	f = open('debian/DEBIAN/control','w')
+	f.write(debinfo.control)
+	f.close()
+	
+	if dir(debinfo).count('postinst'):
+		f = open('debian/DEBIAN/postinst','w')
+		f.write(debinfo.control)
+		f.close()
+	
+	if dir(debinfo).count('prerm'):
+		f = open('debian/DEBIAN/prerm','w')
+		f.write(debinfo.control)
+		f.close()
 
