@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import inspect
 import os.path
 import SOAPpy
