@@ -1,5 +1,11 @@
 #!/usr/bin/python
 
+# Check root privilegdes
+import os
+if not os.getuid()==0:
+	print "This command needs requires priviledges"
+	exit(0)
+
 import inspect
 import os.path
 import SOAPpy

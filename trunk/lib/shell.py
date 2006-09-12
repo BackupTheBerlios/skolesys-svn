@@ -5,7 +5,7 @@ from sys import argv,exit
 
 # Check root privilegdes
 if not os.getuid()==0:
-	print "This command needs root priviledges"
+	print "This command needs requires priviledges"
 	exit(0)
 	
 	
