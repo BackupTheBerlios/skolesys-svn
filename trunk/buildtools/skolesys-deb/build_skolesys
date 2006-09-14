@@ -46,9 +46,10 @@ if __name__=='__main__':
 		print "ERROR: %s_debfile.py requires the member 'control' to have key 'Package'" % module
 	if not debinfo.control.has_key('Version'):
 		print "ERROR: %s_debfile.py requires the member 'control' to have key 'Version'" % module
+        if not debinfo.control.has_key('NameExtention'):
+                print "ERROR: %s_debfile.py requires the member 'control' to have key 'NameExtension'" % module
 	if not dir(debinfo).count('fetch_method'):
-		print "ERROR: %s_debfile.py requires the member 'fetch_method'" % module
-	
+		print "ERROR: %s_debfile.py requires the member 'fetch_method'" % module	
 
 	# Fetch by subversion
 	if debinfo.fetch_method=='svn': 
@@ -73,6 +74,7 @@ if __name__=='__main__':
 		
 	package_name = debinfo.control['Package']
 	package_ver = debinfo.control['Version']
+	package_name_extension = debinfo.control['NameExtention']
 
 	if dir(debinfo).count('prebuild_script'):
 		exec(debinfo.prebuild_script)
@@ -144,10 +146,12 @@ if __name__=='__main__':
 
 
 	# Clean up
+	final_name = '%s_%s-%s.deb' % (package_name,package_ver,package_name_extension)
+
 	if os.path.exists('debian.deb'):
 		os.system('sudo rm debian.deb')
 	if os.path.exists('%s_%s.deb' % (package_name,package_ver)):
-		os.system('sudo rm %s_%s.deb' % (package_name,package_ver))
+		os.system('sudo rm %s' % final_name)
 	
 	
 	# Create the debian package
@@ -156,8 +160,8 @@ if __name__=='__main__':
 	
 	# Name it after conventions
 	if os.path.exists('debian.deb'):
-		os.system('mv debian.deb %s_%s.deb' % (package_name,package_ver))
-		print 'Renaming debian.deb to %s_%s.deb' % (package_name,package_ver)
+		os.system('mv debian.deb %s' % final_name)
+		print 'Renaming debian.deb to %s' % final_name
 	else:
 		print "ERROR: The debian file was not created for some reason..."
 	

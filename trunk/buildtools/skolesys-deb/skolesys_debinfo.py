@@ -3,6 +3,7 @@ fetch_method = "svn"
 control = {
 	'Package': 'python2.4-skolesys',
 	'Version': '0.5',
+	'NameExtension': 'skolesys1_noarch',
 	'Section': 'python',
 	'Priority': 'optional',
 	'Architecture': 'i386',
