@@ -1,0 +1,100 @@
+#!/usr/bin/python
+
+import sys,md5,sha,os
+from optparse import OptionParser
+ 
+usage = "Usage: create_repository suite"
+parser = OptionParser(usage=usage)
+
+md5list = []
+sha1list = []
+
+if __name__=='__main__':
+	
+	(options, args) = parser.parse_args()
+
+	if len(args)==0:
+		suite = raw_input("Which suite is to be build: ")	
+	else:
+		suite = args[0]
+
+	# Load debinfo
+	if not os.path.exists('%s_aptinfo.py' % suite):
+		print "ERROR: %s_aptinfo.py is missing" % suite
+		sys.exit(0)
+	aptinfo = __import__('%s_aptinfo' % suite)
+
+	# Clean workspaces	
+	if os.path.exists('dists'):
+		os.system('sudo rm dists -R -f')
+	os.makedirs('dists/%s' % suite)
+
+	if os.path.exists('pool'):
+		os.system('sudo rm pool -R -f')
+
+	component_list = os.listdir(suite)
+	arch_list = []
+	for component in component_list:
+		if os.path.isdir('%s/%s' % (suite,component)):
+			component_archs = os.listdir('%s/%s' % (suite,component))
+			for arch in component_archs:
+				if not arch_list.count(arch) and \
+				   os.path.isdir('%s/%s/%s' % (suite,component,arch)):
+					arch_list += [arch]
+		else:
+			component_list.pop(component)
+	
+	for component in component_list:
+		for arch in arch_list:
+			if not os.path.exists('%s/%s/%s' % (suite,component,arch)):
+				# this component did not contain specific packages for that architechture
+				continue
+			os.system('sudo rm pool -R -f')
+			os.mkdir('pool')
+			os.system("ln -s ../%s/%s/%s pool/%s " % (suite,component,arch,component))
+			
+			if not os.path.exists('real_pool/%s' % component):
+				os.makedirs('real_pool/%s' % component)
+			os.system("cp %s/%s/%s/* real_pool/%s -Rfv" % (suite,component,arch,component))
+			if arch=='source':
+				dist_packages_dir = 'dists/%s/%s/%s' % (suite,component,arch)
+				os.makedirs(dist_packages_dir)
+				os.system('sudo dpkg-scansources pool/%s /dev/null | gzip -9c > %s/Sources.gz' % (component,dist_source_dir))
+			else:
+				dist_binary_dir = 'dists/%s/%s/binary-%s' % (suite,component,arch)
+				os.makedirs(dist_binary_dir)
+				os.system('sudo dpkg-scanpackages pool/%s /dev/null | gzip -9c > %s/Packages.gz' % (component,dist_binary_dir))
+	
+	os.system('sudo rm pool -R -f')
+	os.system('sudo mv real_pool pool')
+
+	f = open('Release_template')
+	buf = f.read()
+	f.close()
+
+	for tag in aptinfo.release_info.keys():
+		buf = buf.replace('<%s>' % tag, aptinfo.release_info[tag])
+
+	def digest(args,dirname,fnames):
+		global md5list,sha1list
+		for fn in fnames:
+			if os.path.isdir(os.path.join(dirname,fn)):
+				continue
+			fsize = os.path.getsize(os.path.join(dirname,fn))
+			f = open(os.path.join(dirname,fn))
+			bytes=f.read()
+			md5sum = md5.md5(bytes).hexdigest()
+			sha1 = sha.sha(bytes).hexdigest()
+			f.close()
+			del bytes
+			md5list += [' %s%17.17s %s' % (md5sum,fsize,os.path.sep.join(os.path.join(dirname,fn).split(os.path.sep)[1:]))]
+			sha1list += [' %s%17.17s %s' % (sha1,fsize,os.path.sep.join(os.path.join(dirname,fn).split(os.path.sep)[1:]))]
+
+	os.path.walk('dists/%s' % suite,digest,None)
+
+	buf = buf.replace('<md5sum>','\n'.join(md5list))
+	buf = buf.replace('<sha1>','\n'.join(sha1list))
+
+	f = open('dists/%s/Release' % suite, 'w')
+	f.write(buf)
+	f.close()
