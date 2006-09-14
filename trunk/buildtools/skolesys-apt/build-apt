@@ -59,11 +59,15 @@ if __name__=='__main__':
 			if arch=='source':
 				dist_packages_dir = 'dists/%s/%s/%s' % (suite,component,arch)
 				os.makedirs(dist_packages_dir)
-				os.system('sudo dpkg-scansources pool/%s /dev/null | gzip -9c > %s/Sources.gz' % (component,dist_source_dir))
+				os.system('sudo dpkg-scansources pool/%s /dev/null > %s/Sources' % (component,dist_source_dir))
+				os.system('tar cjf %s/Sources.bz2 %s/Sources' % (dist_source_dir,dist_source_dir))
+				os.system('gzip -9c %s/Sources > %s/Sources.gz' % (dist_source_dir,dist_source_dir))
 			else:
 				dist_binary_dir = 'dists/%s/%s/binary-%s' % (suite,component,arch)
 				os.makedirs(dist_binary_dir)
-				os.system('sudo dpkg-scanpackages pool/%s /dev/null | gzip -9c > %s/Packages.gz' % (component,dist_binary_dir))
+				os.system('sudo dpkg-scanpackages pool/%s /dev/null > %s/Packages' % (component,dist_binary_dir))
+				os.system('tar cjf %s/Packages.bz2 %s/Packages' % (dist_binary_dir,dist_binary_dir))
+				os.system('gzip -9c %s/Packages > %s/Packages.gz' % (dist_binary_dir,dist_binary_dir))
 	
 	os.system('sudo rm pool -R -f')
 	os.system('sudo mv real_pool pool')
@@ -74,6 +78,8 @@ if __name__=='__main__':
 
 	for tag in aptinfo.release_info.keys():
 		buf = buf.replace('<%s>' % tag, aptinfo.release_info[tag])
+	buf = buf.replace('<components>',' '.join(component_list))
+	buf = buf.replace('<architechtures>',' '.join(arch_list))
 
 	def digest(args,dirname,fnames):
 		global md5list,sha1list
@@ -87,8 +93,8 @@ if __name__=='__main__':
 			sha1 = sha.sha(bytes).hexdigest()
 			f.close()
 			del bytes
-			md5list += [' %s%17.17s %s' % (md5sum,fsize,os.path.sep.join(os.path.join(dirname,fn).split(os.path.sep)[1:]))]
-			sha1list += [' %s%17.17s %s' % (sha1,fsize,os.path.sep.join(os.path.join(dirname,fn).split(os.path.sep)[1:]))]
+			md5list += [' %s%17.17s %s' % (md5sum,fsize,os.path.sep.join(os.path.join(dirname,fn).split(os.path.sep)[2:]))]
+			sha1list += [' %s%17.17s %s' % (sha1,fsize,os.path.sep.join(os.path.join(dirname,fn).split(os.path.sep)[2:]))]
 
 	os.path.walk('dists/%s' % suite,digest,None)
 
@@ -98,3 +104,5 @@ if __name__=='__main__':
 	f = open('dists/%s/Release' % suite, 'w')
 	f.write(buf)
 	f.close()
+	os.system('gpg -abs -o dists/%s/Release.gpg dists/%s/Release' % (suite,suite))
+	
