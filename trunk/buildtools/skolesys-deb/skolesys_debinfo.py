@@ -3,10 +3,10 @@ fetch_method = "svn"
 control = {
 	'Package': 'python2.4-skolesys',
 	'Version': '0.5',
-	'NameExtension': 'skolesys1_noarch',
+	'NameExtension': 'skolesys1_all',
 	'Section': 'python',
 	'Priority': 'optional',
-	'Architecture': 'i386',
+	'Architecture': 'all',
 	'Depends': 'python2.4, python-smbpasswd, python2.4-soappy, m2crypto, python2.4-ldap',
 	'Recommends': 'skolesys_ui',
 	'Maintainer': 'Jakob Simon-Gaarde <jakob@skolesys.org>',

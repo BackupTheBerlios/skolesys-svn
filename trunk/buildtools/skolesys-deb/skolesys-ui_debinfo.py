@@ -21,10 +21,10 @@ os.path.walk('rep',ui_filter,None)
 control = {
 	'Package': 'skolesys-ui',
 	'Version': '0.5.1',
-	'NameExtension': 'skolesys1_noarch',
+	'NameExtension': 'skolesys1_all',
 	'Section': 'util',
 	'Priority': 'optional',
-	'Architecture': 'i386',
+	'Architecture': 'all',
 	'Depends': 'python2.4, python2.4-skolesys, python2.4-qt3',
 	'Recommends': 'skolesys_ui',
 	'Maintainer': 'Jakob Simon-Gaarde <jakob@skolesys.org>',

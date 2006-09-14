@@ -46,7 +46,7 @@ if __name__=='__main__':
 		print "ERROR: %s_debfile.py requires the member 'control' to have key 'Package'" % module
 	if not debinfo.control.has_key('Version'):
 		print "ERROR: %s_debfile.py requires the member 'control' to have key 'Version'" % module
-        if not debinfo.control.has_key('NameExtention'):
+        if not debinfo.control.has_key('NameExtension'):
                 print "ERROR: %s_debfile.py requires the member 'control' to have key 'NameExtension'" % module
 	if not dir(debinfo).count('fetch_method'):
 		print "ERROR: %s_debfile.py requires the member 'fetch_method'" % module	
@@ -74,7 +74,7 @@ if __name__=='__main__':
 		
 	package_name = debinfo.control['Package']
 	package_ver = debinfo.control['Version']
-	package_name_extension = debinfo.control['NameExtention']
+	package_name_extension = debinfo.control['NameExtension']
 
 	if dir(debinfo).count('prebuild_script'):
 		exec(debinfo.prebuild_script)
