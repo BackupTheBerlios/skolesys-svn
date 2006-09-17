@@ -1,0 +1,89 @@
+#! /usr/bin/python
+
+import re,grp,os,ldap
+from sys import argv,exit
+
+# Check root privilegdes
+if not os.getuid()==0:
+	print "This command needs requires priviledges"
+	exit(0)
+	
+from optparse import OptionParser
+
+if __name__=='__main__':
+	commands = {'extract': 'Extract a cd image to a new cd-project',
+		'edit': 'Change root to a cd project',
+		'create': 'Create a cd image from a cd-project'}
+
+	shell_cmd_name = os.path.split(argv[0])[-1:][0]
+	
+	usage = "usage: %s command [options] arg1, arg2" % shell_cmd_name
+	if len(argv)<2 or not commands.has_key(argv[1]):
+		print usage
+		print 
+		print "Commands:"
+		for cmd,desc in commands.items():
+			print '%s - %s' % (cmd,desc)
+		exit(0)
+		
+	cmd = argv[1]
+	
+	parser = OptionParser(usage=usage)
+
+	if cmd == "extract":
+		parser.set_usage("usage: %s %s iso-file project-name" % (shell_cmd_name,cmd))
+		(options, args) = parser.parse_args()
+		if len(args)<3:
+			print parser.usage
+			exit(0)
+		if not os.path.exists(args[1]):
+			print "cd image %s does not exist." % args[1]
+			print parser.usage
+			exit(0)
+		if os.path.exists('%s' % args[2]):
+			answer = raw_input("There exists a cd project with the name %s. Do you wish to continue? (y/n)" % args[2])
+			if not answer.lower() == 'y':
+				exit(0)
+			print "Deleting files..."
+			os.system('sudo rm %s -R -f' % args[2])
+		os.system('mkdir -p %s' % args[2])
+		os.system('sudo mount -t iso9660 -o loop %s /cdrom' % args[1])
+		os.system('mkdir %s/livecd' % args[2])
+		print "Copying the cd image to the local filesystem..."
+		os.system('cp -a /cdrom/. %s/livecd' % args[2])
+		os.system('chmod -R u+w %s/livecd' % args[2])
+		os.system('sudo umount /cdrom')
+		os.system('mkdir %s/old' % args[2])
+		os.system('sudo mount -t squashfs -o loop,ro %s/livecd/casper/filesystem.squashfs %s/old' % (args[2],args[2]))
+		print "Creating a squashfs file..."
+		os.system('sudo dd if=/dev/zero of=%s/ubuntu-fs.ext2 bs=1M count=2147' % args[2])
+		print "Formatting the squashfs file as ext2..."
+		os.system('sudo mke2fs -F %s/ubuntu-fs.ext2' % args[2])
+		os.system('mkdir %s/new' % args[2])
+		os.system('sudo mount -o loop %s/ubuntu-fs.ext2 %s/new' % (args[2],args[2]))
+
+		print "Copying files to squashfs..."
+		os.system('sudo cp -a %s/old/. %s/new' % (args[2],args[2]))
+		os.system('sudo umount %s/old' % args[2])
+		os.system('sudo umount %s/new' % args[2])
+		print "Run '%s edit %s' to start editing the cd project" % (shell_cmd_name,args[2])
+
+	if cmd == "edit":
+		parser.set_usage("usage: %s %s project-name" % (shell_cmd_name,cmd))
+		(options, args) = parser.parse_args()
+		if len(args)<2:
+			print parser.usage
+			exit(0)
+		if not os.path.exists(args[1]):
+			print "The cd project %s does not exist." % args[1]
+			print parser.usage
+			exit(0)
+		os.system('sudo mount -o loop %s/ubuntu-fs.ext2 %s/new' % (args[1],args[1]))
+		os.system('sudo cp /etc/resolv.conf %s/new/etc/' % args[1])
+		os.system('sudo mount -t proc -o bind /proc %s/new/proc' % args[1])
+		os.system('konsole -e "sudo chroot %s/new /bin/bash"' % args[1])
+		os.system('sudo umount %s/new/proc"' % args[1])
+		os.system('sudo rm %s/new/etc/resolv.conf' % args[1])
+		os.system('sudo umount %s/new"' % args[1])
+		print "Run '%s create %s' to create a new cd image from the cd project" % (shell_cmd_name,args[2])
+
