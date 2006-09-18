@@ -162,7 +162,7 @@ if __name__=='__main__':
 		f = os.popen('find . -type f -print0 | xargs -0 sudo md5sum')
 		md5sums = f.readlines()
 		f.close()
-		os.system('sudo mkisofs -r -V "SkoleSYS Pilot Ver 0.5" -cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o ../../skolesys-ltsp_0.5.iso .')
+		os.system('sudo mkisofs -r -V "%s" -cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o ../../%s .' % ('SkoleSYS LTSP Pilot ver 0.5','skolesys-ltsp_0.5.iso'))
 		os.chdir(cwd)
 		f = open("%s/livecd/md5sum.txt" % args[1], 'w')
 		f.write(''.join(md5sums))
