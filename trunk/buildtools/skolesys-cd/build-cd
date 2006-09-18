@@ -81,14 +81,93 @@ if __name__=='__main__':
 		os.system('sudo mount -o loop %s/ubuntu-fs.ext2 %s/new' % (args[1],args[1]))
 		os.system('sudo cp /etc/resolv.conf %s/new/etc/' % args[1])
 		os.system('sudo mount -t proc -o bind /proc %s/new/proc' % args[1])
+		os.system('sudo mount -t sysfs -o bind /sys %s/new/sys' % args[1])
 		f=open('chroot_cmd','w')
 		f.write('sudo chroot %s/new /bin/bash\n' % args[1])
 		f.close()
 		os.system('chmod 755 chroot_cmd')
 		os.system('konsole -e "./chroot_cmd"')
 		os.system('rm chroot_cmd')
-		os.system('sudo umount %s/new/proc"' % args[1])
+		os.system('sudo umount %s/new/sys' % args[1])
+		os.system('sudo umount %s/new/proc' % args[1])
 		os.system('sudo rm %s/new/etc/resolv.conf' % args[1])
-		os.system('sudo umount %s/new"' % args[1])
-		print "Run '%s create %s' to create a new cd image from the cd project" % (shell_cmd_name,args[2])
+		os.system('sudo umount %s/new' % args[1])
+		print "Run '%s create %s' to create a new cd image from the cd project" % (shell_cmd_name,args[1])
+	
+	if cmd == "create":
+		parser.set_usage("usage: %s %s project-name" % (shell_cmd_name,cmd))
+		parser.add_option("-e", "--excludefile", dest="excludefile",default=None,
+			help="a file of regular expressions used to exclude packages from the cd-installation manifest", metavar="SKOLESYS_EXCLUDEFILE")
+		(options, args) = parser.parse_args()
+		if len(args)<2:
+			print parser.usage
+			exit(0)
+		if not os.path.exists(args[1]):
+			print "The cd project %s does not exist." % args[1]
+			print parser.usage
+			exit(0)
+			
+		# mount the altered squashfs
+		os.system('sudo mount -o loop %s/ubuntu-fs.ext2 %s/new' % (args[1],args[1]))
+		
+		# Fetch the modified packagelist
+		f = os.popen("sudo chroot %s/new dpkg-query -W --showformat='${Package} ${Version}\n'" % args[1])
+		package_list = f.readlines()
+		f.close()
+		
+		# Write the new filesystem.manifest for the livecd
+		f = open("%s/livecd/casper/filesystem.manifest" % args[1], 'w')
+		f.write(''.join(package_list))
+		f.close()
+		
+		# Now maybe rule out packages for the installation filesystem.manifest (filesystem.manifest-desktop)
+		rx_rmlist = []
+		if options.excludefile:
+			if os.path.exists(options.excludefile):
+				f = open(options.excludefile)
+				rx_rmlist = f.readlines()
+				f.close()
+			else:
+				print "Warning: The excludefile %s does not exist or you don't have permission to read it." % options.excludefile
+			
+		rmlist = {}
+		for rxtest in rx_rmlist:
+			rx = re.compile(rxtest.strip())
+			if rx:
+				for p in package_list:
+					if rx.match(p):
+						rmlist[p] = 1
+			else:
+				print "Warning: The string %s could not be compiled as a regular expression." % rxtest
+		
+		if not len(rmlist):
+			print "No packages have been ruled out in the installation manifest (filesystem.manifest == filesystem.manifest-desktop)"
+		else: 
+			print "Following packages are ruled out in the installation manifest:\n%s" % ''.join(rmlist.keys())
+		for p in rmlist.keys():
+			package_list.remove(p)
+		
+		# Write the new filesystem.manifest for the livecd
+		f = open("%s/livecd/casper/filesystem.manifest-desktop" % args[1], 'w')
+		f.write(''.join(package_list))
+		f.close()
+		
+		print "Creating filesystem.squashfs..."
+		#os.system('sudo rm %s/livecd/casper/filesystem.squashfs' % args[1])
+		#os.system('sudo mksquashfs %s/new %s/livecd/casper/filesystem.squashfs' % (args[1],args[1]))
+		
+		cwd = os.getcwd()
+		os.chdir('%s/livecd' % args[1])
+		print "Creating md5sum.txt..."
+		f = os.popen('find . -type f -print0 | xargs -0 sudo md5sum')
+		md5sums = f.readlines()
+		f.close()
+		os.system('sudo mkisofs -r -V "SkoleSYS Pilot Ver 0.5" -cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o ../../skolesys-ltsp_0.5.iso .')
+		os.chdir(cwd)
+		f = open("%s/livecd/md5sum.txt" % args[1], 'w')
+		f.write(''.join(md5sums))
+		f.close()
+		
+		# unmount the altered squashfs for the last time (hopefully)
+		os.system('sudo umount %s/new' % args[1])
 
