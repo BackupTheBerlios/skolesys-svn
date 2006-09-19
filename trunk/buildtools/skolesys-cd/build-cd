@@ -43,25 +43,25 @@ if __name__=='__main__':
 			print parser.usage
 			exit(0)
 		cdinfo = __import__('%s_cdinfo' % cdproject)
-		if not os.path.exists(cdinfo.isobase):
-			print "cd image %s does not exist." % cdinfo.isobase
+		if not os.path.exists(cdinfo.iso_base):
+			print "cd image %s does not exist." % cdinfo.iso_base
 			print parser.usage
 			exit(0)
 		if os.path.exists('%s' % cdproject):
-			answer = raw_input("The cd project: '%s' already exists. Do you wish to delete it and continue? (y/n)" % args[1])
+			answer = raw_input("The cd project: '%s' already exists. Do you wish to delete it and continue? (y/n)" % cdproject)
 			if not answer.lower() == 'y':
 				exit(0)
 			print "Deleting files..."
 			os.system('sudo rm %s -R -f' % cdproject)
 		os.system('mkdir -p %s' % cdproject)
-		os.system('sudo mount -t iso9660 -o loop %s /cdrom' % cdinfo.isobase)
+		os.system('sudo mount -t iso9660 -o loop %s /cdrom' % cdinfo.iso_base)
 		os.system('mkdir %s/livecd' % cdproject)
 		print "Copying the cd image to the local filesystem..."
 		os.system('cp -a /cdrom/. %s/livecd' % cdproject)
 		os.system('chmod -R u+w %s/livecd' % cdproject)
 		os.system('sudo umount /cdrom')
 		os.system('mkdir %s/old' % cdproject)
-		os.system('sudo mount -t squashfs -o loop,ro %s/livecd/casper/filesystem.squashfs %s/old' % (args[2],args[2]))
+		os.system('sudo mount -t squashfs -o loop,ro %s/livecd/casper/filesystem.squashfs %s/old' % (cdproject,cdproject))
 		print "Creating a squashfs file..."
 		os.system('sudo dd if=/dev/zero of=%s/ubuntu-fs.ext2 bs=1M count=2147' % cdproject)
 		print "Formatting the squashfs file as ext2..."
@@ -171,7 +171,7 @@ if __name__=='__main__':
 		f = os.popen('find . -type f -print0 | xargs -0 sudo md5sum')
 		md5sums = f.readlines()
 		f.close()
-		os.system('sudo mkisofs -r -V "%s" -cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o ../../%s .' % (cdinfo.diskname,cdinfo.iso_product))
+		os.system('sudo mkisofs -r -V "%s" -cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o ../../%s .' % (cdinfo.volume_id,cdinfo.iso_product))
 		os.chdir(cwd)
 		f = open("%s/livecd/md5sum.txt" % cdproject, 'w')
 		f.write(''.join(md5sums))

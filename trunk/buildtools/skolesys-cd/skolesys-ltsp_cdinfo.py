@@ -1,5 +1,3 @@
-version = "0.5"
-
 iso_base = "kubuntu-6.06.1-desktop-i386.iso"
 
 inst_manifest_excludes = \
@@ -14,6 +12,8 @@ inst_manifest_excludes = \
 ^libdebconfclient
 ^kubuntu-live
 ^user-setup"""
+
+volume_id = 'SkoleSYS_0.5'
 
 diskname = 'SkoleSYS 0.5 LTSP "Pilot" - Release i386'
 
