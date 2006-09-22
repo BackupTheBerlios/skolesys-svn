@@ -1,0 +1,43 @@
+#! /usr/bin/python
+import os,sys
+from optparse import OptionParser
+
+if __name__=='__main__':
+
+	shell_cmd_name = os.path.split(sys.argv[0])[-1:][0]
+	
+	usage = "usage: %s [-v|-q] isofile" % shell_cmd_name
+	
+	parser = OptionParser(usage=usage)
+
+	parser.add_option("-q", "--qemu",
+                  action="store_true", dest="qemu", default=False,
+                  help="use qemu to test the cd (default)")	
+	parser.add_option("-v", "--vmplayer",
+                  action="store_true", dest="vmplayer", default=False,
+                  help="use vmplayer to test the cd")	
+	
+	(options, args) = parser.parse_args()
+	if len(args)<1:
+		print parser.usage
+		sys.exit(0)
+	isofile = args[0]
+	print isofile
+
+	if options.qemu==True or options.vmplayer==False:
+		# Use qemu
+		print "using qemu"
+		os.system('qemu -cdrom %s' % isofile)
+
+	elif options.vmplayer==True:
+		# Use vmplayer
+		print "using vmplayer"
+		f = open('livecd.vmx.temp')
+		buf = f.read()
+		f.close()
+		buf=buf.replace('<isofile>',isofile)
+		f = open('livecd.vmx','w')
+		f.write(buf)
+		f.close()
+		os.system('vmplayer livecd.vmx')
+
