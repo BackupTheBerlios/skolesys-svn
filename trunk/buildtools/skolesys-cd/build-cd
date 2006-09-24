@@ -43,6 +43,9 @@ if __name__=='__main__':
 			print parser.usage
 			exit(0)
 		cdinfo = __import__('%s_cdinfo' % cdproject)
+		if not dir(cdinfo).count('version'):
+			cdinfo.version = ''
+		
 		if not os.path.exists(cdinfo.iso_base):
 			print "cd image %s does not exist." % cdinfo.iso_base
 			print parser.usage
@@ -71,6 +74,37 @@ if __name__=='__main__':
 
 		print "Copying files to squashfs..."
 		os.system('sudo cp -a %s/old/. %s/new' % (cdproject,cdproject))
+		os.system('sudo cp /etc/resolv.conf %s/new/etc/' % cdproject)
+		
+		
+		if os.path.exists('%s_%s.tar.gz' % (cdproject,cdinfo.version)):
+			os.system('cp %s_%s.tar.gz %s' % (cdproject,cdinfo.version,cdproject))
+			curdir = os.getcwd()
+			os.chdir(cdproject)
+			os.system('tar xvzf %s_%s.tar.gz' % (cdproject,cdinfo.version))
+			os.chdir(curdir)
+		
+		if dir(cdinfo).count('post_extract_script'):
+			curdir = os.getcwd()
+			os.chdir(cdproject)
+			print "Executing user-defined post-extract-scripts..."
+			f=open('post_extract_script' ,'w')
+			f.write(cdinfo.post_extract_script)
+			f.close()
+			os.system('chmod 755 post_extract_script')
+			os.system('./post_extract_script')
+			os.chdir(curdir)
+		
+		if dir(cdinfo).count('chroot_script'):
+			print "Executing user-defined chroot-script on squashfs..."
+			f=open('%s/new/tmp/chroot_script' % cdproject,'w')
+			f.write(cdinfo.chroot_script)
+			f.close()
+			os.system('sudo chmod 755 %s/new/tmp/chroot_script' % cdproject)
+			os.system('sudo chroot %s/new /tmp/chroot_script' % cdproject)
+		
+		# Unmount all
+		os.system('sudo rm %s/new/etc/resolv.conf' % cdproject)
 		os.system('sudo umount %s/old' % cdproject)
 		os.system('sudo umount %s/new' % cdproject)
 		print "Run '%s edit %s' to start editing the cd project" % (shell_cmd_name,cdproject)
@@ -116,6 +150,8 @@ if __name__=='__main__':
 			print parser.usage
 			exit(0)
 		cdinfo = __import__('%s_cdinfo' % cdproject)
+		if not dir(cdinfo).count('version'):
+			cdinfo.version = ''
 		
 		if not os.path.exists(cdproject):
 			print "The cd project %s does not exist." % args[1]
@@ -171,7 +207,8 @@ if __name__=='__main__':
 		f = os.popen('find . -type f -print0 | xargs -0 sudo md5sum')
 		md5sums = f.readlines()
 		f.close()
-		os.system('sudo mkisofs -r -V "%s" -cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o ../../%s .' % (cdinfo.volume_id,cdinfo.iso_product))
+		os.system('sudo mkisofs -r -V "%s" -cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o ../../%s .' % \
+			(cdinfo.volume_id.replace('<ver>',cdinfo.version),cdinfo.iso_product.replace('<ver>',cdinfo.version)))
 		os.chdir(cwd)
 		f = open("%s/livecd/md5sum.txt" % cdproject, 'w')
 		f.write(''.join(md5sums))
