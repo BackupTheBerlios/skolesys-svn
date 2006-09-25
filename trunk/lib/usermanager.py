@@ -4,7 +4,6 @@ from ldaptools import LDAPUtil
 from ldiftools import LDIFImporter
 import re,grp,pwd,os,ldap
 from mkpasswd import mkpasswd
-from pickle import dumps
 
 # User types
 TEACHER = 1
@@ -12,8 +11,8 @@ STUDENT = 2
 PARENT = 3
 OTHER = 4
 
-######################################################################################
-# GroupManager
+#-------------------------------------
+#---------- GroupManager -------------
 
 class GroupManager (LDAPUtil):
 	def __init__(self):
@@ -187,8 +186,8 @@ class GroupManager (LDAPUtil):
 
 
 
-####################################################################################
-# UserManager
+#---------------------------------
+#--------- UserManager -----------
 
 class UserManager (LDAPUtil):
 	"""
