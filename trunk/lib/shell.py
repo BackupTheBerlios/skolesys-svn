@@ -46,7 +46,7 @@ if __name__=='__main__':
 	commands = {'createuser': 'Create a new system user and home directory',
 		'removeuser': 'Remove a user from',
 		'groupadd' :'Add a user to a group',
-		'groupdel': 'Remove a user to a group',
+		'groupdel': 'Remove a user from a group',
 		'listusers': 'Show a list of system users',
 		'listusergroups': 'Show a list of groups a certain user is member of',
 		'creategroup': 'Create a new system group and a group directory',
