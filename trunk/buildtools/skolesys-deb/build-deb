@@ -52,9 +52,13 @@ if __name__=='__main__':
 		print "ERROR: %s_debfile.py requires the member 'fetch_method'" % module	
 
 	# Fetch by subversion
-	if debinfo.fetch_method=='svn': 
+	if debinfo.fetch_method=='svn':
 		if not options.svnbase:
-			options.svnbase = raw_input("Input the folder containing the svn module %s: " % module)	
+			env_svnbase = os.getenv('SKOLESYS_SVNBASE')
+			if env_svnbase:
+				options.svnbase = env_svnbase
+			else:
+				options.svnbase = raw_input("Input the folder containing the svn module %s: " % module)	
 		
 		os.system('svn co %s rep' % os.path.join(options.svnbase,module))
 		os.system('find rep | grep "\\.svn" | xargs rm -R -f')
