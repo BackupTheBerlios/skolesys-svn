@@ -210,7 +210,7 @@ def removegroup(session_id,groupname,backup_home,remove_home):
 	gm = userman.GroupManager()
 	return pdump(gm.removegroup(groupname,backup_home,remove_home))
 
-class getconf(session_id):
+def getconf(session_id):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	f = open('/home/admin/conf.tgz','rb')
