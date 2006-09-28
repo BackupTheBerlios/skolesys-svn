@@ -128,13 +128,6 @@ class SkoleSYS_Client:
 	def getconf(self):
 		return pload(self.server.getconf(pdump(self.session_id)))
 	
-	class getconf(session_id):
-	if not session_valid(pload(session_id)):
-		return pdump(False)
-	gm = userman.GroupManager()
-	return pdump(hm.getconf())
-
-
 
 if __name__=='__main__':
     c=SkoleSYS_Client('https://127.0.0.1',8443)
