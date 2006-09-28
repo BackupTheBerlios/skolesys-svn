@@ -210,6 +210,14 @@ def removegroup(session_id,groupname,backup_home,remove_home):
 	gm = userman.GroupManager()
 	return pdump(gm.removegroup(groupname,backup_home,remove_home))
 
+class getconf(session_id):
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+	f = open('/home/admin/conf.tgz','rb')
+	o = f.read()
+	f.close()
+	
+	return pdump(o)
 
 class MyServer(SOAPpy.SOAPServer):
     def __init__(self,addr=('localhost', 8000), ssl_context=None):
@@ -217,8 +225,10 @@ class MyServer(SOAPpy.SOAPServer):
 
     def verify_request(self,request,clientaddr):
         #print request.get_session().as_text()
-        #print ip2hwaddr(clientaddr[0])
+        print ip2hwaddr(clientaddr[0])
         return True
+
+
 
 def startserver():
 	skolesys_basepath = os.path.split(inspect.getsourcefile(skolesys))[0]
@@ -242,7 +252,8 @@ def startserver():
 	server.registerFunction(test_binded)
 
 	# Real functionality
-	# User
+	# ------------------
+	# User Management
 	server.registerFunction(domain_name)
 	server.registerFunction(user_exists)
 	server.registerFunction(list_users)
@@ -252,13 +263,15 @@ def startserver():
 	server.registerFunction(groupadd)
 	server.registerFunction(groupdel)
 	
-	# Group
+	# Group Management
 	server.registerFunction(group_exists)
 	server.registerFunction(list_groups)
 	server.registerFunction(list_members)
 	server.registerFunction(creategroup)
 	server.registerFunction(removegroup)
 	
+	# Host Management
+	server.registerFunction(getconf)
 
 	server.serve_forever()
 

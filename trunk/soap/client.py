@@ -124,6 +124,16 @@ class SkoleSYS_Client:
 		"""
 		print groupname,backup_home,remove_home
 		return pload(self.server.removegroup(pdump(self.session_id),pdump(groupname),pdump(backup_home),pdump(remove_home)))
+	
+	def getconf(self):
+		return pload(self.server.getconf(pdump(self.session_id)))
+	
+	class getconf(session_id):
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+	gm = userman.GroupManager()
+	return pdump(hm.getconf())
+
 
 
 if __name__=='__main__':
