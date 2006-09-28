@@ -126,7 +126,10 @@ class SkoleSYS_Client:
 		return pload(self.server.removegroup(pdump(self.session_id),pdump(groupname),pdump(backup_home),pdump(remove_home)))
 	
 	def getconf(self):
-		return pload(self.server.getconf(pdump(self.session_id)))
+		binary_conf_tgz = pload(self.server.getconf(pdump(self.session_id)))
+		f=open('/etc/skolesys/conf.tgz','wb')
+		f.write(binary_conf_tgz)
+		f.close()
 	
 
 if __name__=='__main__':
