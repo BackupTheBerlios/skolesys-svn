@@ -1,4 +1,4 @@
-#! /usr/bin/python
+	#! /usr/bin/python
 from conf import conf
 from ldaptools import LDAPUtil
 from ldiftools import LDIFImporter
@@ -10,8 +10,17 @@ MAINSERVER = 1
 LTSPSERVER = 2
 WORKSTATION = 3
 LTSPCLIENT = 4
+DYNAMIC = 5 # non-registered hosts
 
 # tools, validation and sanitychecks
+def check_subnet(subnet_str):
+	c = re.compile('^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/\d{1,2}$')
+	subnet_str = subnet_str.strip()
+	m = c.match(subnet_str)
+	if m:
+		return m.groups()
+	return None
+
 def check_hostname(hostname):
 	c = re.compile('^[a-z0-9]+$')
 	hostname = hostname.strip().lower()
@@ -45,19 +54,27 @@ def check_ipaddr(ipaddr):
 def check_hosttype_text(hosttype_text):
 	global MAINSERVER,LTSPSERVER,WORKSTATION,LTSPCLIENT
 	hosttype_text = hosttype_text.strip().lower()
+	if hosttype_text == 'mainserver':
+		return MAINSERVER
 	if hosttype_text == 'ltspserver':
 		return LTSPSERVER
 	if hosttype_text == 'workstation':
 		return WORKSTATION
+	if hosttype_text == 'ltspclient':
+		return LTSPCLIENT
 	return None
 
 
 def translate_hosttype_id(hosttype_id):
 	global MAINSERVER,LTSPSERVER,WORKSTATION,LTSPCLIENT
+	if hosttype_id == MAINSERVER:
+		return 'mainserver'
 	if hosttype_id == LTSPSERVER:
 		return 'ltspserver'
 	if hosttype_id == WORKSTATION:
 		return 'workstation'
+	if hosttype_id == LTSPCLIENT:
+		return 'ltspclient'
 	return None
 
 #-------------------------------------
@@ -97,7 +114,7 @@ class HostManager (LDAPUtil):
 			return None
 		
 		# Parse the iprange string
-		c = re.compile('^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\s*-\s*(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$')
+		c = re.compile('^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\s*(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$')
 		m = c.match(iprange_str.strip())
 		if m:
 			ipstart = iptoint('.'.join(m.groups()[:4]))
@@ -125,7 +142,20 @@ class HostManager (LDAPUtil):
 				return inttoip(newip)
 		return None
 		
-		
+	def fetch_ip_range(self,hosttype_id):
+		"""
+		Query skolesys.conf and return an ip range as a tuple eg. ("10.1.1.1","10.3.3.254")
+		"""
+		hosttype_text = translate_hosttype_id(hosttype_id)
+		iprange_str = conf.get('DOMAIN','%s_iprange' % hosttype_text)
+		if not iprange_str:
+			print "XXX make default ip ranges here"
+			return None
+		# Parse the iprange string
+		c = re.compile('^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$')
+		m = c.match(iprange_str.strip())
+		if m:
+			return m.groups()
 	
 	def host_exists(self,hwaddr=None,hostname=None):
 		"""

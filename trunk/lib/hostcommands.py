@@ -175,4 +175,5 @@ if __name__=='__main__':
 			print "%-20s   %-15s   %-17s   %-20s" % ('Hostname','IPaddress','HWaddress','Hosttype')
 		for hinfo in hlist:
 			print "%-20s   %-15s   %-17s   %-20s" % (hinfo['hostName'][0],hinfo['ipHostNumber'][0],hinfo['macAddress'][0],hinfo['hostType'][0])
+
 		
