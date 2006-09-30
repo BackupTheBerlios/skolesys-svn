@@ -14,7 +14,7 @@ DYNAMIC = 5 # non-registered hosts
 
 # tools, validation and sanitychecks
 def check_subnet(subnet_str):
-	c = re.compile('^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/\d{1,2}$')
+	c = re.compile('^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/(\d{1,2})$')
 	subnet_str = subnet_str.strip()
 	m = c.match(subnet_str)
 	if m:
