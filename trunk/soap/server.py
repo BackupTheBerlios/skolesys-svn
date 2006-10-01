@@ -219,7 +219,7 @@ def getconf(session_id):
 	hinfo = hm.host_info('00:40:CA:6C:A0:01')
 	if not hinfo:
 		return -1 # Only registered hosts can ask for configurations
-	hostype_id = check_hosttype_id(hinfo['hostType'][0])
+	hostype_id = check_hosttype_text(hinfo['hostType'][0])
 	if not hosttype_id:
 		return -2 # The host is registered with an invalid host type id
 	cb = ConfigBuilder(hosttype_id,hinfo['macAddress'][0])
