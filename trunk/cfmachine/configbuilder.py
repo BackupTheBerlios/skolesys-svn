@@ -73,7 +73,7 @@ class ConfigBuilder:
 		os.chdir(curdir)
 
 	def __del__(self):
-		os.system('rm %s -R -f' % self.tempdir)
+		#os.system('rm %s -R -f' % self.tempdir)
 
 if __name__=='__main__':
 	# test
