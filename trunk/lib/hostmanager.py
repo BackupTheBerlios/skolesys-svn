@@ -13,6 +13,23 @@ LTSPCLIENT = 4
 DYNAMIC = 5 # non-registered hosts
 
 # tools, validation and sanitychecks
+
+def iptoint(ipaddr):
+	ipint = 0
+	c = re.compile('^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$')
+	m = c.match(ipaddr.strip())
+	if m:
+		for ipnum_idx in xrange(len(m.groups())):
+			ipint += int(m.groups()[ipnum_idx])*(256**(3-ipnum_idx))
+		return ipint
+	return None
+	
+def inttoip(ipint):
+	return '%d.%d.%d.%d' % ((ipint>>24)&255,(ipint>>16)&255,(ipint>>8)&255,ipint&255)
+
+
+
+
 def check_subnet(subnet_str):
 	c = re.compile('^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/(\d{1,2})$')
 	subnet_str = subnet_str.strip()
@@ -20,6 +37,7 @@ def check_subnet(subnet_str):
 	if m:
 		return m.groups()
 	return None
+
 
 def check_hostname(hostname):
 	c = re.compile('^[a-z0-9]+$')
@@ -93,21 +111,7 @@ class HostManager (LDAPUtil):
 		is defined in skolesys.conf and the ip addresses already assigned
 		are read in the ldap database
 		"""
-		
-		def iptoint(ipaddr):
-			ipint = 0
-			c = re.compile('^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$')
-			m = c.match(ipaddr.strip())
-			if m:
-				for ipnum_idx in xrange(len(m.groups())):
-					ipint += int(m.groups()[ipnum_idx])*(256**(3-ipnum_idx))
-				return ipint
-			return None
-		
-		def inttoip(ipint):
-			return '%d.%d.%d.%d' % ((ipint>>24)&255,(ipint>>16)&255,(ipint>>8)&255,ipint&255)
-			
-		
+	
 		hosttype_text = translate_hosttype_id(hosttype_id)
 		if not hosttype_text:
 			return None
