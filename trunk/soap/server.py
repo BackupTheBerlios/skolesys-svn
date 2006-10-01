@@ -220,6 +220,8 @@ def getconf(session_id):
 	if not hinfo:
 		return -1 # Only registered hosts can ask for configurations
 	cb = ConfigBuilder(hinfo['hostType'][0],hinfo['macAddress'][0])
+	print hinfo['hostType'][0],hinfo['macAddress'][0]
+	print cb.tempdir 
 	f = open('%s/conf.tgz' % cb.tempdir ,'rb')
 	o = f.read()
 	f.close()
