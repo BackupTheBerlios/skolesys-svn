@@ -139,7 +139,7 @@ class HostManager (LDAPUtil):
 					already_assigned += [ipint]
 					
 			newip = None
-			for tryip in xrange(ipstart,ipend+1):
+			for tryip in range(ipstart,ipend+1):
 				if already_assigned.count(tryip):
 					continue
 				newip = tryip
@@ -199,10 +199,9 @@ class HostManager (LDAPUtil):
 		if not translate_hosttype_id(hosttype_id):
 			return -3
 		hosttype = translate_hosttype_id(hosttype_id)
-		
 		if ipaddr and not check_ipaddr(ipaddr):
 			return -4
-				
+		
 		# check if the hwaddr is already registered.
 		if self.host_exists(hwaddr=hwaddr):
 			return -5
@@ -233,7 +232,6 @@ class HostManager (LDAPUtil):
 			'ipHostNumber': ipaddr,
 			'objectclass':('skoleSysHost','top')}
 		
-		print host_info
 		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
 		self.touch_by_dict({path:host_info})
 		

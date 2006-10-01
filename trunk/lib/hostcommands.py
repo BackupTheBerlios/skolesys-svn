@@ -80,7 +80,7 @@ if __name__=='__main__':
 			exit(0)
 			
 		while not options.hosttype or not hostmanager.check_hosttype_text(options.hosttype):
-			options.hosttype = raw_input("Input the host type (ltspserver,workstation): ")
+			options.hosttype = raw_input("Input the host type (ltspserver,ltspclient,workstation): ")
 		hosttype_id = hostmanager.check_hosttype_text(options.hosttype)
 		
 		try:

@@ -1,4 +1,4 @@
-__all__ = ["usermanager", "groupmanager"]
+__all__ = ["usermanager", "hostmanager"]
 
 def _get_exports_list(module):
     try:
