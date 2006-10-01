@@ -30,6 +30,8 @@ def check_hostname(hostname):
 	return None
 	
 def check_hwaddr(hwaddr):
+	if not hwaddr:
+		return None
 	c1 = re.compile('^[a-f0-9]{2}:[a-f0-9]{2}:[a-f0-9]{2}:[a-f0-9]{2}:[a-f0-9]{2}:[a-f0-9]{2}$')
 	c2 = re.compile('^([a-f0-9]{2})([a-f0-9]{2})([a-f0-9]{2})([a-f0-9]{2})([a-f0-9]{2})([a-f0-9]{2})$')
 	hwaddr = hwaddr.strip().lower()
