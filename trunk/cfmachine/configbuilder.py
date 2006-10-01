@@ -74,6 +74,7 @@ class ConfigBuilder:
 
 	def __del__(self):
 		#os.system('rm %s -R -f' % self.tempdir)
+		pass
 
 if __name__=='__main__':
 	# test
