@@ -5,7 +5,7 @@ import tempfile,os
 
 class ConfigBuilder:
 
-	def __init__(self,hosttype_id,hwaddr=None):
+	def __init__(self,hwaddr=None):
 		"""
 		1. Create temp directory
 		2. Fetch 

@@ -15,6 +15,8 @@ import pickle
 import skolesys
 import skolesys.lib.usermanager as userman
 from skolesys.lib.conf import conf
+from skolesys.lib.hostmanager import HostManager
+from skolesys.cfmachine.configbuilder import ConfigBuilder
 from M2Crypto import SSL
 from p2 import p2_decrypt
 import time
@@ -213,7 +215,12 @@ def removegroup(session_id,groupname,backup_home,remove_home):
 def getconf(session_id):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
-	f = open('/home/admin/conf.tgz','rb')
+	hm = HostManager()
+	hinfo = hm.host_info('00:40:CA:6C:A0:01')
+	if not hinfo:
+		return -1 # Only registered hosts can ask for configurations
+	cb = ConfigBuilder(hinfo['hostType'][0],hinfo['macAddress'][0])
+	f = open('%s/conf.tgz' % cb.tempdir ,'rb')
 	o = f.read()
 	f.close()
 	

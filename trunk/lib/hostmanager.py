@@ -236,7 +236,7 @@ class HostManager (LDAPUtil):
 		self.touch_by_dict({path:host_info})
 		
 		return 1		
-
+	
 	def host_info(self,hwaddr=None,hostname=None):
 		hostspath = "%s,%s" % (conf.get('LDAPSERVER','hosts_ou'),conf.get('LDAPSERVER','basedn'))
 		if hwaddr:
