@@ -15,7 +15,7 @@ import pickle
 import skolesys
 import skolesys.lib.usermanager as userman
 from skolesys.lib.conf import conf
-from skolesys.lib.hostmanager import HostManager
+from skolesys.lib.hostmanager import HostManager,check_hosttype_text
 from skolesys.cfmachine.configbuilder import ConfigBuilder
 from M2Crypto import SSL
 from p2 import p2_decrypt
@@ -219,7 +219,10 @@ def getconf(session_id):
 	hinfo = hm.host_info('00:40:CA:6C:A0:01')
 	if not hinfo:
 		return -1 # Only registered hosts can ask for configurations
-	cb = ConfigBuilder(hinfo['hostType'][0],hinfo['macAddress'][0])
+	hostype_id = check_hosttype_id(hinfo['hostType'][0])
+	if not hosttype_id:
+		return -2 # The host is registered with an invalid host type id
+	cb = ConfigBuilder(hosttype_id,hinfo['macAddress'][0])
 	print hinfo['hostType'][0],hinfo['macAddress'][0]
 	print cb.tempdir 
 	f = open('%s/conf.tgz' % cb.tempdir ,'rb')
