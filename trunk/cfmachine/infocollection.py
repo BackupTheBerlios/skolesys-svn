@@ -2,14 +2,16 @@ import re
 from skolesys.lib.hostmanager import *
 from skolesys.lib.conf import *
 from Cheetah.Template import Template
+from math import ceil
 
 class InfoCollection:
 	"""
 	Collect info from LDAP, skolesys.conf e.t.c. to be used
 	by the configuration template system.
 	"""
-	def __init__(self):
+	def __init__(self,hwaddr=None):
 		self.data = {}
+		self.hwaddr = check_hwaddr(hwaddr)
 		self.conf_info()
 		self.host_info()
 		self.user_info()
@@ -33,10 +35,17 @@ class InfoCollection:
 		if not res:
 			return -1
 		subnet,subnetmask = res
-		subnetmask_int = 2**int(subnetmask)-1
-		subnetmask_address = '%d.%d.%d.%d' % (subnetmask_int&255,(subnetmask_int>>8)&255,(subnetmask_int>>16)&255,(subnetmask_int>>24)&255)
+		subnetmask_int = (2**32-1) - (2**(32-int(subnetmask))-1)
+		subnet_int = iptoint(subnet)
+		subnetmask_address = '%d.%d.%d.%d' % ((subnetmask_int>>24)&255,(subnetmask_int>>16)&255,(subnetmask_int>>8)&255,subnetmask_int&255)
 		self.data['conf']['domain']['mainserver_subnet'] = subnet
 		self.data['conf']['domain']['mainserver_subnetmask'] = subnetmask_address
+		subnet_short = ()
+		bit_shifter = 24
+		for ip_part in xrange(int(ceil(float(subnetmask)/8))):
+			subnet_short += (str((subnet_int>>bit_shifter) & ((subnetmask_int>>bit_shifter) & 255)),)
+			bit_shifter -= 8
+		self.data['conf']['domain']['mainserver_subnet_short'] = '.'.join(subnet_short)
 		
 		# LTSP servers
 		subnet_str = self.data['conf']['domain']['ltspserver_subnet']
@@ -44,10 +53,17 @@ class InfoCollection:
 		if not res:
 			return -2
 		subnet,subnetmask = res
-		subnetmask_int = 2**int(subnetmask)-1
-		subnetmask_address = '%d.%d.%d.%d' % (subnetmask_int&255,(subnetmask_int>>8)&255,(subnetmask_int>>16)&255,(subnetmask_int>>24)&255)
+		subnetmask_int = (2**32-1) - (2**(32-int(subnetmask))-1)
+		subnet_int = iptoint(subnet)
+		subnetmask_address = '%d.%d.%d.%d' % ((subnetmask_int>>24)&255,(subnetmask_int>>16)&255,(subnetmask_int>>8)&255,subnetmask_int&255)
 		self.data['conf']['domain']['ltspserver_subnet'] = subnet
 		self.data['conf']['domain']['ltspserver_subnetmask'] = subnetmask_address
+		subnet_short = ()
+		bit_shifter = 24
+		for ip_part in xrange(int(ceil(float(subnetmask)/8))):
+			subnet_short += (str((subnet_int>>bit_shifter) & ((subnetmask_int>>bit_shifter) & 255)),)
+			bit_shifter -= 8
+		self.data['conf']['domain']['ltspserver_subnet_short'] = '.'.join(subnet_short)
 		
 
 	def host_info(self):
@@ -62,6 +78,10 @@ class InfoCollection:
 			if not self.data['hosts'].has_key(htyp):
 				self.data['hosts'][htyp] = []
 			self.data['hosts'][htyp] += [nhost]
+			if self.hwaddr == nhost['macAddress']:
+				self.data['reciever'] = nhost
+				
+
 	
 	def user_info(self):
 		"""
@@ -74,14 +94,18 @@ class InfoCollection:
 		"""
 		pass
 
+	def get_collection(self):
+		"""
+		Fetch the info collection data container
+		"""
+		return self.data
+
+
 
 # Test
 if __name__=='__main__':
 	ic = InfoCollection()
-	f=open('dhcpd.conf')
-	buf = f.read()
-	f.close()
-	t = Template(buf, searchList=[ic.data])
+	t = Template(file='dhcpd.conf', searchList=[ic.data])
 	f=open('dhcpd_out.conf','w')
 	f.write(t.__str__())
 	f.close()
