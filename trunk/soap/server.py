@@ -216,7 +216,7 @@ def getconf(session_id,hwaddr):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	
-	hwaddr = pload(session_id)
+	hwaddr = pload(hwaddr)
 	hm = HostManager()
 	hinfo = hm.host_info(hwaddr)
 	if not hinfo:
