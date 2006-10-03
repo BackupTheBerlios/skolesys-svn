@@ -240,7 +240,7 @@ class MyServer(SOAPpy.SOAPServer):
 
     def verify_request(self,request,clientaddr):
         #print request.get_session().as_text()
-        print ip2hwaddr(clientaddr[0])
+        #print ip2hwaddr(clientaddr[0])
         return True
 
 
