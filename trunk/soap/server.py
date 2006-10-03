@@ -220,19 +220,19 @@ def getconf(session_id,hwaddr):
 	hm = HostManager()
 	hinfo = hm.host_info(hwaddr)
 	if not hinfo:
-		return pdump(-1) # Only registered hosts can ask for configurations
+		return pdump([-1,'']) # Only registered hosts can ask for configurations
 	
 	hosttype_id = check_hosttype_text(hinfo['hostType'][0])
 	if not hosttype_id:
-		return pdump(-2) # The host is registered with an invalid host type id
+		return pdump([-2,'']) # The host is registered with an invalid host type id
 	
 	print "Configuration requested by host: %s" % hwaddr
-	cb = ConfigBuilder(hosttype_id,hinfo['macAddress'][0])
+	cb = ConfigBuilder(hosttype_id,hwaddr)
 	f = open('%s/conf.tgz' % cb.tempdir ,'rb')
 	o = f.read()
 	f.close()
 	
-	return pdump(o)
+	return pdump([1,o])
 
 class MyServer(SOAPpy.SOAPServer):
     def __init__(self,addr=('localhost', 8000), ssl_context=None):
