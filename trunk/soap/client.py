@@ -142,10 +142,15 @@ class SkoleSYS_Client:
 		if hwaddr == None:
 			hwaddr = self.hwaddr
 		
-		binary_conf_tgz = pload(self.server.getconf(pdump(self.session_id),pdump(self.hwaddr)))
+		pdump(hwaddr)
+		pdump(self.session_id)
+		res = pload(self.server.getconf(pdump(self.session_id),pdump(hwaddr)))
+		if res[0]<0:
+			return res[0]
 		f=open('/etc/skolesys/conf.tgz','wb')
-		f.write(binary_conf_tgz)
+		f.write(res[1])
 		f.close()
+		return res[0]
 	
 
 if __name__=='__main__':
