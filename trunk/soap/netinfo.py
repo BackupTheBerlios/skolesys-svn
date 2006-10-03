@@ -1,7 +1,7 @@
 import socket
 import fcntl
 import struct
-import re
+import re,os
 
 
 def if2ip(ifname):
@@ -25,6 +25,34 @@ def ip2hwaddr(ip):
 			m=c.match(l)
 			if m and m.groups()[0]==ip:
 				return m.groups()[1]
+	except:
+		pass
+	try:
+		rx_newif=re.compile('^(\w+)')
+		rx_hwaddr=re.compile('^(\w+).+([0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2}:[0-9a-fA-F]{2})')
+		rx_inet_addr=re.compile('^.+inet addr:(\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3})')
+		o = os.popen('ifconfig')
+		out = o.readlines()
+		o.close()
+		
+		ip_maps = {}
+		cur_if = None
+		cur_hwaddr = None
+		for l in out:
+			m = rx_newif.match(l)
+			if m:
+				cur_hwaddr = None
+			m = rx_hwaddr.match(l)
+			if m:
+				cur_if = m.groups()[0]
+				cur_hwaddr = m.groups()[1]
+			m = rx_inet_addr.match(l)
+			if m and cur_hwaddr:
+				ip_maps[m.groups()[0]] = cur_hwaddr
+		
+		if ip_maps.has_key(ip.strip()):
+			return ip_maps[ip.strip()]
+		
 	except:
 		pass
 	return None

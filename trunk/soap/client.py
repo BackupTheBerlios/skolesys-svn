@@ -2,16 +2,29 @@ import SOAPpy
 import pickle
 from p2 import p2_encrypt
 from marshall import pdump,pload
-import sys
+import sys,httplib
+from netinfo import ip2hwaddr
 
 class SkoleSYS_Client:
 	def __init__(self,host,port=None,log=sys.stderr):
 		self.logfile = log
 		if port:
-			self.server = SOAPpy.SOAPProxy("%s:%d/" % (host,port))
+			url = "%s:%d/" % (host,port)
 		else:
-			self.server = SOAPpy.SOAPProxy(host)
+			url = host
+		self.server = SOAPpy.SOAPProxy(url)
 		self._get_id()
+		
+		# Fetch the client hwaddr
+		addr = SOAPpy.SOAPAddress(url)
+		
+		real_addr = addr.host
+		if addr.proto == 'https':
+			r = httplib.HTTPS(real_addr)
+		else:
+			r = httplib.HTTP(real_addr)
+		r._conn.connect()
+		self.hwaddr = ip2hwaddr(r._conn.sock._sock.getsockname()[0])
 
 	def logtext(self,txt):
 		if self.logfile:
@@ -125,8 +138,11 @@ class SkoleSYS_Client:
 		print groupname,backup_home,remove_home
 		return pload(self.server.removegroup(pdump(self.session_id),pdump(groupname),pdump(backup_home),pdump(remove_home)))
 	
-	def getconf(self):
-		binary_conf_tgz = pload(self.server.getconf(pdump(self.session_id)))
+	def getconf(self,hwaddr=None):
+		if hwaddr == None:
+			hwaddr = self.hwaddr
+		
+		binary_conf_tgz = pload(self.server.getconf(pdump(self.session_id),pdump(self.hwaddr)))
 		f=open('/etc/skolesys/conf.tgz','wb')
 		f.write(binary_conf_tgz)
 		f.close()
