@@ -212,19 +212,22 @@ def removegroup(session_id,groupname,backup_home,remove_home):
 	gm = userman.GroupManager()
 	return pdump(gm.removegroup(groupname,backup_home,remove_home))
 
-def getconf(session_id):
+def getconf(session_id,hwaddr):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
+	
+	hwaddr = pload(session_id)
 	hm = HostManager()
-	hinfo = hm.host_info('00:40:CA:6C:A0:01')
+	hinfo = hm.host_info(hwaddr)
 	if not hinfo:
 		return -1 # Only registered hosts can ask for configurations
+	
 	hosttype_id = check_hosttype_text(hinfo['hostType'][0])
 	if not hosttype_id:
 		return -2 # The host is registered with an invalid host type id
+	
+	print "Configuration requested by host: %s" % hwaddr
 	cb = ConfigBuilder(hosttype_id,hinfo['macAddress'][0])
-	print hinfo['hostType'][0],hinfo['macAddress'][0]
-	print cb.tempdir 
 	f = open('%s/conf.tgz' % cb.tempdir ,'rb')
 	o = f.read()
 	f.close()
