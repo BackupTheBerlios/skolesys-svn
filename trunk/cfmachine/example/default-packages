@@ -1,0 +1,14 @@
+firestarter
+dhcp3-server
+nscd
+libnss-ldap
+libpam-ldap
+ldap-utils
+openssh-server
+nfs-kernel-server
+skolesys-ltsp
+skolesys-ui
+tftpd-hpa
+libwww-perl
+mozilla-firefox
+mozilla-thunderbird
