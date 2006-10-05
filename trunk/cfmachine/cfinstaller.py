@@ -1,7 +1,8 @@
 #!/usr/bin/python
 
-import re,grp,os,ldap
-from sys import argv,exit
+import re,os
+from sys import argv,exit,path
+path += ['.']
 
 # Check root privilegdes
 if not os.getuid()==0:
