@@ -8,7 +8,7 @@ packagelist_files = [
 	'default-packages','custom-packages']
 
 copy_files_rootdir = \
-	['rootdir']
+	'rootdir'
 
 kick_daemons = [
 	'/etc/init.d/networking restart',
