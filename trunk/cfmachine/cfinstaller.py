@@ -9,8 +9,8 @@ if not os.getuid()==0:
 	exit(0)
 	
 from optparse import OptionParser
-from apthelpers import SourcesList
-from fstabhelpers import Fstab
+from skolesys.cfmachine.apthelpers import SourcesList
+from skolesys.cfmachine.fstabhelpers import Fstab
 
 
 if __name__=='__main__':

@@ -1,4 +1,4 @@
-__all__ = ["infocollection","configbuilder"]
+__all__ = ["infocollection","configbuilder","fstabhelpers","apthelpers"]
 
 def _get_exports_list(module):
     try:
