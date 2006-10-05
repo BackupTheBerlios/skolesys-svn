@@ -126,7 +126,7 @@ if __name__=='__main__':
 			
 		if not os.path.exists(cf.copy_files_rootdir):
 			print "The root directory %s does not seem to exist." % cf.copy_files_rootdir
-		os.system('cp %s/* / -R -f' % cf.copy_files_rootdir)
+		os.system('cp %s/* / -Rfc' % cf.copy_files_rootdir)
 		
 
 	if cmd == "kick_daemons":
