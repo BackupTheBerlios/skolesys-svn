@@ -69,7 +69,7 @@ class ConfigBuilder:
 		# Finally create a tarball for network export
 		curdir = os.getcwd()
 		os.chdir(self.tempdir)
-		os.system('tar czpf conf.tgz rootdir scripts')
+		os.system('tar czpf conf.tgz *')
 		os.chdir(curdir)
 
 	def __del__(self):
