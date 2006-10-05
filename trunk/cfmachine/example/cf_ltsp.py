@@ -7,13 +7,13 @@ fstab_entries = [
 packagelist_files = [
 	'default-packages','custom-packages']
 
-conf_rootdir = \
-	'rootdir'
+copy_files_rootdir = \
+	['rootdir']
 
 kick_daemons = [
-	'/etc/init.d/networking restart'
-	'/etc/init.d/nscd restart'
-	'/etc/init.d/dhcp3-server restart'
-	'/etc/init.d/nfs-kernel-server restart'
-	'/etc/init.d/nfs-common restart'
+	'/etc/init.d/networking restart',
+	'/etc/init.d/nscd restart',
+	'/etc/init.d/dhcp3-server restart',
+	'/etc/init.d/nfs-kernel-server restart',
+	'/etc/init.d/nfs-common restart',
 	'/etc/init.d/tftpd-hpa restart']
