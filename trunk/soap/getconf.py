@@ -1,5 +1,12 @@
+from sys import exit
+import os
+# Check root privilegdes
+if not os.getuid()==0:
+	print "This command needs requires priviledges"
+	exit(0)
+	
 import skolesys.soap.client as ss_client
-import os,getpass
+import time,getpass
 from skolesys.tools.confhelper import conf2dict
 
 
@@ -46,6 +53,37 @@ else:
 	print "Authentication OK"
 
 print "Fetching host configuration...",
-c.getconf()
-print "OK"
+res = c.getconf()
+
+# Handle errors
+if res[0] == -1:
+	print "Only registered hosts can ask for configuration"
+	exit(0)
+	
+if res[0] == -2:
+	print "The host is registered with an invalid host type id"
+	exit(0)
+	
+# OK!
+if res[0] == 1:
+	print "OK"
+	timestamp = time.strftime('%Y%m%d%H%M%S',time.localtime(time.time()))
+	confdir = '/etc/skolesys/%s' % timestamp
+	os.makedirs(confdir)
+	print "Writing configuration scripts to %s" % confdir
+	f=open('%s/conf.tgz' % confdir, 'wb')
+	f.write(res[1])
+	f.close()
+	curdir = os.getcwd()
+	os.chdir(confdir)
+	os.system('tar xzpf conf.tgz')
+	print "========== Start configuration process ==========="
+	os.system('./install.sh')
+	print "========== Configuration process ended ==========="
+	print "No problems reported."
+	os.chdir(curdir)
+	os.system('rm %s/conf.tgz -f' % confdir)
+	
+
+
 
