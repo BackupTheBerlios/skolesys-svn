@@ -2,7 +2,7 @@ fetch_method = "svn"
 
 control = {
 	'Package': 'python2.4-skolesys',
-	'Version': '0.5',
+	'Version': '0.5.4',
 	'NameExtension': 'skolesys1_all',
 	'Section': 'python',
 	'Priority': 'optional',
@@ -19,15 +19,23 @@ control = {
 """}
 
 perm = {'soap/server.py': '755',
-	'lib/shell.py': '755'}
+	'lib/shell.py': '755',
+	'lib/hostcommands.py': '755',
+	'cfmachine/cfinstaller.py': '755',
+	'soap/getconf.py': 755}
 
 copy = {
 	'__init__.py': '/usr/lib/python2.4/site-packages/skolesys/',
 	'lib': '/usr/lib/python2.4/site-packages/skolesys/',
 	'soap': '/usr/lib/python2.4/site-packages/skolesys/',
-	'cert': '/usr/lib/python2.4/site-packages/skolesys/'}
+	'cert': '/usr/lib/python2.4/site-packages/skolesys/',
+	'cfmachine': '/usr/lib/python2.4/site-packages/skolesys/',
+	'tools': '/usr/lib/python2.4/site-packages/skolesys/'}
 
 links = {
-	'/usr/sbin/ss_admin': '../lib/python2.4/site-packages/skolesys/lib/shell.py',
-	'/usr/sbin/ss_soapserver': '../lib/python2.4/site-packages/skolesys/soap/server.py'}
+	'/usr/sbin/ss_accounts': '../lib/python2.4/site-packages/skolesys/lib/shell.py',
+	'/usr/sbin/ss_hosts': '../lib/python2.4/site-packages/skolesys/lib/hostcommands.py',
+	'/usr/sbin/ss_soapserver': '../lib/python2.4/site-packages/skolesys/soap/server.py',
+	'/usr/sbin/ss_installer': '../lib/python2.4/site-packages/skolesys/cfmachine/cfinstaller.py',
+	'/usr/sbin/ss_getconf': '../lib/python2.4/site-packages/skolesys/soap/getconf.py'}
 
