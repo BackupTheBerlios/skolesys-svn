@@ -10,6 +10,9 @@ packagelist_files = [
 copy_files_rootdir = \
 	'rootdir'
 
+hostname = \
+	'ltsp2'
+
 kick_daemons = [
 	'/etc/init.d/networking restart',
 	'/etc/init.d/nscd restart',
@@ -17,3 +20,4 @@ kick_daemons = [
 	'/etc/init.d/nfs-kernel-server restart',
 	'/etc/init.d/nfs-common restart',
 	'/etc/init.d/tftpd-hpa restart']
+

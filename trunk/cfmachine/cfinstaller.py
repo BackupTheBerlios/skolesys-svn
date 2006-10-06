@@ -21,11 +21,12 @@ if __name__=='__main__':
 		'mod_apt_sources': 'Modify sources.list',
 		'install_packages': 'Install deb/apt packages',
 		'copy_files': 'Copy files recursively from a base directory to the root fs',
+		'set_hostname': 'Set the hostname for the host',
 		'kick_daemons': 'Kick some daemons thar need to reload the configuration changes'}
 
 	shell_cmd_name = os.path.split(argv[0])[-1:][0]
 	
-	usage = "usage: %s command commandfile" % shell_cmd_name
+	usage = "usage: %s command controlfile" % shell_cmd_name
 	if len(argv)<2 or not commands.has_key(argv[1]):
 		print usage
 		print 
@@ -39,20 +40,23 @@ if __name__=='__main__':
 	parser = OptionParser(usage=usage)
 
 	if cmd == "mod_fstab":
-		parser.set_usage("usage: %s %s commandfile " % (shell_cmd_name,cmd))
+		parser.set_usage("usage: %s %s controlfile " % (shell_cmd_name,cmd))
 		(options, args) = parser.parse_args()
 		
 		if len(args)<2:
-			print "Missing commandfile for the %s operation" % cmd
+			print "Missing controlfile for the %s operation" % cmd
 			exit(0)
-		commandfile = args[1]
-		cf = __import__(commandfile)
+		controlfile = args[1]
+		cf = __import__(controlfile)
 		if not dir(cf).count('fstab_entries'):
-			print "The commandfile %s.py does not implement the variable: %s which is mandatory for this operation" % (commandfile,'fstab_entries')
+			print "The controlfile %s.py does not implement the variable: %s which is mandatory for this operation" % (controlfile,'fstab_entries')
 			exit(0)
 		fstab = Fstab()
 		for mnt in cf.fstab_entries:
 			fstab.add_entry(mnt['sourcefs'],mnt['mountpoint'],mnt['fstype'],mnt['options'],mnt['dump'],mnt['fsckorder'])
+			if not os.path.exists(mnt['mountpoint']):
+				print 'The mountpoint "%s" does not exist. Creating it now.' % mnt['mountpoint']
+				os.makedirs(mnt['mountpoint'])
 		fstab.print_fstab()
 		if fstab.dirty:
 			fstab.write_fstab()
@@ -60,16 +64,16 @@ if __name__=='__main__':
 			os.system('mount -a')
 	
 	if cmd == "mod_apt_sources":
-		parser.set_usage("usage: %s %s commandfile " % (shell_cmd_name,cmd))
+		parser.set_usage("usage: %s %s controlfile " % (shell_cmd_name,cmd))
 		(options, args) = parser.parse_args()
 		
 		if len(args)<2:
-			print "Missing commandfile for the %s operation" % cmd
+			print "Missing controlfile for the %s operation" % cmd
 			exit(0)
-		commandfile = args[1]
-		cf = __import__(commandfile)
+		controlfile = args[1]
+		cf = __import__(controlfile)
 		if not dir(cf).count('apt_source_entries'):
-			print "The commandfile %s.py does not implement the variable: %s which is mandatory for this operation" % (commandfile,'apt_source_entries')
+			print "The controlfile %s.py does not implement the variable: %s which is mandatory for this operation" % (controlfile,'apt_source_entries')
 			exit(0)
 		slist = SourcesList()
 		for src in cf.apt_source_entries:
@@ -80,16 +84,16 @@ if __name__=='__main__':
 			os.system('apt-get update')
 		
 	if cmd == "install_packages":
-		parser.set_usage("usage: %s %s commandfile " % (shell_cmd_name,cmd))
+		parser.set_usage("usage: %s %s controlfile " % (shell_cmd_name,cmd))
 		(options, args) = parser.parse_args()
 		
 		if len(args)<2:
-			print "Missing commandfile for the %s operation" % cmd
+			print "Missing controlfile for the %s operation" % cmd
 			exit(0)
-		commandfile = args[1]
-		cf = __import__(commandfile)
+		controlfile = args[1]
+		cf = __import__(controlfile)
 		if not dir(cf).count('apt_source_entries'):
-			print "The commandfile %s.py does not implement the variable: %s which is mandatory for this operation" % (commandfile,'packagelist_files')
+			print "The controlfile %s.py does not implement the variable: %s which is mandatory for this operation" % (controlfile,'packagelist_files')
 			exit(0)
 		
 		package_acc = []
@@ -108,16 +112,16 @@ if __name__=='__main__':
 		os.system('apt-get install -y %s' % ' '.join(package_acc))
 		
 	if cmd == "copy_files":
-		parser.set_usage("usage: %s %s commandfile " % (shell_cmd_name,cmd))
+		parser.set_usage("usage: %s %s controlfile " % (shell_cmd_name,cmd))
 		(options, args) = parser.parse_args()
 		
 		if len(args)<2:
-			print "Missing directory for the %s operation" % cmd
+			print "Missing controlfile for the %s operation" % cmd
 			exit(0)
-		commandfile = args[1]
-		cf = __import__(commandfile)
+		controlfile = args[1]
+		cf = __import__(controlfile)
 		if not dir(cf).count('copy_files_rootdir'):
-			print "The commandfile %s.py does not implement the variable: %s which is mandatory for this operation" % (commandfile,'copy_files_rootdir')
+			print "The controlfile %s.py does not implement the variable: %s which is mandatory for this operation" % (controlfile,'copy_files_rootdir')
 			exit(0)
 		
 		if not type(cf.copy_files_rootdir) == str:
@@ -129,17 +133,42 @@ if __name__=='__main__':
 		os.system('cp %s/* / -Rfc' % cf.copy_files_rootdir)
 		
 
-	if cmd == "kick_daemons":
-		parser.set_usage("usage: %s %s commandfile " % (shell_cmd_name,cmd))
+	if cmd == "set_hostname":
+		parser.set_usage("usage: %s %s controlfile " % (shell_cmd_name,cmd))
 		(options, args) = parser.parse_args()
 		
 		if len(args)<2:
-			print "Missing directory for the %s operation" % cmd
+			print "Missing controlfile for the %s operation" % cmd
 			exit(0)
-		commandfile = args[1]
-		cf = __import__(commandfile)
+		controlfile = args[1]
+		cf = __import__(controlfile)
+		if not dir(cf).count('hostname'):
+			print "The controlfile %s.py does not implement the variable: %s which is mandatory for this operation" % (controlfile,'hostname')
+			exit(0)
+		
+		if not type(cf.hostname) == str:
+			print "The %s variable must be assigned a single string value." % 'hostname'
+			exit(0)
+		
+		print "Setting hostname to %s" % cf.hostname
+		os.environ['HOSTNAME'] = cf.hostname
+		os.system('hostname %s' % cf.hostname)
+		f = open('/etc/hostname','w')
+		f.write('%s\n' % cf.hostname)
+		f.close()
+		
+	
+	if cmd == "kick_daemons":
+		parser.set_usage("usage: %s %s controlfile " % (shell_cmd_name,cmd))
+		(options, args) = parser.parse_args()
+		
+		if len(args)<2:
+			print "Missing controlfile for the %s operation" % cmd
+			exit(0)
+		controlfile = args[1]
+		cf = __import__(controlfile)
 		if not dir(cf).count('kick_daemons'):
-			print "The commandfile %s.py does not implement the variable: %s which is mandatory for this operation" % (commandfile,'kick_daemons')
+			print "The controlfile %s.py does not implement the variable: %s which is mandatory for this operation" % (controlfile,'kick_daemons')
 			exit(0)
 		
 		if not type(cf.kick_daemons) == tuple and not type(cf.kick_daemons) == list:
