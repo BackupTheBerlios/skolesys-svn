@@ -1,4 +1,4 @@
-__all__ = ["lib","soap","cfmachine"]
+__all__ = ["lib","soap","cfmachine","tools"]
 
 def _get_exports_list(module):
     try:
