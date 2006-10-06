@@ -144,13 +144,7 @@ class SkoleSYS_Client:
 		
 		pdump(hwaddr)
 		pdump(self.session_id)
-		res = pload(self.server.getconf(pdump(self.session_id),pdump(hwaddr)))
-		if res[0]<0:
-			return res[0]
-		f=open('/etc/skolesys/conf.tgz','wb')
-		f.write(res[1])
-		f.close()
-		return res[0]
+		return pload(self.server.getconf(pdump(self.session_id),pdump(hwaddr)))
 	
 
 if __name__=='__main__':
