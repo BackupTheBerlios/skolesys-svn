@@ -437,8 +437,7 @@ class UserManager (LDAPUtil):
 			return -4
 		
 		# Remove user symlink to the group
-		user_group_dir = '%s/%s/users/%s/groups' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
-		print user_group_dir
+		user_group_dir = '%s/%s/users/%s/Groups' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
 		if os.path.exists(user_group_dir):
 			if os.path.exists('%s/%s' % (user_group_dir,groupname)):
 				os.remove('%s/%s' % (user_group_dir,groupname))
