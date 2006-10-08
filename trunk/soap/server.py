@@ -219,6 +219,7 @@ def register_host(session_id,hostname,hosttype_id,hwaddr):
 	hostname = pload(hostname)
 	hosttype_id = pload(hosttype_id)
 	hwaddr = pload(hwaddr)
+
 	hm = HostManager()
 	return pdump(hm.register_host(hwaddr,hostname,hosttype_id))
 
