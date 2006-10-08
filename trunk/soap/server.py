@@ -212,6 +212,16 @@ def removegroup(session_id,groupname,backup_home,remove_home):
 	gm = userman.GroupManager()
 	return pdump(gm.removegroup(groupname,backup_home,remove_home))
 
+def register_host(session_id,hostname,hosttype_id,hwaddr):
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	hostname = pload(hostname)
+	hosttype_id = pload(hosttype_id)
+	hwaddr = pload(hwaddr)
+	hm = HostManager()
+	return pdump(hm.register_host(hwaddr,hostname,hosttype_id))
+
 def getconf(session_id,hwaddr):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
@@ -286,6 +296,7 @@ def startserver():
 	server.registerFunction(removegroup)
 	
 	# Host Management
+	server.registerFunction(register_host)
 	server.registerFunction(getconf)
 
 	server.serve_forever()

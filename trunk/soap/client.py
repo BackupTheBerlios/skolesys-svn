@@ -4,6 +4,7 @@ from p2 import p2_encrypt
 from marshall import pdump,pload
 import sys,httplib
 from netinfo import ip2hwaddr
+import socket,os,re
 
 class SkoleSYS_Client:
 	def __init__(self,host,port=None,log=sys.stderr):
@@ -15,6 +16,29 @@ class SkoleSYS_Client:
 		self.server = SOAPpy.SOAPProxy(url)
 		self._get_id()
 		
+		# Check the DISPLAY variable to see if this is a thin client
+		self.tc_displayhost = None
+		disp = os.getenv('DISPLAY')
+		if disp:
+			c = re.compile('^(\S+):\S+')
+			m=c.match(disp)
+			if m:
+				self.tc_displayhost = m.groups()[0]
+				self.tc_ip = None
+				self.tc_hwaddr = None
+				try:
+					self.tc_ip = socket.gethostbyname(self.tc_displayhost)
+				except socket.gaierror, e:
+					print 'the display\'s "hostname" %s can not be resolved' % self.tc_displayhost
+				
+				if self.tc_ip != None:
+					self.tc_hwaddr = ip2hwaddr(self.tc_ip)
+					if self.tc_hwaddr == None:
+						print "could not resolve the hwaddr of ip %s" % self.tc_ip
+						
+				# XXX - Boer forbedre med en function ip2if() for at kunne tjekke om ip-addressen
+				# XXX - paa nogen maade er lokal.
+		
 		# Fetch the client hwaddr
 		addr = SOAPpy.SOAPAddress(url)
 		
@@ -24,7 +48,18 @@ class SkoleSYS_Client:
 		else:
 			r = httplib.HTTP(real_addr)
 		r._conn.connect()
-		self.hwaddr = ip2hwaddr(r._conn.sock._sock.getsockname()[0])
+		self.local_ip = r._conn.sock._sock.getsockname()[0]
+		self.local_hwaddr = ip2hwaddr(self.local_ip)
+		r._conn.close()
+		self.remotedisplay = False
+		
+		if (self.tc_displayhost and self.tc_hwaddr and self.local_ip != self.tc_ip):
+			print "Remote login ( LTSP client [%s] )" % self.tc_hwaddr
+			self.hwaddr = self.tc_hwaddr
+			self.remotedisplay = True
+		else:
+			print "Local login ( LTSP server [%s] )" % self.local_hwaddr
+			self.hwaddr = self.local_hwaddr
 
 	def logtext(self,txt):
 		if self.logfile:
@@ -138,12 +173,22 @@ class SkoleSYS_Client:
 		print groupname,backup_home,remove_home
 		return pload(self.server.removegroup(pdump(self.session_id),pdump(groupname),pdump(backup_home),pdump(remove_home)))
 	
-	def getconf(self,hwaddr=None):
+	def register_host(self,hostname,hosttype_id,hwaddr=None):
+		"""
+		Register the currently running host
+		"""
 		if hwaddr == None:
 			hwaddr = self.hwaddr
 		
-		pdump(hwaddr)
-		pdump(self.session_id)
+		return pload(self.server.register_host(pdump(self.session_id),pdump(hostname),pdump(hosttype_id),pdump(hwaddr)))
+	
+	
+	def getconf(self,hwaddr=None):
+		if self.remotedisplay == True:
+			print "Error: Cannot fetch configuration through a remotely logged in session"
+			return (0,0)
+		if hwaddr == None:
+			hwaddr = self.local_hwaddr # Should never fetch another host's (remote display mode) configuration!
 		return pload(self.server.getconf(pdump(self.session_id),pdump(hwaddr)))
 	
 
