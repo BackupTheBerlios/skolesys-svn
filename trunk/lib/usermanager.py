@@ -426,8 +426,8 @@ class UserManager (LDAPUtil):
 			if attribs['memberUid'].count(uid):
 				memberuid = attribs['memberUid']
 				memberuid.remove(uid)
-			else:
-				return -3
+			else: return -3
+		else: return -3
 			
 		try:
 			self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
