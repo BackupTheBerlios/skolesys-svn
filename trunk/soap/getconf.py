@@ -74,7 +74,7 @@ if res[0] == 1:
 		f = open('/etc/skolesys/skolesoap.conf','w')
 		f.write("[SOAP_CLIENT]\n")
 		f.write("server_url\t= %s\n" % server_url)
-		f.write("portnum\t= %s\n" % portnum)
+		f.write("port\t= %s\n" % portnum)
 		f.close()
 		os.chmod('/etc/skolesys/skolesoap.conf',S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH)
 	timestamp = time.strftime('%Y%m%d%H%M%S',time.localtime(time.time()))
