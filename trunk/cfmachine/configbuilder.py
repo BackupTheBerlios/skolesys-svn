@@ -1,5 +1,5 @@
 from infocollection import InfoCollection
-from skolesys.definitions.hostdef as hostdef
+import skolesys.definitions.hostdef as hostdef
 from Cheetah.Template import Template
 import tempfile,os
 
