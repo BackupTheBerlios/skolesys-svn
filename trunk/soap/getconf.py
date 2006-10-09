@@ -3,9 +3,10 @@ from sys import exit
 import os
 # Check root privilegdes
 if not os.getuid()==0:
-	print "This command needs requires priviledges"
+	print "This command requires root priviledges"
 	exit(0)
 	
+from stat import S_IRUSR,S_IWUSR,S_IRGRP,S_IROTH
 import skolesys.soap.client as ss_client
 import time,getpass
 from skolesys.tools.confhelper import conf2dict
@@ -68,6 +69,14 @@ if res[0] == -2:
 # OK!
 if res[0] == 1:
 	print "OK"
+	print "Storing the connection info in /etc/skolesys/skolesoap.conf"
+	if not soapconf:
+		f = open('/etc/skolesys/skolesoap.conf','w')
+		f.write("[SOAP_CLIENT]\n")
+		f.write("server_url\t= %s\n" % server_url)
+		f.write("portnum\t= %s\n" % portnum)
+		f.close()
+		os.chmod('/etc/skolesys/skolesoap.conf',S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH)
 	timestamp = time.strftime('%Y%m%d%H%M%S',time.localtime(time.time()))
 	confdir = '/etc/skolesys/%s' % timestamp
 	os.makedirs(confdir)

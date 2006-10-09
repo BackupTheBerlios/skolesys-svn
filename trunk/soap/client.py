@@ -3,7 +3,7 @@ import pickle
 from p2 import p2_encrypt
 from marshall import pdump,pload
 import sys,httplib
-from netinfo import ip2hwaddr
+from netinfo import ip2hwaddr, ip2if
 import socket,os,re
 
 class SkoleSYS_Client:
@@ -23,6 +23,7 @@ class SkoleSYS_Client:
 			c = re.compile('^(\S+):\S+')
 			m=c.match(disp)
 			if m:
+				print 'The display host is set to: "%s"' % m.groups()[0]
 				self.tc_displayhost = m.groups()[0]
 				self.tc_ip = None
 				self.tc_hwaddr = None
@@ -31,13 +32,16 @@ class SkoleSYS_Client:
 				except socket.gaierror, e:
 					print 'the display\'s "hostname" %s can not be resolved' % self.tc_displayhost
 				
-				if self.tc_ip != None:
+				display_host_if = ip2if(self.tc_ip)
+				if display_host_if:
+					print 'OK, the display host maps to the local interface "%s", so we are assuming that this is not a remote session' % display_host_if
+				
+				if not display_host_if and self.tc_ip != None:
 					self.tc_hwaddr = ip2hwaddr(self.tc_ip)
 					if self.tc_hwaddr == None:
 						print "could not resolve the hwaddr of ip %s" % self.tc_ip
-						
-				# XXX - Boer forbedre med en function ip2if() for at kunne tjekke om ip-addressen
-				# XXX - paa nogen maade er lokal.
+				
+				
 		
 		# Fetch the client hwaddr
 		addr = SOAPpy.SOAPAddress(url)
@@ -49,16 +53,17 @@ class SkoleSYS_Client:
 			r = httplib.HTTP(real_addr)
 		r._conn.connect()
 		self.local_ip = r._conn.sock._sock.getsockname()[0]
+		self.local_if = ip2if(self.local_ip)
 		self.local_hwaddr = ip2hwaddr(self.local_ip)
 		r._conn.close()
 		self.remotedisplay = False
 		
-		if (self.tc_displayhost and self.tc_hwaddr and self.local_ip != self.tc_ip):
-			print "Remote login ( LTSP client [%s] )" % self.tc_hwaddr
+		if (self.tc_displayhost and self.tc_hwaddr and not ip2if(self.tc_ip)):
+			print "Remote login: [%s]" % self.tc_hwaddr
 			self.hwaddr = self.tc_hwaddr
 			self.remotedisplay = True
 		else:
-			print "Local login ( LTSP server [%s] )" % self.local_hwaddr
+			print "Local login: %s [%s]" % (self.local_if,self.local_hwaddr)
 			self.hwaddr = self.local_hwaddr
 
 	def logtext(self,txt):
