@@ -59,7 +59,7 @@ res = c.getconf()
 
 # Handle errors
 if res[0] == -1:
-	print "Only registered hosts can ask for configuration"
+	print "This host has not been registered. Only registered hosts can ask for configuration (use ss_reghost)"
 	exit(0)
 	
 if res[0] == -2:
@@ -69,8 +69,8 @@ if res[0] == -2:
 # OK!
 if res[0] == 1:
 	print "OK"
-	print "Storing the connection info in /etc/skolesys/skolesoap.conf"
 	if not soapconf:
+		print "Storing the connection info in /etc/skolesys/skolesoap.conf"
 		f = open('/etc/skolesys/skolesoap.conf','w')
 		f.write("[SOAP_CLIENT]\n")
 		f.write("server_url\t= %s\n" % server_url)
