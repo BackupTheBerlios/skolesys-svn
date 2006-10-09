@@ -12,6 +12,7 @@ if not os.getuid()==0:
 from optparse import OptionParser
 from conf import conf
 import hostmanager
+import skolesys.definitions.hostdef as hostdef
 
 
 if __name__=='__main__':
@@ -50,7 +51,7 @@ if __name__=='__main__':
 			print "Missing hostname for the hostadd operation"
 			exit(0)
 		
-		hostname = hostmanager.check_hostname(args[1])
+		hostname = check_hostname(args[1])
 		if not hostname:
 			print "The entered hostname is invalid"
 			exit(0)
@@ -62,16 +63,16 @@ if __name__=='__main__':
 			exit(0)
 		
 		if options.ipaddr:
-			ipchk = hostmanager.check_ipaddr(options.ipaddr)
+			ipchk = hostdef.check_ipaddr(options.ipaddr)
 			if not ipchk:
 				print 'The ipaddress: "%s" entered is not valid' % options.ipaddr
 				exit(0)
 				
 		print "Hostname: %s" % hostname
 		
-		while not options.hwaddr or not hostmanager.check_hwaddr(options.hwaddr):
+		while not options.hwaddr or not hostdef.check_hwaddr(options.hwaddr):
 			options.hwaddr = raw_input("Input the hardware address of the host's network interface (mac-address): ")
-		options.hwaddr = hostmanager.check_hwaddr(options.hwaddr)
+		options.hwaddr = hostdef.check_hwaddr(options.hwaddr)
 			
 		
 		# Check if this hwaddr is already registered
@@ -79,9 +80,9 @@ if __name__=='__main__':
 			print 'The hwaddr: "%s" has already been registered use hostmod instead' % options.hwaddr
 			exit(0)
 			
-		while not options.hosttype or not hostmanager.check_hosttype_text(options.hosttype):
+		while not options.hosttype or not hostdef.check_hosttype_text(options.hosttype):
 			options.hosttype = raw_input("Input the host type (ltspserver,ltspclient,workstation): ")
-		hosttype_id = hostmanager.check_hosttype_text(options.hosttype)
+		hosttype_id = hostdef.check_hosttype_text(options.hosttype)
 		
 		try:
 			hostadd_res = hm.register_host(options.hwaddr,hostname,hosttype_id,options.ipaddr)
@@ -123,7 +124,7 @@ if __name__=='__main__':
 		hm = hostmanager.HostManager()
 		
 		if options.hwaddr:
-			hwaddr = hostmanager.check_hwaddr(options.hwaddr)
+			hwaddr = hostdef.check_hwaddr(options.hwaddr)
 			if not hwaddr:
 				print 'The hwaddr: "%s" is not valid.' % options.hwaddr
 				exit(0)
@@ -132,7 +133,7 @@ if __name__=='__main__':
 			matchstring = hwaddr
 			
 		elif options.hostname:
-			hostname = hostmanager.check_hostname(options.hostname)
+			hostname = hostdef.check_hostname(options.hostname)
 			if not hostname:
 				print 'The hostname: "%s" is not valid.' % options.hostname
 				exit(0)
@@ -162,7 +163,7 @@ if __name__=='__main__':
 		
 		hosttype_id = None
 		if options.hosttype:
-			hosttype_id = hostmanager.check_hosttype_text(options.hosttype)
+			hosttype_id = hostdef.check_hosttype_text(options.hosttype)
 			if not hosttype_id:
 				print 'The host type: "%s" is not valid.' % options.hosttype
 				

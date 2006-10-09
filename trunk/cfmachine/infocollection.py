@@ -1,5 +1,6 @@
 import re
 from skolesys.lib.hostmanager import *
+import skolesys.definitions.hostdef as hostdef
 from skolesys.lib.conf import *
 from Cheetah.Template import Template
 from math import ceil
@@ -31,12 +32,12 @@ class InfoCollection:
 		
 		# Mainserver
 		subnet_str = self.data['conf']['domain']['mainserver_subnet']
-		res = check_subnet(subnet_str)
+		res = hostdef.check_subnet(subnet_str)
 		if not res:
 			return -1
 		subnet,subnetmask = res
 		subnetmask_int = (2**32-1) - (2**(32-int(subnetmask))-1)
-		subnet_int = iptoint(subnet)
+		subnet_int = hostdef.iptoint(subnet)
 		subnetmask_address = '%d.%d.%d.%d' % ((subnetmask_int>>24)&255,(subnetmask_int>>16)&255,(subnetmask_int>>8)&255,subnetmask_int&255)
 		self.data['conf']['domain']['mainserver_subnet'] = subnet
 		self.data['conf']['domain']['mainserver_subnetmask'] = subnetmask_address
@@ -54,7 +55,7 @@ class InfoCollection:
 			return -2
 		subnet,subnetmask = res
 		subnetmask_int = (2**32-1) - (2**(32-int(subnetmask))-1)
-		subnet_int = iptoint(subnet)
+		subnet_int = hostdef.iptoint(subnet)
 		subnetmask_address = '%d.%d.%d.%d' % ((subnetmask_int>>24)&255,(subnetmask_int>>16)&255,(subnetmask_int>>8)&255,subnetmask_int&255)
 		self.data['conf']['domain']['ltspserver_subnet'] = subnet
 		self.data['conf']['domain']['ltspserver_subnetmask'] = subnetmask_address
