@@ -50,7 +50,7 @@ class InfoCollection:
 		
 		# LTSP servers
 		subnet_str = self.data['conf']['domain']['ltspserver_subnet']
-		res = check_subnet(subnet_str)
+		res = hostdef.check_subnet(subnet_str)
 		if not res:
 			return -2
 		subnet,subnetmask = res
