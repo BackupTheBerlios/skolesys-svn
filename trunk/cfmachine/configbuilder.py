@@ -1,5 +1,5 @@
 from infocollection import InfoCollection
-from skolesys.lib.hostmanager import translate_hosttype_id,check_hwaddr
+from skolesys.definitions.hostdef as hostdef
 from Cheetah.Template import Template
 import tempfile,os
 
@@ -10,8 +10,8 @@ class ConfigBuilder:
 		1. Create temp directory
 		2. Fetch 
 		"""
-		self.hosttype = translate_hosttype_id(hosttype_id)
-		self.hwaddr = check_hwaddr(hwaddr)
+		self.hosttype = hostdef.translate_hosttype_id(hosttype_id)
+		self.hwaddr = hostdef.check_hwaddr(hwaddr)
 		self.tempdir = tempfile.mkdtemp(prefix='skolesys_')
 		self.infocollection = InfoCollection(self.hwaddr)
 		self.build_config()
