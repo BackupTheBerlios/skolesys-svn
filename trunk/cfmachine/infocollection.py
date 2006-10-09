@@ -12,7 +12,7 @@ class InfoCollection:
 	"""
 	def __init__(self,hwaddr=None):
 		self.data = {}
-		self.hwaddr = check_hwaddr(hwaddr)
+		self.hwaddr = hostdef.check_hwaddr(hwaddr)
 		self.conf_info()
 		self.host_info()
 		self.user_info()
