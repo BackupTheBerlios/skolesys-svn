@@ -224,6 +224,66 @@ def register_host(session_id,hostname,hosttype_id,hwaddr):
 	hm = HostManager()
 	return pdump(hm.register_host(hwaddr,hostname,hosttype_id))
 
+def hostname_exists(session_id,hostname):
+	"""
+	Check if a certain hostname is already registered
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	hostname = pload(hostname)
+
+	hm = HostManager()
+	return pdump(hm.host_exists(hostname=hostname))
+
+def hwaddr_exists(session_id,hwaddr):
+	"""
+	Check if a certain hwaddr (mac-address) is already registered
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	hwaddr = pload(hwaddr)
+
+	hm = HostManager()
+	return pdump(hm.host_exists(hwaddr=hwaddr))
+
+def hostinfo_by_hwaddr(session_id,hwaddr):
+	"""
+	Fetch the registration info of a certain host by hwaddr
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	hwaddr = pload(hwaddr)
+
+	hm = HostManager()
+	return pdump(hm.host_info(hwaddr=hwaddr))
+
+def hostinfo_by_hostname(session_id,hostname):
+	"""
+	Fetch the registration info of a certain host by hwaddr
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	hostname = pload(hostname)
+
+	hm = HostManager()
+	return pdump(hm.host_info(hostname=hostname))
+
+def listhosts(session_id,hosttype_id):
+	"""
+	Fetch a list og registered hosts
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	hosttype_id = pload(hosttype_id)
+
+	hm = HostManager()
+	return pdump(hm.host_info(hosttype_id))
+
 def getconf(session_id,hwaddr):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
@@ -271,7 +331,7 @@ def startserver():
 	server = MyServer((addr, 8443),ssl_context = ssl_context)
 	print "Starting SOAP service on interface %s (%s)" % (netif,addr)
 	
-	# Securitty
+	# Security
 	server.registerFunction(get_id)
 	server.registerFunction(challenge_response_key)
 	server.registerFunction(bind)
@@ -299,6 +359,11 @@ def startserver():
 	
 	# Host Management
 	server.registerFunction(register_host)
+	server.registerFunction(hostname_exists)
+	server.registerFunction(hwaddr_exists)
+	server.registerFunction(hostinfo_by_hwaddr)
+	server.registerFunction(hostinfo_by_hostname)
+	server.registerFunction(listhosts)
 	server.registerFunction(getconf)
 
 	server.serve_forever()

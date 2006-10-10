@@ -180,14 +180,53 @@ class SkoleSYS_Client:
 	
 	def register_host(self,hostname,hosttype_id,hwaddr=None):
 		"""
-		Register the currently running host
+		Register the current displaying host
 		"""
 		if hwaddr == None:
 			hwaddr = self.hwaddr
 		
 		return pload(self.server.register_host(pdump(self.session_id),pdump(hostname),pdump(hosttype_id),pdump(hwaddr)))
+		
+		
+	def hostname_exists(self,hostname):
+		"""
+		Check if a certain host exists by hostname.
+		"""
+		return pload(self.server.hwaddr_exists(pdump(self.session_id),pdump(hostname)))
+		
+		
+	def hwaddr_exists(self,hwaddr=None):
+		"""
+		Check if a certain host exists by hwaddr. If no hwaddr is passed then the method
+		returns wether the host currently displaying is registered.
+		"""
+		if hwaddr == None:
+			hwaddr = self.hwaddr
+		return pload(self.server.hwaddr_exists(pdump(self.session_id),pdump(hwaddr)))
 	
 	
+	def hostinfo(self,hostname=None,hwaddr=None):
+		"""
+		Fetch the registered information of a certain host bu hostname or hwaddr. 
+		If no arguments are passed then the current displaying host's information is
+		returned.
+		"""
+		if hostname:
+			return pload(self.server.hostinfo_by_hostname(pdump(self.session_id),pdump(hostname)))
+		
+		if hwaddr == None:
+			hwaddr = self.hwaddr
+			
+		return pload(self.server.hostinfo_by_hwaddr(pdump(self.session_id),pdump(hwaddr)))
+		
+		
+	def listhosts(self,hosttype_id=None):
+		"""
+		Fetch a list og registered hosts. Hosttype_id can be used to apply a filter.
+		"""
+		return pload(self.server.listhosts(pdump(self.session_id),pdump(hosttype_id)))
+		
+		
 	def getconf(self,hwaddr=None):
 		if self.remotedisplay == True:
 			print "Error: Cannot fetch configuration through a remotely logged in session"
