@@ -282,7 +282,7 @@ def listhosts(session_id,hosttype_id):
 	hosttype_id = pload(hosttype_id)
 
 	hm = HostManager()
-	return pdump(hm.host_info(hosttype_id))
+	return pdump(hm.list_hosts(hosttype_id))
 
 def getconf(session_id,hwaddr):
 	if not session_valid(pload(session_id)):

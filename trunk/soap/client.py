@@ -188,20 +188,16 @@ class SkoleSYS_Client:
 		return pload(self.server.register_host(pdump(self.session_id),pdump(hostname),pdump(hosttype_id),pdump(hwaddr)))
 		
 		
-	def hostname_exists(self,hostname):
+	def is_registered(self,hostname=None,hwaddr=None):
 		"""
-		Check if a certain host exists by hostname.
+		Check if a certain host is registered
 		"""
-		return pload(self.server.hwaddr_exists(pdump(self.session_id),pdump(hostname)))
+		if hostname:
+			return pload(self.server.hostname_exists(pdump(self.session_id),pdump(hostname)))
 		
-		
-	def hwaddr_exists(self,hwaddr=None):
-		"""
-		Check if a certain host exists by hwaddr. If no hwaddr is passed then the method
-		returns wether the host currently displaying is registered.
-		"""
 		if hwaddr == None:
 			hwaddr = self.hwaddr
+			
 		return pload(self.server.hwaddr_exists(pdump(self.session_id),pdump(hwaddr)))
 	
 	
