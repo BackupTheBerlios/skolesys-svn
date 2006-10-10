@@ -55,7 +55,7 @@ if __name__=='__main__':
 			
 			if not os.path.exists('real_pool/%s' % component):
 				os.makedirs('real_pool/%s' % component)
-			os.system("cp %s/%s/%s/* real_pool/%s -Rfv" % (suite,component,arch,component))
+			os.system("cp %s/%s/%s/* real_pool/%s -v" % (suite,component,arch,component))
 			if arch=='source':
 				dist_packages_dir = 'dists/%s/%s/%s' % (suite,component,arch)
 				os.makedirs(dist_packages_dir)
