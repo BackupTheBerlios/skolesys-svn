@@ -13,12 +13,7 @@ from getpass import getpass,getuser
 from optparse import OptionParser
 from conf import conf
 from usermanager import UserManager,GroupManager
-
-# User types
-TEACHER = 1
-STUDENT = 2
-PARENT = 3
-OTHER = 4
+import skolesys.definitions.userdef as userdef
 
 def check_username(username):
 	"Check the user name syntax"
@@ -108,15 +103,9 @@ if __name__=='__main__':
 			options.familyname = raw_input("Input the user's family name (last name): ")
 		if not options.usertype:
 			options.usertype = raw_input("Input the user's account type (teacher,student,parent or other): ")
-		if options.usertype.strip().lower() == 'teacher':
-			options.usertype = TEACHER
-		elif options.usertype.strip().lower() == 'student':
-			options.usertype = STUDENT
-		elif options.usertype.strip().lower() == 'parent':
-			options.usertype = PARENT
-		elif options.usertype.strip().lower() == 'other':
-			options.usertype = OTHER
-		else:
+		
+		options.usertype = userdef.check_usertype_text(options.usertype)
+		if not options.usertype:
 			print "Invalid usertype"
 			exit(0)
 		
@@ -310,16 +299,10 @@ if __name__=='__main__':
 		
 		(options, args) = parser.parse_args()
 		if options.usertype:
-			if options.usertype.strip().lower() == 'teacher':
-				options.usertype = TEACHER
-			elif options.usertype.strip().lower() == 'student':
-				options.usertype = STUDENT
-			elif options.usertype.strip().lower() == 'parent':
-				options.usertype = PARENT
-			elif options.usertype.strip().lower() == 'other':
-				options.usertype = OTHER
-			else:
-				print "User type \"%s\" is not recognized. Following are valid: teacher,student,parent or other" % options.usertype
+			intxt = options.usertype
+			options.usertype = userdef.check_usertype_text(options.usertype)
+			if not options.usertype:
+				print "User type \"%s\" is not recognized. Following are valid: teacher,student,parent or other" % intxt
 				options.usertype = None
 		um = UserManager()
 		ul = um.list_users(options.usertype)
@@ -368,15 +351,9 @@ if __name__=='__main__':
 		
 		if not options.grouprelation:
 			options.grouprelation = raw_input("Input the user's account type (teacher,student,parent or other): ")
-		if options.grouprelation.strip().lower() == 'teacher':
-			options.grouprelation = TEACHER
-		elif options.grouprelation.strip().lower() == 'student':
-			options.grouprelation = STUDENT
-		elif options.grouprelation.strip().lower() == 'parent':
-			options.grouprelation = PARENT
-		elif options.grouprelation.strip().lower() == 'other':
-			options.grouprelation = OTHER
-		else:
+		
+		options.grouprelation = userdef.check_usertype_text(options.grouprelation.strip())
+		if not options.grouprelation:
 			print "Invalid relationship"
 			exit(0)
 
@@ -451,16 +428,10 @@ if __name__=='__main__':
 		
 		(options, args) = parser.parse_args()
 		if options.usertype:
-			if options.usertype.strip().lower() == 'teacher':
-				options.usertype = TEACHER
-			elif options.usertype.strip().lower() == 'student':
-				options.usertype = STUDENT
-			elif options.usertype.strip().lower() == 'parent':
-				options.usertype = PARENT
-			elif options.usertype.strip().lower() == 'other':
-				options.usertype = OTHER
-			else:
-				print "User type \"%s\" is not recognized. Following are valid: teacher,student,parent or other" % options.usertype
+			intxt = options.usertype
+			options.usertype = userdef.check_usertype_text(options.usertype)
+			if not options.usertype:
+				print "User type \"%s\" is not recognized. Following are valid: teacher,student,parent or other" % intxt
 				options.usertype = None
 		
 		gm = GroupManager()
