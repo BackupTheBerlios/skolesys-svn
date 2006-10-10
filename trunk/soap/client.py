@@ -102,12 +102,12 @@ class SkoleSYS_Client:
 		"""
 		return pload(self.server.domain_name(pdump(self.session_id)))
 
-	def list_users(self,usertype=None):
+	def list_users(self,usertype_id=None):
 		"""
 		Get a list of LDAP posixusers located on the mainserver. Optionally the
 		list can be filtered by the user type.
 		"""
-		return pload(self.server.list_users(pdump(self.session_id),pdump(usertype)))
+		return pload(self.server.list_users(pdump(self.session_id),pdump(usertype_id)))
 
 	def list_usergroups(self,uid):
 		"""
@@ -123,9 +123,9 @@ class SkoleSYS_Client:
 		return pload(self.server.user_exists(pdump(self.session_id),pdump(uid)))
 	
 	
-	def createuser(self,uid,givenname,familyname,passwd,usertype,primarygroup):
+	def createuser(self,uid,givenname,familyname,passwd,usertype_id,primarygroup):
 		return pload(self.server.createuser(pdump(self.session_id),pdump(uid),pdump(givenname),\
-			pdump(familyname),pdump(passwd),pdump(usertype),pdump(primarygroup)))
+			pdump(familyname),pdump(passwd),pdump(usertype_id),pdump(primarygroup)))
 
 	def removeuser(self,uid,backup_home=False,remove_home=False):
 		return pload(self.server.removeuser(pdump(self.session_id),pdump(uid),pdump(backup_home),pdump(remove_home)))
@@ -142,12 +142,12 @@ class SkoleSYS_Client:
 		"""
 		return pload(self.server.groupdel(pdump(self.session_id),pdump(uid),pdump(groupname)))
 
-	def list_groups(self,usertype=None):
+	def list_groups(self,usertype_id=None):
 		"""
 		Get a list of LDAP posixgroups located on the mainserver. Optionally the
 		list can be filtered by the user type.
 		"""
-		return pload(self.server.list_groups(pdump(self.session_id),pdump(usertype)))
+		return pload(self.server.list_groups(pdump(self.session_id),pdump(usertype_id)))
 
 	def list_members(self,groupname):
 		"""
@@ -162,12 +162,12 @@ class SkoleSYS_Client:
 		"""
 		return pload(self.server.group_exists(pdump(self.session_id),pdump(groupname)))
 
-	def creategroup(self,groupname,usertype,description):
+	def creategroup(self,groupname,usertype_id,description):
 		"""
 		1. Create a new posixgroup in the mainserver LDAP DB.
 		2. Create a group home directory
 		"""
-		return pload(self.server.creategroup(pdump(self.session_id),pdump(groupname),pdump(usertype),pdump(description)))
+		return pload(self.server.creategroup(pdump(self.session_id),pdump(groupname),pdump(usertype_id),pdump(description)))
 
 	def removegroup(self,groupname,backup_home=False,remove_home=False):
 		"""

@@ -95,12 +95,12 @@ def domain_name(session_id):
 	return pdump(domain_name)
 
 # Users
-def list_users(session_id,usertype):
+def list_users(session_id,usertype_id):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
-	usertype = pload(usertype)
+	usertype_id = pload(usertype_id)
 	um = userman.UserManager()
-	return pdump(um.list_users(usertype))
+	return pdump(um.list_users(usertype_id))
 
 def list_usergroups(session_id,uid):
 	"""
@@ -123,18 +123,18 @@ def user_exists(session_id,uid):
 	um = userman.UserManager()
 	return pdump(um.user_exists(uid))
 
-def createuser(session_id,uid,givenname,familyname,passwd,usertype,primarygroup):
+def createuser(session_id,uid,givenname,familyname,passwd,usertype_id,primarygroup):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	uid=pload(uid)
 	givenname=pload(givenname)
 	familyname=pload(familyname)
 	passwd=pload(passwd)
-	usertype=pload(usertype)
+	usertype_id=pload(usertype_id)
 	primarygroup=pload(primarygroup)
 	
 	um = userman.UserManager()
-	return pdump(um.createuser(uid,givenname,familyname,passwd,usertype,primarygroup))
+	return pdump(um.createuser(uid,givenname,familyname,passwd,usertype_id,primarygroup))
 
 def removeuser(session_id,uid,backup_home,remove_home):
 	if not session_valid(pload(session_id)):
@@ -165,12 +165,12 @@ def groupdel(session_id,uid,groupname):
 	return pdump(um.groupdel(uid,groupname))
 
 # Groups
-def list_groups(session_id,usertype):
+def list_groups(session_id,usertype_id):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
-	usertype = pload(usertype)
+	usertype_id = pload(usertype_id)
 	gm = userman.GroupManager()
-	return pdump(gm.list_groups(usertype))
+	return pdump(gm.list_groups(usertype_id))
 
 def list_members(session_id,groupname):
 	"""
@@ -193,15 +193,15 @@ def group_exists(session_id,groupname):
 	gm = userman.GroupManager()
 	return pdump(gm.group_exists(groupname))
 
-def creategroup(session_id,groupname,usertype,description):
+def creategroup(session_id,groupname,usertype_id,description):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	groupname=pload(groupname)
-	usertype=pload(usertype)
+	usertype_id=pload(usertype_id)
 	description=pload(description)
 	
 	gm = userman.GroupManager()
-	return pdump(gm.creategroup(groupname,usertype,description))
+	return pdump(gm.creategroup(groupname,usertype_id,description))
 
 def removegroup(session_id,groupname,backup_home,remove_home):
 	if not session_valid(pload(session_id)):

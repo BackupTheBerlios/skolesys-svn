@@ -4,12 +4,7 @@ from ldaptools import LDAPUtil
 from ldiftools import LDIFImporter
 import re,grp,pwd,os,ldap
 from mkpasswd import mkpasswd
-
-# User types
-TEACHER = 1
-STUDENT = 2
-PARENT = 3
-OTHER = 4
+import skolesys.definitions.userdef as userdef
 
 #-------------------------------------
 #---------- GroupManager -------------
@@ -24,13 +19,13 @@ class GroupManager (LDAPUtil):
 		if not usertype:
 			path = conf.get('LDAPSERVER','basedn')
 		else:
-			if (usertype==TEACHER):
+			if (usertype==userdef.TEACHER):
 				usertype_ou = "teachers_ou"
-			if (usertype==STUDENT):
+			if (usertype==userdef.STUDENT):
 				usertype_ou = "students_ou"
-			if (usertype==PARENT):
+			if (usertype==userdef.PARENT):
 				usertype_ou = "parents_ou"
-			if (usertype==OTHER):
+			if (usertype==userdef.OTHER):
 				usertype_ou = "others_ou"
 			path = "%s,%s,%s" % \
 				(conf.get('LDAPSERVER','groups_ou'),\
@@ -77,13 +72,13 @@ class GroupManager (LDAPUtil):
 		if self.group_exists(groupname):
 			return -1
 		
-		if (usertype==TEACHER):
+		if (usertype==userdef.TEACHER):
 			usertype_ou = "teachers_ou"
-		if (usertype==STUDENT):
+		if (usertype==userdef.STUDENT):
 			usertype_ou = "students_ou"
-		if (usertype==PARENT):
+		if (usertype==userdef.PARENT):
 			usertype_ou = "parents_ou"
-		if (usertype==OTHER):
+		if (usertype==userdef.OTHER):
 			usertype_ou = "others_ou"
 		path = "%s,%s,%s,%s" % \
 		  ('cn=%s'%groupname,\
@@ -208,13 +203,13 @@ class UserManager (LDAPUtil):
 		if not usertype:
 			path = conf.get('LDAPSERVER','basedn')
 		else:
-			if (usertype==TEACHER):
+			if (usertype==userdef.TEACHER):
 				usertype_ou = "teachers_ou"
-			if (usertype==STUDENT):
+			if (usertype==userdef.STUDENT):
 				usertype_ou = "students_ou"
-			if (usertype==PARENT):
+			if (usertype==userdef.PARENT):
 				usertype_ou = "parents_ou"
-			if (usertype==OTHER):
+			if (usertype==userdef.OTHER):
 				usertype_ou = "others_ou"
 			path = "%s,%s,%s" % \
 				(conf.get('LDAPSERVER','logins_ou'),\
@@ -261,16 +256,16 @@ class UserManager (LDAPUtil):
 		if self.user_exists(uid):
 			return -1
 		
-		if (usertype==TEACHER):
+		if (usertype==userdef.TEACHER):
 			usertype_ou = "teachers_ou"
 			title = "Teacher"
-		if (usertype==STUDENT):
+		if (usertype==userdef.STUDENT):
 			usertype_ou = "students_ou"
 			title = "Student"
-		if (usertype==PARENT):
+		if (usertype==userdef.PARENT):
 			usertype_ou = "parents_ou"
 			title = "Parent"
-		if (usertype==OTHER):
+		if (usertype==userdef.OTHER):
 			usertype_ou = "others_ou"
 			title = "Other"
 			
