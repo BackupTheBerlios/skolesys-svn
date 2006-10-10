@@ -1,5 +1,6 @@
 from qt import *
 from createuserwdgbase import CreateUserWdgBase
+import skolesys.definitions.userdef as userdef
 
 class CreateUserWdg(CreateUserWdgBase):
 	def __init__(self,conn,parent = None,name = None,fl = 0):
@@ -18,10 +19,10 @@ class CreateUserWdg(CreateUserWdgBase):
 		self.connect(self.cmb_usertype,SIGNAL("activated(int)"),self.update_groupcombo)
 		self.connect(self.cb_allgroups,SIGNAL("toggled(bool)"),self.allgroups_toggled)
 		
-		self.typedict={self.tr('Teacher').latin1():1,\
-			self.tr('Student').latin1():2,\
-			self.tr('Parent').latin1():3,\
-			self.tr('Other').latin1():4}
+		self.typedict={self.tr('Teacher').latin1():userdef.check_usertype_text('teacher'),\
+			self.tr('Student').latin1():userdef.check_usertype_text('student'),\
+			self.tr('Parent').latin1():userdef.check_usertype_text('parent'),\
+			self.tr('Other').latin1():userdef.check_usertype_text('other')}
 		
 		for usertype in self.typedict.keys():
 			self.cmb_usertype.insertItem(usertype)

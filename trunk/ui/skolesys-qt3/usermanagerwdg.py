@@ -2,6 +2,7 @@ import sys
 from qt import *
 from usermanagerwdgbase import UserManagerWdgBase
 from skolesys.soap.client import SkoleSYS_Client
+import skolesys.definitions.userdef as userdef
 import launcher
 
 columns = {'username':0,'usertype':1,'login':2}
@@ -42,10 +43,10 @@ class UserManagerWdg(UserManagerWdgBase):
 		self.contextmenu_enabled = True
 
 		self.typedict={self.tr('All').latin1():None,
-			self.tr('Teachers').latin1():1,\
-			self.tr('Students').latin1():2,\
-			self.tr('Parents').latin1():3,\
-			self.tr('Others').latin1():4}
+			self.tr('Teachers').latin1():userdef.check_usertype_text('teacher'),\
+			self.tr('Students').latin1():userdef.check_usertype_text('student'),\
+			self.tr('Parents').latin1():userdef.check_usertype_text('parent'),\
+			self.tr('Others').latin1():userdef.check_usertype_text('other')}
 		
 		order = [self.tr('All').latin1(),self.tr('Teachers').latin1(),\
 			self.tr('Students').latin1(),self.tr('Parents').latin1(),self.tr('Others').latin1()]

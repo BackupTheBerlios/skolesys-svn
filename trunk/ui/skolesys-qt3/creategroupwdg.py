@@ -1,5 +1,6 @@
 from qt import *
 from creategroupwdgbase import CreateGroupWdgBase
+import skolesys.definitions.userdef as userdef
 
 class CreateGroupWdg(CreateGroupWdgBase):
 	def __init__(self,conn,parent = None,name = None,fl = 0):
@@ -14,10 +15,10 @@ class CreateGroupWdg(CreateGroupWdgBase):
 		self.ed_groupname.setValidator(rx_validator)
 		self.connect(self.ed_groupname,SIGNAL("textChanged(const QString&)"),self.check_group)
 		
-		self.typedict={self.tr('Teacher').latin1():1,\
-			self.tr('Student').latin1():2,\
-			self.tr('Parent').latin1():3,\
-			self.tr('Other').latin1():4}
+		self.typedict={self.tr('Teacher').latin1():userdef.check_usertype_text('teacher'),\
+			self.tr('Student').latin1():userdef.check_usertype_text('student'),\
+			self.tr('Parent').latin1():userdef.check_usertype_text('parent'),\
+			self.tr('Other').latin1():userdef.check_usertype_text('other')}
 		
 		for usertype in self.typedict.keys():
 			self.cmb_usertype.insertItem(usertype)
