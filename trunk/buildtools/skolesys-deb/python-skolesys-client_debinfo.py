@@ -1,4 +1,5 @@
 fetch_method = "svn"
+svn_module = "skolesys"
 
 control = {
 	'Package': 'python2.4-skolesys-client',

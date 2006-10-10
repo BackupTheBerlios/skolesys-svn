@@ -5,7 +5,7 @@ import os
 import sys
 from optparse import OptionParser
 
-usage = "Usage: build_skolesys --svnbase=file:///var/lib/svn module"
+usage = "Usage: build_skolesys --svnbase=file:///var/lib/svn project"
 parser = OptionParser(usage=usage)
 
 if __name__=='__main__':
@@ -60,7 +60,11 @@ if __name__=='__main__':
 			else:
 				options.svnbase = raw_input("Input the folder containing the svn module %s: " % module)	
 		
-		os.system('svn co %s rep' % os.path.join(options.svnbase,module))
+		if dir(debinfo).count('svn_module'):
+			svnmodule = debinfo.svn_module
+		else:
+			svnmodule = module
+		os.system('svn co %s rep' % os.path.join(options.svnbase,svnmodule))
 		os.system('find rep | grep "\\.svn" | xargs rm -R -f')
 		
 	if debinfo.fetch_method=='iso':
