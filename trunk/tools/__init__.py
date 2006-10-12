@@ -1,4 +1,4 @@
-__all__ = ["confhelper"]
+__all__ = ["confhelper","schooltime"]
 
 def _get_exports_list(module):
     try:
