@@ -278,7 +278,7 @@ class UserManager (LDAPUtil):
 			'title':title,
 			'userPassword':mkpasswd(passwd,3,'crypt')}
 		if userdef.usertype_as_id(usertype) == userdef.usertype_as_id('student') and firstyear != None:
-			user_info['schoolClassYear'] = firstyear
+			user_info['firstSchoolYear'] = firstyear
 			
 		
 		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
