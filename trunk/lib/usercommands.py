@@ -75,6 +75,8 @@ if __name__=='__main__':
 		                  help="the user's family name/last name", metavar="FAMILYNAME")
 		parser.add_option("-t", "--userType", dest="usertype",default=None,
 		                  help="the user's account type (teacher,student,parent or other)", metavar="USERTYPE")
+		parser.add_option("-y", "--firstSchoolYear", dest="firstyear",default=None,
+		                  help="The first year this student went to school (students only)", metavar="FIRSTYEAR")
 		parser.add_option("-G", "--primaryGroup", dest="primarygroup",default=None,
 		                  help="the user's primary group", metavar="PRIMARYGROUP")
 		parser.add_option("-p", "--password", dest="password",default=None,
@@ -104,7 +106,7 @@ if __name__=='__main__':
 		if not options.usertype:
 			options.usertype = raw_input("Input the user's account type (teacher,student,parent or other): ")
 		
-		options.usertype = userdef.check_usertype_text(options.usertype)
+		options.usertype = userdef.usertype_as_id(options.usertype)
 		if not options.usertype:
 			print "Invalid usertype"
 			exit(0)
@@ -136,7 +138,8 @@ if __name__=='__main__':
 				exit(0)
 		
 		try:
-			useradd_res = um.createuser(username,options.givenname,options.familyname,options.password,options.usertype,options.primarygroup)
+			useradd_res = um.createuser(username,options.givenname,options.familyname,options.password,\
+				options.usertype,options.primarygroup,options.firstyear)
 		except Exception, e:
 			print e
 			print "An error occured while writing to the user LDAP database"
@@ -300,7 +303,7 @@ if __name__=='__main__':
 		(options, args) = parser.parse_args()
 		if options.usertype:
 			intxt = options.usertype
-			options.usertype = userdef.check_usertype_text(options.usertype)
+			options.usertype = userdef.usertype_as_id(options.usertype)
 			if not options.usertype:
 				print "User type \"%s\" is not recognized. Following are valid: teacher,student,parent or other" % intxt
 				options.usertype = None
@@ -352,7 +355,7 @@ if __name__=='__main__':
 		if not options.grouprelation:
 			options.grouprelation = raw_input("Input the user's account type (teacher,student,parent or other): ")
 		
-		options.grouprelation = userdef.check_usertype_text(options.grouprelation.strip())
+		options.grouprelation = userdef.usertype_as_id(options.grouprelation.strip())
 		if not options.grouprelation:
 			print "Invalid relationship"
 			exit(0)
@@ -429,7 +432,7 @@ if __name__=='__main__':
 		(options, args) = parser.parse_args()
 		if options.usertype:
 			intxt = options.usertype
-			options.usertype = userdef.check_usertype_text(options.usertype)
+			options.usertype = userdef.usertype_as_id(options.usertype)
 			if not options.usertype:
 				print "User type \"%s\" is not recognized. Following are valid: teacher,student,parent or other" % intxt
 				options.usertype = None

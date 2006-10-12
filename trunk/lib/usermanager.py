@@ -5,6 +5,7 @@ from ldiftools import LDIFImporter
 import re,grp,pwd,os,ldap
 from mkpasswd import mkpasswd
 import skolesys.definitions.userdef as userdef
+import skolesys.definitions.ldapdef as ldapdef
 
 #-------------------------------------
 #---------- GroupManager -------------
@@ -16,17 +17,12 @@ class GroupManager (LDAPUtil):
 	
 	def list_groups(self,usertype):
 		
-		if not usertype:
-			path = conf.get('LDAPSERVER','basedn')
-		else:
-			if (usertype==userdef.TEACHER):
-				usertype_ou = "teachers_ou"
-			if (usertype==userdef.STUDENT):
-				usertype_ou = "students_ou"
-			if (usertype==userdef.PARENT):
-				usertype_ou = "parents_ou"
-			if (usertype==userdef.OTHER):
-				usertype_ou = "others_ou"
+		path = conf.get('LDAPSERVER','basedn')
+		if usertype:
+			usertype_ou = ldapdef.ou_confkey_by_usertype(usertype)
+			if not usertype_ou:
+				return {}
+			
 			path = "%s,%s,%s" % \
 				(conf.get('LDAPSERVER','groups_ou'),\
 				conf.get('LDAPSERVER',usertype_ou),\
@@ -71,15 +67,10 @@ class GroupManager (LDAPUtil):
 		# check if the group exists already
 		if self.group_exists(groupname):
 			return -1
-		
-		if (usertype==userdef.TEACHER):
-			usertype_ou = "teachers_ou"
-		if (usertype==userdef.STUDENT):
-			usertype_ou = "students_ou"
-		if (usertype==userdef.PARENT):
-			usertype_ou = "parents_ou"
-		if (usertype==userdef.OTHER):
-			usertype_ou = "others_ou"
+	
+		usertype_ou = ldapdef.ou_confkey_by_usertype(usertype)
+		if not usertype_ou:
+			return -4	# invalid usertype
 		path = "%s,%s,%s,%s" % \
 		  ('cn=%s'%groupname,\
 		   conf.get('LDAPSERVER','groups_ou'),\
@@ -200,17 +191,11 @@ class UserManager (LDAPUtil):
 		LDAPUtil.__init__(self,conf.get('LDAPSERVER','host'))
 	
 	def list_users(self,usertype):
-		if not usertype:
-			path = conf.get('LDAPSERVER','basedn')
-		else:
-			if (usertype==userdef.TEACHER):
-				usertype_ou = "teachers_ou"
-			if (usertype==userdef.STUDENT):
-				usertype_ou = "students_ou"
-			if (usertype==userdef.PARENT):
-				usertype_ou = "parents_ou"
-			if (usertype==userdef.OTHER):
-				usertype_ou = "others_ou"
+		path = conf.get('LDAPSERVER','basedn')
+		if usertype:
+			usertype_ou = ldapdef.ou_confkey_by_usertype(usertype)
+			if not usertype_ou:
+				return {}
 			path = "%s,%s,%s" % \
 				(conf.get('LDAPSERVER','logins_ou'),\
 				conf.get('LDAPSERVER',usertype_ou),\
@@ -247,7 +232,7 @@ class UserManager (LDAPUtil):
 		return True
 
 	
-	def createuser(self,uid,givenname,familyname,passwd,usertype,primarygid=1000):
+	def createuser(self,uid,givenname,familyname,passwd,usertype,primarygid=1000,firstyear=None):
 		"""
 		Add a user to the schools authentication directory service.
 		The usertype must be one of the constants TEACHER,STUDENT,PARENT or OTHER
@@ -256,18 +241,13 @@ class UserManager (LDAPUtil):
 		if self.user_exists(uid):
 			return -1
 		
-		if (usertype==userdef.TEACHER):
-			usertype_ou = "teachers_ou"
-			title = "Teacher"
-		if (usertype==userdef.STUDENT):
-			usertype_ou = "students_ou"
-			title = "Student"
-		if (usertype==userdef.PARENT):
-			usertype_ou = "parents_ou"
-			title = "Parent"
-		if (usertype==userdef.OTHER):
-			usertype_ou = "others_ou"
-			title = "Other"
+		title = userdef.usertype_as_text(usertype)
+		if not title:
+			return -4	# invalid usertype id
+		usertype_ou = ldapdef.ou_confkey_by_usertype(usertype)
+		objectclass = ldapdef.objectclass_by_usertype(usertype)
+		if not objectclass:
+			return -5	# Object classes have not been defined for this usertype
 			
 		path = "%s,%s,%s,%s" % \
 		  ('uid=%s'%uid,\
@@ -293,10 +273,13 @@ class UserManager (LDAPUtil):
 				int(conf.get('DOMAIN','uid_start')))+1),
 			'homeDirectory':'%s/%s/users/%s' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid),
 			'sn':'%s' % givenname,
-			'objectclass':('inetOrgPerson','organizationalPerson','posixAccount','shadowAccount','person', 'top'),
+			'objectclass':objectclass,
 			'mail': uid,
 			'title':title,
 			'userPassword':mkpasswd(passwd,3,'crypt')}
+		if userdef.usertype_as_id(usertype) == userdef.usertype_as_id('student') and firstyear != None:
+			user_info['schoolClassYear'] = firstyear
+			
 		
 		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
 		self.touch_by_dict({path:user_info})
