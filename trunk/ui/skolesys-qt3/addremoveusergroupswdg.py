@@ -66,9 +66,9 @@ class AddRemoveUserGroupsWdg(AddRemoveWdgBase):
 		progdlg = ProgressDlg(self.tr("Altering memberships..."),self,"progress",True)
 		progdlg.setTotalSteps(len(self.uids)*(self.lb_add.count()+self.lb_remove.count())-1)
 		
-		glob_settings.widgetGeometry('ssys_admin/AddRemoveUserGroups/ProgressDlg',progdlg)
+		glob_settings.widgetGeometry('skolesys-ui/AddRemoveUserGroups/ProgressDlg',progdlg)
 		progdlg.show()
-		show_details = glob_settings.intEntry('ssys_admin/AddRemoveUserGroups/ProgressDlg/show_details',0)[0]
+		show_details = glob_settings.intEntry('skolesys-ui/AddRemoveUserGroups/ProgressDlg/show_details',0)[0]
 		progdlg.showDetails(show_details)
 
 		progress = 0
@@ -106,9 +106,9 @@ class AddRemoveUserGroupsWdg(AddRemoveWdgBase):
 		progdlg.setLabelText(self.tr("Done."))
 		progdlg.setProgress(progdlg.steps)
 		progdlg.exec_loop()
-		glob_settings.setWidgetGeometry('ssys_admin/AddRemoveUserGroups/ProgressDlg',progdlg)
+		glob_settings.setWidgetGeometry('skolesys-ui/AddRemoveUserGroups/ProgressDlg',progdlg)
 		show_details = 0
 		if progdlg.btn_details.isOn():
 			show_details = 1
-		glob_settings.setIntEntry('ssys_admin/AddRemoveUserGroups/ProgressDlg/show_details',show_details)		
+		glob_settings.setIntEntry('skolesys-ui/AddRemoveUserGroups/ProgressDlg/show_details',show_details)		
 		return True

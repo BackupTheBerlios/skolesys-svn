@@ -14,7 +14,7 @@ a = QApplication(sys.argv)
 if len(sys.argv)>1:
 	trans_ext = sys.argv[-1:][0]
 	trans = QTranslator()
-	trans.load('skolesys_ui_%s.qm' % trans_ext)
+	trans.load('skolesys-ui_%s.qm' % trans_ext)
 	a.installTranslator(trans)
 	
 QObject.connect(a,SIGNAL("lastWindowClosed()"),a,SLOT("quit()"))
@@ -23,7 +23,7 @@ w = LaunchDlg(conn)
 w.setIcon(load_pixmap('app_logo.png'))
 a.setMainWidget(w)
 w.show()
-glob_settings.widgetGeometry('ssys_admin/MainWindow',w)
+glob_settings.widgetGeometry('skolesys-ui/MainWindow',w)
 a.exec_loop()
-glob_settings.setWidgetGeometry('ssys_admin/MainWindow',w)
+glob_settings.setWidgetGeometry('skolesys-ui/MainWindow',w)
 glob_settings.saveSettings()

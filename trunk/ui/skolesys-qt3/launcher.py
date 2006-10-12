@@ -33,9 +33,9 @@ def execUserManager(conn):
 	#a = QFileDialog()
 	#dlg.setFoldedExtension(a)
 	
-	glob_settings.widgetGeometry('ssys_admin/UserManager',dlg)
+	glob_settings.widgetGeometry('skolesys-ui/UserManager',dlg)
 	dlg.exec_loop()
-	glob_settings.setWidgetGeometry('ssys_admin/UserManager',dlg)
+	glob_settings.setWidgetGeometry('skolesys-ui/UserManager',dlg)
 	
 	
 
@@ -44,18 +44,18 @@ def execCreateUser(conn):
 	dlg.setCaption(qApp.translate("CreateUserWdg","Create User"))
 	createuser = CreateUserWdg(conn)
 	dlg.setWidget(createuser,True,qApp.translate("CreateUserWdg","User information"))
-	glob_settings.widgetGeometry('ssys_admin/CreateUser',dlg)
+	glob_settings.widgetGeometry('skolesys-ui/CreateUser',dlg)
 	dlg.exec_loop()
-	glob_settings.setWidgetGeometry('ssys_admin/CreateUser',dlg)
+	glob_settings.setWidgetGeometry('skolesys-ui/CreateUser',dlg)
 
 def execRemoveUser(conn,uids):
 	dlg = WidgetDialog()
 	dlg.setCaption(qApp.translate("RemoveUserWdg","Remove User(s)"))
 	removeuser = RemoveUserWdg(conn,uids)
 	dlg.setWidget(removeuser,True,qApp.translate("CreateUserWdg","User information"))
-	glob_settings.widgetGeometry('ssys_admin/RemoveUser',dlg)
+	glob_settings.widgetGeometry('skolesys-ui/RemoveUser',dlg)
 	dlg.exec_loop()
-	glob_settings.setWidgetGeometry('ssys_admin/RemoveUser',dlg)
+	glob_settings.setWidgetGeometry('skolesys-ui/RemoveUser',dlg)
 
 def execGroupManager(conn):
 	# Setup dialog
@@ -70,42 +70,42 @@ def execGroupManager(conn):
 	dlg.setWidget(grpman,True,qApp.translate("GroupManagerWdg","Groups"))
 	QObject.connect(dlg.btnCustom1,SIGNAL("clicked()"),grpman.createGroup)
 	QObject.connect(dlg.btnCustom2,SIGNAL("clicked()"),grpman.removeGroup)
-	glob_settings.widgetGeometry('ssys_admin/GroupManager',dlg)
+	glob_settings.widgetGeometry('skolesys-ui/GroupManager',dlg)
 	dlg.exec_loop()
-	glob_settings.setWidgetGeometry('ssys_admin/GroupManager',dlg)
+	glob_settings.setWidgetGeometry('skolesys-ui/GroupManager',dlg)
 
 def execCreateGroup(conn):
 	dlg = WidgetDialog()
 	dlg.setCaption(qApp.translate("CreateGroupWdg","Create Group"))
 	creategroup = CreateGroupWdg(conn)
 	dlg.setWidget(creategroup,True,qApp.translate("CreateUserWdg","Group information"))
-	glob_settings.widgetGeometry('ssys_admin/CreateGroup',dlg)
+	glob_settings.widgetGeometry('skolesys-ui/CreateGroup',dlg)
 	dlg.exec_loop()
-	glob_settings.setWidgetGeometry('ssys_admin/CreateGroup',dlg)
+	glob_settings.setWidgetGeometry('skolesys-ui/CreateGroup',dlg)
 
 def execRemoveGroup(conn,groupnames):
 	dlg = WidgetDialog()
 	dlg.setCaption(qApp.translate("RemoveGroupWdg","Remove Group(s)"))
 	removegroup = RemoveGroupWdg(conn,groupnames)
 	dlg.setWidget(removegroup,True,qApp.translate("CreateGroupWdg","Group information"))
-	glob_settings.widgetGeometry('ssys_admin/RemoveGroup',dlg)
+	glob_settings.widgetGeometry('skolesys-ui/RemoveGroup',dlg)
 	dlg.exec_loop()
-	glob_settings.setWidgetGeometry('ssys_admin/RemoveGroup',dlg)
+	glob_settings.setWidgetGeometry('skolesys-ui/RemoveGroup',dlg)
 
 def execAddRemoveUserGroups(conn,uids):
 	dlg = WidgetDialog()
 	dlg.setCaption(qApp.translate("AddRemoveUserGroupsWdg","Alter Group Memberships"))
 	wdg = AddRemoveUserGroupsWdg(conn,uids)
 	dlg.setWidget(wdg,True,qApp.translate("AddRemoveUserGroupsWdg","Alter the group membership of the following user(s)"))
-	glob_settings.widgetGeometry('ssys_admin/AddRemoveUserGroups',dlg)
+	glob_settings.widgetGeometry('skolesys-ui/AddRemoveUserGroups',dlg)
 	dlg.exec_loop()
-	glob_settings.setWidgetGeometry('ssys_admin/AddRemoveUserGroups',dlg)
+	glob_settings.setWidgetGeometry('skolesys-ui/AddRemoveUserGroups',dlg)
 
 def execAddRemoveGroupUsers(conn,groupnames):
 	dlg = WidgetDialog()
 	dlg.setCaption(qApp.translate("AddRemoveGroupUsersWdg","Alter Group Members"))
 	wdg = AddRemoveGroupUsersWdg(conn,groupnames)
 	dlg.setWidget(wdg,True,qApp.translate("AddRemoveGroupUsersWdg","Alter the members of the following group(s)"))
-	glob_settings.widgetGeometry('ssys_admin/AddRemoveGroupUsers',dlg)
+	glob_settings.widgetGeometry('skolesys-ui/AddRemoveGroupUsers',dlg)
 	dlg.exec_loop()
-	glob_settings.setWidgetGeometry('ssys_admin/AddRemoveGroupUsers',dlg)
+	glob_settings.setWidgetGeometry('skolesys-ui/AddRemoveGroupUsers',dlg)
