@@ -34,11 +34,35 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cancel</source>
+        <source>Altering memberships of %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Altering memberships of %1</source>
+        <source>Adding user &quot;%1&quot; to the group &quot;%2&quot; ... </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER ADDED</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER ALREADY MEMBER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Removing user &quot;%1&quot; from the group &quot;%2&quot; ... </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER REMOVED</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOT MEMBER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Done.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -77,11 +101,35 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cancel</source>
+        <source>Altering memberships of %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Altering memberships of %1</source>
+        <source>Adding user &quot;%1&quot; to the group &quot;%2&quot; ... </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER ADDED</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER ALREADY MEMBER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Removing user &quot;%1&quot; from the group &quot;%2&quot; ... </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER REMOVED</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOT MEMBER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Done.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -127,12 +175,16 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>First name</source>
-        <translation type="unfinished">Fornavn</translation>
+        <source>Group name</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>User type</source>
-        <translation type="unfinished">Brugertype</translation>
+        <source>User type reference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group description</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -140,22 +192,6 @@
     <message>
         <source>User information</source>
         <translation>Bruger information</translation>
-    </message>
-    <message>
-        <source>Teacher</source>
-        <translation>Lærer</translation>
-    </message>
-    <message>
-        <source>Student</source>
-        <translation>Elev</translation>
-    </message>
-    <message>
-        <source>Parent</source>
-        <translation>Forældre</translation>
-    </message>
-    <message>
-        <source>Other</source>
-        <translation>Extern</translation>
     </message>
     <message>
         <source>Create user</source>
@@ -211,6 +247,18 @@
     <message>
         <source>Password</source>
         <translation>Adgangskode</translation>
+    </message>
+    <message>
+        <source>Primary group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show all groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First school year</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -306,6 +354,25 @@
     </message>
 </context>
 <context>
+    <name>ProgressDlgBase</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Progess Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RemoveGroupWdg</name>
     <message>
         <source>Remove Group(s)</source>
@@ -388,26 +455,6 @@
         <translation>Brugere</translation>
     </message>
     <message>
-        <source>Teachers</source>
-        <translation>Lærerer</translation>
-    </message>
-    <message>
-        <source>Students</source>
-        <translation>Elever</translation>
-    </message>
-    <message>
-        <source>Parents</source>
-        <translation>Forældre</translation>
-    </message>
-    <message>
-        <source>Others</source>
-        <translation>Externe</translation>
-    </message>
-    <message>
-        <source>All</source>
-        <translation>Alle</translation>
-    </message>
-    <message>
         <source>User Manager</source>
         <translation>Brugerhåndtering</translation>
     </message>
@@ -423,6 +470,14 @@
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit %1...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UserManagerWdgBase</name>
@@ -434,24 +489,17 @@
         <source>User type filter</source>
         <translation>Brugertypefilter</translation>
     </message>
-</context>
-<context>
-    <name>UserTypes</name>
     <message>
-        <source>Student</source>
-        <translation>Elev</translation>
+        <source>Group filter</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Teacher</source>
-        <translation>Lærer</translation>
+        <source>to</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Parent</source>
-        <translation>Forældre</translation>
-    </message>
-    <message>
-        <source>Other</source>
-        <translation>Extern</translation>
+        <source>Class</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -475,6 +523,14 @@
     <message>
         <source>Alt+O</source>
         <translation>Alt+O</translation>
+    </message>
+    <message>
+        <source>&amp;Extension</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alt+E</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

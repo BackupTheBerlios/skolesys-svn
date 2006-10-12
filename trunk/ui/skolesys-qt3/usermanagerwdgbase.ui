@@ -9,8 +9,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>386</width>
-            <height>202</height>
+            <width>686</width>
+            <height>460</height>
         </rect>
     </property>
     <property name="caption">
@@ -20,12 +20,7 @@
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
-        <widget class="QComboBox" row="0" column="1">
-            <property name="name">
-                <cstring>m_cb_usertype_filter</cstring>
-            </property>
-        </widget>
-        <widget class="QListView" row="1" column="0" rowspan="1" colspan="3">
+        <widget class="QListView" row="2" column="0" rowspan="1" colspan="7">
             <property name="name">
                 <cstring>m_lv_userlist</cstring>
             </property>
@@ -39,23 +34,11 @@
                 <bool>true</bool>
             </property>
         </widget>
-        <spacer row="0" column="2">
+        <widget class="QComboBox" row="1" column="0">
             <property name="name">
-                <cstring>spacer1</cstring>
+                <cstring>m_cb_usertype_filter</cstring>
             </property>
-            <property name="orientation">
-                <enum>Horizontal</enum>
-            </property>
-            <property name="sizeType">
-                <enum>Expanding</enum>
-            </property>
-            <property name="sizeHint">
-                <size>
-                    <width>123</width>
-                    <height>20</height>
-                </size>
-            </property>
-        </spacer>
+        </widget>
         <widget class="QLabel" row="0" column="0">
             <property name="name">
                 <cstring>textLabel1</cstring>
@@ -64,15 +47,108 @@
                 <string>User type filter</string>
             </property>
         </widget>
+        <widget class="QLabel" row="0" column="6">
+            <property name="name">
+                <cstring>textLabel1_2</cstring>
+            </property>
+            <property name="text">
+                <string>Group filter</string>
+            </property>
+        </widget>
+        <widget class="QComboBox" row="1" column="6">
+            <property name="name">
+                <cstring>cmb_groupfilter</cstring>
+            </property>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>3</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
+            </property>
+        </widget>
+        <widget class="QSpinBox" row="1" column="2">
+            <property name="name">
+                <cstring>sbx_firstschoolyear_min</cstring>
+            </property>
+            <property name="enabled">
+                <bool>false</bool>
+            </property>
+            <property name="maxValue">
+                <number>12</number>
+            </property>
+        </widget>
+        <widget class="QSpinBox" row="1" column="4">
+            <property name="name">
+                <cstring>sbx_firstschoolyear_max</cstring>
+            </property>
+            <property name="enabled">
+                <bool>false</bool>
+            </property>
+            <property name="maxValue">
+                <number>12</number>
+            </property>
+            <property name="value">
+                <number>12</number>
+            </property>
+        </widget>
+        <widget class="QLabel" row="1" column="3">
+            <property name="name">
+                <cstring>lbl_firstschoolyear_to</cstring>
+            </property>
+            <property name="enabled">
+                <bool>false</bool>
+            </property>
+            <property name="text">
+                <string>to</string>
+            </property>
+        </widget>
+        <spacer row="1" column="5">
+            <property name="name">
+                <cstring>spacer2</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Horizontal</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Fixed</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>16</width>
+                    <height>20</height>
+                </size>
+            </property>
+        </spacer>
+        <spacer row="1" column="1">
+            <property name="name">
+                <cstring>spacer2_2</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Horizontal</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Fixed</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>16</width>
+                    <height>20</height>
+                </size>
+            </property>
+        </spacer>
+        <widget class="QLabel" row="0" column="2" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>textLabel2</cstring>
+            </property>
+            <property name="text">
+                <string>Class year filter</string>
+            </property>
+        </widget>
     </grid>
 </widget>
 <connections>
-    <connection>
-        <sender>m_cb_usertype_filter</sender>
-        <signal>activated(int)</signal>
-        <receiver>UserManagerWdgBase</receiver>
-        <slot>slotFilterActivated(int)</slot>
-    </connection>
     <connection>
         <sender>m_lv_userlist</sender>
         <signal>contextMenuRequested(QListViewItem*,const QPoint&amp;,int)</signal>
