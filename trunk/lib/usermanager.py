@@ -201,8 +201,7 @@ class UserManager (LDAPUtil):
 				conf.get('LDAPSERVER',usertype_ou),\
 				conf.get('LDAPSERVER','basedn'))
 				
-		res = self.l.search(path,ldap.SCOPE_SUBTREE,'(& (uid=*)(objectclass=posixaccount))',\
-			['dn','cn','mail','uid','title'])
+		res = self.l.search(path,ldap.SCOPE_SUBTREE,'(& (uid=*)(objectclass=posixaccount))',[])
 			
 		user_dict = {}
 		while 1:
@@ -243,11 +242,11 @@ class UserManager (LDAPUtil):
 		
 		title = userdef.usertype_as_text(usertype)
 		if not title:
-			return -4	# invalid usertype id
+			return -5	# invalid usertype id
 		usertype_ou = ldapdef.ou_confkey_by_usertype(usertype)
 		objectclass = ldapdef.objectclass_by_usertype(usertype)
 		if not objectclass:
-			return -5	# Object classes have not been defined for this usertype
+			return -6	# Object classes have not been defined for this usertype
 			
 		path = "%s,%s,%s,%s" % \
 		  ('uid=%s'%uid,\
@@ -278,7 +277,7 @@ class UserManager (LDAPUtil):
 			'title':title,
 			'userPassword':mkpasswd(passwd,3,'crypt')}
 		if userdef.usertype_as_id(usertype) == userdef.usertype_as_id('student') and firstyear != None:
-			user_info['firstSchoolYear'] = firstyear
+			user_info['firstSchoolYear'] = str(firstyear)
 			
 		
 		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
