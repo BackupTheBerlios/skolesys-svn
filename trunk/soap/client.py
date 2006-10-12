@@ -41,7 +41,7 @@ class SkoleSYS_Client:
 					if self.tc_hwaddr == None:
 						print "could not resolve the hwaddr of ip %s" % self.tc_ip
 				
-				
+
 		
 		# Fetch the client hwaddr
 		addr = SOAPpy.SOAPAddress(url)
@@ -123,9 +123,9 @@ class SkoleSYS_Client:
 		return pload(self.server.user_exists(pdump(self.session_id),pdump(uid)))
 	
 	
-	def createuser(self,uid,givenname,familyname,passwd,usertype_id,primarygroup):
+	def createuser(self,uid,givenname,familyname,passwd,usertype_id,primarygroup,firstyear):
 		return pload(self.server.createuser(pdump(self.session_id),pdump(uid),pdump(givenname),\
-			pdump(familyname),pdump(passwd),pdump(usertype_id),pdump(primarygroup)))
+			pdump(familyname),pdump(passwd),pdump(usertype_id),pdump(primarygroup),pdump(firstyear)))
 
 	def removeuser(self,uid,backup_home=False,remove_home=False):
 		return pload(self.server.removeuser(pdump(self.session_id),pdump(uid),pdump(backup_home),pdump(remove_home)))

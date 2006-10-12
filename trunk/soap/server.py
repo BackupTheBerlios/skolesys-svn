@@ -123,7 +123,10 @@ def user_exists(session_id,uid):
 	um = userman.UserManager()
 	return pdump(um.user_exists(uid))
 
-def createuser(session_id,uid,givenname,familyname,passwd,usertype_id,primarygroup):
+def createuser(session_id,uid,givenname,familyname,passwd,usertype_id,primarygroup,firstyear):
+	"""
+	Add a new user. firstyear defines the students first year in school.
+	"""
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	uid=pload(uid)
@@ -132,9 +135,10 @@ def createuser(session_id,uid,givenname,familyname,passwd,usertype_id,primarygro
 	passwd=pload(passwd)
 	usertype_id=pload(usertype_id)
 	primarygroup=pload(primarygroup)
+	firstyear=pload(firstyear)
 	
 	um = userman.UserManager()
-	return pdump(um.createuser(uid,givenname,familyname,passwd,usertype_id,primarygroup))
+	return pdump(um.createuser(uid,givenname,familyname,passwd,usertype_id,primarygroup,firstyear))
 
 def removeuser(session_id,uid,backup_home,remove_home):
 	if not session_valid(pload(session_id)):
