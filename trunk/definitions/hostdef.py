@@ -111,9 +111,4 @@ def list_types_by_id():
 def list_types_by_text():
 	return _user_struct['type_text'].keys()
 
-# obsolete
-def check_hosttype_text(hosttype_text): 
-	return hosttype_as_id(hosttype_text)
 
-def translate_hosttype_id(hosttype_id):
-	return hosttype_as_text(hosttype_text)

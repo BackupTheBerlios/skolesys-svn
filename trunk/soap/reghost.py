@@ -11,7 +11,7 @@ import skolesys.soap.client as ss_client
 import getpass
 from skolesys.tools.confhelper import conf2dict
 from optparse import OptionParser
-from skolesys.definitions.hostdef import check_hostname,check_hosttype_text
+from skolesys.definitions.hostdef as hostdef
 
 
 soapconf = None
@@ -65,19 +65,19 @@ else:
 
 
 if options.hostname:
-	options.hostname = check_hostname(options.hostname)
+	options.hostname = hostdef.check_hostname(options.hostname)
 while not options.hostname:
 	input_hostname = raw_input("Input the hostname for the host being assigned: ")
-	options.hostname = check_hostname(input_hostname)
+	options.hostname = hostdef.check_hostname(input_hostname)
 	if not options.hostname:
 		print '"%s" is not a valid hostname. Use only letters and numbers.' % input_hostname
 
 hosttype_id = None
 if options.hosttype:
-	hosttype_id = check_hosttype_text(options.hosttype)
+	hosttype_id = hostdef.hosttype_as_text(options.hosttype)
 while not hosttype_id:
 	input_hosttype = raw_input("Input the host type (mainserver,ltspserver,workstation or ltspclient): ")
-	hosttype_id = check_hosttype_text(input_hosttype)
+	hosttype_id = hostdef.hosttype_as_text(input_hosttype)
 	if not hosttype_id:
 		print '"%s" is not a valid host type.' % input_hosttype
 

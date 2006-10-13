@@ -298,7 +298,7 @@ def getconf(session_id,hwaddr):
 	if not hinfo:
 		return pdump([-1,'']) # Only registered hosts can ask for configurations
 	
-	hosttype_id = hostdef.check_hosttype_text(hinfo['hostType'][0])
+	hosttype_id = hostdef.hosttype_as_text(hinfo['hostType'][0])
 	if not hosttype_id:
 		return pdump([-2,'']) # The host is registered with an invalid host type id
 	

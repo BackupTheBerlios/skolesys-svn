@@ -10,7 +10,7 @@ class ConfigBuilder:
 		1. Create temp directory
 		2. Fetch 
 		"""
-		self.hosttype = hostdef.translate_hosttype_id(hosttype_id)
+		self.hosttype = hostdef.hosttype_as_text(hosttype_id)
 		self.hwaddr = hostdef.check_hwaddr(hwaddr)
 		self.tempdir = tempfile.mkdtemp(prefix='skolesys_')
 		self.infocollection = InfoCollection(self.hwaddr)

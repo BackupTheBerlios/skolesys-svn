@@ -20,7 +20,7 @@ class HostManager (LDAPUtil):
 		are read in the ldap database
 		"""
 	
-		hosttype_text = hostdef.translate_hosttype_id(hosttype_id)
+		hosttype_text = hostdef.hosttype_as_text(hosttype_id)
 		if not hosttype_text:
 			return None
 		iprange_str = conf.get('DOMAIN','%s_iprange' % hosttype_text)
@@ -60,7 +60,7 @@ class HostManager (LDAPUtil):
 		"""
 		Query skolesys.conf and return an ip range as a tuple eg. ("10.1.1.1","10.3.3.254")
 		"""
-		hosttype_text = hostdef.translate_hosttype_id(hosttype_id)
+		hosttype_text = hostdef.hosttype_as_text(hosttype_id)
 		iprange_str = conf.get('DOMAIN','%s_iprange' % hosttype_text)
 		if not iprange_str:
 			print "XXX make default ip ranges here"
@@ -104,9 +104,9 @@ class HostManager (LDAPUtil):
 			return -1
 		if not hostdef.check_hostname(hostname):
 			return -2
-		if not hostdef.translate_hosttype_id(hosttype_id):
+		if not hostdef.hosttype_as_text(hosttype_id):
 			return -3
-		hosttype = hostdef.translate_hosttype_id(hosttype_id)
+		hosttype = hostdef.hosttype_as_text(hosttype_id)
 		if ipaddr and not hostdef.check_ipaddr(ipaddr):
 			return -4
 		
@@ -168,7 +168,7 @@ class HostManager (LDAPUtil):
 			if hosttype_id==None:
 				search_claus = '(objectclass=skoleSysHost)'
 			else:
-				hosttype = hostdef.translate_hosttype_id(hosttype_id)
+				hosttype = hostdef.hosttype_as_text(hosttype_id)
 				if hosttype:
 					search_claus = '(& (objectclass=skoleSysHost) (hostType=%s) )' % hosttype
 				else:

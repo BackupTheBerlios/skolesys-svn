@@ -50,7 +50,4 @@ def list_types_by_id():
 def list_types_by_text():
 	return _user_struct['type_text'].keys()
 
-# obsolete
-def check_usertype_text(usertype_text): 
-	return usertype_as_id(usertype_text)
 
