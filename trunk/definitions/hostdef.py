@@ -1,11 +1,19 @@
 import re
 # SkoleSYS host types
 
-MAINSERVER = 1
-LTSPSERVER = 2
-WORKSTATION = 3
-LTSPCLIENT = 4
-DYNAMIC = 5 # non-registered hosts
+_host_struct = {}
+
+# NOTE: types are canse in-sensetive!
+_host_struct['type_id'] = {
+	1 : 'mainserver',
+	2 : 'ltspserver',
+	3 : 'ltspclient',
+	4 : 'workstation'}
+	
+_host_struct['type_text'] = {}
+for k,v in _host_struct['type_id'].items():
+	exec('%s=%d' % (v.upper(),k))
+	_host_struct['type_text'][v.lower()] = k
 
 # tools, validation and sanitychecks
 
@@ -66,28 +74,46 @@ def check_ipaddr(ipaddr):
 				return None
 		return ipaddr
 	
-def check_hosttype_text(hosttype_text):
-	global MAINSERVER,LTSPSERVER,WORKSTATION,LTSPCLIENT
-	hosttype_text = hosttype_text.strip().lower()
-	if hosttype_text == 'mainserver':
-		return MAINSERVER
-	if hosttype_text == 'ltspserver':
-		return LTSPSERVER
-	if hosttype_text == 'workstation':
-		return WORKSTATION
-	if hosttype_text == 'ltspclient':
-		return LTSPCLIENT
-	return None
 
+def hosttype_as_id(hosttype):
+	"""
+	Convert a host type id (sanity check) or host type text to it's host type id.
+	If an int is passed it is regarded as a host type id itself and therefore normally
+	just returned as is, but if the value is not valid None is returned.
+	"""
+	if type(hosttype)==str:
+		if _host_struct['type_text'].has_key(hosttype.strip().lower()):
+			return _host_struct['type_text'][hosttype.strip().lower()]
+	elif type(hosttype) == int:
+		if _host_struct['type_id'].has_key(hosttype):
+			return hosttype
+	else:
+		return None
+
+def hosttype_as_text(hosttype):
+	"""
+	Convert a host type id or host type text (sanity check) to it's host type text.
+	If a str is passed it is regarded as a host type text itself and therefore normally
+	just returned as is, but if the value is not valid None is returned.
+	"""
+	if type(hosttype)==str:
+		if _host_struct['type_text'].has_key(hosttype.strip().lower()):
+			return hosttype.strip().lower()
+	elif type(hosttype) == int:
+		if _host_struct['type_id'].has_key(hosttype):
+			return _host_struct['type_id'][hosttype]
+	else:
+		return None
+
+def list_types_by_id():
+	return _user_struct['type_id'].keys()
+
+def list_types_by_text():
+	return _user_struct['type_text'].keys()
+
+# obsolete
+def check_hosttype_text(hosttype_text): 
+	return hosttype_as_id(hosttype_text)
 
 def translate_hosttype_id(hosttype_id):
-	global MAINSERVER,LTSPSERVER,WORKSTATION,LTSPCLIENT
-	if hosttype_id == MAINSERVER:
-		return 'mainserver'
-	if hosttype_id == LTSPSERVER:
-		return 'ltspserver'
-	if hosttype_id == WORKSTATION:
-		return 'workstation'
-	if hosttype_id == LTSPCLIENT:
-		return 'ltspclient'
-	return None
+	return hosttype_as_text(hosttype_text)

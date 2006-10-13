@@ -3,6 +3,7 @@
 import re,grp,os,ldap
 from sys import argv,exit
 
+
 # Check root privilegdes
 if not os.getuid()==0:
 	print "This command needs requires priviledges"
@@ -51,7 +52,7 @@ if __name__=='__main__':
 			print "Missing hostname for the hostadd operation"
 			exit(0)
 		
-		hostname = check_hostname(args[1])
+		hostname = hostdef.check_hostname(args[1])
 		if not hostname:
 			print "The entered hostname is invalid"
 			exit(0)
@@ -80,9 +81,9 @@ if __name__=='__main__':
 			print 'The hwaddr: "%s" has already been registered use hostmod instead' % options.hwaddr
 			exit(0)
 			
-		while not options.hosttype or not hostdef.check_hosttype_text(options.hosttype):
-			options.hosttype = raw_input("Input the host type (ltspserver,ltspclient,workstation): ")
-		hosttype_id = hostdef.check_hosttype_text(options.hosttype)
+		while not options.hosttype or not hostdef.hosttype_as_id(options.hosttype):
+			options.hosttype = raw_input("Input the host type (%s): " % ','.join(hostdef.list_types_by_text()))
+		hosttype_id = hostdef.hosttype_as_id(options.hosttype)
 		
 		try:
 			hostadd_res = hm.register_host(options.hwaddr,hostname,hosttype_id,options.ipaddr)
@@ -163,7 +164,7 @@ if __name__=='__main__':
 		
 		hosttype_id = None
 		if options.hosttype:
-			hosttype_id = hostdef.check_hosttype_text(options.hosttype)
+			hosttype_id = hostdef.hosttype_as_id(options.hosttype)
 			if not hosttype_id:
 				print 'The host type: "%s" is not valid.' % options.hosttype
 				

@@ -100,7 +100,7 @@ class GroupManager (LDAPUtil):
 				os.mkdir(os.path.normpath(home_path))
 			
 			os.system('chgrp %d %s -R -f' % (gid,os.path.normpath(home_path)))
-			os.system('chmod g+wrx %s -R -f' % (os.path.normpath(home_path)))
+			os.system('chmod g+wrs,o-rwx %s -R -f' % (os.path.normpath(home_path)))
 		except Exception, e:
 			print e
 			return -3
