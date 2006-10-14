@@ -39,10 +39,10 @@ class GroupManagerWdg(GroupManagerWdgBase):
 		self.contextmenu_enabled = True
 
 		self.typedict={self.tr('All').latin1():None,
-			self.tr('Teachers').latin1():userdef.check_usertype_text('teacher'),\
-			self.tr('Students').latin1():userdef.check_usertype_text('student'),\
-			self.tr('Parents').latin1():userdef.check_usertype_text('parent'),\
-			self.tr('Others').latin1():userdef.check_usertype_text('other')}
+			self.tr('Teachers').latin1():userdef.usertype_as_id('teacher'),\
+			self.tr('Students').latin1():userdef.usertype_as_id('student'),\
+			self.tr('Parents').latin1():userdef.usertype_as_id('parent'),\
+			self.tr('Others').latin1():userdef.usertype_as_id('other')}
 		
 		order = [self.tr('All').latin1(),self.tr('Teachers').latin1(),\
 			self.tr('Students').latin1(),self.tr('Parents').latin1(),self.tr('Others').latin1()]
