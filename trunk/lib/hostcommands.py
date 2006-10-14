@@ -21,7 +21,8 @@ if __name__=='__main__':
 	commands = {
 		'hostadd': 'Register a new host to the network',
 		'hostinfo': 'List the registered information of a host',
-		'listhosts': 'List registered hosts'}
+		'listhosts': 'List registered hosts',
+		'join_domain': 'Let a host join the samba domain'}
 
 	shell_cmd_name = os.path.split(argv[0])[-1:][0]
 	

@@ -106,9 +106,9 @@ def hosttype_as_text(hosttype):
 		return None
 
 def list_types_by_id():
-	return _user_struct['type_id'].keys()
+	return _host_struct['type_id'].keys()
 
 def list_types_by_text():
-	return _user_struct['type_text'].keys()
+	return _host_struct['type_text'].keys()
 
 

@@ -298,6 +298,11 @@ class UserManager (LDAPUtil):
 		except Exception,e:
 			print e
 			return -3
+		w,r = os.popen2('smbpasswd -a %s -s' % uid)
+		w.write('%s\n' % passwd)
+		w.write('%s\n' % passwd)
+		w.close()
+		r.close()
 		return 1	
 		
 	def deluser(self,uid,backup_home,remove_home):
