@@ -15,10 +15,10 @@ class CreateGroupWdg(CreateGroupWdgBase):
 		self.ed_groupname.setValidator(rx_validator)
 		self.connect(self.ed_groupname,SIGNAL("textChanged(const QString&)"),self.check_group)
 		
-		self.typedict={self.tr('Teacher').latin1():userdef.usertype_as_id_text('teacher'),\
-			self.tr('Student').latin1():userdef.usertype_as_id_text('student'),\
-			self.tr('Parent').latin1():userdef.usertype_as_id_text('parent'),\
-			self.tr('Other').latin1():userdef.usertype_as_id_text('other')}
+		self.typedict={self.tr('Teacher').latin1():userdef.usertype_as_id('teacher'),\
+			self.tr('Student').latin1():userdef.usertype_as_id('student'),\
+			self.tr('Parent').latin1():userdef.usertype_as_id('parent'),\
+			self.tr('Other').latin1():userdef.usertype_as_id('other')}
 		
 		for usertype in self.typedict.keys():
 			self.cmb_usertype.insertItem(usertype)
