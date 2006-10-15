@@ -2,10 +2,10 @@
 
 # Check root privilegdes
 import os
-from sys import exit
+import sys
 if not os.getuid()==0:
 	print "This command requires root priviledges"
-	exit(0)
+	sys.exit(0)
 
 import inspect
 import os.path
@@ -329,7 +329,7 @@ def startserver():
 	addr = if2ip(netif)
 	if not addr:
 		print "Interface %s has not been configured. No SOAP service started" % netif
-		exit(0)
+		sys.exit(0)
 	ssl_context = SSL.Context()
 	ssl_context.load_cert(certfile,keyfile=keyfile)
 	server = MyServer((addr, 8443),ssl_context = ssl_context)
@@ -370,7 +370,17 @@ def startserver():
 	server.registerFunction(listhosts)
 	server.registerFunction(getconf)
 
-	server.serve_forever()
+	if os.fork()==0:
+		os.setsid()
+		sys.stdout=open("/dev/null", 'w')
+		sys.stdin=open("/dev/null", 'r')
+		while 1:
+			try:
+				server.serve_forever()
+			except:
+				print "SOAP Service malfunctioned - Reenaging..."
+
 
 if __name__ == '__main__':
 	startserver()
+	sys.exit(0)
