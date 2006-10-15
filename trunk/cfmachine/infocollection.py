@@ -79,7 +79,7 @@ class InfoCollection:
 			if not self.data['hosts'].has_key(htyp):
 				self.data['hosts'][htyp] = []
 			self.data['hosts'][htyp] += [nhost]
-			if self.hwaddr == nhost['macAddress']:
+			if self.hwaddr.lower() == nhost['macAddress'].lower():
 				self.data['reciever'] = nhost
 				
 
