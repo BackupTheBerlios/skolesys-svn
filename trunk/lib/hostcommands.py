@@ -6,13 +6,13 @@ from sys import argv,exit
 
 # Check root privilegdes
 if not os.getuid()==0:
-	print "This command needs requires priviledges"
+	print "This command requires root priviledges"
 	exit(0)
 	
 	
 from optparse import OptionParser
 from conf import conf
-import hostmanager
+import hostmanager,sambacontroller
 import skolesys.definitions.hostdef as hostdef
 
 
@@ -22,7 +22,7 @@ if __name__=='__main__':
 		'hostadd': 'Register a new host to the network',
 		'hostinfo': 'List the registered information of a host',
 		'listhosts': 'List registered hosts',
-		'join_domain': 'Let a host join the samba domain'}
+		'join_domain': 'Let a host join a samba domain'}
 
 	shell_cmd_name = os.path.split(argv[0])[-1:][0]
 	
@@ -179,4 +179,14 @@ if __name__=='__main__':
 		for hinfo in hlist:
 			print "%-20s   %-15s   %-17s   %-20s" % (hinfo['hostName'][0],hinfo['ipHostNumber'][0],hinfo['macAddress'][0],hinfo['hostType'][0])
 
+	if cmd == "join_domain":
+		parser.set_usage("usage: %s %s netbiosname ntdomain" % (shell_cmd_name,cmd))
+		(options, args) = parser.parse_args()
+		if len(args) < 3:
+			print parser.usage
+		netbiosname,ntdomain = args[1:3]
 		
+		sc = sambacontroller.SambaController()
+		res = sc.add_machine(netbiosname,ntdomain)
+		if res==-1:
+			print 'The domain "%s" does not reside on this server' % ntdomain

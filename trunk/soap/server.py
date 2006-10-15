@@ -4,7 +4,7 @@
 import os
 from sys import exit
 if not os.getuid()==0:
-	print "This command needs requires priviledges"
+	print "This command requires root priviledges"
 	exit(0)
 
 import inspect

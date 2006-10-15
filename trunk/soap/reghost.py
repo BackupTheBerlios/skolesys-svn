@@ -3,7 +3,7 @@ from sys import exit,argv
 import os
 # Check root privilegdes
 if not os.getuid()==0:
-	print "This command needs requires priviledges"
+	print "This command requires root priviledges"
 	exit(0)
 	
 from stat import S_IRUSR,S_IWUSR,S_IRGRP,S_IROTH

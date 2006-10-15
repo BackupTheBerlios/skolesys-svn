@@ -201,7 +201,7 @@ class UserManager (LDAPUtil):
 				conf.get('LDAPSERVER',usertype_ou),\
 				conf.get('LDAPSERVER','basedn'))
 				
-		res = self.l.search(path,ldap.SCOPE_SUBTREE,'(& (uid=*)(objectclass=posixaccount))',[])
+		res = self.l.search(path,ldap.SCOPE_SUBTREE,'(& (uid=*)(objectclass=posixaccount)(objectclass=person))',[])
 			
 		user_dict = {}
 		while 1:
@@ -222,7 +222,7 @@ class UserManager (LDAPUtil):
 	
 	def user_exists(self,uid):
 		res = self.l.search(conf.get('LDAPSERVER','basedn'),\
-		                   ldap.SCOPE_SUBTREE,'(& (uid=%s)(objectclass=posixaccount))'%uid,['dn'])
+		                   ldap.SCOPE_SUBTREE,'(& (uid=%s)(objectclass=posixaccount)(objectclass=person))'%uid,['dn'])
 		
 		sres = self.l.result(res,0)
 		
@@ -359,7 +359,7 @@ class UserManager (LDAPUtil):
 		return 1
 
 	def groupadd(self,uid,groupname):
-		res = self.l.search(conf.get('LDAPSERVER','basedn'),ldap.SCOPE_SUBTREE,'(& (uid=%s) (objectclass=posixaccount))'%uid,['dn'])
+		res = self.l.search(conf.get('LDAPSERVER','basedn'),ldap.SCOPE_SUBTREE,'(& (uid=%s) (objectclass=posixaccount)(objectclass=person))'%uid,['dn'])
 		sres = self.l.result(res,0)
 		if sres[1]==[]:
 			return -1
