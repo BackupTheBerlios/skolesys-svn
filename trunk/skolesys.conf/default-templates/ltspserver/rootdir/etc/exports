@@ -1,0 +1,14 @@
+# /etc/exports: the access control list for filesystems which may be exported
+#		to NFS clients.  See exports(5).
+## LTSP-begin ##
+#
+# The lines between 'LTSP-begin' and 'LTSP-end' were added
+# on: søn sep  3 23:16:57 2006, by the ltspcfg configuration tool.
+# For more information, visit the LTSP homepage
+# at http://www.LTSP.org
+#
+
+/opt/ltsp                 $[conf.domain.ltspserver_subnet]/$[conf.domain.ltspserver_subnetmask](ro,no_root_squash,sync)
+/var/opt/ltsp/swapfiles   $[conf.domain.ltspserver_subnet]/$[conf.domain.ltspserver_subnetmask](rw,no_root_squash,async)
+
+## LTSP-end ##

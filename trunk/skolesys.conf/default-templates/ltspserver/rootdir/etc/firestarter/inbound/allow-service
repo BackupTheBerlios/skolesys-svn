@@ -1,0 +1,8 @@
+DHCP, 67-68, lan,
+Tftp, 69, lan,
+Xdmcp, 177, lan,
+NFS, 111 2049, lan,
+STATD, 794, lan,
+MOUNTD, 789, lan,
+SSH, 22, lan
+
