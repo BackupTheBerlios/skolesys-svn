@@ -1,7 +1,6 @@
 import sys
 from qt import *
 from usermanagerwdgbase import UserManagerWdgBase
-from skolesys.soap.client import SkoleSYS_Client
 import skolesys.definitions.userdef as userdef
 import skolesys.tools.schooltime as stime
 import launcher,config

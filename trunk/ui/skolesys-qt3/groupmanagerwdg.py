@@ -1,7 +1,6 @@
 import sys
 from qt import *
 from groupmanagerwdgbase import GroupManagerWdgBase
-from skolesys.soap.client import SkoleSYS_Client
 import skolesys.definitions.userdef as userdef
 import launcher
 

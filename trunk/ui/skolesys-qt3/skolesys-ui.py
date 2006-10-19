@@ -4,7 +4,6 @@ import os.path
 from qt import *
 from launchdlg import LaunchDlg
 from connectionmanager import ConnectionManager
-from skolesys.soap.client import SkoleSYS_Client
 from settings import glob_settings
 from imageloader import load_pixmap
 
