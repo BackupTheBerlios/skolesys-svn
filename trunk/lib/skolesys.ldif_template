@@ -1,0 +1,112 @@
+# Root and admin
+dn:dc=skolesys,dc=org
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: skolesys.org
+dc: skolesys
+
+dn:cn=admin,dc=skolesys,dc=org
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: admin
+description: LDAP administrator
+userPassword: <passwd>
+
+
+# School Domain
+dn: <basedn>
+objectClass: dNSDomain
+objectClass: top
+objectClass: domainRelatedObject
+associatedDomain: <domain_name>
+dc: <domain_name_prefix>
+
+dn: cn=admin,<basedn>
+objectClass: organizationalRole
+objectClass: simpleSecurityObject
+objectClass: top
+userPassword: <schooladmin_passwd>
+cn: admin
+
+dn: <parents_ou>,<basedn>
+ou: <parents>
+objectClass: organizationalUnit
+objectClass: top
+
+dn: <groups_ou>,<parents_ou>,<basedn>
+ou: <groups>
+objectClass: organizationalUnit
+objectClass: top
+
+dn: <logins_ou>,<parents_ou>,<basedn>
+ou: <logins>
+objectClass: organizationalUnit
+objectClass: top
+
+dn: <students_ou>,<basedn>
+ou: <students>
+objectClass: organizationalUnit
+objectClass: top
+
+dn: <groups_ou>,<students_ou>,<basedn>
+ou: <groups>
+objectClass: organizationalUnit
+objectClass: top
+
+dn: <logins_ou>,<students_ou>,<basedn>
+ou: <logins>
+objectClass: organizationalUnit
+objectClass: top
+
+dn: <teachers_ou>,<basedn>
+ou: <teachers>
+objectClass: organizationalUnit
+objectClass: top
+
+dn: <groups_ou>,<teachers_ou>,<basedn>
+ou: <groups>
+objectClass: organizationalUnit
+objectClass: top
+
+dn: <logins_ou>,<teachers_ou>,<basedn>
+ou: <logins>
+objectClass: organizationalUnit
+objectClass: top
+
+dn: <others_ou>,<basedn>
+ou: <others>
+objectClass: organizationalUnit
+objectClass: top
+
+dn: <groups_ou>,<others_ou>,<basedn>
+ou: <groups>
+objectClass: organizationalUnit
+objectClass: top
+
+dn: <logins_ou>,<others_ou>,<basedn>
+ou: <logins>
+objectClass: organizationalUnit
+objectClass: top
+
+# Hosts
+dn: <hosts_ou>,<basedn>
+ou: <hosts>
+objectClass: organizationalUnit
+objectClass: top
+
+# Samba
+dn: <samba_ou>,<basedn>
+ou: <samba>
+objectClass: organizationalUnit
+objectClass: top
+
+dn: <users_ou>,<samba_ou>,<basedn>
+ou: <users>
+objectClass: organizationalUnit
+objectClass: top
+
+dn: <machines_ou>,<samba_ou>,<basedn>
+ou: <machines>
+objectClass: organizationalUnit
+objectClass: top

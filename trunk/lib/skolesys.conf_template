@@ -1,0 +1,72 @@
+[DOMAIN]
+
+# Global
+# ------
+domain_name = <domain_name>
+local_domain_name = skolesys.local
+
+homes_host  = mainserver.skolesys.local
+domain_root  = /skolesys
+uid_start   = 2000
+gid_start   = 2000
+
+# Mainserver network setup
+# ------------------------
+mainserver_domain_name = mainserver.skolesys.local
+mainserver_ip = 10.1.0.1
+mainserver_subnet = 10.1.0.0/16
+
+# Ip range of SkoleSYS registered LTSP servers
+ltspserver_iprange = 10.1.0.50 10.1.0.254
+
+# Ip range of SkoleSYS registered workstations
+workstation_iprange = 10.1.2.1 10.1.9.254
+
+# Dynamic ip range for leasing
+mainserver_dynamic_iprange = 10.1.50.1 10.1.60.254
+
+# LTSP servers network setup
+# --------------------------
+ltspserver_ip = 192.168.0.1
+ltspserver_subnet = 192.168.0.0/16
+
+# Ip range of SkoleSYS registered LTSP CLients
+ltspclient_iprange = 192.168.10.1 192.168.19.254
+ltspserver_dynamic_iprange = 192.168.1.1 192.168.1.254
+
+
+[LDAPSERVER]
+
+# Global
+host = mainserver.skolesys.local
+basedn = dc=<domain_name_prefix>,dc=skolesys,dc=org
+admin = cn=admin,dc=<domain_name_prefix>,dc=skolesys,dc=org
+passwd = <schooladmin_passwd>
+
+# Users and groups
+students_ou = ou=Students
+teachers_ou = ou=Teachers
+parents_ou = ou=Parents
+others_ou = ou=Others
+
+logins_ou = ou=Logins
+groups_ou = ou=Groups
+
+# Host registration
+hosts_ou = ou=Hosts
+
+# Samba
+samba_ou = ou=Samba
+machines_ou = ou=Computers
+users_ou = ou=Users
+
+
+[SOAP_SERVICE]
+
+passwd = <schooladmin_passwd>
+interface = eth0
+
+
+[CFMACHINE]
+
+template_basedir = /etc/skolesys

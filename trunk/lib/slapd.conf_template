@@ -1,0 +1,52 @@
+# Schema and objectClass definitions
+include         /etc/ldap/schema/core.schema
+include         /etc/ldap/schema/cosine.schema
+include         /etc/ldap/schema/nis.schema
+include         /etc/ldap/schema/inetorgperson.schema
+include         /etc/ldap/schema/skolesys.schema
+include		/etc/ldap/schema/samba.schema
+schemacheck     on
+
+pidfile         /var/run/slapd/slapd.pid
+argsfile        /var/run/slapd.args
+# loglevel        256
+
+modulepath	/usr/lib/ldap
+moduleload	back_bdb
+
+backend		bdb
+checkpoint 512 30
+
+database        bdb
+suffix          "dc=skolesys,dc=org"
+rootdn		"cn=admin,dc=skolesys,dc=org"
+rootpw		"<passwd>"
+directory       "/var/lib/ldap"
+index           objectClass eq
+lastmod         on
+# replogfile	/var/lib/ldap/replog
+
+access to dn.subtree="<basedn>" attrs=sambaLMPassword,sambaNTPassword,userPassword
+   by dn="<admin>" write
+   by dn="cn=admin,dc=skolesys,dc=org" write
+        by anonymous auth
+        by * none
+
+access to dn.subtree="<basedn>"
+   by dn="<admin>" write
+   by dn="cn=admin,dc=skolesys,dc=org" write
+   by self write
+   by * read
+
+access to attrs=userPassword
+        by dn="cn=admin,dc=skolesys,dc=org" write
+        by anonymous auth
+        by self write
+        by * none
+
+# access to dn.base="" by * read
+
+access to *
+        by dn="cn=admin,dc=skolesys,dc=org" write
+        by * read
+
