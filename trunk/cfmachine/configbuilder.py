@@ -61,7 +61,11 @@ class ConfigBuilder:
 				pass
 			t = Template(file=v, searchList=[self.infocollection.get_collection()])
 			f=open(destfile,'w')
-			f.write(t.__str__())
+			try:
+				f.write(t.__str__())
+			except Exception, e:
+				print "%s, (while parsing %s)" % (e,v)
+				return False
 			f.close()
 			os.chmod(destfile,mod)
 			os.chown(destfile,uid,gid)
@@ -71,6 +75,7 @@ class ConfigBuilder:
 		os.chdir(self.tempdir)
 		os.system('tar czpf conf.tgz *')
 		os.chdir(curdir)
+		return True
 
 	def __del__(self):
 		os.system('rm %s -R -f' % self.tempdir)

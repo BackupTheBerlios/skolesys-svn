@@ -11,7 +11,7 @@ import skolesys.soap.client as ss_client
 import getpass
 from skolesys.tools.confhelper import conf2dict
 from optparse import OptionParser
-from skolesys.definitions.hostdef as hostdef
+import skolesys.definitions.hostdef as hostdef
 
 
 soapconf = None
