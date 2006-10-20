@@ -5,7 +5,7 @@ import tempfile,os
 
 class ConfigBuilder:
 
-	def __init__(self,hosttype_id,hwaddr=None):
+	def __init__(self,hosttype_id,hwaddr=None,reciever_override=None):
 		"""
 		1. Create temp directory
 		2. Fetch 
@@ -13,7 +13,7 @@ class ConfigBuilder:
 		self.hosttype = hostdef.hosttype_as_text(hosttype_id)
 		self.hwaddr = hostdef.check_hwaddr(hwaddr)
 		self.tempdir = tempfile.mkdtemp(prefix='skolesys_')
-		self.infocollection = InfoCollection(self.hwaddr)
+		self.infocollection = InfoCollection(self.hwaddr,reciever_override)
 		self.build_config()
 		
 	def build_config(self):

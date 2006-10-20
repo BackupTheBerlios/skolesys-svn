@@ -100,9 +100,11 @@ class HostManager (LDAPUtil):
 		"""
 		
 		# check sanity
-		if not hostdef.check_hwaddr(hwaddr):
+		hwaddr = hostdef.check_hwaddr(hwaddr)
+		if not hwaddr:
 			return -1
-		if not hostdef.check_hostname(hostname):
+		hostname = hostdef.check_hostname(hostname)
+		if not hostname:
 			return -2
 		if not hostdef.hosttype_as_text(hosttype_id):
 			return -3
@@ -148,6 +150,9 @@ class HostManager (LDAPUtil):
 	def host_info(self,hwaddr=None,hostname=None):
 		hostspath = "%s,%s" % (conf.get('LDAPSERVER','hosts_ou'),conf.get('LDAPSERVER','basedn'))
 		if hwaddr:
+			hwaddr = hostdef.check_hwaddr(hwaddr)
+			if not hwaddr:
+				return None
 			res = self.l.search(hostspath,\
 					ldap.SCOPE_ONELEVEL,'(& (macAddress=%s)(objectclass=skoleSysHost))'%hwaddr,['hostType','hostName','ipHostNumber','macAddress'])
 			sres = self.l.result(res,0)
