@@ -19,6 +19,8 @@ class HostManager (LDAPUtil):
 		is defined in skolesys.conf and the ip addresses already assigned
 		are read in the ldap database
 		"""
+		if hosttype_id == hostdef.hosttype_as_id('mainserver'):
+			return conf.get('DOMAIN','mainserver_ip')
 	
 		hosttype_text = hostdef.hosttype_as_text(hosttype_id)
 		if not hosttype_text:

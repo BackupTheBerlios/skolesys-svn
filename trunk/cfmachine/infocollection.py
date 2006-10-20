@@ -10,10 +10,9 @@ class InfoCollection:
 	Collect info from LDAP, skolesys.conf e.t.c. to be used
 	by the configuration template system.
 	"""
-	def __init__(self,hwaddr=None,reciever_override=None):
+	def __init__(self,hwaddr=None):
 		self.data = {}
 		self.hwaddr = hostdef.check_hwaddr(hwaddr)
-		self.reciever_override = reciever_override
 		self.conf_info()
 		self.host_info()
 		self.user_info()
@@ -82,9 +81,6 @@ class InfoCollection:
 			self.data['hosts'][htyp] += [nhost]
 			if self.hwaddr and self.hwaddr.lower() == nhost['macAddress'].lower():
 				self.data['reciever'] = nhost
-			if self.reciever_override:
-				self.data['reciever'] = self.reciever_override
-				
 
 	
 	def user_info(self):

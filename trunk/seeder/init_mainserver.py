@@ -1,4 +1,4 @@
-import skolesys.lib.mkpasswd as pw
+import skolesys.tools.mkpasswd as pw
 import getpass,os,time,re,sys
 import inspect
 

@@ -3,7 +3,7 @@ from conf import conf
 from ldaptools import LDAPUtil
 from ldiftools import LDIFImporter
 import re,grp,pwd,os,ldap
-from mkpasswd import mkpasswd
+from skolesys.tools.mkpasswd import mkpasswd
 import skolesys.definitions.userdef as userdef
 import skolesys.definitions.ldapdef as ldapdef
 
