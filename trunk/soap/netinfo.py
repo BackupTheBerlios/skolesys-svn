@@ -14,6 +14,18 @@ def if2ip(ifname):
 		pass
 	return None
  
+ 
+def if2hwaddr(ifname):
+	try:
+		# local interface
+		ifmap,hwaddrmap,ipmap = parse_ifconfig()
+		return ifmap[ifname.strip()]['hwaddr']
+		
+	except:
+		pass
+	return None
+
+
 def ip2if(ip):
 	try:
 		# local interface

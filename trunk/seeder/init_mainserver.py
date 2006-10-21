@@ -129,3 +129,11 @@ print "Sleeping 2 seconds to ensure slapd restart..."
 time.sleep(2)
 os.system('ldapadd -x -D "cn=admin,dc=skolesys,dc=org" -w %s -f skolesys.ldif' % in_adminpw)
 os.system('rm init.ldif skolesys.ldif -f')
+f = open('/etc/hosts','a')
+f.write('127.0.0.1\tmainserver.skolesys.local\n')
+
+import skolesys.lib.hostsmanager as h
+import skolesys.definitions.hostdef as hostdef
+import skolesys.soap.netinfo as netinfo
+hm = h.HostManager()
+hm.register_host(netinfo.if2hwaddr('eth0'),'mainserver',hostdef.hosttype_as_id('mainserver'))
