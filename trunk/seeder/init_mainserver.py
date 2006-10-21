@@ -45,16 +45,23 @@ for l in lines:
 f.close()
 os.system('chmod 600 /etc/skolesys/skolesys.conf')
 
-from skolesys.lib.conf import conf
-
-
+# Read template files before they are removed
 f = open('%s/slapd.conf_template' % location)
-lines = f.readlines()
+slapd_conf_lines = f.readlines()
 f.close()
+
+f = open('%s/skolesys.ldif_template' % location)
+skolesys_ldif_lines = f.readlines()
+f.close()
+
+# Replace python-skolesys-seeder with python-skolesys-mainserver
+os.system('apt-get install python2.4-skolesys-mainserver -y')
+
+from skolesys.lib.conf import conf
 
 f = open('/etc/ldap/slapd.conf','w')
 os.system('rm /var/lib/ldap/* -R -f')
-for l in lines:
+for l in slapd_conf_lines:
         l = l.replace('<basedn>',conf.get('LDAPSERVER','basedn'))
         l = l.replace('<passwd>',pw.mkpasswd(in_adminpw,3,'ssha').strip())
         l = l.replace('<admin>',conf.get('LDAPSERVER','admin'))
@@ -62,9 +69,7 @@ for l in lines:
 f.close()
 os.system('chmod 600 /etc/ldap/slapd.conf')
 
-f = open('%s/skolesys.ldif_template' % location)
-lines = f.readlines()
-f.close()
+# ldif fore initializing ldap
 f = open('skolesys.ldif','w')
 c = re.compile('(ou=(\S+))')
 
@@ -89,7 +94,7 @@ hosts_ou,hosts = fetch_conf_ou('hosts')
 
 domain_name_prefix = conf.get('DOMAIN','domain_name').split('.')[0]
 
-for l in lines:
+for l in skolesys_ldif_lines:
 	l = l.replace('<basedn>',conf.get('LDAPSERVER','basedn'))
 	l = l.replace('<groups_ou>',groups_ou)
 	l = l.replace('<logins_ou>',logins_ou)
