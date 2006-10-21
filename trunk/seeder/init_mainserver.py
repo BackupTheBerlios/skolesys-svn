@@ -131,9 +131,10 @@ os.system('ldapadd -x -D "cn=admin,dc=skolesys,dc=org" -w %s -f skolesys.ldif' %
 os.system('rm init.ldif skolesys.ldif -f')
 f = open('/etc/hosts','a')
 f.write('127.0.0.1\tmainserver.skolesys.local\n')
+f.close()
 
 import skolesys.lib.hostmanager as h
 import skolesys.definitions.hostdef as hostdef
 import skolesys.soap.netinfo as netinfo
 hm = h.HostManager()
-hm.register_host(netinfo.if2hwaddr('eth0'),'mainserver',hostdef.hosttype_as_id('mainserver'))
+print hm.register_host(netinfo.if2hwaddr('eth0'),'mainserver',hostdef.hosttype_as_id('mainserver'))
