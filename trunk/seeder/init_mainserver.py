@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import skolesys.tools.mkpasswd as pw
 import getpass,os,time,re,sys
 import inspect
