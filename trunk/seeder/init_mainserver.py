@@ -2,13 +2,14 @@
 import skolesys.tools.mkpasswd as pw
 import getpass,os,time,re,sys
 import inspect
+import skolesys.seeder
 
 # Check root privilegdes
 if not os.getuid()==0:
         print "This command requires root priviledges"
         sys.exit(0)
 
-location = os.path.split(__file__)[0] 
+location = os.path.split(inspect.getsourcefile(skolesys.seeder))[0] 
 
 print "SkoleSYS administrator login"
 print "----------------------------"
