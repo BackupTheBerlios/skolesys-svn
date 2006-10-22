@@ -13,7 +13,7 @@ class ConfigBuilder:
 		self.hosttype = hostdef.hosttype_as_text(hosttype_id)
 		self.hwaddr = hostdef.check_hwaddr(hwaddr)
 		self.tempdir = tempfile.mkdtemp(prefix='skolesys_')
-		self.infocollection = InfoCollection(self.hwaddr,reciever_override)
+		self.infocollection = InfoCollection(self.hwaddr)
 		self.build_config()
 		
 	def build_config(self):

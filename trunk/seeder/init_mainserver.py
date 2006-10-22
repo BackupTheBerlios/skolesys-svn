@@ -10,6 +10,7 @@ if not os.getuid()==0:
         print "This command requires root priviledges"
         sys.exit(0)
 
+os.system('clear')
 location = os.path.split(inspect.getsourcefile(skolesys.seeder))[0] 
 
 print "SkoleSYS administrator login"
