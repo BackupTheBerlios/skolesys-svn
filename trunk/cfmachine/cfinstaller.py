@@ -22,7 +22,7 @@ if __name__=='__main__':
 		'install_packages': 'Install deb/apt packages',
 		'copy_files': 'Copy files recursively from a base directory to the root fs',
 		'set_hostname': 'Set the hostname for the host',
-		'kick_daemons': 'Kick some daemons thar need to reload the configuration changes'}
+		'kick_daemons': 'Kick some daemons that need to reload the configuration changes'}
 
 	shell_cmd_name = os.path.split(argv[0])[-1:][0]
 	
