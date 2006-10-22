@@ -3,6 +3,7 @@ import skolesys.tools.mkpasswd as pw
 import getpass,os,time,re,sys
 import inspect
 import skolesys.seeder
+import skolesys.cfmachine.apthelpers as apthelper
 
 # Check root privilegdes
 if not os.getuid()==0:
@@ -54,6 +55,26 @@ f.close()
 f = open('%s/skolesys.ldif_template' % location)
 skolesys_ldif_lines = f.readlines()
 f.close()
+
+
+# INSTALL
+# ensure some entries in sources.list
+apt_source_entries = [
+        {'type':'deb','uri':'http://mainserver.skolesys.dk/skolesys/debian','distribution':'pilot','components':['main','nonfree']},
+        {'type':'deb','uri':'http://dk.archive.ubuntu.com/ubuntu/','distribution':'dapper','components':['main','restricted','universe']},
+        {'type':'deb-src','uri':'http://dk.archive.ubuntu.com/ubuntu/','distribution':'dapper','components':['main','restricted','universe']},
+        {'type':'deb','uri':'http://dk.archive.ubuntu.com/ubuntu/','distribution':'dapper-backports','components':['main','restricted','universe','multiverse']},
+        {'type':'deb-src','uri':'http://dk.archive.ubuntu.com/ubuntu/','distribution':'dapper-backports','components':['main','restricted','universe','multiverse']},
+        {'type':'deb','uri':'http://security.ubuntu.com/ubuntu','distribution':'dapper-security','components':['main','restricted','universe']},
+        {'type':'deb-src','uri':'http://security.ubuntu.com/ubuntu','distribution':'dapper-security','components':['main','restricted','universe']}]
+	
+slist = apthelper.SourcesList()
+for src in apt_source_entries:
+	slist.add_source(src['type'],src['uri'],src['distribution'],src['components'])
+slist.print_sources_list()
+if slist.dirty:
+	slist.write_sources_list()
+	os.system('apt-get update')
 
 # Replace python-skolesys-seeder with python-skolesys-mainserver
 os.system('apt-get install python2.4-skolesys-mainserver -y')
