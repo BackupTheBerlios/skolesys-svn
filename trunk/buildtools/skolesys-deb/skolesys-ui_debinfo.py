@@ -1,4 +1,5 @@
 fetch_method = "svn"
+svn_module = "skolesys-ui"
 
 prebuild_script = \
 """
@@ -20,13 +21,13 @@ os.path.walk('rep',ui_filter,None)
 
 control = {
 	'Package': 'skolesys-ui',
-	'Version': '0.5.1',
+	'Version': '0.7.1',
 	'NameExtension': 'skolesys1_all',
 	'Section': 'util',
 	'Priority': 'optional',
 	'Architecture': 'all',
-	'Depends': 'python2.4, python2.4-skolesys, python2.4-qt3',
-	'Recommends': 'skolesys_ui',
+	'Depends': 'python2.4, python2.4-skolesys-client, python2.4-qt3',
+	'Recommends': '',
 	'Maintainer': 'Jakob Simon-Gaarde <jakob@skolesys.org>',
 	'Description': 'This is the graphical administration tool for SkoleSYS linux distribution',
 	'longdesc': 

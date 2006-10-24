@@ -90,10 +90,17 @@ if __name__=='__main__':
 
 	# Permissions
 	if dir(debinfo).count('perm'):
-		for src in debinfo.perm.keys():
-			os.system('chmod %s rep/%s' % (debinfo.perm[src],src))
-			print "setting file permissions on %s to %s" % (debinfo.perm[src],src)
+		for src,mod in debinfo.perm:
+			print 'chmod %s rep/%s -R -f' % (mod,src)
+			os.system('chmod %s rep/%s -R -f' % (mod,src))
+			print "setting file permissions on %s to %s" % (src,mod)
 	
+	
+	# Ownership
+	if dir(debinfo).count('own'):
+		for src in debinfo.own.keys():
+			os.system('chown %s rep/%s -R -f' % (debinfo.own[src],src))
+			print "setting file ownership on %s to %s" % (debinfo.own[src],src)
 	
 	# File copy
 	if dir(debinfo).count('copy'):
@@ -124,7 +131,7 @@ if __name__=='__main__':
 	
 	# Copy controlfiles
 	control_seq = ('Package','Version','Section''Priority','Architecture','Depends',\
-		'Recommends','Installed-Size','Maintainer','Description')
+		'Recommends','Replaces','Conflicts','Installed-Size','Maintainer','Description')
 	debinfo.control['Installed-Size'] = inst_size
 	
 	f = open('debian/DEBIAN/control','w')
@@ -142,16 +149,29 @@ if __name__=='__main__':
 	f.write(md5sums)
 	f.close()
 	
-	if dir(debinfo).count('postinst'):
-		f = open('debian/DEBIAN/postinst','w')
-		f.write(debinfo.control)
-		f.close()
-	
 	if dir(debinfo).count('prerm'):
 		f = open('debian/DEBIAN/prerm','w')
-		f.write(debinfo.control)
+		f.write(debinfo.prerm)
 		f.close()
+		os.system('chmod 755 debian/DEBIAN/prerm')
 
+	if dir(debinfo).count('postrm'):
+		f = open('debian/DEBIAN/postrm','w')
+		f.write(debinfo.postrm)
+		f.close()
+		os.system('chmod 755 debian/DEBIAN/postrm')
+	
+	if dir(debinfo).count('postinst'):
+		f = open('debian/DEBIAN/postinst','w')
+		f.write(debinfo.postinst)
+		f.close()
+		os.system('chmod 755 debian/DEBIAN/postinst')
+	
+	if dir(debinfo).count('preinst'):
+		f = open('debian/DEBIAN/preinst','w')
+		f.write(debinfo.preinst)
+		f.close()
+		os.system('chmod 755 debian/DEBIAN/preinst')
 
 	# Clean up
 	final_name = '%s_%s-%s.deb' % (package_name,package_ver,package_name_extension)
