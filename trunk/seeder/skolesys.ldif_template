@@ -101,12 +101,18 @@ ou: <samba>
 objectClass: organizationalUnit
 objectClass: top
 
-dn: <users_ou>,<samba_ou>,<basedn>
-ou: <users>
+dn: <smb_users_ou>,<samba_ou>,<basedn>
+ou: <smb_users>
 objectClass: organizationalUnit
 objectClass: top
 
-dn: <machines_ou>,<samba_ou>,<basedn>
-ou: <machines>
+dn: <smb_machines_ou>,<samba_ou>,<basedn>
+ou: <smb_machines>
 objectClass: organizationalUnit
 objectClass: top
+
+dn: <smb_groups_ou>,<samba_ou>,<basedn>
+ou: <smb_groups>
+objectClass: organizationalUnit
+objectClass: top
+

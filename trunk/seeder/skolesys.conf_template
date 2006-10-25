@@ -57,9 +57,9 @@ hosts_ou = ou=Hosts
 
 # Samba
 samba_ou = ou=Samba
-machines_ou = ou=Computers
-users_ou = ou=Users
-
+smb_machines_ou = ou=Computers
+smb_users_ou = ou=Users
+smb_groups_ou = ou=Groups
 
 [SOAP_SERVICE]
 
