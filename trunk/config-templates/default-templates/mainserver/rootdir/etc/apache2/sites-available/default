@@ -2,8 +2,8 @@ NameVirtualHost *
 <VirtualHost *>
 	ServerAdmin webmaster@localhost
 	Alias /skolesys	/skolesys/
-        ProxyPass /skolesys/ http://www.skolesys.org:8080/skolesys
-        ProxyPassReverse /skolesys/ http://www.skolesys.org:8080/skolesys
+        # ProxyPass /skolesys/ http://www.skolesys.org:8080/skolesys
+        # ProxyPassReverse /skolesys/ http://www.skolesys.org:8080/skolesys
 	
 	DocumentRoot /var/www
 	<Directory />
