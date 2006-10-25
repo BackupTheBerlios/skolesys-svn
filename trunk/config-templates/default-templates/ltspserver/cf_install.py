@@ -1,5 +1,5 @@
 apt_source_entries = [
-	{'type':'deb','uri':'http://mainserver.skolesys.local/debian','distribution':'pilot','components':['main','nonfree']},
+	{'type':'deb','uri':'http://skolesys.dk/skolesys/debian','distribution':'pilot','components':['main','nonfree']},
         {'type':'deb','uri':'http://dk.archive.ubuntu.com/ubuntu/','distribution':'dapper','components':['main','restricted','universe']},
         {'type':'deb-src','uri':'http://dk.archive.ubuntu.com/ubuntu/','distribution':'dapper','components':['main','restricted','universe']},
         {'type':'deb','uri':'http://dk.archive.ubuntu.com/ubuntu/','distribution':'dapper-backports','components':['main','restricted','universe','multiverse']},
@@ -21,7 +21,6 @@ hostname = \
 
 kick_daemons = [
 	'/etc/init.d/networking restart',
-	'/etc/init.d/nscd restart',
 	'/etc/init.d/dhcp3-server restart',
 	'/etc/init.d/nfs-kernel-server restart',
 	'/etc/init.d/nfs-common restart',
