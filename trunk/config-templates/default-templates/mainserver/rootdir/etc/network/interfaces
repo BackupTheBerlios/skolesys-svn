@@ -1,0 +1,19 @@
+auto lo
+iface lo inet loopback
+address 127.0.0.1
+netmask 255.0.0.0
+
+auto eth1
+iface eth1 inet dhcp
+
+auto eth0
+iface eth0 inet static
+address $conf.domain.mainserver_ip
+netmask $conf.domain.mainserver_subnetmask
+
+auto ath0
+iface ath0 inet dhcp
+
+auto wlan0
+iface wlan0 inet dhcp
+
