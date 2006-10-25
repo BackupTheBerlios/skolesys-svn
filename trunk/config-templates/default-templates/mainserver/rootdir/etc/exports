@@ -1,3 +1,3 @@
 # /etc/exports: the access control list for filesystems which may be exported
 #		to NFS clients.  See exports(5).
-/skolesys $conf.domain.mainserver_subnet/$conf.domain.mainserver_subnetmask(rw,sync)
+$[conf.domain.domain_root] $[conf.domain.mainserver_subnet]/$[conf.domain.mainserver_subnetmask](rw,sync)
