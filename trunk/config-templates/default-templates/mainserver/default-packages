@@ -1,0 +1,10 @@
+dhcp3-server
+libnss-ldap
+libpam-ldap
+ldap-utils
+openssh-server
+nfs-kernel-server
+libwww-perl
+samba
+apache2
+dnsmasq
