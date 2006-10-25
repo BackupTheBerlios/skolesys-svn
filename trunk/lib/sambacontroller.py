@@ -29,7 +29,7 @@ class SambaController(LDAPUtil):
 				
 		path = "%s,%s,%s,%s" % \
 		  ('uid=%s'%netbiosname,\
-		   conf.get('LDAPSERVER','machine_ou'),\
+		   conf.get('LDAPSERVER','smb_machines_ou'),\
 		   conf.get('LDAPSERVER','samba_ou'),\
 		   conf.get('LDAPSERVER','basedn'))
 		
