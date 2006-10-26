@@ -1,0 +1,79 @@
+#### SkoleSYS Attributes ####
+# Student attributes
+attributetype ( 1.1.2.1.1.1.1.1 NAME 'firstSchoolYear'
+	DESC 'An integer uniquely identifying a group in an administrative domain'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.1.2.1.1.1.1.2 NAME 'schoolClassName'
+	DESC 'An integer uniquely identifying a group in an administrative domain'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+# host attributes
+attributetype ( 1.1.2.1.1.1.1.3 NAME 'hostName'
+	DESC 'The hostname defined for a certain host within the internal SkoleSYS network'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.1.2.1.1.1.1.4 NAME 'hostType'
+	DESC 'The type of a certain host within the internal SkoleSYS network mainserver,ltspserver or workstation'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.1.2.1.1.1.1.5 NAME 'userString1'
+	DESC 'User string for the school to define'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.1.2.1.1.1.1.6 NAME 'userString2'
+	DESC 'User string for the school to define'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.1.2.1.1.1.1.7 NAME 'screenResolutions'
+	DESC 'The valid screen resolutions for a certain host'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+
+#### SkoleSYS User classes ####
+# SkoleSYS Teacher
+objectclass ( 1.1.2.2.1.1.1.1 NAME 'skoleSysTeacher'
+	DESC 'SkoleSys student'
+   	SUP top AUXILIARY
+	MAY (userString1 $ userString2) )
+
+# SkoleSYS Student
+objectclass ( 1.1.2.2.1.1.1.3 NAME 'skoleSysStudent'
+	DESC 'SkoleSys student'
+   	SUP top AUXILIARY
+	MAY (firstSchoolYear $ schoolClassName $ userString1 $ userString2) )
+
+# SkoleSYS Parent
+objectclass ( 1.1.2.2.1.1.1.4 NAME 'skoleSysParent'
+	DESC 'SkoleSys student'
+   	SUP top AUXILIARY
+	MAY (userString1 $ userString2) )
+
+# SkoleSYS Other
+objectclass ( 1.1.2.2.1.1.1.5 NAME 'skoleSysOther'
+	DESC 'SkoleSys student'
+   	SUP top AUXILIARY
+	MAY (userString1 $ userString2) )
+
+
+#### Skolesys Host classes ####
+# SkoleSYS host
+objectclass ( 1.1.2.2.1.1.1.2 NAME 'skoleSysHost'
+        DESC 'SkoleSYS host entry'
+        SUP top STRUCTURAL
+	MAY screenResolutions
+        MUST ( cn $ macAddress $ ipHostNumber $ hostName $ hostType ) )
+

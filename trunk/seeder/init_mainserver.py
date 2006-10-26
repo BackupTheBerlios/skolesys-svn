@@ -75,10 +75,24 @@ for src in apt_source_entries:
 slist.print_sources_list()
 if slist.dirty:
 	slist.write_sources_list()
-	os.system('apt-get update')
+	res = os.system('apt-get update')
+	if not res==0:
+		print "SkoleSYS Seeder - failed while updating packages"
+		sys.exit(1)
 
 # Replace python-skolesys-seeder with python-skolesys-mainserver
-os.system('apt-get install python2.4-skolesys-mainserver -y')
+res = os.system('apt-get install python2.4-skolesys-mainserver -y')
+if not res==0:
+	print "SkoleSYS Seeder - failed while installing SkoleSYS mainserver package"
+	sys.exit(1)
+
+
+os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
+os.environ['DEBCONF_ADMIN_EMAIL'] = ''
+res = os.system('apt-get install -y slapd'
+if not res==0:
+	print "SkoleSYS Seeder - failed while installing LDAP server"
+	sys.exit(1)
 
 from skolesys.lib.conf import conf
 
