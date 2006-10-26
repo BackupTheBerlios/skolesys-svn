@@ -67,15 +67,16 @@ if slist.dirty:
 		print "SkoleSYS Seeder - failed while updating packages"
 		sys.exit(1)
 
+# Better read the skolesys.conf template file since the mainserver package will remove it next
+f = open('%s/skolesys.conf_template' % location)
+lines = f.readlines()
+f.close()
+
 # Replace python-skolesys-seeder with python-skolesys-mainserver
 res = os.system('apt-get install python2.4-skolesys-mainserver -y')
 if not res==0:
 	print "SkoleSYS Seeder - failed while installing SkoleSYS mainserver package"
 	sys.exit(1)
-
-f = open('%s/skolesys.conf_template' % location)
-lines = f.readlines()
-f.close()
 
 f = open('/etc/skolesys/skolesys.conf','w')
 for l in lines:
