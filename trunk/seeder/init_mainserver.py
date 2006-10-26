@@ -35,19 +35,6 @@ print "-------------------"
 domain_name = raw_input("What is the school's domain name (ex. riggshigh.co.uk): ")
 domain_name_prefix = domain_name.split('.')[0]
 
-f = open('%s/skolesys.conf_template' % location)
-lines = f.readlines()
-f.close()
-
-f = open('/etc/skolesys/skolesys.conf','w')
-for l in lines:
-        l = l.replace('<domain_name>',domain_name)
-        l = l.replace('<domain_name_prefix>',domain_name_prefix)
-        l = l.replace('<schooladmin_passwd>',in_schooladminpw)
-        f.write(l)
-f.close()
-os.system('chmod 600 /etc/skolesys/skolesys.conf')
-
 # Read template files before they are removed
 f = open('%s/slapd.conf_template' % location)
 slapd_conf_lines = f.readlines()
@@ -85,6 +72,19 @@ res = os.system('apt-get install python2.4-skolesys-mainserver -y')
 if not res==0:
 	print "SkoleSYS Seeder - failed while installing SkoleSYS mainserver package"
 	sys.exit(1)
+
+f = open('%s/skolesys.conf_template' % location)
+lines = f.readlines()
+f.close()
+
+f = open('/etc/skolesys/skolesys.conf','w')
+for l in lines:
+        l = l.replace('<domain_name>',domain_name)
+        l = l.replace('<domain_name_prefix>',domain_name_prefix)
+        l = l.replace('<schooladmin_passwd>',in_schooladminpw)
+        f.write(l)
+f.close()
+os.system('chmod 600 /etc/skolesys/skolesys.conf')
 
 
 os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
