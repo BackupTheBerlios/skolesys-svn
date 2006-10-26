@@ -89,7 +89,7 @@ os.system('chmod 600 /etc/skolesys/skolesys.conf')
 
 os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
 os.environ['DEBCONF_ADMIN_EMAIL'] = ''
-res = os.system('apt-get install -y slapd'
+res = os.system('apt-get install -y slapd')
 if not res==0:
 	print "SkoleSYS Seeder - failed while installing LDAP server"
 	sys.exit(1)
