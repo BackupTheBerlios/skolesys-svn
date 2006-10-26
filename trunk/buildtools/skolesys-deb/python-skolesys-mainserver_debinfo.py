@@ -3,7 +3,7 @@ svn_module = "skolesys"
 
 control = {
 	'Package': 'python2.4-skolesys-mainserver',
-	'Version': '0.7.3',
+	'Version': '0.7.6',
 	'NameExtension': 'skolesys1_all',
 	'Section': 'python',
 	'Priority': 'optional',
@@ -29,7 +29,8 @@ perm = [['soap/server.py', '755'],
 	['config-templates/default-templates/common/rootdir/etc/ldap.secret','g-r,o-r'],
 	['config-templates/default-templates/common/rootdir/etc/pam_ldap.secret','g-r,o-r'],
 	['config-templates/default-templates/ltspserver/rootdir/etc/firestarter/configuration','g-r,o-r'],
-	['config-templates/default-templates/ltspserver/rootdir/etc/firestarter/inbound','g-Xr,o-Xr']]
+	['config-templates/default-templates/ltspserver/rootdir/etc/firestarter/inbound','g-Xr,o-Xr'],
+	['misc/etc','g-r,o-r']]
 
 copy = {
 	'__init__.py': '/usr/lib/python2.4/site-packages/skolesys/',
@@ -41,7 +42,8 @@ copy = {
 	'definitions': '/usr/lib/python2.4/site-packages/skolesys/',
 	'config-templates/default-templates': '/etc/skolesys/',
 	'config-templates/custom-templates': '/etc/skolesys/',
-	'config-templates/host-templates': '/etc/skolesys/'}
+	'config-templates/host-templates': '/etc/skolesys/',
+	'misc/etc/ldap/schema': '/etc/ldap/'}
 
 links = {
 	'/usr/sbin/ss_usermanager': '../lib/python2.4/site-packages/skolesys/lib/usercommands.py',
