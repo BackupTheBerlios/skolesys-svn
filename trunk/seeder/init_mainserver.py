@@ -163,11 +163,20 @@ for l in skolesys_ldif_lines:
 	f.write(l)
 f.close()
 
-os.system('/etc/init.d/slapd restart')
+res = os.system('/etc/init.d/slapd restart')
+if not res==0:
+	print "SkoleSYS Seeder - failed while restarting the LDAP Server"
+	sys.exit(1)
+	
 print "Sleeping 2 seconds to ensure slapd restart..."
 time.sleep(2)
-os.system('ldapadd -x -D "cn=admin,dc=skolesys,dc=org" -w %s -f skolesys.ldif' % in_adminpw)
-os.system('rm init.ldif skolesys.ldif -f')
+res = os.system('ldapadd -x -D "cn=admin,dc=skolesys,dc=org" -w %s -f skolesys.ldif' % in_adminpw)
+if not res==0:
+	print "SkoleSYS Seeder - failed while adding creating LDAP server structure"
+	sys.exit(1)
+
+res = os.system('rm init.ldif skolesys.ldif -f')
+
 f = open('/etc/hosts','a')
 f.write('127.0.0.1\tmainserver.skolesys.local\n')
 f.close()
