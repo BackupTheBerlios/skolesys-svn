@@ -76,6 +76,19 @@ f.close()
 # Replace python-skolesys-seeder with python-skolesys-mainserver
 os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
 os.environ['DEBCONF_ADMIN_EMAIL'] = ''
+
+res = os.system('apt-get install -y slapd')
+if not res==0:
+	print
+	print "SkoleSYS Seeder - failed while installing LDAP server"
+	sys.exit(1)
+
+res = os.system('apt-get install -y ldap-utils')
+if not res==0:
+	print
+	print "SkoleSYS Seeder - failed while installing LDAP utils"
+	sys.exit(1)
+
 res = os.system('apt-get install -y python2.4-skolesys-mainserver')
 if not res==0:
 	print
@@ -91,22 +104,19 @@ for l in lines:
 f.close()
 os.system('chmod 600 /etc/skolesys/skolesys.conf')
 
-res = os.system('apt-get install -y slapd')
-if not res==0:
-	print
-	print "SkoleSYS Seeder - failed while installing LDAP server"
-	sys.exit(1)
-
-res = os.system('apt-get install -y ldap-utils')
-if not res==0:
-	print
-	print "SkoleSYS Seeder - failed while installing LDAP utils"
-	sys.exit(1)
+os.makedirs('/skolesys/%s/groups' % domain_name)
+os.makedirs('/skolesys/%s/users' % domain_name)
 
 from skolesys.lib.conf import conf
 
-f = open('/etc/ldap/slapd.conf','w')
+res = os.system('/etc/init.d/slapd stop')
+if not res==0:
+	print
+	print "SkoleSYS Seeder - failed while stopping the LDAP Server"
+	sys.exit(1)
 os.system('rm /var/lib/ldap/* -R -f')
+
+f = open('/etc/ldap/slapd.conf','w')
 for l in slapd_conf_lines:
         l = l.replace('<basedn>',conf.get('LDAPSERVER','basedn'))
         l = l.replace('<passwd>',pw.mkpasswd(in_adminpw,3,'ssha').strip())
