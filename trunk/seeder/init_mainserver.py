@@ -64,6 +64,7 @@ if slist.dirty:
 	slist.write_sources_list()
 	res = os.system('apt-get update')
 	if not res==0:
+		print
 		print "SkoleSYS Seeder - failed while updating packages"
 		sys.exit(1)
 
@@ -73,8 +74,11 @@ lines = f.readlines()
 f.close()
 
 # Replace python-skolesys-seeder with python-skolesys-mainserver
-res = os.system('apt-get install python2.4-skolesys-mainserver -y')
+os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
+os.environ['DEBCONF_ADMIN_EMAIL'] = ''
+res = os.system('apt-get install -y python2.4-skolesys-mainserver')
 if not res==0:
+	print
 	print "SkoleSYS Seeder - failed while installing SkoleSYS mainserver package"
 	sys.exit(1)
 
@@ -87,12 +91,16 @@ for l in lines:
 f.close()
 os.system('chmod 600 /etc/skolesys/skolesys.conf')
 
-
-os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
-os.environ['DEBCONF_ADMIN_EMAIL'] = ''
 res = os.system('apt-get install -y slapd')
 if not res==0:
+	print
 	print "SkoleSYS Seeder - failed while installing LDAP server"
+	sys.exit(1)
+
+res = os.system('apt-get install -y ldap-utils')
+if not res==0:
+	print
+	print "SkoleSYS Seeder - failed while installing LDAP utils"
 	sys.exit(1)
 
 from skolesys.lib.conf import conf
@@ -166,6 +174,7 @@ f.close()
 
 res = os.system('/etc/init.d/slapd restart')
 if not res==0:
+	print
 	print "SkoleSYS Seeder - failed while restarting the LDAP Server"
 	sys.exit(1)
 	
@@ -173,6 +182,7 @@ print "Sleeping 2 seconds to ensure slapd restart..."
 time.sleep(2)
 res = os.system('ldapadd -x -D "cn=admin,dc=skolesys,dc=org" -w %s -f skolesys.ldif' % in_adminpw)
 if not res==0:
+	print
 	print "SkoleSYS Seeder - failed while adding creating LDAP server structure"
 	sys.exit(1)
 
