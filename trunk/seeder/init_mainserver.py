@@ -207,3 +207,32 @@ import skolesys.definitions.hostdef as hostdef
 import skolesys.soap.netinfo as netinfo
 hm = h.HostManager()
 print hm.register_host(netinfo.if2hwaddr('eth0'),'mainserver',hostdef.hosttype_as_id('mainserver'))
+
+import skolesys.cfmachine.configbuilder as confbuilder
+cb = confbuilder.ConfigBuilder(hostdef.hosttype_as_id('mainserver'),netinfo.if2hwaddr('eth0'))
+os.system('%s/install.sh' % cb.tempdir)
+del cb
+
+res = os.system('smbpasswd -w %s' % in_schooladminpw)
+if not res==0:
+	print
+	print "SkoleSYS Seeder - failed while storing LDAP password for samba"
+	sys.exit(1)
+
+res = os.system('/etc/init.d/samba restart')
+if not res==0:
+	print
+	print "SkoleSYS Seeder - faield to restart samba"
+	sys.exit(1)
+
+res = os.system('useradd smbadmin')
+if not res==0:
+	print
+	print "SkoleSYS Seeder - failed while adding user smbadmin"
+	sys.exit(1)
+
+w,r = os.popen2('smbpasswd -a %s -s' % uid)
+w.write('%s\n' % passwd)
+w.write('%s\n' % passwd)
+w.close()
+r.close()
