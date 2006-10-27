@@ -214,7 +214,6 @@ import skolesys.cfmachine.configbuilder as confbuilder
 cb = confbuilder.ConfigBuilder(hostdef.hosttype_as_id('mainserver'),netinfo.if2hwaddr('eth0'))
 os.chdir(cb.tempdir)
 os.system('./install.sh')
-del cb
 
 res = os.system('smbpasswd -w %s' % in_schooladminpw)
 if not res==0:
@@ -234,7 +233,7 @@ if not res==0:
 	print "SkoleSYS Seeder - failed while adding user smbadmin"
 	sys.exit(1)
 
-w,r = os.popen2('smbpasswd -a %s -s' % uid)
+w,r = os.popen2('smbpasswd -a %s -s' % in_schooladminpw)
 w.write('%s\n' % passwd)
 w.write('%s\n' % passwd)
 w.close()
