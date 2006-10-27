@@ -104,8 +104,10 @@ for l in lines:
 f.close()
 os.system('chmod 600 /etc/skolesys/skolesys.conf')
 
-os.makedirs('/skolesys/%s/groups' % domain_name)
-os.makedirs('/skolesys/%s/users' % domain_name)
+if not os.path.exists('/skolesys/%s/groups' % domain_name):
+	os.makedirs('/skolesys/%s/groups' % domain_name)
+if not os.path.exists('/skolesys/%s/users' % domain_name):
+	os.makedirs('/skolesys/%s/users' % domain_name)
 
 from skolesys.lib.conf import conf
 
