@@ -212,7 +212,8 @@ print hm.register_host(netinfo.if2hwaddr('eth0'),'mainserver',hostdef.hosttype_a
 
 import skolesys.cfmachine.configbuilder as confbuilder
 cb = confbuilder.ConfigBuilder(hostdef.hosttype_as_id('mainserver'),netinfo.if2hwaddr('eth0'))
-os.system('%s/install.sh' % cb.tempdir)
+os.chdir(cb.tempdir)
+os.system('./install.sh')
 del cb
 
 res = os.system('smbpasswd -w %s' % in_schooladminpw)
