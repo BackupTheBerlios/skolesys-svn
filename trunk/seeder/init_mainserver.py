@@ -233,8 +233,10 @@ if not res==0:
 	print "SkoleSYS Seeder - failed while adding user smbadmin"
 	sys.exit(1)
 
-w,r = os.popen2('smbpasswd -a smbadmin -s' %)
+w,r = os.popen2('smbpasswd -a smbadmin -s')
 w.write('%s\n' % in_schooladminpw)
 w.write('%s\n' % in_schooladminpw)
 w.close()
 r.close()
+
+print "Done configuring the mainserver."
