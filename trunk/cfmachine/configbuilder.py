@@ -59,7 +59,7 @@ class ConfigBuilder:
 		# Copy the config files running them through cheetah
 		for k,v in file_location.items():
 			f_stat = os.stat(v)
-			mod,uid,gid,siz = f_stat[st_mode],f_stat[st_uid],f_stat[st_gid],statinfo.st_size
+			mod,uid,gid,siz = f_stat.st_mode,f_stat.st_uid,f_stat.st_gid,f_stat.st_size
 			destfile = os.path.join(self.tempdir,k)
 			destdir =  os.path.split(destfile)[0]
 			try:
