@@ -38,9 +38,9 @@ class ConfigBuilder:
 		
 		level_order = ['default','custom','host']
 		system_order = [self.hosttype]
-		if context:
+		if self.context:
 			system_order += ['contexts/%s' % self.context]
-		if include_common:
+		if self.include_common:
 			system_order = ['common'] + system_order
 		
 		if self.hwaddr:
@@ -59,19 +59,26 @@ class ConfigBuilder:
 		# Copy the config files running them through cheetah
 		for k,v in file_location.items():
 			f_stat = os.stat(v)
-			mod,uid,gid = f_stat[0],f_stat[4],f_stat[5]
+			mod,uid,gid,siz = f_stat[st_mode],f_stat[st_uid],f_stat[st_gid],statinfo.st_size
 			destfile = os.path.join(self.tempdir,k)
 			destdir =  os.path.split(destfile)[0]
 			try:
 				os.makedirs(destdir)
 			except:
 				pass
-			t = Template(file=v, searchList=[self.infocollection.get_collection()])
+			
+			if siz > 0:
+				t = Template(file=v, searchList=[self.infocollection.get_collection()])
+			else:
+				t = ''
+
 			f=open(destfile,'w')
+			print "Fil: %s" % v
 			try:
 				f.write(t.__str__())
 			except Exception, e:
 				print "%s, (while parsing %s)" % (e,v)
+				f.close()
 				return False
 			f.close()
 			os.chmod(destfile,mod)
