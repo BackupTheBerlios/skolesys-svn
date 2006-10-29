@@ -5,6 +5,7 @@ ldap-utils
 openssh-server
 nfs-kernel-server
 libwww-perl
+firestarter
 samba
 apache2
 dnsmasq

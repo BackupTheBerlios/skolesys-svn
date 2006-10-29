@@ -7,7 +7,7 @@ path += ['.']
 # Check root privilegdes
 if not os.getuid()==0:
 	print "This command requires root priviledges"
-	exit(0)
+	exit(2000)
 	
 from optparse import OptionParser
 from skolesys.cfmachine.apthelpers import SourcesList
@@ -22,6 +22,7 @@ if __name__=='__main__':
 		'install_packages': 'Install deb/apt packages',
 		'copy_files': 'Copy files recursively from a base directory to the root fs',
 		'set_hostname': 'Set the hostname for the host',
+		'run_script': 'Run a script file',
 		'kick_daemons': 'Kick some daemons that need to reload the configuration changes'}
 
 	shell_cmd_name = os.path.split(argv[0])[-1:][0]
@@ -33,7 +34,7 @@ if __name__=='__main__':
 		print "Commands:"
 		for cmd,desc in commands.items():
 			print '%s - %s' % (cmd,desc)
-		exit(0)
+		exit(101)
 		
 	cmd = argv[1]
 	
@@ -45,12 +46,12 @@ if __name__=='__main__':
 		
 		if len(args)<2:
 			print "Missing controlfile for the %s operation" % cmd
-			exit(0)
+			exit(102)
 		controlfile = args[1]
 		cf = __import__(controlfile)
 		if not dir(cf).count('fstab_entries'):
 			print "The controlfile %s.py does not implement the variable: %s which is mandatory for this operation" % (controlfile,'fstab_entries')
-			exit(0)
+			exit(103)
 		fstab = Fstab()
 		for mnt in cf.fstab_entries:
 			fstab.add_entry(mnt['sourcefs'],mnt['mountpoint'],mnt['fstype'],mnt['options'],mnt['dump'],mnt['fsckorder'])
@@ -69,12 +70,12 @@ if __name__=='__main__':
 		
 		if len(args)<2:
 			print "Missing controlfile for the %s operation" % cmd
-			exit(0)
+			exit(201)
 		controlfile = args[1]
 		cf = __import__(controlfile)
 		if not dir(cf).count('apt_source_entries'):
 			print "The controlfile %s.py does not implement the variable: %s which is mandatory for this operation" % (controlfile,'apt_source_entries')
-			exit(0)
+			exit(202)
 		slist = SourcesList()
 		for src in cf.apt_source_entries:
 			slist.add_source(src['type'],src['uri'],src['distribution'],src['components'])
@@ -89,12 +90,12 @@ if __name__=='__main__':
 		
 		if len(args)<2:
 			print "Missing controlfile for the %s operation" % cmd
-			exit(0)
+			exit(301)
 		controlfile = args[1]
 		cf = __import__(controlfile)
 		if not dir(cf).count('apt_source_entries'):
 			print "The controlfile %s.py does not implement the variable: %s which is mandatory for this operation" % (controlfile,'packagelist_files')
-			exit(0)
+			exit(302)
 		
 		package_acc = []
 		
@@ -117,16 +118,16 @@ if __name__=='__main__':
 		
 		if len(args)<2:
 			print "Missing controlfile for the %s operation" % cmd
-			exit(0)
+			exit(401)
 		controlfile = args[1]
 		cf = __import__(controlfile)
 		if not dir(cf).count('copy_files_rootdir'):
 			print "The controlfile %s.py does not implement the variable: %s which is mandatory for this operation" % (controlfile,'copy_files_rootdir')
-			exit(0)
+			exit(402)
 		
 		if not type(cf.copy_files_rootdir) == str:
 			print "The %s variable must be assigned a single string value." % 'copy_files_rootdir'
-			exit(0)
+			exit(403)
 			
 		if not os.path.exists(cf.copy_files_rootdir):
 			print "The root directory %s does not seem to exist." % cf.copy_files_rootdir
@@ -139,16 +140,16 @@ if __name__=='__main__':
 		
 		if len(args)<2:
 			print "Missing controlfile for the %s operation" % cmd
-			exit(0)
+			exit(501)
 		controlfile = args[1]
 		cf = __import__(controlfile)
 		if not dir(cf).count('hostname'):
 			print "The controlfile %s.py does not implement the variable: %s which is mandatory for this operation" % (controlfile,'hostname')
-			exit(0)
+			exit(502)
 		
 		if not type(cf.hostname) == str:
 			print "The %s variable must be assigned a single string value." % 'hostname'
-			exit(0)
+			exit(503)
 		
 		print "Setting hostname to %s" % cf.hostname
 		os.environ['HOSTNAME'] = cf.hostname
@@ -156,7 +157,20 @@ if __name__=='__main__':
 		f = open('/etc/hostname','w')
 		f.write('%s\n' % cf.hostname)
 		f.close()
-		
+
+
+	if cmd == "run_script":
+		parser.set_usage("usage: %s %s controlfile " % (shell_cmd_name,cmd))
+		parser.add_option("-i", "--interpretor", dest="interpretor",default='',
+		                  help="The interpretor to be used for excuting the script", metavar="INTERPRETOR")
+		(options, args) = parser.parse_args()
+		if len(args)<2:
+			print "Missing script file for the %s operation" % cmd
+			exit(601)
+
+		script_file = args[1]
+		exit(os.system("%s %s" % (options.interpretor,script_file)))
+
 	
 	if cmd == "kick_daemons":
 		parser.set_usage("usage: %s %s controlfile " % (shell_cmd_name,cmd))
@@ -164,16 +178,18 @@ if __name__=='__main__':
 		
 		if len(args)<2:
 			print "Missing controlfile for the %s operation" % cmd
-			exit(0)
+			exit(701)
 		controlfile = args[1]
 		cf = __import__(controlfile)
 		if not dir(cf).count('kick_daemons'):
 			print "The controlfile %s.py does not implement the variable: %s which is mandatory for this operation" % (controlfile,'kick_daemons')
-			exit(0)
+			exit(702)
 		
 		if not type(cf.kick_daemons) == tuple and not type(cf.kick_daemons) == list:
 			print "The %s variable must be assigned a sequence." % 'kick_daemons'
-			exit(0)
+			exit(703)
 			
 		for kick in cf.kick_daemons:
 			os.system(kick)
+
+	exit(0)

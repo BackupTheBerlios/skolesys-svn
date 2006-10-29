@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<gconf>
+        <entry name="not_for_firewall" mtime="1153263458" type="bool" value="false">
+        </entry>
+        <entry name="redundant" mtime="1153263458" type="bool" value="true">
+        </entry>
+</gconf>

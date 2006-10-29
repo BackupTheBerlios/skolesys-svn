@@ -4,6 +4,7 @@ libpam-ldap
 ldap-utils
 openssh-server
 nfs-kernel-server
+firestarter
 skolesys-ltsp
 skolesys-ui
 tftpd-hpa

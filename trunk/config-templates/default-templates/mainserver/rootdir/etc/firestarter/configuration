@@ -1,0 +1,83 @@
+#-----------( Firestarter Configuration File )-----------#
+
+# --(External Interface)--
+# Name of external network interface
+IF="eth1"
+# Network interface is a PPP link
+EXT_PPP="off"
+
+# --(Internal Interface--)
+# Name of internal network interface
+INIF="eth0"
+
+# --(Network Address Translation)--
+# Enable NAT
+NAT="on"
+# Enable DHCP server for NAT clients
+DHCP_SERVER="off"
+# Forward server's DNS settings to clients in DHCP lease
+DHCP_DYNAMIC_DNS="on"
+
+# --(Inbound Traffic)--
+# Packet rejection method
+#   DROP:   Ignore the packet
+#   REJECT: Send back an error packet in response
+STOP_TARGET="DROP"
+
+# --(Outbound Traffic)--
+# Default Outbound Traffic Policy
+#   permissive: everything not denied is allowed
+#   restrictive everything not allowed is denied
+OUTBOUND_POLICY="permissive"
+
+# --(Type of Service)--
+# Enable ToS filtering
+FILTER_TOS="off"
+# Apply ToS to typical client tasks such as SSH and HTTP
+TOS_CLIENT="off"
+# Apply ToS to typical server tasks such as SSH, HTTP, HTTPS and POP3
+TOS_SERVER="off"
+# Apply ToS to Remote X server connections
+TOS_X="off"
+# ToS parameters
+#   4:  Maximize Reliability
+#   8:  Maximize-Throughput
+#   16: Minimize-Delay
+TOSOPT=8
+
+# --(ICMP Filtering)--
+# Enable ICMP filtering
+FILTER_ICMP="off"
+# Allow Echo requests
+ICMP_ECHO_REQUEST="off"
+# Allow Echo replies
+ICMP_ECHO_REPLY="off"
+# Allow Traceroute requests
+ICMP_TRACEROUTE="off"
+# Allow MS Traceroute Requests
+ICMP_MSTRACEROUTE="off"
+# Allow Unreachable Requests
+ICMP_UNREACHABLE="off"
+# Allow Timestamping Requests
+ICMP_TIMESTAMPING="off"
+# Allow Address Masking Requests
+ICMP_MASKING="off"
+# Allow Redirection Requests
+ICMP_REDIRECTION="off"
+# Allow Source Quench Requests
+ICMP_SOURCE_QUENCHES="off"
+
+# --(Broadcast Traffic)--
+# Block external broadcast traffic
+BLOCK_EXTERNAL_BROADCAST="on"
+# Block internal broadcast traffic
+BLOCK_INTERNAL_BROADCAST="off"
+
+# --(Traffic Validation)--
+# Block non-routable traffic on the public interfaces
+BLOCK_NON_ROUTABLES="off"
+
+# --(Logging)--
+# System log level
+LOG_LEVEL=info
+

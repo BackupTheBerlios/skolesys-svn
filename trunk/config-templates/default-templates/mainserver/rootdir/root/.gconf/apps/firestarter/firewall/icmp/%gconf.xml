@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<gconf>
+        <entry name="source_quenches" mtime="1153263458" type="bool" value="false">
+        </entry>
+        <entry name="redirection" mtime="1153263458" type="bool" value="false">
+        </entry>
+        <entry name="masking" mtime="1153263458" type="bool" value="false">
+        </entry>
+        <entry name="timestamping" mtime="1153263458" type="bool" value="false">
+        </entry>
+        <entry name="unreachable" mtime="1153263458" type="bool" value="false">
+        </entry>
+        <entry name="mstraceroute" mtime="1153263458" type="bool" value="false">
+        </entry>
+        <entry name="traceroute" mtime="1153263458" type="bool" value="false">
+        </entry>
+        <entry name="echo_reply" mtime="1153263458" type="bool" value="false">
+        </entry>
+        <entry name="echo_request" mtime="1153263458" type="bool" value="false">
+        </entry>
+        <entry name="enable" mtime="1153263458" type="bool" value="false">
+        </entry>
+</gconf>

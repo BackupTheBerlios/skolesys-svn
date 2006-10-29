@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<gconf>
+        <entry name="nameserver" mtime="1153263458" type="string">
+                <stringvalue>&lt;dynamic&gt;</stringvalue>
+        </entry>
+        <entry name="highest_ip" mtime="1153263458" type="string">
+                <stringvalue>192.168.0.254</stringvalue>
+        </entry>
+        <entry name="lowest_ip" mtime="1153263458" type="string">
+                <stringvalue>192.168.0.100</stringvalue>
+        </entry>
+        <entry name="enable_server" mtime="1153263458" type="bool" value="false">
+        </entry>
+</gconf>

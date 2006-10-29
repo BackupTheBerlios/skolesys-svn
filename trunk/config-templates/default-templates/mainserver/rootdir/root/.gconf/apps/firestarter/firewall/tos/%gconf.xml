@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<gconf>
+        <entry name="optimize_delay" mtime="1153263458" type="bool" value="false">
+        </entry>
+        <entry name="optimize_reliability" mtime="1153263458" type="bool" value="false">
+        </entry>
+        <entry name="optimize_troughput" mtime="1153263458" type="bool" value="true">
+        </entry>
+        <entry name="x" mtime="1153263458" type="bool" value="false">
+        </entry>
+        <entry name="server" mtime="1153263458" type="bool" value="false">
+        </entry>
+        <entry name="client" mtime="1153263458" type="bool" value="false">
+        </entry>
+        <entry name="enable" mtime="1153263458" type="bool" value="false">
+        </entry>
+</gconf>

@@ -5,7 +5,7 @@ import tempfile,os
 
 class ConfigBuilder:
 
-	def __init__(self,hosttype_id,hwaddr=None):
+	def __init__(self,hosttype_id,hwaddr=None,context=None,include_common=True):
 		"""
 		1. Create temp directory
 		2. Fetch 
@@ -35,7 +35,8 @@ class ConfigBuilder:
 					file_location[os.path.join(dirname[len(temp_level):],f)] = os.path.join(dirname,f)
 		
 		level_order = ['default','custom','host']
-		system_order = ['common',self.hosttype]
+		system_order = [self.hosttype,'system-contexts/%s' % context]
+		system_order = ['common'] + system_order
 		if self.hwaddr:
 			system_order += [self.hwaddr]
 	
@@ -48,7 +49,7 @@ class ConfigBuilder:
 				if os.path.exists("%s/%s-templates/%s" % (template_basedir,level,system)):
 					os.path.walk("%s/%s-templates/%s" % (template_basedir,level,system),\
 						store_link,("%s/%s-templates/%s/" % (template_basedir,level,system),file_location))
-	
+		
 		# Copy the config files running them through cheetah
 		for k,v in file_location.items():
 			f_stat = os.stat(v)

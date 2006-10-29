@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<gconf>
+        <entry name="block_non_routables" mtime="1153263458" type="bool" value="false">
+        </entry>
+        <entry name="block_internal_broadcast" mtime="1153263458" type="bool" value="false">
+        </entry>
+        <entry name="block_external_broadcast" mtime="1153263458" type="bool" value="true">
+        </entry>
+        <entry name="deny_packets" mtime="1153263458" type="bool" value="true">
+        </entry>
+        <entry name="int_if" mtime="1153263458" type="string">
+                <stringvalue>eth0</stringvalue>
+        </entry>
+        <entry name="nat" mtime="1153263458" type="bool" value="true">
+        </entry>
+        <entry name="ext_if" mtime="1153263458" type="string">
+                <stringvalue>eth1</stringvalue>
+        </entry>
+</gconf>
