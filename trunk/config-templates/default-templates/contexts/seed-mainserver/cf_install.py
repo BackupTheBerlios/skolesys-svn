@@ -24,4 +24,5 @@ kick_daemons = [
 	'/etc/init.d/nfs-kernel-server restart',
 	'/etc/init.d/nfs-common restart',
 	'/etc/init.d/dnsmasq restart',
-	'/etc/init.d/apache2 restart']
+	'/etc/init.d/apache2 restart',
+	'/etc/init.d/firestarter restart']
