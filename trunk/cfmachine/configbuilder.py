@@ -12,6 +12,8 @@ class ConfigBuilder:
 		"""
 		self.hosttype = hostdef.hosttype_as_text(hosttype_id)
 		self.hwaddr = hostdef.check_hwaddr(hwaddr)
+		self.context = context
+		self.include_common = include_common
 		self.tempdir = tempfile.mkdtemp(prefix='skolesys_')
 		self.infocollection = InfoCollection(self.hwaddr)
 		self.build_config()
@@ -35,8 +37,12 @@ class ConfigBuilder:
 					file_location[os.path.join(dirname[len(temp_level):],f)] = os.path.join(dirname,f)
 		
 		level_order = ['default','custom','host']
-		system_order = [self.hosttype,'system-contexts/%s' % context]
-		system_order = ['common'] + system_order
+		system_order = [self.hosttype]
+		if context:
+			system_order += ['contexts/%s' % self.context]
+		if include_common:
+			system_order = ['common'] + system_order
+		
 		if self.hwaddr:
 			system_order += [self.hwaddr]
 	

@@ -40,7 +40,7 @@ $host.ipHostNumber	$host.hostName.$conf.domain.domain_name
 # ------------------------------------------------------------
 # ------------- Registered SkoleSYS LTSP Clients -------------
 # ------------------------------------------------------------
-#for $host in $hosts.workstation
+#for $host in $hosts.ltspclient
 $host.ipHostNumber	$host.hostName.$conf.domain.domain_name
 
 #end for
