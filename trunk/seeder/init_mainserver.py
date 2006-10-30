@@ -46,6 +46,10 @@ f.close()
 
 
 # INSTALL
+
+# Wipe sources.list on mainserver install
+os.system('echo "" > /etc/apt/sources.list')
+
 # ensure some entries in sources.list
 apt_source_entries = [
         {'type':'deb','uri':'http://skolesys.dk/skolesys/debian','distribution':'pilot','components':['main','nonfree']},
@@ -55,7 +59,7 @@ apt_source_entries = [
         {'type':'deb-src','uri':'http://dk.archive.ubuntu.com/ubuntu/','distribution':'dapper-backports','components':['main','restricted','universe','multiverse']},
         {'type':'deb','uri':'http://security.ubuntu.com/ubuntu','distribution':'dapper-security','components':['main','restricted','universe']},
         {'type':'deb-src','uri':'http://security.ubuntu.com/ubuntu','distribution':'dapper-security','components':['main','restricted','universe']}]
-	
+
 slist = apthelper.SourcesList()
 for src in apt_source_entries:
 	slist.add_source(src['type'],src['uri'],src['distribution'],src['components'])
