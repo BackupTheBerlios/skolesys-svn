@@ -1,0 +1,40 @@
+# Initialize
+$IPT -N INBOUND 2> /dev/null
+$IPT -F INBOUND
+
+# Temoporarily set the field separator for CSV format
+OLDIFS=$IFS
+IFS=','
+
+# Allow response traffic
+$IPT -A INBOUND -p tcp -m state --state ESTABLISHED,RELATED -j ACCEPT
+$IPT -A INBOUND -p udp -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# Hosts from which connections are always allowed
+while read host garbage
+	do
+		$IPT -A INBOUND -s $host -j ACCEPT
+	done < /etc/firestarter/inbound/allow-from
+
+# Services allowed
+while read service ports target garbage
+	do
+		IFS=' '
+		for port in `echo $ports`; do
+			scrub_parameters
+			case "$port" in
+			  # Override broadcast blocking for Samba share discovery
+			  "1900" ) $IPT -I INPUT -p tcp -s $target --dport 1900 -j ACCEPT
+			           $IPT -I INPUT -p udp -s $target --dport 1900 -j ACCEPT;;
+			  # Default service handler
+			  * ) $IPT -A INBOUND -p tcp -s $target --dport $port -j ACCEPT
+			      $IPT -A INBOUND -p udp -s $target --dport $port -j ACCEPT;;
+			esac
+		done
+		IFS=','
+	done < /etc/firestarter/inbound/allow-service
+
+$IPT -A INBOUND -j LSI
+# Restore system field separator
+IFS=$OLDIFS
+
