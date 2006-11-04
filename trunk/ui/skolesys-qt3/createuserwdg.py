@@ -14,8 +14,8 @@ class CreateUserWdg(CreateUserWdgBase):
 		rx = QRegExp('^[a-z][._0-9a-z]*')
 		rx_validator = QRegExpValidator(rx,self)
 		self.ed_login.setValidator(rx_validator)
-		# present the domain name
-		self.lbl_domain_name.setText('@%s' % self.proxy.domain_name())
+		# present the domain name (This has been removed for the sake of smaller pupils)
+		# self.lbl_domain_name.setText('@%s' % self.proxy.domain_name())
 		self.connect(self.ed_login,SIGNAL("textChanged(const QString&)"),self.check_login)
 		self.connect(self.cmb_usertype,SIGNAL("activated(int)"),self.usertype_changed)
 		self.connect(self.cb_allgroups,SIGNAL("toggled(bool)"),self.allgroups_toggled)
@@ -69,14 +69,14 @@ class CreateUserWdg(CreateUserWdgBase):
 
 	
 	def check_login(self):
-		login=self.ed_login.text().latin1()+self.lbl_domain_name.text().latin1()
+		login=self.ed_login.text().latin1()#+self.lbl_domain_name.text().latin1()
 		if self.proxy.user_exists(login):
 			self.ed_login.setPaletteForegroundColor(Qt.red)
 		else:
 			self.ed_login.setPaletteForegroundColor(Qt.black)
 
 	def accept(self):
-		login=self.ed_login.text().latin1()+self.lbl_domain_name.text().latin1()
+		login=self.ed_login.text().latin1()#+self.lbl_domain_name.text().latin1()
 		if self.proxy.user_exists(login):
 			QMessageBox.information(self,
 				self.tr('Create user'),
