@@ -15,25 +15,32 @@ from conf import conf
 from usermanager import UserManager,GroupManager
 import skolesys.definitions.userdef as userdef
 
+
 def check_username(username):
 	"Check the user name syntax"
 	# lowercase the username nicely
 	username = username.lower()
+	
 	def valid_characters(str):
-		c=re.compile('[-_.0-9a-zA-Z]+')
+		c=re.compile('[-_@.0-9a-zA-Z]+')
 		m=c.match(str)
 		if m and m.group()==str:
 			return 1
 		return 0
-
-	parts = username.split('@')
-	if len(parts)==1 and valid_characters(parts[0]):
-		return "%s@%s" % (parts[0],conf.get('DOMAIN','domain_name').lower())
-
-	if len(parts)==2 and valid_characters(parts[0]) and valid_characters(parts[1]):
-		return username
 	
-	return None
+	# Free username
+	if valid_characters(username):
+		return username
+
+#	# Forced domain version
+#	parts = username.split('@')
+#	if len(parts)==1 and valid_characters(parts[0]):
+#		return "%s@%s" % (parts[0],conf.get('DOMAIN','domain_name').lower())
+#
+#	if len(parts)==2 and valid_characters(parts[0]) and valid_characters(parts[1]):
+#		return username
+#	
+#	return None
 
 
 if __name__=='__main__':
