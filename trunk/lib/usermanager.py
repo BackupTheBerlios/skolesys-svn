@@ -213,6 +213,7 @@ class UserManager (LDAPUtil):
 			
 			uid = sres[1][0][1]['uid'][0]
 			user_dict[uid] = {}
+			user_dict[uid]['dn'] = sres[1][0][0]
 			for (k,v) in sres[1][0][1].items():
 				if len(v)==1:
 					user_dict[uid][k] = v[0]
