@@ -23,7 +23,9 @@ if __name__=='__main__':
 		help="The base folder containing skolesys svn repositories", metavar="SKOLESYS_SVNBASE")
 	parser.add_option("-l", "--iso-location", dest="iso_location",default=None,
 		help="The folder containing the iso file", metavar="SKOLESYS_ISO-LOCATION")
-	
+	parser.add_option("--dont-fetch",
+		action="store_true", dest="dont_fetch", default=False,
+		help="Tell the debian builder not to fetch the source")	
 	(options, args) = parser.parse_args()
 	
 	if len(args)==0:
@@ -52,33 +54,34 @@ if __name__=='__main__':
 		print "ERROR: %s_debfile.py requires the member 'fetch_method'" % module	
 
 	# Fetch by subversion
-	if debinfo.fetch_method=='svn':
-		if not options.svnbase:
-			env_svnbase = os.getenv('SKOLESYS_SVNBASE')
-			if env_svnbase:
-				options.svnbase = env_svnbase
+	if options.dont_fetch == False:
+		if debinfo.fetch_method=='svn':
+			if not options.svnbase:
+				env_svnbase = os.getenv('SKOLESYS_SVNBASE')
+				if env_svnbase:
+					options.svnbase = env_svnbase
+				else:
+					options.svnbase = raw_input("Input the folder containing the svn module %s: " % module)	
+			
+			if dir(debinfo).count('svn_module'):
+				svnmodule = debinfo.svn_module
 			else:
-				options.svnbase = raw_input("Input the folder containing the svn module %s: " % module)	
-		
-		if dir(debinfo).count('svn_module'):
-			svnmodule = debinfo.svn_module
-		else:
-			svnmodule = module
-		os.system('svn co %s rep' % os.path.join(options.svnbase,svnmodule))
-		os.system('find rep | grep "\\.svn" | xargs rm -R -f')
-		
-	if debinfo.fetch_method=='iso':
-		if not options.iso_location:
-			options.iso_location = raw_input("Input the folder containing the iso file %s.iso: " % module)	
-		if not os.path.exists("%s.iso" % os.path.join(options.iso_location,module)):
-			print "ERROR: %s.iso does not exist" % os.path.join(options.iso_location,module)
-			sys.exit(0)
-		if os.path.exists('isomount'):
-			os.system('sudo rm isomount -R -f')	
-		os.system('mkdir isomount')
-		os.system("sudo mount -t iso9660 -o loop %s.iso isomount" % os.path.join(options.iso_location,module))
-		os.system("cp isomount/* rep -R -f")
-		os.system("sudo umount isomount")
+				svnmodule = module
+			os.system('svn co %s rep' % os.path.join(options.svnbase,svnmodule))
+			os.system('find rep | grep "\\.svn" | xargs rm -R -f')
+			
+		if debinfo.fetch_method=='iso':
+			if not options.iso_location:
+				options.iso_location = raw_input("Input the folder containing the iso file %s.iso: " % module)	
+			if not os.path.exists("%s.iso" % os.path.join(options.iso_location,module)):
+				print "ERROR: %s.iso does not exist" % os.path.join(options.iso_location,module)
+				sys.exit(0)
+			if os.path.exists('isomount'):
+				os.system('sudo rm isomount -R -f')	
+			os.system('mkdir isomount')
+			os.system("sudo mount -t iso9660 -o loop %s.iso isomount" % os.path.join(options.iso_location,module))
+			os.system("cp isomount/* rep -R -f")
+			os.system("sudo umount isomount")
 		
 	package_name = debinfo.control['Package']
 	package_ver = debinfo.control['Version']

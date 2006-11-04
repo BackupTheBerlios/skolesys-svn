@@ -8,7 +8,7 @@ control = {
 	'Section': 'python',
 	'Priority': 'optional',
 	'Architecture': 'all',
-	'Depends': 'python2.4, python-smbpasswd, python2.4-soappy, m2crypto, python2.4-ldap',
+	'Depends': 'python2.4, python-cheetah, python-smbpasswd, python2.4-soappy, m2crypto, python2.4-ldap',
 	'Recommends': '',
 	'Maintainer': 'Jakob Simon-Gaarde <jakob@skolesys.org>',
 	'Description': 'This is the base control library of the SkoleSYS linux distribution',
