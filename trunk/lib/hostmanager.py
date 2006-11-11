@@ -147,6 +147,7 @@ class HostManager (LDAPUtil):
 		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
 		self.touch_by_dict({path:host_info})
 		
+		import skolesys.cfmachine.configbuilder as cb
 		c = cb.ConfigBuilder(hostdef.hosttype_as_id('mainserver'),'',context='update-hosts',context_only=True)
 		curdir = os.getcwd()
 		os.chdir(c.tempdir)
