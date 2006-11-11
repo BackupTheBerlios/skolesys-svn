@@ -1,0 +1,47 @@
+# ----------------------------------------------------------
+# This file is produced on basis of a template system. 
+# Therfore you should not change the contents since they 
+# will be overwritten later.
+# Read about the SkoleSYS template configuration system
+# before customizing your own templates.
+# ----------------------------------------------------------
+
+#if $varExists('hosts.mainserver')
+# ------------------------------------------------------------
+# ------------- Registered SkoleSYS Mainserver ---------------
+# ------------------------------------------------------------
+#for $host in $hosts.mainserver
+$host.ipHostNumber	$host.hostName.$conf.domain.domain_name
+
+#end for
+#end if
+
+#if $varExists('hosts.workstation')
+# ------------------------------------------------------------
+# ------------- Registered SkoleSYS Workstations -------------
+# ------------------------------------------------------------
+#for $host in $hosts.workstation
+$host.ipHostNumber	$host.hostName.$conf.domain.domain_name
+
+#end for
+#end if
+
+#if $varExists('hosts.ltspserver')
+# ------------------------------------------------------------
+# ------------- Registered SkoleSYS LTSP servers -------------
+# ------------------------------------------------------------
+#for $host in $hosts.ltspserver
+$host.ipHostNumber	$host.hostName.$conf.domain.domain_name
+
+#end for
+#end if
+
+#if $varExists('hosts.ltspclient')
+# ------------------------------------------------------------
+# ------------- Registered SkoleSYS LTSP Clients -------------
+# ------------------------------------------------------------
+#for $host in $hosts.ltspclient
+$host.ipHostNumber	$host.hostName.$conf.domain.domain_name
+
+#end for
+#end if
