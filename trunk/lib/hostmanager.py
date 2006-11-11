@@ -147,6 +147,13 @@ class HostManager (LDAPUtil):
 		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
 		self.touch_by_dict({path:host_info})
 		
+		c = cb.ConfigBuilder(hostdef.hosttype_as_id('mainserver'),'',context='update-hosts',context_only=True)
+		curdir = os.getcwd()
+		os.chdir(c.tempdir)
+		os.system('./install.sh')
+		os.chdir(curdir)
+		del c
+		
 		return 1		
 	
 	def host_info(self,hwaddr=None,hostname=None):
