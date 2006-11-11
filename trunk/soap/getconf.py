@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from sys import exit
+from sys import exit,argv
 import os
 # Check root privilegdes
 if not os.getuid()==0:
@@ -9,8 +9,16 @@ if not os.getuid()==0:
 from stat import S_IRUSR,S_IWUSR,S_IRGRP,S_IROTH
 import skolesys.soap.client as ss_client
 import time,getpass
+from optparse import OptionParser
 from skolesys.tools.confhelper import conf2dict
 
+parser = OptionParser()
+shell_cmd_name = os.path.split(argv[0])[-1:][0]
+parser.set_usage("usage: %s [options]" % shell_cmd_name)
+parser.add_option("-c", "--config-context", dest="config_context",default=None,
+			help="Retrieve a specialized configuration for a given event or context", metavar="CONFCONTEXT")
+
+(options, args) = parser.parse_args()
 
 soapconf = None
 if os.path.exists('./skolesoap.conf'):
@@ -55,7 +63,10 @@ else:
 	print "Authentication OK"
 
 print "Fetching host configuration...",
-res = c.getconf()
+context_only = False
+if options.config_context:
+	context_only = True
+res = c.getconf(None,options.config_context,context_only)
 
 # Handle errors
 if res[0] == -1:
