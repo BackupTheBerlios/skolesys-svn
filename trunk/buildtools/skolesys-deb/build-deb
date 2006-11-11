@@ -10,11 +10,6 @@ parser = OptionParser(usage=usage)
 
 if __name__=='__main__':
 	
-	# Clean workspaces	
-	if os.path.exists('rep'):
-		os.system('sudo rm rep -R -f')
-	os.mkdir('rep')
-	
 	if os.path.exists('debian'):
 		os.system('sudo rm debian -R -f')
 	os.makedirs('debian/DEBIAN')
@@ -55,6 +50,12 @@ if __name__=='__main__':
 
 	# Fetch by subversion
 	if options.dont_fetch == False:
+		
+		# Clean workspaces	
+		if os.path.exists('rep'):
+			os.system('sudo rm rep -R -f')
+		os.mkdir('rep')
+		
 		if debinfo.fetch_method=='svn':
 			if not options.svnbase:
 				env_svnbase = os.getenv('SKOLESYS_SVNBASE')

@@ -21,7 +21,7 @@ os.path.walk('rep',ui_filter,None)
 
 control = {
 	'Package': 'skolesys-ui',
-	'Version': '0.7.1',
+	'Version': '0.7.8',
 	'NameExtension': 'skolesys1_all',
 	'Section': 'util',
 	'Priority': 'optional',
@@ -37,7 +37,7 @@ control = {
  and registering thin client servers (LTSP).
 """}
 
-perm = {'skolesys-ui.py': '755'}
+perm = [['skolesys-ui.py', '755']]
 
 copy = {'.': '/usr/lib/skolesys-ui/'}
 
