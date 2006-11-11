@@ -288,11 +288,13 @@ def listhosts(session_id,hosttype_id):
 	hm = HostManager()
 	return pdump(hm.list_hosts(hosttype_id))
 
-def getconf(session_id,hwaddr):
+def getconf(session_id,hwaddr,context,context_only):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	
 	hwaddr = pload(hwaddr)
+	context = pload(context)
+	context_only = pload(context_only)
 	hm = HostManager()
 	hinfo = hm.host_info(hwaddr)
 	if not hinfo:
@@ -303,7 +305,7 @@ def getconf(session_id,hwaddr):
 		return pdump([-2,'']) # The host is registered with an invalid host type id
 	
 	print "Configuration requested by host: %s" % hwaddr
-	cb = ConfigBuilder(hosttype_id,hwaddr)
+	cb = ConfigBuilder(hosttype_id,hwaddr,context,context_only)
 	f = open('%s/conf.tgz' % cb.tempdir ,'rb')
 	o = f.read()
 	f.close()

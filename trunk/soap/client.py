@@ -223,13 +223,13 @@ class SkoleSYS_Client:
 		return pload(self.server.listhosts(pdump(self.session_id),pdump(hosttype_id)))
 		
 		
-	def getconf(self,hwaddr=None):
+	def getconf(self,hwaddr=None,context=None,context_only=False):
 		if self.remotedisplay == True:
 			print "Error: Cannot fetch configuration through a remotely logged in session"
 			return (0,0)
 		if hwaddr == None:
 			hwaddr = self.local_hwaddr # Should never fetch another host's (remote display mode) configuration!
-		return pload(self.server.getconf(pdump(self.session_id),pdump(hwaddr)))
+		return pload(self.server.getconf(pdump(self.session_id),pdump(hwaddr),pdump(context),pdump(context_only)))
 	
 
 if __name__=='__main__':
