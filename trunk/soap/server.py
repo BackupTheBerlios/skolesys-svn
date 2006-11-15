@@ -289,12 +289,15 @@ def listhosts(session_id,hosttype_id):
 	return pdump(hm.list_hosts(hosttype_id))
 
 def getconf(session_id,hwaddr,context,context_only):
-	if not session_valid(pload(session_id)):
+	context = pload(context)
+	context_only = pload(context_only)
+	
+	if context == 'update-hosts' and context_only:
+		pass
+	else if not session_valid(pload(session_id)):
 		return pdump(False)
 	
 	hwaddr = pload(hwaddr)
-	context = pload(context)
-	context_only = pload(context_only)
 	hm = HostManager()
 	hinfo = hm.host_info(hwaddr)
 	if not hinfo:
