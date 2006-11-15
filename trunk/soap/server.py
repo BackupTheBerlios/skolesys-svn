@@ -294,7 +294,7 @@ def getconf(session_id,hwaddr,context,context_only):
 	
 	if context == 'update-hosts' and context_only:
 		pass
-	else if not session_valid(pload(session_id)):
+	elif not session_valid(pload(session_id)):
 		return pdump(False)
 	
 	hwaddr = pload(hwaddr)
