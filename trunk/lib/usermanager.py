@@ -293,10 +293,9 @@ class UserManager (LDAPUtil):
 		try:
 			home_path = "%s/%s/users/%s" % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
 			if not os.path.exists(os.path.normpath(home_path)):
-				os.mkdir(os.path.normpath(home_path))
+				# Copy the user skel
+				os.system('cp /etc/skolesys/skel/ %s -Rf' % os.path.normpath(home_path))
 			
-			# Copy the user skel
-			os.system('cp /etc/skolesys/skel/ %s -Rf' % os.path.normpath(home_path))
 		
 			# Deliver ownership
 			os.system('chown %d %s -R -f' % (posix_uid,os.path.normpath(home_path)))
