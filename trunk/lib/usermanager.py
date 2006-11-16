@@ -271,7 +271,7 @@ class UserManager (LDAPUtil):
 			'uidnumber': str(self.max(conf.get('LDAPSERVER','basedn'),
 				'objectclass=posixaccount','uidNumber',
 				int(conf.get('DOMAIN','uid_start')))+1),
-			'homeDirectory':'%s/%s/users/%s' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid),
+			'homeDirectory':'%s/%s/users/%s/.linux' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid),
 			'sn':'%s' % givenname,
 			'objectclass':objectclass,
 			'mail': uid,
@@ -294,8 +294,10 @@ class UserManager (LDAPUtil):
 			home_path = "%s/%s/users/%s" % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
 			if not os.path.exists(os.path.normpath(home_path)):
 				os.mkdir(os.path.normpath(home_path))
+			os.system('cp /etc/skolesys/skel/ admin -Rf')
 		
 			os.system('chown %d %s -R -f' % (posix_uid,os.path.normpath(home_path)))
+
 		except Exception,e:
 			print e
 			return -3
@@ -384,7 +386,7 @@ class UserManager (LDAPUtil):
 			return -4
 		
 		# Create user symlink to the group
-		user_group_dir = '%s/%s/users/%s/Groups' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
+		user_group_dir = '%s/%s/users/%s/groups' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
 		if not os.path.exists(user_group_dir):
 			os.makedirs(user_group_dir)
 		if not os.path.exists('%s/%s' % (user_group_dir,groupname)):
@@ -420,7 +422,7 @@ class UserManager (LDAPUtil):
 			return -4
 		
 		# Remove user symlink to the group
-		user_group_dir = '%s/%s/users/%s/Groups' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
+		user_group_dir = '%s/%s/users/%s/groups' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
 		if os.path.exists(user_group_dir):
 			if os.path.exists('%s/%s' % (user_group_dir,groupname)):
 				os.remove('%s/%s' % (user_group_dir,groupname))
