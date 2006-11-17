@@ -19,6 +19,8 @@ MaximumSize=5242880
 
 [KDE]
 ShowIconsOnPushButtons=true
+DoubleClickInterval=400
+SingleClick=false
 ChangeCursor=true
 EffectAnimateCombo=true
 EffectFadeMenu=false

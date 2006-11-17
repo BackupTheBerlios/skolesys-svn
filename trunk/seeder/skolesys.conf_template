@@ -7,8 +7,8 @@ local_domain_name = skolesys.local
 
 homes_host  = mainserver.skolesys.local
 domain_root  = /skolesys
-uid_start   = 2000
-gid_start   = 2000
+uid_start   = 5000
+gid_start   = 5000
 
 # Mainserver network setup
 # ------------------------

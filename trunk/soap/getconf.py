@@ -56,16 +56,19 @@ if os.path.exists('/etc/skolesys/conf.tgz'):
 
 c=ss_client.SkoleSYS_Client(server_url,portnum)
 print
-passwd = getpass.getpass('Mainserver admin password: ')
-if not c.bind(passwd):
-	print "Wrong password"
-else:
-	print "Authentication OK"
-
-print "Fetching host configuration...",
 context_only = False
 if options.config_context:
 	context_only = True
+if options.config_context == 'update-hosts' and context_only:
+	pass
+else:
+	passwd = getpass.getpass('Mainserver admin password: ')
+	if not c.bind(passwd):
+		print "Wrong password"
+	else:
+		print "Authentication OK"
+
+print "Fetching host configuration...",
 res = c.getconf(None,options.config_context,context_only)
 
 # Handle errors
