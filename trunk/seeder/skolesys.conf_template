@@ -70,3 +70,9 @@ interface = eth0
 [CFMACHINE]
 
 template_basedir = /etc/skolesys
+
+
+
+[OPTIONS]
+
+default_lang = da
