@@ -13,12 +13,12 @@ inst_manifest_excludes = \
 ^kubuntu-live
 ^user-setup"""
 
-version = '0.5'
-volume_id = 'SkoleSYS_<ver>'
+version = '0.7'
+volume_id = 'SkoleSYS_<ver>.9'
 
-diskname = 'SkoleSYS <ver> LTSP "Pilot" - Release i386'
+diskname = 'SkoleSYS <ver>.9 LTSP "Pilot" - Release i386'
 
-iso_product = 'skolesys-<ver>-ltsp-i386.iso'
+iso_product = 'skolesys-<ver>.9-ltsp-i386.iso'
 
 
 post_extract_script = """
@@ -28,7 +28,7 @@ rm livecd/autorun.inf
 """
 
 chroot_script = """
-export SKOLESYS_REP=http://mainserver.skolesys.local/debian
+export SKOLESYS_REP=http://skolesys.dk/testing
 export HOME=/tmp
 export LANG=C
 
@@ -39,5 +39,5 @@ echo "deb $SKOLESYS_REP pilot main" >> /etc/apt/sources.list
 echo "deb $SKOLESYS_REP pilot nonfree" >> /etc/apt/sources.list
 echo "deb http://dk.archive.ubuntu.com/ubuntu/ dapper universe" >> /etc/apt/sources.list
 apt-get update
-apt-get install python2.4-skolesys
+apt-get install python2.4-skolesys-seeder
 """

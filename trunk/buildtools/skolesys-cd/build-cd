@@ -130,7 +130,7 @@ if __name__=='__main__':
 		f.close()
 		os.system('chmod 755 chroot_cmd')
 		os.system('konsole -e "./chroot_cmd"')
-		os.system('rm chroot_cmd')
+		#os.system('rm chroot_cmd')
 		os.system('sudo umount %s/new/sys' % cdproject)
 		os.system('sudo umount %s/new/proc' % cdproject)
 		os.system('sudo rm %s/new/etc/resolv.conf' % cdproject)
