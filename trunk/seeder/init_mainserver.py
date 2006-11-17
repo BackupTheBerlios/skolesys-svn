@@ -53,10 +53,10 @@ os.system('echo "" > /etc/apt/sources.list')
 # ensure some entries in sources.list
 apt_source_entries = [
         {'type':'deb','uri':'http://skolesys.dk/testing','distribution':'pilot','components':['main','nonfree']},
-        {'type':'deb','uri':'http://dk.archive.ubuntu.com/ubuntu/','distribution':'dapper','components':['main','restricted','universe']},
-        {'type':'deb-src','uri':'http://dk.archive.ubuntu.com/ubuntu/','distribution':'dapper','components':['main','restricted','universe']},
-        {'type':'deb','uri':'http://dk.archive.ubuntu.com/ubuntu/','distribution':'dapper-backports','components':['main','restricted','universe','multiverse']},
-        {'type':'deb-src','uri':'http://dk.archive.ubuntu.com/ubuntu/','distribution':'dapper-backports','components':['main','restricted','universe','multiverse']},
+        {'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'dapper','components':['main','restricted','universe']},
+        {'type':'deb-src','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'dapper','components':['main','restricted','universe']},
+        {'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'dapper-backports','components':['main','restricted','universe','multiverse']},
+        {'type':'deb-src','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'dapper-backports','components':['main','restricted','universe','multiverse']},
         {'type':'deb','uri':'http://security.ubuntu.com/ubuntu','distribution':'dapper-security','components':['main','restricted','universe']},
         {'type':'deb-src','uri':'http://security.ubuntu.com/ubuntu','distribution':'dapper-security','components':['main','restricted','universe']}]
 
