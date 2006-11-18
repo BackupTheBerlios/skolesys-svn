@@ -4,7 +4,7 @@ import os
 # Check root privilegdes
 if not os.getuid()==0:
 	print "This command requires root priviledges"
-	exit(0)
+	exit(1)
 	
 from stat import S_IRUSR,S_IWUSR,S_IRGRP,S_IROTH
 import skolesys.soap.client as ss_client
@@ -108,11 +108,12 @@ res = c.register_host(options.hostname,hosttype_id)
 # Handle errors
 if res==-5:
 	print "The host's hwaddr [%s] has already been registered" % c.hwaddr
-	exit(0)
+	exit(-5)
 
 if res==-6:
 	print 'The hostname "%s" has already been registered' % options.hostname
-	exit(0)
+	exit(-6)
 
 # OK!
 print "OK"
+exit(0)

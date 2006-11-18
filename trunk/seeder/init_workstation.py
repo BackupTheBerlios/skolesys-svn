@@ -15,8 +15,14 @@ if not os.getuid()==0:
 os.system('clear')
 location = os.path.split(inspect.getsourcefile(skolesys.seeder))[0] 
 
-print "To create a SkoleSYS workstation you must register the host with the mainserver:"
+print "To create a SkoleSYS workstation you must register the host with the mainserver"
+print "-------------------------------------------------------------------------------"
+
 hostname = raw_input('Workstation hostname: ')
+
+res = os.system('ss_reghost -n %s -t workstation' % hostname)
+if res<>0:
+	exit(1)
 
 # INSTALL
 
@@ -49,8 +55,6 @@ if slist.dirty:
 # Replace python-skolesys-seeder with python-skolesys-mainserver
 os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
 os.environ['DEBCONF_ADMIN_EMAIL'] = ''
-
-os.system('ss_reghost -n %s -t workstation' % hostname)
 
 #os.system('ss_getconf')
 
