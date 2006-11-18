@@ -94,7 +94,7 @@ class HostManager (LDAPUtil):
 		return True	
 		
 		
-	def register_host(self,hwaddr,hostname,hosttype_id,ipaddr=None):
+	def register_host(self,hwaddr,hostname,hosttype_id,ipaddr=None,update_hosts=True):
 		"""
 		Register a new host to the SkoleSYS network. The registrationid is the hwaddr
 		but the hostname must be unique aswell. If no ipaddr is given or the given ipaddr 
@@ -147,13 +147,15 @@ class HostManager (LDAPUtil):
 		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
 		self.touch_by_dict({path:host_info})
 		
-		import skolesys.cfmachine.configbuilder as cb
-		c = cb.ConfigBuilder(hostdef.hosttype_as_id('mainserver'),'',context='update-hosts',context_only=True)
-		curdir = os.getcwd()
-		os.chdir(c.tempdir)
-		os.system('./install.sh')
-		os.chdir(curdir)
-		del c
+		if update_hosts:
+			# update-hosts=False is f.inst. used in seed-mainserver config scripts
+			import skolesys.cfmachine.configbuilder as cb
+			c = cb.ConfigBuilder(hostdef.hosttype_as_id('mainserver'),'',context='update-hosts',context_only=True)
+			curdir = os.getcwd()
+			os.chdir(c.tempdir)
+			os.system('./install.sh')
+			os.chdir(curdir)
+			del c
 		
 		return 1		
 	

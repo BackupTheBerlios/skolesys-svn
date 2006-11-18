@@ -214,7 +214,7 @@ import skolesys.lib.hostmanager as h
 import skolesys.definitions.hostdef as hostdef
 import skolesys.soap.netinfo as netinfo
 hm = h.HostManager()
-print hm.register_host(netinfo.if2hwaddr('eth0'),'mainserver',hostdef.hosttype_as_id('mainserver'))
+print hm.register_host(netinfo.if2hwaddr('eth0'),'mainserver',hostdef.hosttype_as_id('mainserver'),update_hosts=False)
 
 import skolesys.cfmachine.configbuilder as confbuilder
 cb = confbuilder.ConfigBuilder(hostdef.hosttype_as_id('mainserver'),netinfo.if2hwaddr('eth0'),'seed-mainserver')
