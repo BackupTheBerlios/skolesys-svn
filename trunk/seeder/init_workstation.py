@@ -4,7 +4,6 @@
 import skolesys.tools.mkpasswd as pw
 import getpass,os,time,re,sys
 import inspect
-import skolesys.seeder
 import skolesys.cfmachine.apthelpers as apthelper
 
 # Check root privilegdes
@@ -13,7 +12,6 @@ if not os.getuid()==0:
         sys.exit(0)
 
 os.system('clear')
-location = os.path.split(inspect.getsourcefile(skolesys.seeder))[0] 
 
 print "To create a SkoleSYS workstation you must register the host with the mainserver"
 print "-------------------------------------------------------------------------------"
