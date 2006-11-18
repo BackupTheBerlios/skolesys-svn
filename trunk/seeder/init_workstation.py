@@ -9,7 +9,7 @@ import skolesys.cfmachine.apthelpers as apthelper
 # Check root privilegdes
 if not os.getuid()==0:
         print "This command requires root priviledges"
-        sys.exit(0)
+        sys.exit(1)
 
 os.system('clear')
 
@@ -20,7 +20,9 @@ hostname = raw_input('Workstation hostname: ')
 
 res = os.system('ss_reghost -n %s -t workstation' % hostname)
 if res<>0:
-	exit(1)
+	sys.exit(1)
+print 
+print res
 
 # INSTALL
 
@@ -54,5 +56,5 @@ if slist.dirty:
 os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
 os.environ['DEBCONF_ADMIN_EMAIL'] = ''
 
-#os.system('ss_getconf')
+os.system('ss_getconf')
 
