@@ -5,24 +5,39 @@ import skolesys.tools.mkpasswd as pw
 import getpass,os,time,re,sys
 import inspect
 import skolesys.cfmachine.apthelpers as apthelper
+from optparse import OptionParser
 
 # Check root privilegdes
 if not os.getuid()==0:
         print "This command requires root priviledges"
-        sys.exit(1)
+        sys.exit(0)
+
+shell_cmd_name = os.path.split(sys.argv[0])[-1:][0]
+parser = OptionParser(usage="usage: %s [options]" % (shell_cmd_name))
+parser.add_option("-t", "--client-type", dest="clienttype",default='',
+			help="The type og SkoleSYS client to be seeded (workstation,ltspserver)", metavar="CLIENTTYPE")
+(options, args) = parser.parse_args()
 
 os.system('clear')
 
-print "To create a SkoleSYS workstation you must register the host with the mainserver"
+types = ['workstation','ltspserver']
+
+if not types.count(options.clienttype):
+	print "What type of client do you wish to seed"
+	print "---------------------------------------"
+	while not types.count(options.clienttype):
+		options.clienttype = raw_input('Client type (%s): ' % ','.join(types)).lower()
+	print
+	print
+	
+print "To create a SkoleSYS %s you must register the host with the mainserver" % options.clienttype
 print "-------------------------------------------------------------------------------"
 
-hostname = raw_input('Workstation hostname: ')
+hostname = raw_input('%s hostname: ' % options.clienttype)
 
-res = os.system('ss_reghost -n %s -t workstation' % hostname)
+res = os.system('ss_reghost -n %s -t %s' % (hostname,options.clienttype))
 if res<>0:
 	sys.exit(1)
-print 
-print res
 
 # INSTALL
 
