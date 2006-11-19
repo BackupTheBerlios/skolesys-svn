@@ -18,10 +18,6 @@ def init_client(clienttype,hostname=None):
 		print "-------------------------------------------------------------------------------"
 		hostname = raw_input('%s hostname: ' % clienttype)
 	
-	res = os.system('ss_reghost -n %s -t %s' % (hostname,clienttype))
-	if res<>0:
-		sys.exit(1)
-	
 	# INSTALL
 	
 	# Wipe sources.list on mainserver install
@@ -49,10 +45,15 @@ def init_client(clienttype,hostname=None):
 			print "SkoleSYS Seeder - failed while updating packages"
 			sys.exit(1)
 	
-	
 	# Replace python-skolesys-seeder with python-skolesys-mainserver
 	os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
 	os.environ['DEBCONF_ADMIN_EMAIL'] = ''
+	
+	os.system('apt-get install python2.4-skolesys-client')
+	
+	res = os.system('ss_reghost -n %s -t %s' % (hostname,clienttype))
+	if res<>0:
+		sys.exit(1)
 	
 	os.system('ss_getconf')
 
