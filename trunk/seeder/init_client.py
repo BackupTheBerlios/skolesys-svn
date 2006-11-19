@@ -49,7 +49,7 @@ def init_client(clienttype,hostname=None):
 	os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
 	os.environ['DEBCONF_ADMIN_EMAIL'] = ''
 	
-	os.system('apt-get install python2.4-skolesys-client')
+	os.system('apt-get install -y python2.4-skolesys-client')
 	
 	res = os.system('ss_reghost -n %s -t %s' % (hostname,clienttype))
 	if res<>0:
