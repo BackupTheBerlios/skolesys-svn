@@ -74,11 +74,11 @@ res = c.getconf(None,options.config_context,context_only)
 # Handle errors
 if res[0] == -1:
 	print "This host has not been registered. Only registered hosts can ask for configuration (use ss_reghost)"
-	exit(0)
+	exit(-1)
 	
 if res[0] == -2:
 	print "The host is registered with an invalid host type id"
-	exit(0)
+	exit(-2)
 	
 # OK!
 if res[0] == 1:
@@ -101,13 +101,23 @@ if res[0] == 1:
 	curdir = os.getcwd()
 	os.chdir(confdir)
 	os.system('tar xzpf conf.tgz')
+	
 	print "========== Start configuration process ==========="
-	os.system('./install.sh')
+	
+	res = os.system('./install.sh')
+	if not res==0:
+		print "The configuration process failed to complete"
+		exit (1)
+		
 	print "========== Configuration process ended ==========="
+	
 	print "No problems reported."
 	os.chdir(curdir)
 	os.system('rm %s/conf.tgz -f' % confdir)
 	
+	exit(0)
+
+exit(1) # undetermined
 
 
 

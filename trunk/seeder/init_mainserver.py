@@ -8,7 +8,7 @@ import skolesys.cfmachine.apthelpers as apthelper
 # Check root privilegdes
 if not os.getuid()==0:
         print "This command requires root priviledges"
-        sys.exit(0)
+        sys.exit(1)
 
 os.system('clear')
 location = os.path.split(inspect.getsourcefile(skolesys.seeder))[0] 
@@ -18,7 +18,7 @@ print "----------------------------"
 in_adminpw = getpass.getpass('Enter the ldap skolesys.org admin passwd: ')
 if in_adminpw != getpass.getpass('Verify the ldap skolesys.org admin passwd: '):
 	print "The passwords entered did not match"
-	sys.exit()
+	sys.exit(1)
 
 print
 print "The school administrator login"
@@ -26,7 +26,7 @@ print "------------------------------"
 in_schooladminpw = getpass.getpass('Enter the ldap school admin passwd: ')
 if in_schooladminpw != getpass.getpass('Verify the ldap school admin passwd: '):
 	print "The passwords entered did not match"
-	sys.exit()
+	sys.exit(1)
 
 
 print
@@ -143,7 +143,7 @@ def fetch_conf_ou(ou):
 		return c.match(conf.get('LDAPSERVER','%s_ou' % ou)).groups()
 	except:
 		print "skolesys.conf needs the required variable '%s_ou' to be set." % ou
-		sys.exit(0)
+		sys.exit(1)
 
 groups_ou,groups = fetch_conf_ou('groups')
 logins_ou,logins = fetch_conf_ou('logins')
@@ -220,7 +220,12 @@ import skolesys.cfmachine.configbuilder as confbuilder
 cb = confbuilder.ConfigBuilder(hostdef.hosttype_as_id('mainserver'),netinfo.if2hwaddr('eth0'),'seed-mainserver')
 curdir = os.getcwd()
 os.chdir(cb.tempdir)
-os.system('./install.sh')
+res = os.system('./install.sh')
+if not res==0:
+	print
+	print "SkoleSYS Seeder - failed while fetching the configuration"
+	sys.exit(1)
+
 os.chdir(curdir)
 del cb
 

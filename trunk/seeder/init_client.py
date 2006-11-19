@@ -10,7 +10,7 @@ def init_client(clienttype,hostname=None):
 	# Check root privilegdes
 	if not os.getuid()==0:
 		print "This command requires root priviledges"
-		sys.exit(0)
+		return 1
 	
 	if not hostname:
 		os.system('clear')
@@ -43,19 +43,31 @@ def init_client(clienttype,hostname=None):
 		if not res==0:
 			print
 			print "SkoleSYS Seeder - failed while updating packages"
-			sys.exit(1)
+			return 1
 	
 	# Replace python-skolesys-seeder with python-skolesys-mainserver
 	os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
 	os.environ['DEBCONF_ADMIN_EMAIL'] = ''
 	
-	os.system('apt-get install -y python2.4-skolesys-client')
+	res = os.system('apt-get install -y python2.4-skolesys-client')
+	if not res==0:
+		print
+		print "SkoleSYS Seeder - failed while installing skolesys-client libraries"
+		return 1
 	
 	res = os.system('ss_reghost -n %s -t %s' % (hostname,clienttype))
-	if res<>0:
-		sys.exit(1)
+	if not res==0:
+		print
+		print "SkoleSYS Seeder - failed while updating packages"
+		return 1
 	
-	os.system('ss_getconf')
+	res = os.system('ss_getconf')
+	if not res==0:
+		print
+		print "SkoleSYS Seeder - failed while updating packages"
+		return 1
+	
+	
 
 
 if __name__=='__main__':
@@ -63,7 +75,8 @@ if __name__=='__main__':
 	# Check root privilegdes
 	if not os.getuid()==0:
 		print "This command requires root priviledges"
-		sys.exit(0)
+		sys.exit(1)
+		
 	os.system('clear')
 	shell_cmd_name = os.path.split(sys.argv[0])[-1:][0]
 	parser = OptionParser(usage="usage: %s [options]" % (shell_cmd_name))
@@ -85,4 +98,4 @@ if __name__=='__main__':
 	print "-------------------------------------------------------------------------------"
 	
 	hostname = raw_input('%s hostname: ' % options.clienttype)
-	init_client(options.clienttype,hostname)
+	sys.exit(init_client(options.clienttype,hostname))
