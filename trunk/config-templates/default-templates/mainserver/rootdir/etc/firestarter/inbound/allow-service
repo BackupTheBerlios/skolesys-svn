@@ -1,7 +1,6 @@
 Ldap, 389, lan,
-Lin4schools, 8443, lan,
+SkoleSYS, 8443, lan,
 HTTP, 80, lan,
-Cfengine, 5308, lan,
 DNS, 53, lan,
 DHCP, 67-68, lan,
 Samba (SMB), 137-139 445, lan,

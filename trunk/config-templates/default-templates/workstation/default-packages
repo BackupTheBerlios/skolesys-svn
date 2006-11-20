@@ -1,5 +1,6 @@
 libnss-ldap
 libpam-ldap
+nfs-common
 ldap-utils
 openssh-server
 skolesys-ui
