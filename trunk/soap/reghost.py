@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/python
 from sys import exit,argv
 import os
 # Check root privilegdes
