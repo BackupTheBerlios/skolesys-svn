@@ -62,7 +62,7 @@ if __name__=='__main__':
 		if fstab.dirty:
 			fstab.write_fstab()
 			print "/etc/fstab has been modified, 'mount -a' is now being executed ..."
-			os.system('mount -a')
+			exit(os.system('mount -a'))
 	
 	if cmd == "mod_apt_sources":
 		parser.set_usage("usage: %s %s controlfile " % (shell_cmd_name,cmd))
@@ -82,7 +82,7 @@ if __name__=='__main__':
 		slist.print_sources_list()
 		if slist.dirty:
 			slist.write_sources_list()
-			os.system('apt-get update')
+		exit(os.system('apt-get update'))
 		
 	if cmd == "install_packages":
 		parser.set_usage("usage: %s %s controlfile " % (shell_cmd_name,cmd))
@@ -110,7 +110,7 @@ if __name__=='__main__':
 		os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
 		os.environ['DEBCONF_ADMIN_EMAIL'] = ''
 		print ' '.join(package_acc)
-		os.system('apt-get install -y %s' % ' '.join(package_acc))
+		exit(os.system('apt-get install -y %s' % ' '.join(package_acc)))
 		
 	if cmd == "copy_files":
 		parser.set_usage("usage: %s %s controlfile " % (shell_cmd_name,cmd))
@@ -131,7 +131,7 @@ if __name__=='__main__':
 			
 		if not os.path.exists(cf.copy_files_rootdir):
 			print "The root directory %s does not seem to exist." % cf.copy_files_rootdir
-		os.system('cp %s/* / -Rfc' % cf.copy_files_rootdir)
+		exit(os.system('cp %s/* / -Rfc' % cf.copy_files_rootdir))
 		
 
 	if cmd == "set_hostname":

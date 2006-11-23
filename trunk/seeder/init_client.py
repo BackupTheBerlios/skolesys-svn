@@ -25,7 +25,7 @@ def init_client(clienttype,hostname=None):
 	
 	# ensure some entries in sources.list
 	apt_source_entries = [
-		{'type':'deb','uri':'http://skolesys.dk/testing','distribution':'pilot','components':['main','nonfree']},
+		{'type':'deb','uri':'http://archive.skolesys.dk/testing','distribution':'pilot','components':['main','nonfree']},
 		{'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'dapper','components':['main','restricted','universe']},
 		{'type':'deb-src','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'dapper','components':['main','restricted','universe']},
 		{'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'dapper-backports','components':['main','restricted','universe','multiverse']},
@@ -48,12 +48,6 @@ def init_client(clienttype,hostname=None):
 	# Replace python-skolesys-seeder with python-skolesys-mainserver
 	os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
 	os.environ['DEBCONF_ADMIN_EMAIL'] = ''
-	
-	res = os.system('apt-get install -y python2.4-skolesys-client')
-	if not res==0:
-		print
-		print "SkoleSYS Seeder - failed while installing skolesys-client libraries"
-		return 1
 	
 	res = os.system('ss_reghost -n %s -t %s' % (hostname,clienttype))
 	if not res==0:
