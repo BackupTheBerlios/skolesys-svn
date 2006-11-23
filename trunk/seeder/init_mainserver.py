@@ -204,7 +204,7 @@ if not res==0:
 	print "SkoleSYS Seeder - failed while adding creating LDAP server structure"
 	sys.exit(1)
 
-res = os.system('rm init.ldif skolesys.ldif -f')
+res = os.system('rm skolesys.ldif -f')
 
 f = open('/etc/hosts','a')
 f.write('127.0.0.1\tmainserver.skolesys.local\n')
