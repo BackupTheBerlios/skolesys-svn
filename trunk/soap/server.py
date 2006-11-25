@@ -327,6 +327,11 @@ class MyServer(SOAPpy.SOAPServer):
 
 
 def startserver():
+	# Check root privilegdes
+	if not os.getuid()==0:
+		print "This command requires root priviledges"
+        	sys.exit(1)
+	
 	skolesys_basepath = os.path.split(inspect.getsourcefile(skolesys))[0]
 	
 	certfile = None

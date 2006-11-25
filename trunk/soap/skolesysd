@@ -1,0 +1,23 @@
+#!/bin/sh
+
+case "$1" in
+        start)
+		ss_soapserver
+		;;
+
+	stop)
+		killall -9 -q ss_soapserver
+		;;
+
+	restart)
+		
+		killall -9 -q ss_soapserver
+		ss_soapserver
+		;;
+
+        *)
+                echo "Usage: $0 {start|stop|restart|force-reload|status}"
+                exit 1
+esac
+
+exit 0
