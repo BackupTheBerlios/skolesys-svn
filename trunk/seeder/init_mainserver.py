@@ -52,7 +52,7 @@ lang = raw_input("What should be the default language (ex. da=danish, en=english
 
 # Create certificate
 
-f = open('cert.cnf_template')
+f = open('%s/cert.cnf_template' % location )
 cert_cnf_lines = f.readlines()
 f.close()
 
