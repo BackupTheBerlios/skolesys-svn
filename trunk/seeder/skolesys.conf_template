@@ -12,6 +12,7 @@ gid_start   = 5000
 
 # Mainserver network setup
 # ------------------------
+mainserver_hostname = mainserver
 mainserver_domain_name = mainserver.skolesys.local
 mainserver_ip = 10.1.0.1
 mainserver_subnet = 10.1.0.0/16

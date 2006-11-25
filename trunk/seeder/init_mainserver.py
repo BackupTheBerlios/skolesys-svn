@@ -2,7 +2,7 @@
 import skolesys.tools.mkpasswd as pw
 import getpass,os,time,re,sys
 import inspect
-import skolesys.seeder
+import skolesys
 import skolesys.cfmachine.apthelpers as apthelper
 
 # Check root privilegdes
@@ -11,7 +11,7 @@ if not os.getuid()==0:
         sys.exit(1)
 
 os.system('clear')
-location = os.path.split(inspect.getsourcefile(skolesys.seeder))[0] 
+location = os.path.split(inspect.getsourcefile(skolesys))[0]
 
 print "SkoleSYS administrator login"
 print "----------------------------"
@@ -52,7 +52,7 @@ lang = raw_input("What should be the default language (ex. da=danish, en=english
 
 # Create certificate
 
-f = open('%s/cert.cnf_template' % location )
+f = open('%s/seeder/cert.cnf_template' % location )
 cert_cnf_lines = f.readlines()
 f.close()
 
@@ -87,13 +87,21 @@ if not res==0:
 	print "SkoleSYS Seeder - failed while creating the SOAP certificate files"
 	sys.exit(1)
 
+# Copy certificate into place
+
+res = os.system('cp %s.key %s.cert %s/cert/' % (domain_name,domain_name,location))
+if not res==0:
+	print
+	print "SkoleSYS Seeder - failed while copying certificate into place"
+	sys.exit(1)
+
 
 # Read template files before they are removed
-f = open('%s/slapd.conf_template' % location)
+f = open('%s/seeder/slapd.conf_template' % location)
 slapd_conf_lines = f.readlines()
 f.close()
 
-f = open('%s/skolesys.ldif_template' % location)
+f = open('%s/seeder/skolesys.ldif_template' % location)
 skolesys_ldif_lines = f.readlines()
 f.close()
 
@@ -126,7 +134,7 @@ if slist.dirty:
 		sys.exit(1)
 
 # Better read the skolesys.conf template file since the mainserver package will remove it next
-f = open('%s/skolesys.conf_template' % location)
+f = open('%s/seeder/skolesys.conf_template' % location)
 lines = f.readlines()
 f.close()
 
