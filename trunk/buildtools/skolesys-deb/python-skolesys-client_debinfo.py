@@ -3,7 +3,7 @@ svn_module = "skolesys"
 
 control = {
 	'Package': 'python2.4-skolesys-client',
-	'Version': '0.7.8',
+	'Version': '0.8.2',
 	'NameExtension': 'skolesys1_all',
 	'Section': 'python',
 	'Priority': 'optional',
@@ -47,5 +47,9 @@ links = {
 	'/usr/sbin/ss_reghost': '../lib/python2.4/site-packages/skolesys/soap/reghost.py'}
 
 postrm = """#!/bin/sh
-rm /usr/lib/python2.4/site-packages/skolesys -R -f
+if [ -e /usr/lib/python2.4/site-packages/skolesys ]
+then
+  find /usr/lib/python2.4/site-packages/skolesys -name "*.pyc" -delete
+  find /usr/lib/python2.4/site-packages/skolesys -name "*.pyo" -delete
+fi
 """

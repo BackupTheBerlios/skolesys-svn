@@ -21,7 +21,7 @@ os.path.walk('rep',ui_filter,None)
 
 control = {
 	'Package': 'skolesys-ui',
-	'Version': '0.7.8',
+	'Version': '0.7.9',
 	'NameExtension': 'skolesys1_all',
 	'Section': 'util',
 	'Priority': 'optional',
