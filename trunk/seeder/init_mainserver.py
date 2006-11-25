@@ -88,7 +88,8 @@ if not res==0:
 	sys.exit(1)
 
 # Copy certificate into place
-
+if not os.path.exists('%s/cert/' % location):
+	os.makedirs('%s/cert/' % location)
 res = os.system('cp %s.key %s.cert %s/cert/' % (domain_name,domain_name,location))
 if not res==0:
 	print
