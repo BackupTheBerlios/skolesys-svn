@@ -1,0 +1,20 @@
+#
+# SSLeay example configuration file.
+#
+
+RANDFILE                = $ENV::HOME/.rnd
+
+[ req ]
+default_bits            = 1024
+default_keyfile         = privkey.pem
+distinguished_name      = req_distinguished_name
+prompt                  = no
+
+[ req_distinguished_name ]
+countryName                     = <country_code>
+stateOrProvinceName             = <province>
+localityName                    = <lang>
+organizationName                = <organization_name>
+organizationalUnitName          = <organization_unit_name>
+commonName                      = <common_name>
+emailAddress                    = admin@<domain_name>

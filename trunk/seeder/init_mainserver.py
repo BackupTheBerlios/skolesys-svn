@@ -32,8 +32,61 @@ if in_schooladminpw != getpass.getpass('Verify the ldap school admin passwd: '):
 print
 print "School domain setup"
 print "-------------------"
+
+organization_name = raw_input("What is the name of the school: ")
+print 
+
 domain_name = raw_input("What is the school's domain name (ex. riggshigh.co.uk): ")
 domain_name_prefix = domain_name.split('.')[0]
+
+print
+country_code = raw_input("What is the country code of servers location (ex. dk=Denmark, uk=United Kingdom): ")
+
+print
+province = raw_input("Province or state (free text no constraints): ")
+
+print
+lang = raw_input("What should be the default language (ex. da=danish, en=english): ")
+
+
+
+# Create certificate
+
+f = open('cert.cnf_template')
+cert_cnf_lines = f.readlines()
+f.close()
+
+f = open('cert.cnf','w')
+for l in cert_cnf_lines:
+	l = l.replace('<domain_name>',domain_name)
+	l = l.replace('<lang>',lang)
+	l = l.replace('<country_code>',country_code)
+	l = l.replace('<province>',province)
+	l = l.replace('<organization_name>','skolesys')
+	l = l.replace('<organization_unit_name>',organization_name)
+	l = l.replace('<common_name>',organization_name)
+	l = l.replace('<country_code>',country_code)
+	f.write(l)
+f.close()	
+
+res = os.system('openssl req -new -passin pass:%s -passout pass:%s -config cert.cnf > new.cert.csr' % (in_schooladminpw,in_schooladminpw))
+if not res==0:
+	print
+	print "SkoleSYS Seeder - failed while creating the SOAP certificate files"
+	sys.exit(1)
+	
+res = os.system('openssl rsa -in privkey.pem -passin pass:%s -out %s.key' % (in_schooladminpw,domain_name))
+if not res==0:
+	print
+	print "SkoleSYS Seeder - failed while creating the SOAP certificate files"
+	sys.exit(1)
+
+res = os.system('openssl x509 -in new.cert.csr -out %s.cert -req -signkey %s.key -days 20000' % (domain_name,domain_name))
+if not res==0:
+	print
+	print "SkoleSYS Seeder - failed while creating the SOAP certificate files"
+	sys.exit(1)
+
 
 # Read template files before they are removed
 f = open('%s/slapd.conf_template' % location)
@@ -104,6 +157,7 @@ for l in lines:
         l = l.replace('<domain_name>',domain_name)
         l = l.replace('<domain_name_prefix>',domain_name_prefix)
         l = l.replace('<schooladmin_passwd>',in_schooladminpw)
+        l = l.replace('<lang>',lang)
         f.write(l)
 f.close()
 os.system('chmod 600 /etc/skolesys/skolesys.conf')

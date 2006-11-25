@@ -328,8 +328,32 @@ class MyServer(SOAPpy.SOAPServer):
 
 def startserver():
 	skolesys_basepath = os.path.split(inspect.getsourcefile(skolesys))[0]
-	certfile = os.path.join(skolesys_basepath,'cert',"cert_%s.pem" % conf.get("DOMAIN","domain_name"))
-	keyfile = os.path.join(skolesys_basepath,'cert',"key_%s.pem" % conf.get("DOMAIN","domain_name"))
+	
+	certfile = None
+	keyfile = None
+	
+	# Old style filenames before SkoleSYS ver 0.8.1
+	oldstyle_cert_filename = os.path.join(skolesys_basepath,'cert',"cert_%s.pem" % conf.get("DOMAIN","domain_name"))
+	if os.path.exists(oldstyle_cert_filename):
+		certfile = oldstyle_cert_filename
+	oldstyle_key_filename = os.path.join(skolesys_basepath,'cert',"key_%s.pem" % conf.get("DOMAIN","domain_name"))
+	if os.path.exists(oldstyle_key_filename):
+		keyfile = oldstyle_key_filename
+	
+	# New style filenames from SkoleSYS ver 0.8.1 and after
+	newstyle_cert_filename = os.path.join(skolesys_basepath,'cert',"%s.cert" % conf.get("DOMAIN","domain_name"))
+	if os.path.exists(newstyle_cert_filename):
+		certfile = newstyle_cert_filename
+	newstyle_key_filename = os.path.join(skolesys_basepath,'cert',"%s.key" % conf.get("DOMAIN","domain_name"))
+	if os.path.exists(newstyle_key_filename):
+		keyfile = newstyle_key_filename
+		
+	if certfile == None or keyfile == None:
+		print "Missing a certificate file"
+		print "cert-file shold be: %s ot %s" % (oldstyle_cert_filename,newstyle_cert_filename)
+		print "key-file shold be: %s ot %s" % (oldstyle_key_filename,newstyle_key_filename)
+		sys.exit(1)
+	
 	netif = conf.get("SOAP_SERVICE","interface")
 	addr = if2ip(netif)
 	if not addr:

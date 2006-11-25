@@ -75,4 +75,4 @@ template_basedir = /etc/skolesys
 
 [OPTIONS]
 
-default_lang = da
+default_lang = <lang>
