@@ -114,7 +114,7 @@ os.system('echo "" > /etc/apt/sources.list')
 
 # ensure some entries in sources.list
 apt_source_entries = [
-        {'type':'deb','uri':'http://skolesys.dk/testing','distribution':'pilot','components':['main','nonfree']},
+        {'type':'deb','uri':'http://archive.skolesys.dk/testing','distribution':'pilot','components':['main','nonfree']},
         {'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'dapper','components':['main','restricted','universe']},
         {'type':'deb-src','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'dapper','components':['main','restricted','universe']},
         {'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'dapper-backports','components':['main','restricted','universe','multiverse']},
