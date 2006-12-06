@@ -13,12 +13,12 @@ inst_manifest_excludes = \
 ^kubuntu-live
 ^user-setup"""
 
-version = '0.7'
-volume_id = 'SkoleSYS_<ver>.9'
+version = '0.8'
+volume_id = 'SkoleSYS_<ver>.4'
 
-diskname = 'SkoleSYS <ver>.9 LTSP "Pilot" - Release i386'
+diskname = 'SkoleSYS <ver>.4 LTSP "Pilot" - Release i386'
 
-iso_product = 'skolesys-<ver>.9-ltsp-i386.iso'
+iso_product = 'skolesys-<ver>.4-ltsp-i386.iso'
 
 
 post_extract_script = """
