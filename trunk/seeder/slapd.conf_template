@@ -9,7 +9,7 @@ schemacheck     on
 
 pidfile         /var/run/slapd/slapd.pid
 argsfile        /var/run/slapd.args
-# loglevel        256
+loglevel        0
 
 modulepath	/usr/lib/ldap
 moduleload	back_bdb
