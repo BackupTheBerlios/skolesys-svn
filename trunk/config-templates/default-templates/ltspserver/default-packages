@@ -13,3 +13,6 @@ libwww-perl
 mozilla-firefox
 mozilla-thunderbird
 kolourpaint
+libfuse2
+fuse-utils
+libx11-protocol-perl
