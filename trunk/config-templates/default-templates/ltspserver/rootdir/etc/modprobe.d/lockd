@@ -1,0 +1,1 @@
+options lockd nlm_tcpport=11762 nlm_udpport=11763

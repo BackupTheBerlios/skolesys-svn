@@ -2,7 +2,7 @@
 RPCNFSDCOUNT=8
 
 # Options for rpc.mountd
-RPCMOUNTDOPTS="--port=789"
+RPCMOUNTDOPTS="--port=11761"
 
 # If you are not running NFS with RPCSEC_GSS security, and wish to
 # disable the gssd server daemon, then set NEED_SVCGSSD to "no".
