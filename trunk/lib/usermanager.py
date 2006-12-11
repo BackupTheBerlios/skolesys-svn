@@ -57,7 +57,7 @@ class GroupManager (LDAPUtil):
 			return False
 		return True
 	
-	def creategroup(self,groupname,usertype,description=None):
+	def creategroup(self,groupname,usertype,description=None,force_gid=None):
 		"""
 		Add a user to the schools authentication directory service.
 		The usertype must be one of the constants TEACHER,STUDENT,PARENT or OTHER
@@ -76,10 +76,14 @@ class GroupManager (LDAPUtil):
 		   conf.get('LDAPSERVER','groups_ou'),\
 		   conf.get('LDAPSERVER',usertype_ou),\
 		   conf.get('LDAPSERVER','basedn'))
+		if force_gid:
+			gid = force_gid
+		else:
+			gid = self.max(conf.get('LDAPSERVER','basedn'),
+				'objectclass=posixgroup','gidNumber',
+				int(conf.get('DOMAIN','gid_start')))+1
 		group_info = {'cn': groupname,
-			'gidNumber':str(self.max(conf.get('LDAPSERVER','basedn'),
-			                 'objectclass=posixgroup','gidNumber',
-			                  int(conf.get('DOMAIN','gid_start')))+1),
+			'gidNumber':str(gid),
 			'objectclass':('posixGroup','top')}
 		
 		if description:

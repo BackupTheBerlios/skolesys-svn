@@ -350,6 +350,8 @@ if __name__=='__main__':
 			help="the group's relationship (teacher,student,parent or other)", metavar="GROUPRELATION")
 		parser.add_option("-d", "--description", dest="description",default=None,
 			help="the group's description", metavar="DESCRIPTION")
+		parser.add_option("-g", "--gid", dest="gid",default=None,
+			help="Force the groups id", metavar="GID")
 		(options, args) = parser.parse_args()
 		
 		if len(args)<2:
@@ -369,7 +371,7 @@ if __name__=='__main__':
 
 		gm = GroupManager()
 		try:
-			groupadd_res = gm.creategroup(groupname,options.grouprelation,options.description)
+			groupadd_res = gm.creategroup(groupname,options.grouprelation,options.description,options.gid)
 		except Exception, e:
 			print "An error occured while writing to the user LDAP database"
 			print e
