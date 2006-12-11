@@ -3,7 +3,7 @@ svn_module = "skolesys"
 
 control = {
 	'Package': 'python2.4-skolesys-client',
-	'Version': '0.8.2',
+	'Version': '0.8.5',
 	'NameExtension': 'skolesys1_all',
 	'Section': 'python',
 	'Priority': 'optional',

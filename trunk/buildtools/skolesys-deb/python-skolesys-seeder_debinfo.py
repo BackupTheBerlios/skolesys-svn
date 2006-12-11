@@ -3,7 +3,7 @@ svn_module = "skolesys"
 
 control = {
 	'Package': 'python2.4-skolesys-seeder',
-	'Version': '0.8.2',
+	'Version': '0.8.5',
 	'NameExtension': 'skolesys1_all',
 	'Section': 'python',
 	'Priority': 'optional',
@@ -38,7 +38,8 @@ copy = {
 	'cfmachine/cfinstaller.py': '/usr/lib/python2.4/site-packages/skolesys/cfmachine',
 	'cfmachine/apthelpers.py': '/usr/lib/python2.4/site-packages/skolesys/cfmachine',
 	'cfmachine/fstabhelpers.py': '/usr/lib/python2.4/site-packages/skolesys/cfmachine',
-	'seeder': '/usr/lib/python2.4/site-packages/skolesys/'}
+	'seeder': '/usr/lib/python2.4/site-packages/skolesys/',
+	'definitions': '/usr/lib/python2.4/site-packages/skolesys/'}
 
 links = {
 	'/usr/sbin/ss_seed_mainserver': '../lib/python2.4/site-packages/skolesys/seeder/seed_mainserver.py',

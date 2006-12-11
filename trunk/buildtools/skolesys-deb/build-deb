@@ -18,6 +18,8 @@ if __name__=='__main__':
 		help="The base folder containing skolesys svn repositories", metavar="SKOLESYS_SVNBASE")
 	parser.add_option("-l", "--iso-location", dest="iso_location",default=None,
 		help="The folder containing the iso file", metavar="SKOLESYS_ISO-LOCATION")
+	parser.add_option("-t", "--tgz-location", dest="tgz_location",default=None,
+		help="The folder containing the tgz file", metavar="SKOLESYS_TGZ-LOCATION")
 	parser.add_option("--dont-fetch",
 		action="store_true", dest="dont_fetch", default=False,
 		help="Tell the debian builder not to fetch the source")	
@@ -84,6 +86,15 @@ if __name__=='__main__':
 			os.system("cp isomount/* rep -R -f")
 			os.system("sudo umount isomount")
 		
+		if debinfo.fetch_method=='tgz':
+			if not options.tgz_location:
+				options.tgz_location = raw_input("Input the folder containing the tgz file %s.tgz: " % module)	
+			if not os.path.exists("%s.tgz" % os.path.join(options.tgz_location,module)):
+				print "ERROR: %s.tgz does not exist" % os.path.join(options.tgz_location,module)
+				sys.exit(0)
+			os.system("sudo tar xvzpf %s.tgz --directory=rep" % os.path.join(options.tgz_location,module))
+	
+	
 	package_name = debinfo.control['Package']
 	package_ver = debinfo.control['Version']
 	package_name_extension = debinfo.control['NameExtension']
