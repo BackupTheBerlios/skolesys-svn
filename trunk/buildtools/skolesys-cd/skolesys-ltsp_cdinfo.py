@@ -28,7 +28,7 @@ rm livecd/autorun.inf
 """
 
 chroot_script = """
-export SKOLESYS_REP=http://skolesys.dk/testing
+export SKOLESYS_REP=http://archive.skolesys.dk/testing
 export HOME=/tmp
 export LANG=C
 
