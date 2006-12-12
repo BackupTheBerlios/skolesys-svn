@@ -18,7 +18,6 @@ class CreateUserWdg(CreateUserWdgBase):
 		# self.lbl_domain_name.setText('@%s' % self.proxy.domain_name())
 		self.connect(self.ed_login,SIGNAL("textChanged(const QString&)"),self.check_login)
 		self.connect(self.cmb_usertype,SIGNAL("activated(int)"),self.usertype_changed)
-		self.connect(self.cb_allgroups,SIGNAL("toggled(bool)"),self.allgroups_toggled)
 		
 		thisyear = QDateTime.currentDateTime().date().year()
 		self.sbx_firstschoolyear.setValue(thisyear)
@@ -38,21 +37,15 @@ class CreateUserWdg(CreateUserWdgBase):
 				self.cmb_usertype.insertItem(setupdict[usertype_text]['display'])
 		
 		self.usertype_changed()
+		self.groups_to_combo()
 	
-	def groups_to_combo(self,usertype):
-		self.cur_groups = self.proxy.list_groups(usertype)
+	def groups_to_combo(self):
+		self.cur_groups = self.proxy.list_groups('primary')
 		self.cmb_primarygroup.clear()
 		for group in self.cur_groups:
 			self.cmb_primarygroup.insertItem(QString.fromUtf8(group))
 			
-	def update_groupcombo(self):
-		if self.cb_allgroups.isChecked():
-			return
-		usertype_id = self.typedict[self.cmb_usertype.currentText().latin1()]
-		self.groups_to_combo(usertype_id)
-
 	def usertype_changed(self):
-		self.update_groupcombo()
 		usertype_id = self.typedict[self.cmb_usertype.currentText().latin1()]
 		if usertype_id==userdef.usertype_as_id('student'):
 			self.lbl_firstschoolyear.setEnabled(True)
@@ -61,12 +54,6 @@ class CreateUserWdg(CreateUserWdgBase):
 			self.lbl_firstschoolyear.setEnabled(False)
 			self.sbx_firstschoolyear.setEnabled(False)
 	
-	def allgroups_toggled(self,toggled):
-		if toggled:
-			self.groups_to_combo(None)
-		else:
-			self.update_groupcombo()
-
 	
 	def check_login(self):
 		login=self.ed_login.text().latin1()#+self.lbl_domain_name.text().latin1()
