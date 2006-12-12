@@ -22,7 +22,7 @@
         </property>
         <widget class="QComboBox" row="0" column="1">
             <property name="name">
-                <cstring>m_cb_usertype_filter</cstring>
+                <cstring>m_cb_grouptype_filter</cstring>
             </property>
         </widget>
         <widget class="QListView" row="1" column="0" rowspan="1" colspan="3">
@@ -68,7 +68,7 @@
 </widget>
 <connections>
     <connection>
-        <sender>m_cb_usertype_filter</sender>
+        <sender>m_cb_grouptype_filter</sender>
         <signal>activated(int)</signal>
         <receiver>GroupManagerWdgBase</receiver>
         <slot>slotFilterActivated(int)</slot>
@@ -81,7 +81,7 @@
     </connection>
 </connections>
 <tabstops>
-    <tabstop>m_cb_usertype_filter</tabstop>
+    <tabstop>m_cb_grouptype_filter</tabstop>
     <tabstop>m_lv_grouplist</tabstop>
 </tabstops>
 <slots>
