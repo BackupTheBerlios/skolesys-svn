@@ -53,10 +53,10 @@ class GroupManager (LDAPUtil):
 			return False
 		return True
 	
-	def creategroup(self,groupname,usertype,description=None,force_gid=None):
+	def creategroup(self,groupname,grouptype,description=None,force_gid=None):
 		"""
 		Add a user to the schools authentication directory service.
-		The usertype must be one of the constants TEACHER,STUDENT,PARENT or OTHER
+		The grouptype must be one of the constants PRIMARY, SYSTEM or COMBI
 		"""
 		if description=='':
 			description=None
@@ -64,14 +64,10 @@ class GroupManager (LDAPUtil):
 		if self.group_exists(groupname):
 			return -1
 	
-		usertype_ou = ldapdef.ou_confkey_by_usertype(usertype)
-		if not usertype_ou:
-			return -4	# invalid usertype
-		path = "%s,%s,%s,%s" % \
-		  ('cn=%s'%groupname,\
-		   conf.get('LDAPSERVER','groups_ou'),\
-		   conf.get('LDAPSERVER',usertype_ou),\
-		   conf.get('LDAPSERVER','basedn'))
+		path = "cn=%s,%s" % (groupname,ldapdef.basedn_by_grouptype(grouptype))
+		if not path:
+			return -4	# invalid grouptype
+		
 		if force_gid:
 			gid = force_gid
 		else:
@@ -80,7 +76,7 @@ class GroupManager (LDAPUtil):
 				int(conf.get('DOMAIN','gid_start')))+1
 		group_info = {'cn': groupname,
 			'gidNumber':str(gid),
-			'objectclass':('posixGroup','top')}
+			'objectclass':ldapdef.objectclass_by_grouptype(grouptype)}
 		
 		if description:
 			group_info['description'] = description
@@ -109,8 +105,9 @@ class GroupManager (LDAPUtil):
 
 	def removegroup(self,groupname,backup_home,remove_home):
 		"""
-		Add a user to the schools authentication directory service.
-		The usertype must be one of the constants TEACHER,STUDENT,PARENT or OTHER
+		Remove a group 
+		Setting backup_home to True will create a tarball backup of the group's homedir
+		Setting remove_home to True truncate the gruop's homedir
 		"""
 		# check if the group exists
 		res = self.l.search(conf.get('LDAPSERVER','basedn'),\
@@ -130,6 +127,7 @@ class GroupManager (LDAPUtil):
 		
 		group_path = "%s/%s/groups/%s" % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),groupname)
 		if os.path.exists(os.path.normpath(group_path)):
+			# The group has a homedir, maybe do stuff...
 			if backup_home:
 				try:
 					print "Backing up the group home folder of \"%s\"..." % groupname
@@ -193,13 +191,9 @@ class UserManager (LDAPUtil):
 	def list_users(self,usertype):
 		path = conf.get('LDAPSERVER','basedn')
 		if usertype:
-			usertype_ou = ldapdef.ou_confkey_by_usertype(usertype)
-			if not usertype_ou:
+			path = ldapdef.basedn_by_usertype(usertype)
+			if not path:
 				return {}
-			path = "%s,%s,%s" % \
-				(conf.get('LDAPSERVER','logins_ou'),\
-				conf.get('LDAPSERVER',usertype_ou),\
-				conf.get('LDAPSERVER','basedn'))
 				
 		res = self.l.search(path,ldap.SCOPE_SUBTREE,'(& (uid=*)(objectclass=posixaccount)(objectclass=person))',[])
 			
@@ -249,11 +243,7 @@ class UserManager (LDAPUtil):
 		if not objectclass:
 			return -6	# Object classes have not been defined for this usertype
 			
-		path = "%s,%s,%s,%s" % \
-		  ('uid=%s'%uid,\
-		   conf.get('LDAPSERVER','logins_ou'),\
-		   conf.get('LDAPSERVER',usertype_ou),\
-		   conf.get('LDAPSERVER','basedn'))
+		path = "uid=%s,%s" % (uid,ldapdef.basedn_by_usertype(usertype))
 		
 		# Check the group for existance
 		gm = GroupManager()

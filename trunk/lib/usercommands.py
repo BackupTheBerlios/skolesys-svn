@@ -346,8 +346,8 @@ if __name__=='__main__':
 			exit(0)
 			
 		parser.set_usage("usage: %s %s [options] groupname" % (shell_cmd_name,cmd))
-		parser.add_option("-r", "--groupRelation", dest="grouprelation",default=None,
-			help="the group's relationship (teacher,student,parent or other)", metavar="GROUPRELATION")
+		parser.add_option("-t", "--groupType", dest="grouptype",default=None,
+			help="The type og group to be created", metavar="GROUPTYPE")
 		parser.add_option("-d", "--description", dest="description",default=None,
 			help="the group's description", metavar="DESCRIPTION")
 		parser.add_option("-g", "--gid", dest="gid",default=None,
@@ -361,17 +361,17 @@ if __name__=='__main__':
 		groupname = args[1]
 		print "Group name: %s" % groupname
 		
-		if not options.grouprelation:
-			options.grouprelation = raw_input("Input the user's account type (teacher,student,parent or other): ")
+		if not options.grouptype:
+			options.grouptype = raw_input("Input the groups's type (%s): " % (','.join(userdef.list_grouptypes_by_text())))
 		
-		options.grouprelation = userdef.usertype_as_id(options.grouprelation.strip())
-		if not options.grouprelation:
-			print "Invalid relationship"
+		options.grouptype = userdef.grouptype_as_id(options.grouptype.strip())
+		if not options.grouptype:
+			print "Invalid grouptype"
 			exit(0)
 
 		gm = GroupManager()
 		try:
-			groupadd_res = gm.creategroup(groupname,options.grouprelation,options.description,options.gid)
+			groupadd_res = gm.creategroup(groupname,options.grouptype,options.description,options.gid)
 		except Exception, e:
 			print "An error occured while writing to the user LDAP database"
 			print e
@@ -431,23 +431,23 @@ if __name__=='__main__':
 
 	if cmd == "listgroups":
 		if os.getuid()!=0:
-			print "You must be root to add users"
+			print "You must be root list groups"
 			exit(0)
 		
 		parser.set_usage("usage: %s %s [options]" % (shell_cmd_name,cmd))
-		parser.add_option("-t", "--userType", dest="usertype",default=None,
+		parser.add_option("-t", "--groupType", dest="grouptype",default=None,
 		                  help="only list groups of a certain type (teacher,student,parent or other)", metavar="GROUPTYPE")
 		
 		(options, args) = parser.parse_args()
-		if options.usertype:
-			intxt = options.usertype
-			options.usertype = userdef.usertype_as_id(options.usertype)
-			if not options.usertype:
+		if options.grouptype:
+			intxt = options.grouptype
+			options.grouptype = userdef.grouptype_as_id(options.grouptype)
+			if not options.grouptype:
 				print "User type \"%s\" is not recognized. Following are valid: teacher,student,parent or other" % intxt
-				options.usertype = None
+				options.grouptype = None
 		
 		gm = GroupManager()
-		gl = gm.list_groups(options.usertype)
+		gl = gm.list_groups(options.grouptype)
 		for k in gl.keys():
 			print k
 
