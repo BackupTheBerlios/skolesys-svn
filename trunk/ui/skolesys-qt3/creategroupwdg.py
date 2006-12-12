@@ -15,13 +15,14 @@ class CreateGroupWdg(CreateGroupWdgBase):
 		self.ed_groupname.setValidator(rx_validator)
 		self.connect(self.ed_groupname,SIGNAL("textChanged(const QString&)"),self.check_group)
 		
-		self.typedict={self.tr('Teacher').latin1():userdef.usertype_as_id('teacher'),\
-			self.tr('Student').latin1():userdef.usertype_as_id('student'),\
-			self.tr('Parent').latin1():userdef.usertype_as_id('parent'),\
-			self.tr('Other').latin1():userdef.usertype_as_id('other')}
+		self.typedict={self.tr('Primary').latin1():userdef.grouptype_as_id('primary'),\
+			self.tr('System').latin1():userdef.grouptype_as_id('system'),\
+			self.tr('Combi').latin1():userdef.grouptype_as_id('combi')}
 		
-		for usertype in self.typedict.keys():
-			self.cmb_usertype.insertItem(usertype)
+		order = [self.tr('Combi').latin1(),\
+			self.tr('Primary').latin1(),self.tr('System').latin1()]
+		for grouptype in order:
+			self.cmb_grouptype.insertItem(grouptype)
 
 	def check_group(self):
 		groupname=str(self.ed_groupname.text().utf8())
@@ -40,7 +41,7 @@ class CreateGroupWdg(CreateGroupWdgBase):
 			self.ed_groupname.selectAll()
 			return False
 		# user type
-		usertype = self.typedict[self.cmb_usertype.currentText().latin1()]
+		grouptype = self.typedict[self.cmb_grouptype.currentText().latin1()]
 		desc = str(self.te_description.text().utf8())[:1020]
-		print self.proxy.creategroup(groupname,usertype,desc)
+		print self.proxy.creategroup(groupname,grouptype,desc)
 		return True

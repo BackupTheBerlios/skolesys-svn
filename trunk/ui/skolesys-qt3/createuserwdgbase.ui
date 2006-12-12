@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>400</width>
-            <height>223</height>
+            <width>354</width>
+            <height>251</height>
         </rect>
     </property>
     <property name="caption">
@@ -51,49 +51,14 @@
                 <string>First name</string>
             </property>
         </widget>
-        <widget class="QComboBox" row="3" column="1" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>cmb_primarygroup</cstring>
-            </property>
-            <property name="sizePolicy">
-                <sizepolicy>
-                    <hsizetype>3</hsizetype>
-                    <vsizetype>0</vsizetype>
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                </sizepolicy>
-            </property>
-        </widget>
-        <widget class="QLineEdit" row="1" column="1" rowspan="1" colspan="4">
+        <widget class="QLineEdit" row="1" column="1" rowspan="1" colspan="3">
             <property name="name">
                 <cstring>ed_firstname</cstring>
             </property>
         </widget>
-        <widget class="QLineEdit" row="2" column="1" rowspan="1" colspan="4">
+        <widget class="QLineEdit" row="2" column="1" rowspan="1" colspan="3">
             <property name="name">
                 <cstring>ed_lastname</cstring>
-            </property>
-        </widget>
-        <widget class="QCheckBox" row="3" column="3" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>cb_allgroups</cstring>
-            </property>
-            <property name="text">
-                <string>Show all groups</string>
-            </property>
-        </widget>
-        <widget class="Line" row="4" column="0" rowspan="1" colspan="5">
-            <property name="name">
-                <cstring>line1</cstring>
-            </property>
-            <property name="frameShape">
-                <enum>HLine</enum>
-            </property>
-            <property name="frameShadow">
-                <enum>Sunken</enum>
-            </property>
-            <property name="orientation">
-                <enum>Horizontal</enum>
             </property>
         </widget>
         <widget class="QComboBox" row="0" column="1">
@@ -101,7 +66,7 @@
                 <cstring>cmb_usertype</cstring>
             </property>
         </widget>
-        <widget class="QSpinBox" row="0" column="4">
+        <widget class="QSpinBox" row="0" column="3">
             <property name="name">
                 <cstring>sbx_firstschoolyear</cstring>
             </property>
@@ -115,7 +80,7 @@
                 <number>1990</number>
             </property>
         </widget>
-        <widget class="QLabel" row="0" column="2" rowspan="1" colspan="2">
+        <widget class="QLabel" row="0" column="2">
             <property name="name">
                 <cstring>lbl_firstschoolyear</cstring>
             </property>
@@ -124,6 +89,49 @@
             </property>
             <property name="text">
                 <string>First school year</string>
+            </property>
+        </widget>
+        <widget class="QLineEdit" row="5" column="1" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>ed_login</cstring>
+            </property>
+        </widget>
+        <widget class="Line" row="4" column="0" rowspan="1" colspan="4">
+            <property name="name">
+                <cstring>line1</cstring>
+            </property>
+            <property name="frameShape">
+                <enum>HLine</enum>
+            </property>
+            <property name="frameShadow">
+                <enum>Sunken</enum>
+            </property>
+            <property name="orientation">
+                <enum>Horizontal</enum>
+            </property>
+        </widget>
+        <widget class="QLabel" row="6" column="0">
+            <property name="name">
+                <cstring>textLabel1_3</cstring>
+            </property>
+            <property name="text">
+                <string>Password</string>
+            </property>
+        </widget>
+        <widget class="QLineEdit" row="6" column="1" rowspan="1" colspan="3">
+            <property name="name">
+                <cstring>ed_passwd</cstring>
+            </property>
+            <property name="echoMode">
+                <enum>Password</enum>
+            </property>
+        </widget>
+        <widget class="QLabel" row="5" column="0">
+            <property name="name">
+                <cstring>textLabel3</cstring>
+            </property>
+            <property name="text">
+                <string>Login</string>
             </property>
         </widget>
         <spacer row="7" column="1">
@@ -139,37 +147,21 @@
             <property name="sizeHint">
                 <size>
                     <width>20</width>
-                    <height>20</height>
+                    <height>50</height>
                 </size>
             </property>
         </spacer>
-        <widget class="QLineEdit" row="6" column="1" rowspan="1" colspan="4">
+        <widget class="QComboBox" row="3" column="1" rowspan="1" colspan="3">
             <property name="name">
-                <cstring>ed_passwd</cstring>
+                <cstring>cmb_primarygroup</cstring>
             </property>
-            <property name="echoMode">
-                <enum>Password</enum>
-            </property>
-        </widget>
-        <widget class="QLabel" row="6" column="0">
-            <property name="name">
-                <cstring>textLabel1_3</cstring>
-            </property>
-            <property name="text">
-                <string>Password</string>
-            </property>
-        </widget>
-        <widget class="QLabel" row="5" column="0">
-            <property name="name">
-                <cstring>textLabel3</cstring>
-            </property>
-            <property name="text">
-                <string>Login</string>
-            </property>
-        </widget>
-        <widget class="QLineEdit" row="5" column="1" rowspan="1" colspan="4">
-            <property name="name">
-                <cstring>ed_login</cstring>
+            <property name="sizePolicy">
+                <sizepolicy>
+                    <hsizetype>3</hsizetype>
+                    <vsizetype>0</vsizetype>
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                </sizepolicy>
             </property>
         </widget>
     </grid>
@@ -180,7 +172,6 @@
     <tabstop>ed_firstname</tabstop>
     <tabstop>ed_lastname</tabstop>
     <tabstop>cmb_primarygroup</tabstop>
-    <tabstop>cb_allgroups</tabstop>
     <tabstop>ed_login</tabstop>
     <tabstop>ed_passwd</tabstop>
 </tabstops>
