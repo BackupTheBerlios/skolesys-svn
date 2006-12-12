@@ -83,7 +83,7 @@ if __name__=='__main__':
 			exit(0)
 			
 		while not options.hosttype or not hostdef.hosttype_as_id(options.hosttype):
-			options.hosttype = raw_input("Input the host type (%s): " % ','.join(hostdef.list_types_by_text()))
+			options.hosttype = raw_input("Input the host type (%s): " % ','.join(hostdef.list_hosttypes_by_text()))
 		hosttype_id = hostdef.hosttype_as_id(options.hosttype)
 		
 		try:

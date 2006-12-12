@@ -44,11 +44,16 @@ basedn = dc=<domain_name_prefix>,dc=skolesys,dc=org
 admin = cn=admin,dc=<domain_name_prefix>,dc=skolesys,dc=org
 passwd = <schooladmin_passwd>
 
-# Users and groups
+# Users
 students_ou = ou=Students
 teachers_ou = ou=Teachers
 parents_ou = ou=Parents
 others_ou = ou=Others
+
+# Groups
+primary_ou = ou=Primary
+system_ou = ou=System
+combi_ou = ou=Combi
 
 logins_ou = ou=Logins
 groups_ou = ou=Groups

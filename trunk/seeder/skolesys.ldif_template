@@ -13,8 +13,9 @@ cn: admin
 description: LDAP administrator
 userPassword: <passwd>
 
-
+###############
 # School Domain
+###############
 dn: <basedn>
 objectClass: dNSDomain
 objectClass: top
@@ -29,73 +30,68 @@ objectClass: top
 userPassword: <schooladmin_passwd>
 cn: admin
 
-dn: <parents_ou>,<basedn>
-ou: <parents>
-objectClass: organizationalUnit
-objectClass: top
-
-dn: <groups_ou>,<parents_ou>,<basedn>
-ou: <groups>
-objectClass: organizationalUnit
-objectClass: top
-
-dn: <logins_ou>,<parents_ou>,<basedn>
+########
+# Logins
+########
+dn: <logins_ou>,<basedn>
 ou: <logins>
 objectClass: organizationalUnit
 objectClass: top
 
-dn: <students_ou>,<basedn>
-ou: <students>
-objectClass: organizationalUnit
-objectClass: top
-
-dn: <groups_ou>,<students_ou>,<basedn>
-ou: <groups>
-objectClass: organizationalUnit
-objectClass: top
-
-dn: <logins_ou>,<students_ou>,<basedn>
-ou: <logins>
-objectClass: organizationalUnit
-objectClass: top
-
-dn: <teachers_ou>,<basedn>
+dn: <teachers_ou>,<logins_ou>,<basedn>
 ou: <teachers>
 objectClass: organizationalUnit
 objectClass: top
 
-dn: <groups_ou>,<teachers_ou>,<basedn>
-ou: <groups>
+dn: <students_ou>,<logins_ou>,<basedn>
+ou: <students>
 objectClass: organizationalUnit
 objectClass: top
 
-dn: <logins_ou>,<teachers_ou>,<basedn>
-ou: <logins>
+dn: <parents_ou>,<logins_ou>,<basedn>
+ou: <parents>
 objectClass: organizationalUnit
 objectClass: top
 
-dn: <others_ou>,<basedn>
+dn: <others_ou>,<logins_ou>,<basedn>
 ou: <others>
 objectClass: organizationalUnit
 objectClass: top
 
-dn: <groups_ou>,<others_ou>,<basedn>
+########
+# Groups
+########
+dn: <groups_ou>,<basedn>
 ou: <groups>
 objectClass: organizationalUnit
 objectClass: top
 
-dn: <logins_ou>,<others_ou>,<basedn>
-ou: <logins>
+dn: <primary_ou>,<groups_ou>,<basedn>
+ou: <primary>
 objectClass: organizationalUnit
 objectClass: top
 
+dn: <system_ou>,<groups_ou>,<basedn>
+ou: <system>
+objectClass: organizationalUnit
+objectClass: top
+
+dn: <combi_ou>,<groups_ou>,<basedn>
+ou: <combi>
+objectClass: organizationalUnit
+objectClass: top
+
+#######
 # Hosts
+#######
 dn: <hosts_ou>,<basedn>
 ou: <hosts>
 objectClass: organizationalUnit
 objectClass: top
 
+#######
 # Samba
+#######
 dn: <samba_ou>,<basedn>
 ou: <samba>
 objectClass: organizationalUnit

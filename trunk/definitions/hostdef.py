@@ -105,10 +105,10 @@ def hosttype_as_text(hosttype):
 	else:
 		return None
 
-def list_types_by_id():
+def list_hosttypes_by_id():
 	return _host_struct['type_id'].keys()
 
-def list_types_by_text():
+def list_hosttypes_by_text():
 	return _host_struct['type_text'].keys()
 
 

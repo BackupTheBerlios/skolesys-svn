@@ -214,6 +214,9 @@ teachers_ou,teachers = fetch_conf_ou('teachers')
 students_ou,students = fetch_conf_ou('students')
 parents_ou,parents = fetch_conf_ou('parents')
 others_ou,others = fetch_conf_ou('others')
+primary_ou,primary = fetch_conf_ou('primary')
+system_ou,system = fetch_conf_ou('system')
+combi_ou,combi = fetch_conf_ou('combi')
 samba_ou,samba = fetch_conf_ou('samba')
 smb_users_ou,smb_users = fetch_conf_ou('smb_users')
 smb_machines_ou,smb_machines = fetch_conf_ou('smb_machines')
@@ -230,6 +233,9 @@ for l in skolesys_ldif_lines:
 	l = l.replace('<students_ou>',students_ou)
 	l = l.replace('<parents_ou>',parents_ou)
 	l = l.replace('<others_ou>',others_ou)
+	l = l.replace('<primary_ou>',primary_ou)
+	l = l.replace('<system_ou>',system_ou)
+	l = l.replace('<combi_ou>',combi_ou)
 	l = l.replace('<samba_ou>',samba_ou)
 	l = l.replace('<smb_users_ou>',smb_users_ou)
 	l = l.replace('<smb_machines_ou>',smb_machines_ou)
@@ -241,6 +247,9 @@ for l in skolesys_ldif_lines:
 	l = l.replace('<students>',students)
 	l = l.replace('<parents>',parents)
 	l = l.replace('<others>',others)
+	l = l.replace('<primary>',primary)
+	l = l.replace('<system>',system)
+	l = l.replace('<combi>',combi)
 	l = l.replace('<samba>',samba)
 	l = l.replace('<smb_users>',smb_users)
 	l = l.replace('<smb_machines>',smb_machines)
@@ -317,3 +326,8 @@ w.close()
 r.close()
 
 print "Done configuring the mainserver."
+
+print "Add system groups..."
+
+os.system('ss_usermanager creategroup fuse')
+

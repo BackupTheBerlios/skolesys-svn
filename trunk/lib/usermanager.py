@@ -15,18 +15,14 @@ class GroupManager (LDAPUtil):
 		global conf
 		LDAPUtil.__init__(self,conf.get('LDAPSERVER','host'))
 	
-	def list_groups(self,usertype):
+	def list_groups(self,grouptype):
 		
 		path = conf.get('LDAPSERVER','basedn')
-		if usertype:
-			usertype_ou = ldapdef.ou_confkey_by_usertype(usertype)
-			if not usertype_ou:
+		if grouptype:
+			path = ldapdef.basedn_by_grouptype(grouptype)
+			if not path:
 				return {}
 			
-			path = "%s,%s,%s" % \
-				(conf.get('LDAPSERVER','groups_ou'),\
-				conf.get('LDAPSERVER',usertype_ou),\
-				conf.get('LDAPSERVER','basedn'))
 		
 		res = self.l.search(path,ldap.SCOPE_SUBTREE,'(& (cn=*) (objectclass=posixgroup))',\
 			['cn','description','gidNumber'])
