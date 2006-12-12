@@ -27,7 +27,7 @@ class CreateUserWdg(CreateUserWdgBase):
 
 		setupdict = {}
 		self.typedict = {}
-		for type_text in userdef.list_types_by_text():
+		for type_text in userdef.list_usertypes_by_text():
 			self.typedict[self.tr(type_text).latin1()] = userdef.usertype_as_id(type_text)
 			setupdict[type_text] = { 
 				'id': userdef.usertype_as_id(type_text),

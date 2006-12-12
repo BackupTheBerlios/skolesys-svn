@@ -4,7 +4,7 @@ from groupmanagerwdgbase import GroupManagerWdgBase
 import skolesys.definitions.userdef as userdef
 import launcher
 
-columns = {'groupname':0,'usertype':1}
+columns = {'groupname':0,'grouptype':1}
 def col_map_name(col):
 	for (k,v) in columns.items():
 		if v==col:
@@ -12,17 +12,17 @@ def col_map_name(col):
 	return None
 
 class GroupListViewItem(QListViewItem):
-	def __init__(self,parent,groupname,usertype):
+	def __init__(self,parent,groupname,grouptype):
 		QListViewItem.__init__(self,parent)
 		self.groupname=groupname
-		self.usertype=usertype
+		self.grouptype=grouptype
 
 	def text(self,col):
 		colname = col_map_name(col)
 		if (colname =='groupname'):
 			return self.groupname
-		elif (colname =='usertype'):
-			return self.usertype
+		elif (colname =='grouptype'):
+			return self.grouptype
 		return ''
 
 class GroupManagerWdg(GroupManagerWdgBase):
@@ -38,21 +38,20 @@ class GroupManagerWdg(GroupManagerWdgBase):
 		self.contextmenu_enabled = True
 
 		self.typedict={self.tr('All').latin1():None,
-			self.tr('Teachers').latin1():userdef.usertype_as_id('teacher'),\
-			self.tr('Students').latin1():userdef.usertype_as_id('student'),\
-			self.tr('Parents').latin1():userdef.usertype_as_id('parent'),\
-			self.tr('Others').latin1():userdef.usertype_as_id('other')}
+			self.tr('Primary').latin1():userdef.grouptype_as_id('primary'),\
+			self.tr('System').latin1():userdef.grouptype_as_id('system'),\
+			self.tr('Combi').latin1():userdef.grouptype_as_id('combi')}
 		
-		order = [self.tr('All').latin1(),self.tr('Teachers').latin1(),\
-			self.tr('Students').latin1(),self.tr('Parents').latin1(),self.tr('Others').latin1()]
-		for usertype in order:
-			self.m_cb_usertype_filter.insertItem(usertype)
+		order = [self.tr('All').latin1(),self.tr('Combi').latin1(),\
+			self.tr('Primary').latin1(),self.tr('System').latin1()]
+		for grouptype in order:
+			self.m_cb_grouptype_filter.insertItem(grouptype)
 		
 	def slotFilterActivated(self,idx):
-		self.update_list(self.typedict[self.m_cb_usertype_filter.currentText().latin1()])
+		self.update_list(self.typedict[self.m_cb_grouptype_filter.currentText().latin1()])
 	
-	def update_list(self,usertype=None):
-		grouplist = self.soapproxy.list_groups(usertype)
+	def update_list(self,grouptype=None):
+		grouplist = self.soapproxy.list_groups(grouptype)
 		self.m_lv_grouplist.clear()
 		self.grouplist = []
 		for group in grouplist.keys():
