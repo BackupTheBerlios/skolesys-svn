@@ -1,6 +1,6 @@
 from qt import *
 from creategroupwdgbase import CreateGroupWdgBase
-import skolesys.definitions.userdef as userdef
+import skolesys.definitions.groupdef as groupdef
 
 class CreateGroupWdg(CreateGroupWdgBase):
 	def __init__(self,conn,parent = None,name = None,fl = 0):
@@ -15,9 +15,9 @@ class CreateGroupWdg(CreateGroupWdgBase):
 		self.ed_groupname.setValidator(rx_validator)
 		self.connect(self.ed_groupname,SIGNAL("textChanged(const QString&)"),self.check_group)
 		
-		self.typedict={self.tr('Primary').latin1():userdef.grouptype_as_id('primary'),\
-			self.tr('System').latin1():userdef.grouptype_as_id('system'),\
-			self.tr('Combi').latin1():userdef.grouptype_as_id('combi')}
+		self.typedict={self.tr('Primary').latin1():groupdef.grouptype_as_id('primary'),\
+			self.tr('System').latin1():groupdef.grouptype_as_id('system'),\
+			self.tr('Combi').latin1():groupdef.grouptype_as_id('combi')}
 		
 		order = [self.tr('Combi').latin1(),\
 			self.tr('Primary').latin1(),self.tr('System').latin1()]

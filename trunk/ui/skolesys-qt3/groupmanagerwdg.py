@@ -1,7 +1,7 @@
 import sys
 from qt import *
 from groupmanagerwdgbase import GroupManagerWdgBase
-import skolesys.definitions.userdef as userdef
+import skolesys.definitions.groupdef as groupdef
 import launcher
 
 columns = {'groupname':0,'grouptype':1}
@@ -38,9 +38,9 @@ class GroupManagerWdg(GroupManagerWdgBase):
 		self.contextmenu_enabled = True
 
 		self.typedict={self.tr('All').latin1():None,
-			self.tr('Primary').latin1():userdef.grouptype_as_id('primary'),\
-			self.tr('System').latin1():userdef.grouptype_as_id('system'),\
-			self.tr('Combi').latin1():userdef.grouptype_as_id('combi')}
+			self.tr('Primary').latin1():groupdef.grouptype_as_id('primary'),\
+			self.tr('System').latin1():groupdef.grouptype_as_id('system'),\
+			self.tr('Combi').latin1():groupdef.grouptype_as_id('combi')}
 		
 		order = [self.tr('All').latin1(),self.tr('Combi').latin1(),\
 			self.tr('Primary').latin1(),self.tr('System').latin1()]
