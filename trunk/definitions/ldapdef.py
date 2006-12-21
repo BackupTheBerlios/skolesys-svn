@@ -1,4 +1,5 @@
 import userdef
+import groupdef
 
 _ldap_userstruct = {}
 
@@ -51,31 +52,31 @@ def basedn_by_usertype(usertype=None):
 _ldap_groupstruct = {}
 
 _ldap_groupstruct['ou_confkey'] = {
-	userdef.grouptype_as_id('primary') : 'primary_ou',
-	userdef.grouptype_as_id('system') : 'system_ou',
-	userdef.grouptype_as_id('combi') : 'combi_ou',
+	groupdef.grouptype_as_id('primary') : 'primary_ou',
+	groupdef.grouptype_as_id('system') : 'system_ou',
+	groupdef.grouptype_as_id('combi') : 'combi_ou',
 	None : 'undefined_ou' }
 
 _ldap_groupstruct['objectclass'] = {
-	userdef.grouptype_as_id('primary') : ('top', 'skoleSysPrimaryGroup'),
-	userdef.grouptype_as_id('system') : ('top', 'skoleSysSystemGroup'),
-	userdef.grouptype_as_id('combi') : ('top', 'skoleSysCombiGroup'),
+	groupdef.grouptype_as_id('primary') : ('top', 'skoleSysPrimaryGroup'),
+	groupdef.grouptype_as_id('system') : ('top', 'skoleSysSystemGroup'),
+	groupdef.grouptype_as_id('combi') : ('top', 'skoleSysCombiGroup'),
 	None : ('top','posixGroup')}
 
 
 def objectclass_by_grouptype(grouptype=None):
 	global _ldap_groupstruct
 	
-	if _ldap_groupstruct['objectclass'].has_key(userdef.grouptype_as_id(grouptype)):
-		return _ldap_groupstruct['objectclass'][userdef.grouptype_as_id(grouptype)]
+	if _ldap_groupstruct['objectclass'].has_key(groupdef.grouptype_as_id(grouptype)):
+		return _ldap_groupstruct['objectclass'][groupdef.grouptype_as_id(grouptype)]
 	
 	return None
 
 def ou_confkey_by_grouptype(grouptype=None):
 	global _ldap_groupstruct
 	
-	if _ldap_groupstruct['ou_confkey'].has_key(userdef.grouptype_as_id(grouptype)):
-		return _ldap_groupstruct['ou_confkey'][userdef.grouptype_as_id(grouptype)]
+	if _ldap_groupstruct['ou_confkey'].has_key(groupdef.grouptype_as_id(grouptype)):
+		return _ldap_groupstruct['ou_confkey'][groupdef.grouptype_as_id(grouptype)]
 	
 	return None
 
