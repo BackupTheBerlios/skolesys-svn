@@ -1,7 +1,7 @@
 #! /usr/bin/python
 from conf import conf
 from ldaptools import LDAPUtil
-import grp,os
+import grp,os,ldap
 import skolesys.definitions.ldapdef as ldapdef
 
 
