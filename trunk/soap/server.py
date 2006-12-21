@@ -14,6 +14,7 @@ import md5
 import pickle
 import skolesys
 import skolesys.lib.usermanager as userman
+import skolesys.lib.groupmanager as groupman
 from skolesys.lib.conf import conf
 from skolesys.lib.hostmanager import HostManager
 import skolesys.definitions.hostdef as hostdef
@@ -173,7 +174,7 @@ def list_groups(session_id,usertype_id):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	usertype_id = pload(usertype_id)
-	gm = userman.GroupManager()
+	gm = groupman.GroupManager()
 	return pdump(gm.list_groups(usertype_id))
 
 def list_members(session_id,groupname):
@@ -183,7 +184,7 @@ def list_members(session_id,groupname):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	groupname = pload(groupname)
-	gm = userman.GroupManager()
+	gm = groupman.GroupManager()
 	return pdump(gm.list_members(groupname))
 
 def group_exists(session_id,groupname):
@@ -194,7 +195,7 @@ def group_exists(session_id,groupname):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	groupname=pload(groupname)
-	gm = userman.GroupManager()
+	gm = groupman.GroupManager()
 	return pdump(gm.group_exists(groupname))
 
 def creategroup(session_id,groupname,usertype_id,description):
@@ -204,7 +205,7 @@ def creategroup(session_id,groupname,usertype_id,description):
 	usertype_id=pload(usertype_id)
 	description=pload(description)
 	
-	gm = userman.GroupManager()
+	gm = groupman.GroupManager()
 	return pdump(gm.creategroup(groupname,usertype_id,description))
 
 def removegroup(session_id,groupname,backup_home,remove_home):
@@ -214,7 +215,7 @@ def removegroup(session_id,groupname,backup_home,remove_home):
 	backup_home=pload(backup_home)
 	remove_home=pload(remove_home)
 	
-	gm = userman.GroupManager()
+	gm = groupman.GroupManager()
 	return pdump(gm.removegroup(groupname,backup_home,remove_home))
 
 def register_host(session_id,hostname,hosttype_id,hwaddr):
