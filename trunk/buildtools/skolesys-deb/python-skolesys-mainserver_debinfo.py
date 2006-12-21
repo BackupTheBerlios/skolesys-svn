@@ -3,7 +3,7 @@ svn_module = "skolesys"
 
 control = {
 	'Package': 'python2.4-skolesys-mainserver',
-	'Version': '0.8.5',
+	'Version': '0.8.6',
 	'NameExtension': 'skolesys1_all',
 	'Section': 'python',
 	'Priority': 'optional',
@@ -24,6 +24,7 @@ control = {
 perm = [['soap/server.py', '755'],
 	['soap/skolesysd', '755'],
 	['lib/usercommands.py', '755'],
+	['lib/groupcommands.py', '755'],
 	['lib/hostcommands.py', '755'],
 	['cfmachine/cfinstaller.py', '755'],
 	['config-templates/default-templates', 'u+wrX,g-wx+rX,o-wx+rX'],
@@ -49,6 +50,7 @@ copy = {
 
 links = {
 	'/usr/sbin/ss_usermanager': '../lib/python2.4/site-packages/skolesys/lib/usercommands.py',
+	'/usr/sbin/ss_groupmanager': '../lib/python2.4/site-packages/skolesys/lib/groupcommands.py',
 	'/usr/sbin/ss_hostmanager': '../lib/python2.4/site-packages/skolesys/lib/hostcommands.py',
 	'/usr/sbin/ss_soapserver': '../lib/python2.4/site-packages/skolesys/soap/server.py',
 	'/usr/sbin/ss_installer': '../lib/python2.4/site-packages/skolesys/cfmachine/cfinstaller.py',

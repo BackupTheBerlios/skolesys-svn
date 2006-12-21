@@ -42,3 +42,11 @@ perm = [['skolesys-ui.py', '755']]
 copy = {'.': '/usr/lib/skolesys-ui/'}
 
 links = {'/usr/bin/skolesys-ui': '../lib/skolesys-ui/skolesys-ui.py'}
+
+postrm = """#!/bin/sh
+if [ -e /usr/lib/skolesys-ui ]
+then
+  find /usr/lib/skolesys-ui -name "*.pyc" -delete
+  find /usr/lib/skolesys-ui -name "*.pyo" -delete
+fi
+"""
