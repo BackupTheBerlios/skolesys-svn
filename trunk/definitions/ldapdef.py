@@ -54,13 +54,13 @@ _ldap_groupstruct = {}
 _ldap_groupstruct['ou_confkey'] = {
 	groupdef.grouptype_as_id('primary') : 'primary_ou',
 	groupdef.grouptype_as_id('system') : 'system_ou',
-	groupdef.grouptype_as_id('combi') : 'combi_ou',
+	groupdef.grouptype_as_id('service') : 'service_ou',
 	None : 'undefined_ou' }
 
 _ldap_groupstruct['objectclass'] = {
 	groupdef.grouptype_as_id('primary') : ('top', 'skoleSysPrimaryGroup'),
 	groupdef.grouptype_as_id('system') : ('top', 'skoleSysSystemGroup'),
-	groupdef.grouptype_as_id('combi') : ('top', 'skoleSysCombiGroup'),
+	groupdef.grouptype_as_id('service') : ('top', 'skoleSysServiceGroup'),
 	None : ('top','posixGroup')}
 
 

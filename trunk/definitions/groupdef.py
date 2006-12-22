@@ -6,7 +6,7 @@ _group_struct = {}
 _group_struct['type_id'] = {
 	1 : 'primary',
 	2 : 'system',
-	3 : 'combi'}
+	3 : 'service'}
 	
 _group_struct['type_text'] = {}
 for k,v in _group_struct['type_id'].items():

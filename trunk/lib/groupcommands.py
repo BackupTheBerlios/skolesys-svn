@@ -88,9 +88,9 @@ if __name__=='__main__':
 		print "Group name: %s" % groupname
 		
 		if not options.grouptype:
-			options.grouptype = raw_input("Input the groups's type (%s): " % (','.join(userdef.list_grouptypes_by_text())))
+			options.grouptype = raw_input("Input the groups's type (%s): " % (','.join(groupdef.list_grouptypes_by_text())))
 		
-		options.grouptype = userdef.grouptype_as_id(options.grouptype.strip())
+		options.grouptype = groupdef.grouptype_as_id(options.grouptype.strip())
 		if not options.grouptype:
 			print "Invalid grouptype"
 			exit(0)
@@ -167,7 +167,7 @@ if __name__=='__main__':
 		(options, args) = parser.parse_args()
 		if options.grouptype:
 			intxt = options.grouptype
-			options.grouptype = userdef.grouptype_as_id(options.grouptype)
+			options.grouptype = groupdef.grouptype_as_id(options.grouptype)
 			if not options.grouptype:
 				print "User type \"%s\" is not recognized. Following are valid: teacher,student,parent or other" % intxt
 				options.grouptype = None
@@ -192,3 +192,32 @@ if __name__=='__main__':
 			exit(0)
 		for member in res:
 			print member
+
+	if cmd == "attachservice":
+		parser.set_usage("usage: %s %s groupname" % (shell_cmd_name,cmd))
+
+		(options, args) = parser.parse_args()
+		if len(args)<2:
+			print "Missing group and service name for attachservice operation"
+			exit(0)
+
+		if len(args)<3:
+			print "Missing service name for attachservice operation"
+			exit(0)
+		
+		gm = GroupManager()
+		res = gm.attach_service(args[1],args[2])
+		if res==-1:
+			print "There is no service group by that name. NOTE! the group must be a service group."
+			exit(0)
+		if res==-2:
+			print "The service %s does not exist" % args[2]
+			exit(0)
+
+		if res==-3:
+			print "The service %s failed to load" % args[2]
+			exit(0)
+		
+		if res==-4:
+			print "The service %s is already attached to %s" % (args[2],arg[1])
+			exit(0)

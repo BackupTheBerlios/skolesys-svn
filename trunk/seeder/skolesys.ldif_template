@@ -76,8 +76,8 @@ ou: <system>
 objectClass: organizationalUnit
 objectClass: top
 
-dn: <combi_ou>,<groups_ou>,<basedn>
-ou: <combi>
+dn: <service_ou>,<groups_ou>,<basedn>
+ou: <service>
 objectClass: organizationalUnit
 objectClass: top
 

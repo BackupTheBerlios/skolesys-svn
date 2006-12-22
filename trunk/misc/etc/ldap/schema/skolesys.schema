@@ -57,8 +57,8 @@ attributetype ( 1.3.6.1.4.1.27410.1.3.1 NAME 'displayedName'
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
 
-attributetype ( 1.3.6.1.4.1.27410.1.3.2 NAME 'combiService'
-	DESC 'Combi group servicelist enabling combined services on groups'
+attributetype ( 1.3.6.1.4.1.27410.1.3.2 NAME 'serviceList'
+	DESC 'A list og enabled services for a user or a service group'
         EQUALITY caseExactIA5Match
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
@@ -114,8 +114,8 @@ objectclass ( 1.3.6.1.4.1.27410.2.3.2 NAME 'skoleSysSystemGroup'
 	MAY displayedName )
 
 # Primary
-objectclass ( 1.3.6.1.4.1.27410.2.3.3 NAME 'skoleSysCombiGroup'
-	DESC 'SkoleSYS combination group'
+objectclass ( 1.3.6.1.4.1.27410.2.3.3 NAME 'skoleSysServiceGroup'
+	DESC 'SkoleSYS service group.'
 	SUP posixGroup STRUCTURAL
 	MUST cn 
-	MAY (displayedName $ combiService) )
+	MAY (displayedName $ serviceList) )

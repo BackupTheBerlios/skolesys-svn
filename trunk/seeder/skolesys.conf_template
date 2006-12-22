@@ -53,7 +53,7 @@ others_ou = ou=Others
 # Groups
 primary_ou = ou=Primary
 system_ou = ou=System
-combi_ou = ou=Combi
+service_ou = ou=Service
 
 logins_ou = ou=Logins
 groups_ou = ou=Groups
