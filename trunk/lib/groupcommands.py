@@ -49,10 +49,10 @@ if __name__=='__main__':
 		'removegroup': 'Remove a system group',
 		'listgroups': 'Show a list of system groups',
 		'listmembers': 'Show members of a certain group',
-		'listservices': 'List all available groupservices',
+		'listservices': 'List all available group services or just services of a certain group',
+		'listserviceoptions': 'List the options available for a certain service/group combination',
 		'attachservice': 'Attach a service to a group',
-		'detachservice': 'Detach a service from a group',
-		'listgroupservices': 'List services attached to this group'}
+		'detachservice': 'Detach a service from a group'}
 
 	shell_cmd_name = os.path.split(argv[0])[-1:][0]
 	
@@ -196,16 +196,6 @@ if __name__=='__main__':
 		for member in res:
 			print member
 
-	if cmd == "listservices":
-		parser.set_usage("usage: %s %s" % (shell_cmd_name,cmd))
-
-		(options, args) = parser.parse_args()
-
-		gm = GroupManager()
-		res = gm.list_services()
-		for s in res:
-			print s
-				
 	
 	if cmd == "attachservice":
 		parser.set_usage("usage: %s %s groupname" % (shell_cmd_name,cmd))
@@ -265,21 +255,57 @@ if __name__=='__main__':
 			print 'The service "%s" is not attached to "%s"' % (args[2],args[1])
 			exit(0)
 
-	if cmd == "listgroupservices":
+	if cmd == "listservices":
 		parser.set_usage("usage: %s %s groupname" % (shell_cmd_name,cmd))
 
+		groupname = None
 		(options, args) = parser.parse_args()
-		if len(args)<2:
-			print "Missing group and service name for detachservice operation"
-			exit(0)
+		if len(args)>=2:
+			groupname = args[1]
 
 		gm = GroupManager()
-		res = gm.list_groupservices(args[1])
+		res = gm.list_services(groupname)
 		if type(res) == list:
 			for s in res:
 				print s
 				
 		if res==-1:
 			print 'There is no service group by that name. NOTE! the group must be a service group.'
+			exit(-1)
+		
+	if cmd == "listserviceoptions":
+		def fish_dict_value(d,key,defval=""):
+			# Safely fish out values from a dictionary
+			if d.has_key(key):
+				return d[key]
+			return defval
+		
+		parser.set_usage("usage: %s %s servicename [groupname]" % (shell_cmd_name,cmd))
+
+		groupname = None
+		(options, args) = parser.parse_args()
+		if len(args)>=3:
+			groupname = args[2]
+		if len(args)<2:
+			print "Missing service name for listserviceoptions operation"
 			exit(0)
 		
+		servicename = args[1]
+
+		gm = GroupManager()
+		res = gm.list_service_options_available(servicename,groupname)
+		res = gm.list_service_options_available(servicename,groupname)
+		if type(res) == dict:
+			print "%-20.20s %-20.20s %-20.20s %-20.20s %-.50s" % \
+				('VARIABLE','TYPE','SECTION','DEFAULT','CURRENT_VALUE')
+			for var,details in res.items():
+				typ = str(fish_dict_value(details,'type'))
+				section = str(fish_dict_value(details,'section'))
+				defval = str(fish_dict_value(details,'default'))
+				curval = str(fish_dict_value(details,'value'))
+				print "%-20.20s %-20.20s %-20.20s %-20.20s %-.50s" % (var,typ,section,defval,curval)
+				
+		if res==-1:
+			print 'There is no service group by that name. NOTE! the group must be a service group.'
+			exit(-1)
+	

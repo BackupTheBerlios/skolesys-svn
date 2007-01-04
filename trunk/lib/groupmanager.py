@@ -168,12 +168,96 @@ class GroupManager (LDAPUtil):
 		return sres[1][0][1]['memberUid']
 
 
-	def list_services(self):
+	def list_services(self,groupname=None):
 		"""
-		List all available groupservices.
+		List groupservice names.
+		If groupname is set the services attached to the particular group is returned,
+		otherwise all all available groupservices are returned.
 		"""
+		if not groupname:
+			import skolesys.services as s
+			return s.groupservices()
+		
+		res = self.l.search(conf.get('LDAPSERVER','basedn'),\
+			ldap.SCOPE_SUBTREE,'(& (cn=%s)(objectclass=skoleSysServiceGroup))'%groupname,['servicelist'])
+		
+		sres = self.l.result(res,0)
+		if sres[1]==[]:
+			return -1 # Group does not exist
+		
+		servicelist = []
+		if sres[1][0][1].has_key('serviceList'):
+			servicelist = sres[1][0][1]['serviceList']
+		return servicelist
+
+	
+	def list_service_options_available(self,servicename,groupname=None):
+		"""
+		Fetch a dictionary describing the options available for a certain group service.
+		It can only be used in combination with a groupname since it is legal to have options_available
+		change dynamically i.e. as a function of the options already set. F.inst. if an option is "use_pop3"
+		the options_available might change by adding options like "use_ssl" and "pop3_server".
+		SkoleSYS UI is implemented with this in mind.
+		"""
+		if groupname:
+			res = self.l.search(conf.get('LDAPSERVER','basedn'),\
+				ldap.SCOPE_SUBTREE,'(& (cn=%s)(objectclass=skoleSysServiceGroup))'%groupname,['dn','memberuid','servicelist'])
+		
+			sres = self.l.result(res,0)
+			if sres[1]==[]:
+				return -1 # Group does not exist
+		
+			dn = sres[1][0][0]
+			servicelist = []
+			if sres[1][0][1].has_key('serviceList'):
+				servicelist = sres[1][0][1]['serviceList']
+			
+			if not servicelist.count(servicename):
+				return -4 # Group is not attached to the service
+		else:
+			groupname = "dummy"
+			print "WARNING: No groupname to the list_service_options_available(). There is no garantee " + \
+				"That this will work, som services build there options dynamically from options already set"
+		
 		import skolesys.services as s
-		return s.groupservices()
+		if not s.groupservices().count(servicename):
+			return -2 # the service does not exist
+		service_inst = s.create_groupserviceinterface(servicename,groupname)
+		if not service_inst:
+			return -3 # the service failed to load
+		opts_avail = dict(service_inst.get_options_available())
+		cur_options = service_inst.get_options()
+		if cur_options:
+			for var,val in cur_options.items():
+				if opts_avail.has_key(var):
+					opts_avail[var]['value'] = val	
+		return opts_avail
+
+
+	def get_service_option_values(self,groupname,servicename):
+		res = self.l.search(conf.get('LDAPSERVER','basedn'),\
+			ldap.SCOPE_SUBTREE,'(& (cn=%s)(objectclass=skoleSysServiceGroup))'%groupname,['dn','memberuid','servicelist'])
+	
+		sres = self.l.result(res,0)
+		if sres[1]==[]:
+			return -1 # Group does not exist
+	
+		dn = sres[1][0][0]
+		servicelist = []
+		if sres[1][0][1].has_key('serviceList'):
+			servicelist = sres[1][0][1]['serviceList']
+		
+		if not servicelist.count(servicename):
+			return -4 # Group is not attached to the service
+		
+		import skolesys.services as s
+		if not s.groupservices().count(servicename):
+			return -2 # the service does not exist
+		service_inst = s.create_groupserviceinterface(servicename,groupname)
+		if not service_inst:
+			return -3 # the service failed to load
+		cur_options = dict(service_inst.get_options())
+		return cur_options
 
 
 	def attach_service(self,groupname,servicename):
@@ -218,7 +302,7 @@ class GroupManager (LDAPUtil):
 
 	def detach_service(self,groupname,servicename):
 		"""
-		Attach the groupservice servicename to the group groupname
+		Detach the groupservice servicename from the group groupname
 		"""
 		res = self.l.search(conf.get('LDAPSERVER','basedn'),\
 			ldap.SCOPE_SUBTREE,'(& (cn=%s)(objectclass=skoleSysServiceGroup))'%groupname,['dn','memberuid','servicelist'])
@@ -251,19 +335,3 @@ class GroupManager (LDAPUtil):
 		servicelist.remove(servicename)
 		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
 		self.touch_by_dict({dn:{'serviceList': servicelist}})
-
-	def list_groupservices(self,groupname):
-		"""
-		Attach the groupservice servicename to the group groupname
-		"""
-		res = self.l.search(conf.get('LDAPSERVER','basedn'),\
-			ldap.SCOPE_SUBTREE,'(& (cn=%s)(objectclass=skoleSysServiceGroup))'%groupname,['servicelist'])
-		
-		sres = self.l.result(res,0)
-		if sres[1]==[]:
-			return -1 # Group does not exist
-		
-		servicelist = []
-		if sres[1][0][1].has_key('serviceList'):
-			servicelist = sres[1][0][1]['serviceList']
-		return servicelist

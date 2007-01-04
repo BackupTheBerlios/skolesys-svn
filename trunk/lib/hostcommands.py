@@ -150,8 +150,8 @@ if __name__=='__main__':
 			exit(0)
 			
 		if not options.noheader:
-			print "%-20s   %-15s   %-17s   %-20s" % ('Hostname','IPaddress','HWaddress','Hosttype')
-		print "%-20s   %-15s   %-17s   %-20s" % (hinfo['hostName'][0],hinfo['ipHostNumber'][0],hinfo['macAddress'][0],hinfo['hostType'][0])
+			print "%-20s   %-15s   %-17s   %s" % ('Hostname','IPaddress','HWaddress','Hosttype')
+		print "%-20s   %-15s   %-17s   %s" % (hinfo['hostName'][0],hinfo['ipHostNumber'][0],hinfo['macAddress'][0],hinfo['hostType'][0])
 			
 		
 	if cmd == "listhosts":
@@ -175,9 +175,9 @@ if __name__=='__main__':
 			print "No hosts seem to be registered"
 		
 		if not options.noheader:
-			print "%-20s   %-15s   %-17s   %-20s" % ('Hostname','IPaddress','HWaddress','Hosttype')
+			print "%-20s   %-15s   %-17s   %s" % ('Hostname','IPaddress','HWaddress','Hosttype')
 		for hinfo in hlist:
-			print "%-20s   %-15s   %-17s   %-20s" % (hinfo['hostName'][0],hinfo['ipHostNumber'][0],hinfo['macAddress'][0],hinfo['hostType'][0])
+			print "%-20s   %-15s   %-17s   %s" % (hinfo['hostName'][0],hinfo['ipHostNumber'][0],hinfo['macAddress'][0],hinfo['hostType'][0])
 
 	if cmd == "join_domain":
 		parser.set_usage("usage: %s %s netbiosname ntdomain" % (shell_cmd_name,cmd))

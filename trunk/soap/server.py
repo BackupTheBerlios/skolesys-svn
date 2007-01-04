@@ -317,7 +317,7 @@ def getconf(session_id,hwaddr,context,context_only):
 	return pdump([1,o])
 
 
-def attach_group_service(session_id,groupname,servicename):
+def attach_groupservice(session_id,groupname,servicename):
 	"""
 	Attach group to a group service
 	"""
@@ -331,7 +331,7 @@ def attach_group_service(session_id,groupname,servicename):
 	return pdump(gm.attach_service(groupname,servicename))
 
 
-def detach_group_service(session_id,groupname,servicename):
+def detach_groupservice(session_id,groupname,servicename):
 	"""
 	Detach group from a group service
 	"""
@@ -345,17 +345,19 @@ def detach_group_service(session_id,groupname,servicename):
 	return pdump(gm.detach_service(groupname,servicename))
 
 
-def list_group_services(session_id):
+def list_groupservices(session_id,groupname):
 	"""
 	Fetch a simple list of group service names.
 	"""
 	if not session_valid(pload(session_id)):
 		return pdump(False)
+	
+	groupname = pload(groupname)
 
 	gm = GroupManager()
-	return pdump(gm.list_services(groupname,servicename))
+	return pdump(gm.list_services(groupname))
 
-def list_group_service_options_available(session_id,groupname,servicename):
+def list_groupservice_options_available(session_id,groupname,servicename):
 	"""
 	Fetch a dictionary describing the options available for a certain group service.
 	It can only be used in combination with a groupname since it is legal to have options_available
@@ -366,9 +368,21 @@ def list_group_service_options_available(session_id,groupname,servicename):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
+	groupname = pload(groupname)
+	servicename = pload(servicename)
+	
 	gm = GroupManager()
-	return pdump(gm.list_services(groupname,servicename))
+	return pdump(gm.list_service_options_available(servicename,groupname))
 
+def get_groupservice_option_values(session_id,groupname,servicename):
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	groupname = pload(groupname)
+	servicename = pload(servicename)
+	
+	gm = GroupManager()
+	return pdump(gm.get_service_option_values(groupname,servicename))
 
 
 class MyServer(SOAPpy.SOAPServer):
@@ -452,9 +466,11 @@ def startserver():
 	server.registerFunction(removegroup)
 	
 	# Group Services
-	server.registerFunction(attach_group_service)
-	server.registerFunction(detach_group_service)
-	server.registerFunction(list_group_services)
+	server.registerFunction(attach_groupservice)
+	server.registerFunction(detach_groupservice)
+	server.registerFunction(list_groupservices)
+	server.registerFunction(list_groupservice_options_available)
+	server.registerFunction(get_groupservice_option_values)
 	
 	# Host Management
 	server.registerFunction(register_host)

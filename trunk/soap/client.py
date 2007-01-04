@@ -178,6 +178,41 @@ class SkoleSYS_Client:
 		print groupname,backup_home,remove_home
 		return pload(self.server.removegroup(pdump(self.session_id),pdump(groupname),pdump(backup_home),pdump(remove_home)))
 	
+	def attach_groupservice(self,groupname,servicename):
+		"""
+		Attach a service to a group. Members of the group might be affected by this action.
+		If the group is already attached to the service nothing will be done
+		"""
+		return pload(self.server.attach_groupservice(pdump(self.session_id),pdump(groupname),pdump(servicename)))
+		
+	def detach_groupservice(self,groupname,servicename):
+		"""
+		Detach a service to a group. Members of the group might be affected by this action.
+		If the group is not attached to the service nothing will be done
+		"""
+		return pload(self.server.detach_groupservice(pdump(self.session_id),pdump(groupname),pdump(servicename)))
+		
+	def list_groupservices(self,groupname=None):
+		"""
+		List all available services (groupname=None) or only the ones attached to a particular group.
+		"""
+		return pload(self.server.list_groupservices(pdump(self.session_id),pdump(groupname)))
+		
+	def list_groupservice_options_available(self,servicename,groupname='dummy'):
+		"""
+		Fetch a dictionary describing the options available for a certain group service.
+		It can only be used in combination with a groupname since it is legal to have options_available
+		change dynamically i.e. as a function of the options already set. F.inst. if an option is "use_pop3"
+		the options_available might change by adding options like "use_ssl" and "pop3_server".
+		SkoleSYS UI is implemented with this in mind.
+		"""
+		return pload(self.server.list_groupservice_options_available(pdump(self.session_id),pdump(servicename),pdump(groupname)))
+
+
+	def get_groupservice_option_values(self,servicename,groupname):
+		return pload(self.server.get_groupservice_option_values(pdump(self.session_id),pdump(servicename),pdump(groupname)))
+
+
 	def register_host(self,hostname,hosttype_id,hwaddr=None):
 		"""
 		Register the current displaying host
@@ -231,6 +266,7 @@ class SkoleSYS_Client:
 			hwaddr = self.local_hwaddr # Should never fetch another host's (remote display mode) configuration!
 		return pload(self.server.getconf(pdump(self.session_id),pdump(hwaddr),pdump(context),pdump(context_only)))
 	
+
 
 if __name__=='__main__':
     c=SkoleSYS_Client('https://127.0.0.1',8443)
