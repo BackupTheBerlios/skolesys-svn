@@ -316,6 +316,61 @@ def getconf(session_id,hwaddr,context,context_only):
 	
 	return pdump([1,o])
 
+
+def attach_group_service(session_id,groupname,servicename):
+	"""
+	Attach group to a group service
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	groupname = pload(groupname)
+	servicename = pload(servicename)
+
+	gm = GroupManager()
+	return pdump(gm.attach_service(groupname,servicename))
+
+
+def detach_group_service(session_id,groupname,servicename):
+	"""
+	Detach group from a group service
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	groupname = pload(groupname)
+	servicename = pload(servicename)
+
+	gm = GroupManager()
+	return pdump(gm.detach_service(groupname,servicename))
+
+
+def list_group_services(session_id):
+	"""
+	Fetch a simple list of group service names.
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	gm = GroupManager()
+	return pdump(gm.list_services(groupname,servicename))
+
+def list_group_service_options_available(session_id,groupname,servicename):
+	"""
+	Fetch a dictionary describing the options available for a certain group service.
+	It can only be used in combination with a groupname since it is legal to have options_available
+	change dynamically i.e. as a function of the options already set. F.inst. if an option is "use_pop3"
+	the options_available might change by adding options like "use_ssl" and "pop3_server".
+	SkoleSYS UI is implemented with this in mind.
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	gm = GroupManager()
+	return pdump(gm.list_services(groupname,servicename))
+
+
+
 class MyServer(SOAPpy.SOAPServer):
     def __init__(self,addr=('localhost', 8000), ssl_context=None):
         SOAPpy.SOAPServer.__init__(self,addr,ssl_context=ssl_context)
@@ -395,6 +450,11 @@ def startserver():
 	server.registerFunction(list_members)
 	server.registerFunction(creategroup)
 	server.registerFunction(removegroup)
+	
+	# Group Services
+	server.registerFunction(attach_group_service)
+	server.registerFunction(detach_group_service)
+	server.registerFunction(list_group_services)
 	
 	# Host Management
 	server.registerFunction(register_host)

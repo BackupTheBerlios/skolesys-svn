@@ -13,7 +13,7 @@ from getpass import getpass,getuser
 from optparse import OptionParser
 from conf import conf
 from groupmanager import GroupManager
-import skolesys.definitions.userdef as userdef
+import skolesys.definitions.groupdef as groupdef
 
 
 def check_username(username):
@@ -46,10 +46,13 @@ def check_username(username):
 if __name__=='__main__':
 	
 	commands = {'creategroup': 'Create a new system group and a group directory',
-		'attachservice': 'Attach a service to a group',
 		'removegroup': 'Remove a system group',
 		'listgroups': 'Show a list of system groups',
-		'listmembers': 'Show members of a certain group'}
+		'listmembers': 'Show members of a certain group',
+		'listservices': 'List all available groupservices',
+		'attachservice': 'Attach a service to a group',
+		'detachservice': 'Detach a service from a group',
+		'listgroupservices': 'List services attached to this group'}
 
 	shell_cmd_name = os.path.split(argv[0])[-1:][0]
 	
@@ -193,6 +196,17 @@ if __name__=='__main__':
 		for member in res:
 			print member
 
+	if cmd == "listservices":
+		parser.set_usage("usage: %s %s" % (shell_cmd_name,cmd))
+
+		(options, args) = parser.parse_args()
+
+		gm = GroupManager()
+		res = gm.list_services()
+		for s in res:
+			print s
+				
+	
 	if cmd == "attachservice":
 		parser.set_usage("usage: %s %s groupname" % (shell_cmd_name,cmd))
 
@@ -208,16 +222,64 @@ if __name__=='__main__':
 		gm = GroupManager()
 		res = gm.attach_service(args[1],args[2])
 		if res==-1:
-			print "There is no service group by that name. NOTE! the group must be a service group."
+			print 'There is no service group by that name. NOTE! the group must be a service group.'
 			exit(0)
 		if res==-2:
-			print "The service %s does not exist" % args[2]
+			print 'The service "%s" does not exist' % args[2]
 			exit(0)
 
 		if res==-3:
-			print "The service %s failed to load" % args[2]
+			print 'The service "%s" failed to load' % args[2]
 			exit(0)
 		
 		if res==-4:
-			print "The service %s is already attached to %s" % (args[2],arg[1])
+			print 'The service "%s" is already attached to "%s"' % (args[2],args[1])
 			exit(0)
+
+	if cmd == "detachservice":
+		parser.set_usage("usage: %s %s groupname" % (shell_cmd_name,cmd))
+
+		(options, args) = parser.parse_args()
+		if len(args)<2:
+			print "Missing group and service name for detachservice operation"
+			exit(0)
+
+		if len(args)<3:
+			print "Missing service name for detachservice operation"
+			exit(0)
+		
+		gm = GroupManager()
+		res = gm.detach_service(args[1],args[2])
+		if res==-1:
+			print 'There is no service group by that name. NOTE! the group must be a service group.'
+			exit(0)
+		if res==-2:
+			print 'The service "%s" does not exist' % args[2]
+			exit(0)
+
+		if res==-3:
+			print 'The service "%s" failed to load' % args[2]
+			exit(0)
+		
+		if res==-4:
+			print 'The service "%s" is not attached to "%s"' % (args[2],args[1])
+			exit(0)
+
+	if cmd == "listgroupservices":
+		parser.set_usage("usage: %s %s groupname" % (shell_cmd_name,cmd))
+
+		(options, args) = parser.parse_args()
+		if len(args)<2:
+			print "Missing group and service name for detachservice operation"
+			exit(0)
+
+		gm = GroupManager()
+		res = gm.list_groupservices(args[1])
+		if type(res) == list:
+			for s in res:
+				print s
+				
+		if res==-1:
+			print 'There is no service group by that name. NOTE! the group must be a service group.'
+			exit(0)
+		

@@ -48,16 +48,31 @@ def _inspect_services():
 	return services
 	
 
-def get_serviceinterface(servicename):
+def create_groupserviceinterface(servicename,groupname):
+	if not groupservices().count(servicename):
+		print 'The group service "%s" does not exist.' % servicename
+		return None
 	try:
 		service_mod = 'skolesys.services.%s.interface' % servicename
 		mod = __import__(service_mod, globals(),locals(),['ServiceInterface'])
-		return mod.ServiceInterface()
+		return mod.ServiceInterface(groupname)
 	except Exception, e:
 		print e,
-		print '- ServiceInterface for %s could not be instantiated' % servicename
+		print '- Group service interface for "%s" could not be instantiated' % servicename
 		return None
 	
+def create_userserviceinterface(servicename,username,groupname=None):
+	if not userservices().count(servicename):
+		print 'The user service "%s" does not exist.' % servicename
+		return None
+	try:
+		service_mod = 'skolesys.services.%s.interface' % servicename
+		mod = __import__(service_mod, globals(),locals(),['ServiceInterface'])
+		return mod.ServiceInterface(username,groupname)
+	except Exception, e:
+		print e,
+		print '- User service interface for "%s" could not be instantiated' % servicename
+		return None
 
 
 def groupservices():

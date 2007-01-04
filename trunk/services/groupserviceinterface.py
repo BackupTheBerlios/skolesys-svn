@@ -1,17 +1,19 @@
-class GroupServiceInterface:
+import optionmanager as om
 
-	def __init__(self):
+class GroupServiceInterface(om.OptionManager):
+
+	def __init__(self,servicename,groupname):
+		om.OptionManager.__init__(self,servicename,None,groupname)
+
+	def hook_attachservice(self,uidnumbers):
 		pass
 
-	def hook_attachservice(self,groupname,userlist):
+	def hook_detachservice(self,uidnumbers):
 		pass
 
-	def hook_detachservice(self,groupname,userlist):
+	def hook_groupadd(self,uidnumber):
 		pass
 
-	def hook_groupadd(self,user,groupname):
-		pass
-
-	def hook_groupdel(self,user,groupname):
+	def hook_groupdel(self,uidnumber):
 		pass
 

@@ -168,6 +168,14 @@ class GroupManager (LDAPUtil):
 		return sres[1][0][1]['memberUid']
 
 
+	def list_services(self):
+		"""
+		List all available groupservices.
+		"""
+		import skolesys.services as s
+		return s.groupservices()
+
+
 	def attach_service(self,groupname,servicename):
 		"""
 		Attach the groupservice servicename to the group groupname
@@ -179,25 +187,34 @@ class GroupManager (LDAPUtil):
 		if sres[1]==[]:
 			return -1 # Group does not exist
 		
-		print sres[1][0][1]['dn']
 		memberlist = []
 		if sres[1][0][1].has_key('memberUid'):
 			memberlist = sres[1][0][1]['memberUid']
-			
+		
+		dn = sres[1][0][0]
 		servicelist = []
 		if sres[1][0][1].has_key('serviceList'):
-			if sres[1][0][1]['serviceList'].count(servicename):
-				return -4 # service is already enabled
+			servicelist = sres[1][0][1]['serviceList']
+		if servicelist.count(servicename):
+			return -4 # service is already enabled
+		
 		import skolesys.services as s
 		if not s.groupservices().count(servicename):
 			return -2 # the service does not exist
-		service_inst = s.get_serviceinterface(servicename)
+		service_inst = s.create_groupserviceinterface(servicename,groupname)
 		if not service_inst:
 			return -3 # the service failed to load
 		
 		print "Attach service %s\non group %s\naffecting users: %s" % (servicename,groupname,','.join(memberlist))
-		service_inst.hook_attachservice(groupname,memberlist)
-		touch_by_dict
+		res = service_inst.hook_attachservice(memberlist)
+		if not res==0:
+			# Service hook failed
+			print "The service attachment did not succeed"
+			return res
+		
+		servicelist += [servicename]
+		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
+		self.touch_by_dict({dn:{'serviceList': servicelist}})
 
 	def detach_service(self,groupname,servicename):
 		"""
@@ -209,13 +226,44 @@ class GroupManager (LDAPUtil):
 		sres = self.l.result(res,0)
 		if sres[1]==[]:
 			return -1 # Group does not exist
-		memberlist = sres[1][0][1]['memberUid']
+		
+		memberlist = []
+		if sres[1][0][1].has_key('memberUid'):
+			memberlist = sres[1][0][1]['memberUid']
+		
+		dn = sres[1][0][0]
+		servicelist = []
+		if sres[1][0][1].has_key('serviceList'):
+			servicelist = sres[1][0][1]['serviceList']
+		if not servicelist.count(servicename):
+			return -4 # service is not enabled
+			
 		import skolesys.services as s
 		if not s.groupservices().count(servicename):
 			return -2 # the service does not exist
-		service_inst = s.get_serviceinterface(servicename)
+		
+		service_inst = s.create_groupserviceinterface(servicename,groupname)
 		if not service_inst:
 			return -3 # the service failed to load
 		
-		print "Attach service %s\non group %s\naffecting users: %s" % (servicename,groupname,','.join(memberlist))
-		service_inst.hook_detachservice(groupname,memberlist)
+		print "Detach service %s\non group %s\naffecting users: %s" % (servicename,groupname,','.join(memberlist))
+		service_inst.hook_detachservice(memberlist)
+		servicelist.remove(servicename)
+		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
+		self.touch_by_dict({dn:{'serviceList': servicelist}})
+
+	def list_groupservices(self,groupname):
+		"""
+		Attach the groupservice servicename to the group groupname
+		"""
+		res = self.l.search(conf.get('LDAPSERVER','basedn'),\
+			ldap.SCOPE_SUBTREE,'(& (cn=%s)(objectclass=skoleSysServiceGroup))'%groupname,['servicelist'])
+		
+		sres = self.l.result(res,0)
+		if sres[1]==[]:
+			return -1 # Group does not exist
+		
+		servicelist = []
+		if sres[1][0][1].has_key('serviceList'):
+			servicelist = sres[1][0][1]['serviceList']
+		return servicelist

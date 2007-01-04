@@ -1,12 +1,14 @@
-class UserServiceInterface:
+import optionmanager as om
 
-	def __init__(self):
+class UserServiceInterface(om.OptionManager):
+
+	def __init__(self,servicename,username,groupname):
+		om.OptionManager.__init__(self,servicename,username,groupname)
+
+	def hook_attachservice(self):
 		pass
 
-	def hook_attachservice(self,uidnumber):
-		pass
-
-	def hook_detachservice(self,uidnumber):
+	def hook_detachservice(self):
 		pass
 
 
