@@ -212,6 +212,14 @@ class SkoleSYS_Client:
 	def get_groupservice_option_values(self,servicename,groupname):
 		return pload(self.server.get_groupservice_option_values(pdump(self.session_id),pdump(servicename),pdump(groupname)))
 
+	def set_groupservice_option_value(self,servicename,groupname,variable,value):
+		"""
+		Set a single option value (Variable/value set). All "normal" data types are supported including
+		lists, tuples and dictionaries which are simply stored with through the ::__str__() method.
+		"""
+		return pload(self.server.set_groupservice_option_value(
+			pdump(self.session_id),pdump(groupname),pdump(servicename),
+			pdump(variable),pdump(value)))
 
 	def register_host(self,hostname,hosttype_id,hwaddr=None):
 		"""

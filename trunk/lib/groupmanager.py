@@ -99,7 +99,7 @@ class GroupManager (LDAPUtil):
 			print e
 			return -3
 		
-		return 1
+		return 0
 
 	def removegroup(self,groupname,backup_home,remove_home):
 		"""
@@ -150,7 +150,7 @@ class GroupManager (LDAPUtil):
 					print e
 					return -3
 		
-		return 1
+		return 0
 		
 	def list_members(self,groupname):
 		"""
@@ -260,6 +260,33 @@ class GroupManager (LDAPUtil):
 		return cur_options
 
 
+	def set_service_option_value(self,groupname,servicename,variable,value):
+		res = self.l.search(conf.get('LDAPSERVER','basedn'),\
+			ldap.SCOPE_SUBTREE,'(& (cn=%s)(objectclass=skoleSysServiceGroup))'%groupname,['dn','memberuid','servicelist'])
+	
+		sres = self.l.result(res,0)
+		if sres[1]==[]:
+			return -1 # Group does not exist
+	
+		dn = sres[1][0][0]
+		servicelist = []
+		if sres[1][0][1].has_key('serviceList'):
+			servicelist = sres[1][0][1]['serviceList']
+		
+		if not servicelist.count(servicename):
+			return -4 # Group is not attached to the service
+		
+		import skolesys.services as s
+		if not s.groupservices().count(servicename):
+			return -2 # the service does not exist
+		service_inst = s.create_groupserviceinterface(servicename,groupname)
+		if not service_inst:
+			return -3 # the service failed to load
+		
+		return service_inst.set_option(variable,value)
+
+
+
 	def attach_service(self,groupname,servicename):
 		"""
 		Attach the groupservice servicename to the group groupname
@@ -299,6 +326,7 @@ class GroupManager (LDAPUtil):
 		servicelist += [servicename]
 		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
 		self.touch_by_dict({dn:{'serviceList': servicelist}})
+		return 0
 
 	def detach_service(self,groupname,servicename):
 		"""
@@ -335,3 +363,4 @@ class GroupManager (LDAPUtil):
 		servicelist.remove(servicename)
 		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
 		self.touch_by_dict({dn:{'serviceList': servicelist}})
+		return 0

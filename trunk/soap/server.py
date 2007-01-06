@@ -327,7 +327,7 @@ def attach_groupservice(session_id,groupname,servicename):
 	groupname = pload(groupname)
 	servicename = pload(servicename)
 
-	gm = GroupManager()
+	gm = groupman.GroupManager()
 	return pdump(gm.attach_service(groupname,servicename))
 
 
@@ -341,7 +341,7 @@ def detach_groupservice(session_id,groupname,servicename):
 	groupname = pload(groupname)
 	servicename = pload(servicename)
 
-	gm = GroupManager()
+	gm = groupman.GroupManager()
 	return pdump(gm.detach_service(groupname,servicename))
 
 
@@ -354,7 +354,7 @@ def list_groupservices(session_id,groupname):
 	
 	groupname = pload(groupname)
 
-	gm = GroupManager()
+	gm = groupman.GroupManager()
 	return pdump(gm.list_services(groupname))
 
 def list_groupservice_options_available(session_id,groupname,servicename):
@@ -371,8 +371,9 @@ def list_groupservice_options_available(session_id,groupname,servicename):
 	groupname = pload(groupname)
 	servicename = pload(servicename)
 	
-	gm = GroupManager()
+	gm = groupman.GroupManager()
 	return pdump(gm.list_service_options_available(servicename,groupname))
+
 
 def get_groupservice_option_values(session_id,groupname,servicename):
 	if not session_valid(pload(session_id)):
@@ -381,8 +382,21 @@ def get_groupservice_option_values(session_id,groupname,servicename):
 	groupname = pload(groupname)
 	servicename = pload(servicename)
 	
-	gm = GroupManager()
+	gm = groupman.GroupManager()
 	return pdump(gm.get_service_option_values(groupname,servicename))
+
+
+def set_groupservice_option_value(session_id,groupname,servicename,variable,value):
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	groupname = pload(groupname)
+	servicename = pload(servicename)
+	variable = pload(variable)
+	value = pload(value)
+	
+	gm = groupman.GroupManager()
+	return pdump(gm.set_service_option_value(groupname,servicename,variable,value))
 
 
 class MyServer(SOAPpy.SOAPServer):
@@ -471,6 +485,7 @@ def startserver():
 	server.registerFunction(list_groupservices)
 	server.registerFunction(list_groupservice_options_available)
 	server.registerFunction(get_groupservice_option_values)
+	server.registerFunction(set_groupservice_option_value)
 	
 	# Host Management
 	server.registerFunction(register_host)
