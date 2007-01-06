@@ -40,9 +40,9 @@ class GroupManagerWdg(GroupManagerWdgBase):
 		self.typedict={self.tr('All').latin1():None,
 			self.tr('Primary').latin1():groupdef.grouptype_as_id('primary'),\
 			self.tr('System').latin1():groupdef.grouptype_as_id('system'),\
-			self.tr('Combi').latin1():groupdef.grouptype_as_id('combi')}
+			self.tr('Service').latin1():groupdef.grouptype_as_id('service')}
 		
-		order = [self.tr('All').latin1(),self.tr('Combi').latin1(),\
+		order = [self.tr('All').latin1(),self.tr('Service').latin1(),\
 			self.tr('Primary').latin1(),self.tr('System').latin1()]
 		for grouptype in order:
 			self.m_cb_grouptype_filter.insertItem(grouptype)

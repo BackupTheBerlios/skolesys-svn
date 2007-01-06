@@ -17,9 +17,9 @@ class CreateGroupWdg(CreateGroupWdgBase):
 		
 		self.typedict={self.tr('Primary').latin1():groupdef.grouptype_as_id('primary'),\
 			self.tr('System').latin1():groupdef.grouptype_as_id('system'),\
-			self.tr('Combi').latin1():groupdef.grouptype_as_id('combi')}
+			self.tr('Service').latin1():groupdef.grouptype_as_id('service')}
 		
-		order = [self.tr('Combi').latin1(),\
+		order = [self.tr('Service').latin1(),\
 			self.tr('Primary').latin1(),self.tr('System').latin1()]
 		for grouptype in order:
 			self.cmb_grouptype.insertItem(grouptype)
