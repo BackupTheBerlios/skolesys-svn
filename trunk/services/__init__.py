@@ -55,7 +55,8 @@ def create_groupserviceinterface(servicename,groupname):
 	try:
 		service_mod = 'skolesys.services.%s.interface' % servicename
 		mod = __import__(service_mod, globals(),locals(),['ServiceInterface'])
-		return mod.ServiceInterface(groupname)
+		gsif = mod.ServiceInterface(groupname)
+		return gsif
 	except Exception, e:
 		print e,
 		print '- Group service interface for "%s" could not be instantiated' % servicename

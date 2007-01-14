@@ -398,6 +398,17 @@ def set_groupservice_option_value(session_id,groupname,servicename,variable,valu
 	gm = groupman.GroupManager()
 	return pdump(gm.set_service_option_value(groupname,servicename,variable,value))
 
+def unset_groupservice_option_value(session_id,groupname,servicename,variable):
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	groupname = pload(groupname)
+	servicename = pload(servicename)
+	variable = pload(variable)
+	
+	gm = groupman.GroupManager()
+	return pdump(gm.unset_service_option_value(groupname,servicename,variable))
+
 
 class MyServer(SOAPpy.SOAPServer):
     def __init__(self,addr=('localhost', 8000), ssl_context=None):
@@ -486,6 +497,7 @@ def startserver():
 	server.registerFunction(list_groupservice_options_available)
 	server.registerFunction(get_groupservice_option_values)
 	server.registerFunction(set_groupservice_option_value)
+	server.registerFunction(unset_groupservice_option)
 	
 	# Host Management
 	server.registerFunction(register_host)

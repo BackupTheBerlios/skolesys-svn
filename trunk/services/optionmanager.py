@@ -153,7 +153,7 @@ class OptionManager:
 		return True
 	
 
-	def remove_option(self,variable):
+	def unset_option(self,variable):
 		"""
 		Set a service option. 
 		Returnvalues:

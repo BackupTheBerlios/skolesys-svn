@@ -221,6 +221,14 @@ class SkoleSYS_Client:
 			pdump(self.session_id),pdump(groupname),pdump(servicename),
 			pdump(variable),pdump(value)))
 
+	def unset_groupservice_option(self,servicename,groupname,variable):
+		"""
+		Set a single option value (Variable/value set). All "normal" data types are supported including
+		lists, tuples and dictionaries which are simply stored with through the ::__str__() method.
+		"""
+		return pload(self.server.unset_groupservice_option_value(
+			pdump(self.session_id),pdump(groupname),pdump(servicename),pdump(variable)))
+	
 	def register_host(self,hostname,hosttype_id,hwaddr=None):
 		"""
 		Register the current displaying host

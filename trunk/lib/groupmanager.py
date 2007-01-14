@@ -1,7 +1,7 @@
 #! /usr/bin/python
 from conf import conf
 from ldaptools import LDAPUtil
-import grp,os,ldap
+import grp,os,ldap,copy
 import skolesys.definitions.ldapdef as ldapdef
 
 
@@ -225,7 +225,7 @@ class GroupManager (LDAPUtil):
 		service_inst = s.create_groupserviceinterface(servicename,groupname)
 		if not service_inst:
 			return -3 # the service failed to load
-		opts_avail = dict(service_inst.get_options_available())
+		opts_avail = copy.deepcopy((service_inst.get_options_available()))
 		cur_options = service_inst.get_options()
 		if cur_options:
 			for var,val in cur_options.items():
@@ -285,6 +285,31 @@ class GroupManager (LDAPUtil):
 		
 		return service_inst.set_option(variable,value)
 
+
+	def unset_service_option(self,groupname,servicename,variable):
+		res = self.l.search(conf.get('LDAPSERVER','basedn'),\
+			ldap.SCOPE_SUBTREE,'(& (cn=%s)(objectclass=skoleSysServiceGroup))'%groupname,['dn','memberuid','servicelist'])
+	
+		sres = self.l.result(res,0)
+		if sres[1]==[]:
+			return -1 # Group does not exist
+	
+		dn = sres[1][0][0]
+		servicelist = []
+		if sres[1][0][1].has_key('serviceList'):
+			servicelist = sres[1][0][1]['serviceList']
+		
+		if not servicelist.count(servicename):
+			return -4 # Group is not attached to the service
+		
+		import skolesys.services as s
+		if not s.groupservices().count(servicename):
+			return -2 # the service does not exist
+		service_inst = s.create_groupserviceinterface(servicename,groupname)
+		if not service_inst:
+			return -3 # the service failed to load
+		
+		return service_inst.remove_option(variable)
 
 
 	def attach_service(self,groupname,servicename):
