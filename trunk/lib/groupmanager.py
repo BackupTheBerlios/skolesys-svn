@@ -77,7 +77,7 @@ class GroupManager (LDAPUtil):
 				int(conf.get('DOMAIN','gid_start')))+1
 		group_info = {'cn': groupname,
 			'gidNumber':str(gid),
-			'displayedName': str(displayed_name)
+			'displayedName': str(displayed_name),
 			'objectclass':ldapdef.objectclass_by_grouptype(grouptype)}
 		
 		if description:
