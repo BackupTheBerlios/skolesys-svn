@@ -23,7 +23,7 @@ class GroupManager (LDAPUtil):
 			
 		
 		res = self.l.search(path,ldap.SCOPE_SUBTREE,'(& (cn=*) (objectclass=posixgroup))',\
-			['cn','description','gidNumber'])
+			['cn','displayedName','description','gidNumber'])
 
 		group_dict = {}
 		while 1:
