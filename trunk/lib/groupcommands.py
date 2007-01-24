@@ -75,7 +75,9 @@ if __name__=='__main__':
 			exit(0)
 			
 		parser.set_usage("usage: %s %s [options] groupname" % (shell_cmd_name,cmd))
-		parser.add_option("-t", "--groupType", dest="grouptype",default=None,
+		parser.add_option("-n", "--diaplayed-name", dest="displayed_name",default=None,
+			help="The groups public displayed name. Does not have to match the groupname.", metavar="DISPLAYEDNAME")
+		parser.add_option("-t", "--grouptype", dest="grouptype",default=None,
 			help="The type og group to be created", metavar="GROUPTYPE")
 		parser.add_option("-d", "--description", dest="description",default=None,
 			help="the group's description", metavar="DESCRIPTION")
@@ -90,8 +92,14 @@ if __name__=='__main__':
 		groupname = args[1]
 		print "Group name: %s" % groupname
 		
+		if not options.displayed_name:
+			options.displayed_name = raw_input("Input the group's displayed name [%s]: " % groupname )
+		if not options.displayed_name or len(options.displayed_name.strip())==0:
+			options.displayed_name = groupname
+		print "Displayed name: %s" % options.displayed_name
+			
 		if not options.grouptype:
-			options.grouptype = raw_input("Input the groups's type (%s): " % (','.join(groupdef.list_grouptypes_by_text())))
+			options.grouptype = raw_input("Input the group's type (%s): " % (','.join(groupdef.list_grouptypes_by_text())))
 		
 		options.grouptype = groupdef.grouptype_as_id(options.grouptype.strip())
 		if not options.grouptype:
@@ -100,7 +108,7 @@ if __name__=='__main__':
 
 		gm = GroupManager()
 		try:
-			groupadd_res = gm.creategroup(groupname,options.grouptype,options.description,options.gid)
+			groupadd_res = gm.creategroup(groupname,options.displayed_name,options.grouptype,options.description,options.gid)
 		except Exception, e:
 			print "An error occured while writing to the user LDAP database"
 			print e
@@ -114,7 +122,10 @@ if __name__=='__main__':
 		if groupadd_res==-3:
 			print "A problem occured while creating the groups's home directory"
 			exit(0)
-			
+		if groupadd_res==-5:
+			print "Displayed name is not set, though it is mandetory"
+			exit(0)
+
 		print "Group created..."
 			
 

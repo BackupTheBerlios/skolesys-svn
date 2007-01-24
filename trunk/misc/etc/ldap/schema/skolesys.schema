@@ -103,19 +103,17 @@ objectclass ( 1.3.6.1.4.1.27410.2.2.1 NAME 'skoleSysHost'
 objectclass ( 1.3.6.1.4.1.27410.2.3.1 NAME 'skoleSysPrimaryGroup'
 	DESC 'SkoleSYS Primary group'
 	SUP posixGroup STRUCTURAL
-	MUST cn 
-	MAY displayedName )
+	MUST ( cn $ displayedName ) )
 
 # Primary
 objectclass ( 1.3.6.1.4.1.27410.2.3.2 NAME 'skoleSysSystemGroup'
 	DESC 'SkoleSYS System group'
 	SUP posixGroup STRUCTURAL
-	MUST cn 
-	MAY displayedName )
+	MUST ( cn $ displayedName ) )
 
 # Primary
 objectclass ( 1.3.6.1.4.1.27410.2.3.3 NAME 'skoleSysServiceGroup'
 	DESC 'SkoleSYS service group.'
 	SUP posixGroup STRUCTURAL
-	MUST cn 
-	MAY (displayedName $ serviceList) )
+	MUST ( cn $ displayedName )
+	MAY serviceList )

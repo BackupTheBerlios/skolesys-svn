@@ -51,7 +51,7 @@ class GroupManager (LDAPUtil):
 			return False
 		return True
 	
-	def creategroup(self,groupname,grouptype,description=None,force_gid=None):
+	def creategroup(self,groupname,displayed_name,grouptype,description=None,force_gid=None):
 		"""
 		Add a user to the schools authentication directory service.
 		The grouptype must be one of the constants PRIMARY, SYSTEM or SERVICE
@@ -66,6 +66,9 @@ class GroupManager (LDAPUtil):
 		if not path:
 			return -4	# invalid grouptype
 		
+		if not displayed_name or len(displayed_name.strip())==0:
+			return -5
+		
 		if force_gid:
 			gid = force_gid
 		else:
@@ -74,6 +77,7 @@ class GroupManager (LDAPUtil):
 				int(conf.get('DOMAIN','gid_start')))+1
 		group_info = {'cn': groupname,
 			'gidNumber':str(gid),
+			'displayedName': str(displayed_name)
 			'objectclass':ldapdef.objectclass_by_grouptype(grouptype)}
 		
 		if description:
@@ -309,7 +313,7 @@ class GroupManager (LDAPUtil):
 		if not service_inst:
 			return -3 # the service failed to load
 		
-		return service_inst.remove_option(variable)
+		return service_inst.unset_option(variable)
 
 
 	def attach_service(self,groupname,servicename):
