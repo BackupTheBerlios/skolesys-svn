@@ -3,6 +3,7 @@ from conf import conf
 from ldaptools import LDAPUtil
 import grp,os,ldap,copy
 import skolesys.definitions.ldapdef as ldapdef
+import skolesys.definitions.groupdef as groupdef
 
 
 #-------------------------------------
@@ -15,6 +16,11 @@ class GroupManager (LDAPUtil):
 	
 	def list_groups(self,grouptype):
 		
+		grouptype_ids = groupdef.list_grouptypes_by_id()
+		grouptype_objectclasses = {}
+		for id in grouptype_ids:
+			grouptype_objectclasses[id] = ldapdef.objectclass_by_grouptype(id)
+			
 		path = conf.get('LDAPSERVER','basedn')
 		if grouptype:
 			path = ldapdef.basedn_by_grouptype(grouptype)
@@ -23,7 +29,7 @@ class GroupManager (LDAPUtil):
 			
 		
 		res = self.l.search(path,ldap.SCOPE_SUBTREE,'(& (cn=*) (objectclass=posixgroup))',\
-			['cn','displayedName','description','gidNumber'])
+			['cn','displayedName','description','gidNumber','objectClass'])
 
 		group_dict = {}
 		while 1:
@@ -36,6 +42,17 @@ class GroupManager (LDAPUtil):
 			cn = sres[1][0][1]['cn'][0]
 			group_dict[cn] = {}
 			for (k,v) in sres[1][0][1].items():
+				if k=='objectClass':
+					for grouptype_id,objectclasses in grouptype_objectclasses.items():
+						had_all_classes = True
+						for objcls in v:
+							if not objectclasses.count(objcls):
+								had_all_classes = False
+								break
+						if had_all_classes == True:
+							group_dict[cn]['grouptype_id'] = grouptype_id
+							break
+					continue
 				if len(v)==1:
 					group_dict[cn][k] = v[0]
 				else:

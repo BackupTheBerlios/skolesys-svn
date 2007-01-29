@@ -102,12 +102,12 @@ class SkoleSYS_Client:
 		"""
 		return pload(self.server.domain_name(pdump(self.session_id)))
 
-	def list_users(self,usertype_id=None):
+	def list_users(self,usertype_id=None,uid=None):
 		"""
 		Get a list of LDAP posixusers located on the mainserver. Optionally the
 		list can be filtered by the user type.
 		"""
-		return pload(self.server.list_users(pdump(self.session_id),pdump(usertype_id)))
+		return pload(self.server.list_users(pdump(self.session_id),pdump(usertype_id),pdump(uid)))
 
 	def list_usergroups(self,uid):
 		"""

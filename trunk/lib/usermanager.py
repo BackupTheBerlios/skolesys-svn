@@ -25,14 +25,14 @@ class UserManager (LDAPUtil):
 		global conf
 		LDAPUtil.__init__(self,conf.get('LDAPSERVER','host'))
 	
-	def list_users(self,usertype):
+	def list_users(self,usertype,uid='*'):
 		path = conf.get('LDAPSERVER','basedn')
 		if usertype:
 			path = ldapdef.basedn_by_usertype(usertype)
 			if not path:
 				return {}
 				
-		res = self.l.search(path,ldap.SCOPE_SUBTREE,'(& (uid=*)(objectclass=posixaccount)(objectclass=person))',[])
+		res = self.l.search(path,ldap.SCOPE_SUBTREE,'(& (uid=%s)(objectclass=posixaccount)(objectclass=person))' % uid ,[])
 			
 		user_dict = {}
 		while 1:
@@ -100,7 +100,7 @@ class UserManager (LDAPUtil):
 				'objectclass=posixaccount','uidNumber',
 				int(conf.get('DOMAIN','uid_start')))+1),
 			'homeDirectory':'%s/%s/users/%s/.linux' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid),
-			'sn':'%s' % givenname,
+			'sn':'%s' % familyname,
 			'objectclass':objectclass,
 			'mail': uid,
 			'title':title,
@@ -144,6 +144,53 @@ class UserManager (LDAPUtil):
 		w.close()
 		r.close()
 		return 1	
+		
+	def changeuser(self,uid,givenname=None,familyname=None,passwd=None,primarygid=None,firstyear=None,mail=None):
+		"""
+		Add a user to the schools authentication directory service.
+		The usertype must be one of the constants TEACHER,STUDENT,PARENT or OTHER
+		"""
+		# check if the group exists already
+		change_dict = {}
+		user_info = self.list_users(None,uid)
+		if not user_info.has_key(uid):
+			return -1 # user does not exist
+		user_info = user_info[uid]
+		
+		path = user_info['dn']
+		
+		# Check the group for existance
+		if primarygid:
+			import groupmanager as gman
+			gm = gman.GroupManager()
+			gl = gm.list_groups(None)
+			glgid = {}
+			for groupname in gl.keys():
+				glgid[gl[groupname]['gidNumber']]=groupname
+			if not glgid.has_key(primarygid):
+				return -4
+			change_dict['gidNumber'] = str(primarygid)
+		cur_givenname,cur_sn = user_info['givenName'],user_info['sn']
+		if givenname:
+			cur_givenname = givenname
+			change_dict['givenname'] = givenname
+		if familyname:
+			cur_sn = familyname
+			change_dict['sn'] = familyname
+				
+		change_dict['cn'] = cur_givenname + " " + cur_sn
+		change_dict['displayName'] = cur_givenname + " " + cur_sn
+		
+		if mail:
+			change_dict['mail'] = mail
+		if passwd:
+			change_dict['userPassword'] = mkpasswd(passwd,3,'crypt')
+		#if userdef.usertype_as_id(usertype) == userdef.usertype_as_id('student') and firstyear != None:
+		#	change_dict['firstSchoolYear'] = str(firstyear)
+		
+		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
+		self.touch_by_dict({path:change_dict})
+
 		
 	def deluser(self,uid,backup_home,remove_home):
 		res = self.l.search(conf.get('LDAPSERVER','basedn'),ldap.SCOPE_SUBTREE,'uid=%s'%uid,['dn'])

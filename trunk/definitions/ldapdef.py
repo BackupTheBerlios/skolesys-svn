@@ -11,11 +11,11 @@ _ldap_userstruct['ou_confkey'] = {
 	None : 'undefined_ou' }
 
 _ldap_userstruct['objectclass'] = {
-	userdef.usertype_as_id('teacher') : ('inetOrgPerson','organizationalPerson','posixAccount','shadowAccount','person', 'top', 'skoleSysTeacher'),
-	userdef.usertype_as_id('student') : ('inetOrgPerson','organizationalPerson','posixAccount','shadowAccount','person', 'top', 'skoleSysStudent'),
-	userdef.usertype_as_id('parent') : ('inetOrgPerson','organizationalPerson','posixAccount','shadowAccount','person', 'top', 'skoleSysParent'),
-	userdef.usertype_as_id('other') : ('inetOrgPerson','organizationalPerson','posixAccount','shadowAccount','person', 'top', 'skoleSysOther'),
-	None : ('inetOrgPerson','organizationalPerson','posixAccount','shadowAccount','person', 'top')}
+	userdef.usertype_as_id('teacher') : ['inetOrgPerson','organizationalPerson','posixAccount','shadowAccount','person', 'top', 'skoleSysTeacher'],
+	userdef.usertype_as_id('student') : ['inetOrgPerson','organizationalPerson','posixAccount','shadowAccount','person', 'top', 'skoleSysStudent'],
+	userdef.usertype_as_id('parent') : ['inetOrgPerson','organizationalPerson','posixAccount','shadowAccount','person', 'top', 'skoleSysParent'],
+	userdef.usertype_as_id('other') : ['inetOrgPerson','organizationalPerson','posixAccount','shadowAccount','person', 'top', 'skoleSysOther'],
+	None : ['inetOrgPerson','organizationalPerson','posixAccount','shadowAccount','person', 'top']}
 
 
 def objectclass_by_usertype(usertype=None):
@@ -58,10 +58,10 @@ _ldap_groupstruct['ou_confkey'] = {
 	None : 'undefined_ou' }
 
 _ldap_groupstruct['objectclass'] = {
-	groupdef.grouptype_as_id('primary') : ('top', 'skoleSysPrimaryGroup'),
-	groupdef.grouptype_as_id('system') : ('top', 'skoleSysSystemGroup'),
-	groupdef.grouptype_as_id('service') : ('top', 'skoleSysServiceGroup'),
-	None : ('top','posixGroup')}
+	groupdef.grouptype_as_id('primary') : ['top', 'skoleSysPrimaryGroup'],
+	groupdef.grouptype_as_id('system') : ['top', 'skoleSysSystemGroup'],
+	groupdef.grouptype_as_id('service') : ['top', 'skoleSysServiceGroup'],
+	None : ['top','posixGroup']}
 
 
 def objectclass_by_grouptype(grouptype=None):

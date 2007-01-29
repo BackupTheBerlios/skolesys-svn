@@ -96,12 +96,13 @@ def domain_name(session_id):
 	return pdump(domain_name)
 
 # Users
-def list_users(session_id,usertype_id):
+def list_users(session_id,usertype_id,uid):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	usertype_id = pload(usertype_id)
+	uid = pload(uid)
 	um = userman.UserManager()
-	return pdump(um.list_users(usertype_id))
+	return pdump(um.list_users(usertype_id,uid))
 
 def list_usergroups(session_id,uid):
 	"""
