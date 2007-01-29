@@ -127,6 +127,10 @@ class SkoleSYS_Client:
 		return pload(self.server.createuser(pdump(self.session_id),pdump(uid),pdump(givenname),\
 			pdump(familyname),pdump(passwd),pdump(usertype_id),pdump(primarygroup),pdump(firstyear)))
 
+	def changeuser(self,uid,givenname=None,familyname=None,passwd=None,primarygroup=None,firstyear=None):
+		return pload(self.server.changeuser(pdump(self.session_id),pdump(uid),pdump(givenname),\
+			pdump(familyname),pdump(passwd),pdump(primarygroup),pdump(firstyear)))
+				
 	def removeuser(self,uid,backup_home=False,remove_home=False):
 		return pload(self.server.removeuser(pdump(self.session_id),pdump(uid),pdump(backup_home),pdump(remove_home)))
 

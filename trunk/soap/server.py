@@ -142,6 +142,23 @@ def createuser(session_id,uid,givenname,familyname,passwd,usertype_id,primarygro
 	um = userman.UserManager()
 	return pdump(um.createuser(uid,givenname,familyname,passwd,usertype_id,primarygroup,firstyear))
 
+def changeuser(session_id,uid,givenname,familyname,passwd,primarygroup,firstyear):
+	"""
+	Add a new user. firstyear defines the students first year in school.
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+	uid=pload(uid)
+	givenname=pload(givenname)
+	familyname=pload(familyname)
+	passwd=pload(passwd)
+	primarygroup=pload(primarygroup)
+	firstyear=pload(firstyear)
+	
+	um = userman.UserManager()
+	return pdump(um.changeuser(uid,givenname,familyname,passwd,primarygroup,firstyear))
+
+
 def removeuser(session_id,uid,backup_home,remove_home):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
@@ -481,6 +498,7 @@ def startserver():
 	server.registerFunction(list_users)
 	server.registerFunction(list_usergroups)
 	server.registerFunction(createuser)
+	server.registerFunction(changeuser)
 	server.registerFunction(removeuser)
 	server.registerFunction(groupadd)
 	server.registerFunction(groupdel)
