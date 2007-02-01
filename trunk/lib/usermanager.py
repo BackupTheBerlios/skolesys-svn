@@ -25,7 +25,9 @@ class UserManager (LDAPUtil):
 		global conf
 		LDAPUtil.__init__(self,conf.get('LDAPSERVER','host'))
 	
-	def list_users(self,usertype,uid='*'):
+	def list_users(self,usertype,uid=None):
+		if uid==None:
+			uid = '*'
 		path = conf.get('LDAPSERVER','basedn')
 		if usertype:
 			path = ldapdef.basedn_by_usertype(usertype)
