@@ -146,12 +146,12 @@ class SkoleSYS_Client:
 		"""
 		return pload(self.server.groupdel(pdump(self.session_id),pdump(uid),pdump(groupname)))
 
-	def list_groups(self,usertype_id=None):
+	def list_groups(self,usertype_id=None,groupname=None):
 		"""
 		Get a list of LDAP posixgroups located on the mainserver. Optionally the
 		list can be filtered by the user type.
 		"""
-		return pload(self.server.list_groups(pdump(self.session_id),pdump(usertype_id)))
+		return pload(self.server.list_groups(pdump(self.session_id),pdump(usertype_id),pdump(groupname)))
 
 	def list_members(self,groupname):
 		"""
@@ -210,7 +210,7 @@ class SkoleSYS_Client:
 		the options_available might change by adding options like "use_ssl" and "pop3_server".
 		SkoleSYS UI is implemented with this in mind.
 		"""
-		return pload(self.server.list_groupservice_options_available(pdump(self.session_id),pdump(servicename),pdump(groupname)))
+		return pload(self.server.list_groupservice_options_available(pdump(self.session_id),pdump(groupname),pdump(servicename)))
 
 
 	def get_groupservice_option_values(self,servicename,groupname):
