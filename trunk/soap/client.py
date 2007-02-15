@@ -173,6 +173,13 @@ class SkoleSYS_Client:
 		"""
 		return pload(self.server.creategroup(pdump(self.session_id),pdump(groupname),pdump(displayed_name),pdump(usertype_id),pdump(description)))
 
+	def changegroup(self,groupname,description):
+		"""
+		1. Create a new posixgroup in the mainserver LDAP DB.
+		2. Create a group home directory
+		"""
+		return pload(self.server.changegroup(pdump(self.session_id),pdump(groupname),pdump(description)))
+	
 	def removegroup(self,groupname,backup_home=False,remove_home=False):
 		"""
 		1. Delete the posixgroup "groupname" from the mainserver LDAP db
