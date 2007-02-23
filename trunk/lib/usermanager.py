@@ -28,6 +28,11 @@ class UserManager (LDAPUtil):
 	def list_users(self,usertype,uid=None):
 		if uid==None:
 			uid = '*'
+		usertype_ids = userdef.list_usertypes_by_id()
+		usertype_objectclasses = {}
+		for id in usertype_ids:
+			usertype_objectclasses[id] = ldapdef.objectclass_by_usertype(id) + ['sambaSamAccount']
+			
 		path = conf.get('LDAPSERVER','basedn')
 		if usertype:
 			path = ldapdef.basedn_by_usertype(usertype)
@@ -48,6 +53,17 @@ class UserManager (LDAPUtil):
 			user_dict[uid] = {}
 			user_dict[uid]['dn'] = sres[1][0][0]
 			for (k,v) in sres[1][0][1].items():
+				if k=='objectClass':
+					for usertype_id,objectclasses in usertype_objectclasses.items():
+						had_all_classes = True
+						for objcls in v:
+							if not objectclasses.count(objcls):
+								had_all_classes = False
+								break
+						if had_all_classes == True:
+							user_dict[uid]['usertype_id'] = usertype_id
+							break
+					continue
 				if len(v)==1:
 					user_dict[uid][k] = v[0]
 				else:
@@ -72,15 +88,15 @@ class UserManager (LDAPUtil):
 		"""
 		# check if the group exists already
 		if self.user_exists(uid):
-			return -1
+			return -10001
 		
 		title = userdef.usertype_as_text(usertype)
 		if not title:
-			return -5	# invalid usertype id
+			return -10005	# invalid usertype id
 		usertype_ou = ldapdef.ou_confkey_by_usertype(usertype)
 		objectclass = ldapdef.objectclass_by_usertype(usertype)
 		if not objectclass:
-			return -6	# Object classes have not been defined for this usertype
+			return -10006	# Object classes have not been defined for this usertype
 			
 		path = "uid=%s,%s" % (uid,ldapdef.basedn_by_usertype(usertype))
 		
@@ -90,9 +106,9 @@ class UserManager (LDAPUtil):
 		gl = gm.list_groups(None)
 		glgid = {}
 		for groupname in gl.keys():
-			glgid[gl[groupname]['gidNumber']]=groupname
+			glgid[int(gl[groupname]['gidNumber'])]=groupname
 		if not glgid.has_key(primarygid):
-			return -4
+			return -10004
 		
 		user_info = {'uid':uid,
 			'givenname':'%s' % givenname,
@@ -118,7 +134,7 @@ class UserManager (LDAPUtil):
 			posix_uid = pwd.getpwnam(uid)[2]
 		except Exception, e:
 			print e
-			return -2
+			return -10002
 		
 		try:
 			# Home directory
@@ -139,13 +155,13 @@ class UserManager (LDAPUtil):
 
 		except Exception,e:
 			print e
-			return -3
+			return -10003
 		w,r = os.popen2('smbpasswd -a %s -s' % uid)
 		w.write('%s\n' % passwd)
 		w.write('%s\n' % passwd)
 		w.close()
 		r.close()
-		return 1	
+		return 0	
 		
 	def changeuser(self,uid,givenname=None,familyname=None,passwd=None,primarygid=None,firstyear=None,mail=None):
 		"""
@@ -156,7 +172,7 @@ class UserManager (LDAPUtil):
 		change_dict = {}
 		user_info = self.list_users(None,uid)
 		if not user_info.has_key(uid):
-			return -1 # user does not exist
+			return -10101 # user does not exist
 		user_info = user_info[uid]
 		
 		path = user_info['dn']
@@ -170,7 +186,7 @@ class UserManager (LDAPUtil):
 			for groupname in gl.keys():
 				glgid[gl[groupname]['gidNumber']]=groupname
 			if not glgid.has_key(primarygid):
-				return -4
+				return -10104
 			change_dict['gidNumber'] = str(primarygid)
 		cur_givenname,cur_sn = user_info['givenName'],user_info['sn']
 		if givenname:
@@ -192,19 +208,20 @@ class UserManager (LDAPUtil):
 		
 		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
 		self.touch_by_dict({path:change_dict})
+		return 0
 
 		
 	def deluser(self,uid,backup_home,remove_home):
 		res = self.l.search(conf.get('LDAPSERVER','basedn'),ldap.SCOPE_SUBTREE,'uid=%s'%uid,['dn'])
 		sres = self.l.result(res,0)
 		if sres[1]==[]:
-			return -1
+			return -10201
 		try:
 			self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
 			self.delete(sres[1][0][0])
 		except Exception, e:
 			print e
-			return -2
+			return -10202
 		
 		res = self.l.search(conf.get('LDAPSERVER','basedn'),ldap.SCOPE_SUBTREE,
 			'(& (objectclass=posixgroup) (memberuid=%s))'%uid,['cn'])
@@ -236,32 +253,32 @@ class UserManager (LDAPUtil):
 					os.system('tar cjpf %s %s' % (backup_path,os.path.normpath(home_path)))
 				except Exception,e:
 					print e
-					return -3
+					return -10203
 			if remove_home:
 				try:
 					print "Deleting the homefolder of \"%s\"..." % uid
 					os.system('rm %s -R -f' % (os.path.normpath(home_path)))
 				except Exception, e:
 					print e
-					return -4
+					return -10204
 		
-		return 1
+		return 0
 
 	def groupadd(self,uid,groupname):
 		res = self.l.search(conf.get('LDAPSERVER','basedn'),ldap.SCOPE_SUBTREE,'(& (uid=%s) (objectclass=posixaccount)(objectclass=person))'%uid,['dn'])
 		sres = self.l.result(res,0)
 		if sres[1]==[]:
-			return -1
+			return -10301
 		res = self.l.search(conf.get('LDAPSERVER','basedn'),ldap.SCOPE_SUBTREE,'(& (cn=%s) (objectclass=posixgroup))'%groupname,['memberuid'])
 		sres = self.l.result(res,0)
 		if sres[1]==[]:
-			return -2
+			return -10302
 		attribs = sres[1][0][1]
 		path = sres[1][0][0]
 		memberuid = [uid]
 		if attribs.has_key('memberUid'):
 			if attribs['memberUid'].count(uid):
-				return -3
+				return -10303
 			memberuid += attribs['memberUid']
 			
 		try:
@@ -269,7 +286,7 @@ class UserManager (LDAPUtil):
 			self.touch_by_dict({path:{'memberuid':memberuid}})
 		except Exception, e:
 			print e
-			return -4
+			return -10304
 		
 		# Create user symlink to the group
 		user_group_dir = '%s/%s/users/%s/groups' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
@@ -279,33 +296,33 @@ class UserManager (LDAPUtil):
 			os.symlink('%s/%s/groups/%s' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),groupname),
 				'%s/%s' % (user_group_dir,groupname))
 		
-		return 1
+		return 0
 
 	def groupdel(self,uid,groupname):
 		# Do not check if the user exists, just remove the uid
 		#res = self.l.search(conf.get('LDAPSERVER','basedn'),ldap.SCOPE_SUBTREE,'(& (uid=%s) (objectclass=posixaccount))'%uid,['dn'])
 		#sres = self.l.result(res,0)
 		#if sres[1]==[]:
-		#	return -1
+		#	return -10401
 		res = self.l.search(conf.get('LDAPSERVER','basedn'),ldap.SCOPE_SUBTREE,'(& (cn=%s) (objectclass=posixgroup))'%groupname,['memberuid'])
 		sres = self.l.result(res,0)
 		if sres[1]==[]:
-			return -2
+			return -10402
 		attribs = sres[1][0][1]
 		path = sres[1][0][0]
 		if attribs.has_key('memberUid'):
 			if attribs['memberUid'].count(uid):
 				memberuid = attribs['memberUid']
 				memberuid.remove(uid)
-			else: return -3
-		else: return -3
+			else: return -10403
+		else: return -10403
 			
 		try:
 			self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
 			self.touch_by_dict({path:{'memberuid':memberuid}})
 		except Exception, e:
 			print e
-			return -4
+			return -10404
 		
 		# Remove user symlink to the group
 		user_group_dir = '%s/%s/users/%s/groups' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
@@ -313,14 +330,14 @@ class UserManager (LDAPUtil):
 			if os.path.exists('%s/%s' % (user_group_dir,groupname)):
 				os.remove('%s/%s' % (user_group_dir,groupname))
 		
-		return 1
+		return 0
 	
 	def list_usergroups(self,uid):
 		"""
 		List the groups of a certain user "uid"
 		"""
 		if not self.user_exists(uid):
-			return -1 # User does not exist
+			return -10501 # User does not exist
 		path =	conf.get('LDAPSERVER','basedn')
 		res = self.l.search(path,ldap.SCOPE_SUBTREE,'(& (objectClass=posixGroup) (memberUid=%s))' % uid,['cn'])
 

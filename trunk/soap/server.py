@@ -188,12 +188,13 @@ def groupdel(session_id,uid,groupname):
 	return pdump(um.groupdel(uid,groupname))
 
 # Groups
-def list_groups(session_id,usertype_id):
+def list_groups(session_id,usertype_id,groupname):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	usertype_id = pload(usertype_id)
+	groupname = pload(groupname)
 	gm = groupman.GroupManager()
-	return pdump(gm.list_groups(usertype_id))
+	return pdump(gm.list_groups(usertype_id,groupname))
 
 def list_members(session_id,groupname):
 	"""
@@ -226,6 +227,15 @@ def creategroup(session_id,groupname,displayed_name,usertype_id,description):
 	
 	gm = groupman.GroupManager()
 	return pdump(gm.creategroup(groupname,displayed_name,usertype_id,description))
+
+def changegroup(session_id,groupname,description):
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+	groupname=pload(groupname)
+	description=pload(description)
+
+	gm = groupman.GroupManager()
+	return pdump(gm.changegroup(groupname,description))
 
 def removegroup(session_id,groupname,backup_home,remove_home):
 	if not session_valid(pload(session_id)):
@@ -429,6 +439,28 @@ def unset_groupservice_option(session_id,groupname,servicename,variable):
 	return pdump(gm.unset_service_option(groupname,servicename,variable))
 
 
+def findfiles(session_id,username,groupname,minsize,regex,order):
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	username = pload(username)
+	groupname = pload(groupname)
+	minsize = pload(minsize)
+	regex = pload(regex)
+	order = pload(order)
+	
+	fm = fileman.FileManager()
+	return pdump(fm.find(group=groupname,user=username,minsize=minsize,regex=regex,order=order))
+
+def removefiles(session_id,files):
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	files = pload(files)
+	fm = fileman.FileManager()
+	return pdump(fm.removefiles(files))
+
+
 class MyServer(SOAPpy.SOAPServer):
     def __init__(self,addr=('localhost', 8000), ssl_context=None):
         SOAPpy.SOAPServer.__init__(self,addr,ssl_context=ssl_context)
@@ -508,6 +540,7 @@ def startserver():
 	server.registerFunction(list_groups)
 	server.registerFunction(list_members)
 	server.registerFunction(creategroup)
+	server.registerFunction(changegroup)
 	server.registerFunction(removegroup)
 	
 	# Group Services
@@ -527,6 +560,10 @@ def startserver():
 	server.registerFunction(hostinfo_by_hostname)
 	server.registerFunction(listhosts)
 	server.registerFunction(getconf)
+	
+	# File Management
+	server.registerFunction(findfiles)
+	server.registerFunction(removefiles)
 
 	if os.fork()==0:
 		os.setsid()

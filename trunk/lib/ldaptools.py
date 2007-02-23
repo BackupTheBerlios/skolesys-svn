@@ -65,7 +65,10 @@ class LDAPUtil:
 					else:
 						v = [v]
 					trace_info(str(lower_attr[k.lower()]) + " => " + str(v))
-					if lower_attr[k.lower()] != v:
+					if v == [None]:
+						modlist += [(ldap.MOD_DELETE,k,lower_attr[k.lower()])]
+						print k,lower_attr[k.lower()]
+					elif lower_attr[k.lower()] != v:
 						modlist += [(ldap.MOD_REPLACE,k,v)]
 				else:
 					modlist += [(ldap.MOD_ADD,k,v)]

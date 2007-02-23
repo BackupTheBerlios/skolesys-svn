@@ -50,7 +50,8 @@ if __name__=='__main__':
 		'groupadd' :'Add a user to a group',
 		'groupdel': 'Remove a user from a group',
 		'listusers': 'Show a list of system users',
-		'listusergroups': 'Show a list of groups a certain user is member of'}
+		'listusergroups': 'Show a list of groups a certain user is member of',
+		'changeuser': 'Change a users details'}
 
 	shell_cmd_name = os.path.split(argv[0])[-1:][0]
 	
@@ -149,23 +150,80 @@ if __name__=='__main__':
 			print "An error occured while writing to the user LDAP database"
 			exit(0)
 		
-		if useradd_res==-1:
+		if useradd_res==-10001:
 			print "The user %s already exists" % username
 			exit(0)
 			
-		if useradd_res==-2:
+		if useradd_res==-10002:
 			print "The system could not map the user to an uid (userid)"
 			exit(0)
 		
-		if useradd_res==-3:
+		if useradd_res==-10003:
 			print "A problem occured while creating the user's home folder"
 			exit(0)
 		
-		if useradd_res==-4:
+		if useradd_res==-10004:
 			print "The group \"%s\" does not exist" % primarygroupname
 			exit(0)
 			
 		print "User created..."
+
+	if cmd == "changeuser":
+		if os.getuid()!=0:
+			print "You must be root to delete users"
+			exit(0)
+		
+		parser.set_usage("usage: %s %s [options] username" % (shell_cmd_name,cmd))
+		parser.add_option("-g", "--givenName", dest="givenname",default=None,
+			help="the user's given name/first name", metavar="GIVENNAME")
+		parser.add_option("-f", "--familyName", dest="familyname",default=None,
+			help="the user's family name/last name", metavar="FAMILYNAME")
+		parser.add_option("-y", "--firstSchoolYear", dest="firstyear",default=None,
+			help="The first year this student went to school (students only)", metavar="FIRSTYEAR")
+		parser.add_option("-G", "--primaryGroup", dest="primarygroup",default=None,
+			help="the user's primary group", metavar="PRIMARYGROUP")
+		parser.add_option("-m", "--mail", dest="mail",default=None,
+			help="The mail address of this user", metavar="MAIL")
+		parser.add_option("-p", "--password", dest="password",default=None,
+			help="users password - avoid using this we dont like passwords in clear text!",
+			metavar="PASSWORD")
+		
+		(options, args) = parser.parse_args()
+
+		if len(args)<2:
+			print "Missing username for changeuser operation"
+			exit(0)
+		username = check_username(args[1])
+		if not username:
+			print "The given username is invalid."
+			exit(0)
+		print "Username: %s" % username
+
+		primarygid=None
+		if options.primarygroup:
+			import groupmanager as groupman
+			gm = groupman.GroupManager()
+			gl = gm.list_groups('primary')
+			if not gl.has_key(options.primarygroup):
+				print 'Groupname "%s" is either non-existant or not a primary group type' % options.primarygroup
+				exit(-1)
+			else:
+				primarygid = gl[options.primarygroup]['gidNumber']
+
+		um = UserManager()
+		try:
+			res = um.changeuser(username,options.givenname,options.familyname,options.password,primarygid,options.firstyear,options.mail)
+		except Exception, e:
+			print "An error occured while writing to the user LDAP database"
+			print e
+			exit(0)
+
+		if res == -10101:
+			print 'The user "%s" does not exist' % username
+
+		if res == -10104:
+			print 'The group "%s" does not exist' % options.primarygroup
+
 
 	if cmd == "removeuser":
 		if os.getuid()!=0:
@@ -198,16 +256,16 @@ if __name__=='__main__':
 			print e
 			exit(0)
 		
-		if delres == -1:
+		if delres == -10201:
 			print "The user \"%s\" does not exist " % username
 			exit(0)
-		if delres == -2:
+		if delres == -10202:
 			print "It was not posible to remove the user \"%s\" from the LDAP service. Probably a permissional error" % username
 			exit(0)
-		if delres == -3:
+		if delres == -10203:
 			print "A problem occurred while creating a backup of the user's home directory"
 			exit(0)
-		if delres == -4:
+		if delres == -10204:
 			print "A problem occurred while removing the user's home directory"
 			exit(0)
 		
@@ -239,16 +297,16 @@ if __name__=='__main__':
 			print e
 			exit(0)
 		
-		if groupadd_res == -1:
+		if groupadd_res == -10301:
 			print "The user \"%s\" does not exist " % username
 			exit(0)
-		if groupadd_res == -2:
+		if groupadd_res == -10302:
 			print "The group \"%s\" does not exist " % groupname
 			exit(0)
-		if groupadd_res == -3:
+		if groupadd_res == -10303:
 			print "User \"%s\" is already member of the \"%s\" group" % (username,groupname)
 			exit(0)
-		if groupadd_res == -4:
+		if groupadd_res == -10304:
 			print "It was not posible to perform the groupadd operation. Probably a permissional error"
 			exit(0)
 			
@@ -280,16 +338,16 @@ if __name__=='__main__':
 			print e
 			exit(0)
 		
-		if groupdel_res == -1:
+		if groupdel_res == -10401:
 			print "The user \"%s\" does not exist " % username
 			exit(0)
-		if groupdel_res == -2:
+		if groupdel_res == -10402:
 			print "The group \"%s\" does not exist " % groupname
 			exit(0)
-		if groupdel_res == -3:
+		if groupdel_res == -10403:
 			print "User \"%s\" is not member of the \"%s\" group" % (username,groupname)
 			exit(0)
-		if groupdel_res == -4:
+		if groupdel_res == -10404:
 			print "It was not posible to perform the groupadd operation. Probably a permissional error"
 			exit(0)
 		
@@ -331,7 +389,7 @@ if __name__=='__main__':
 
 		um = UserManager()
 		res = um.list_usergroups(username)
-		if res==-1:
+		if res==-10501:
 			print "User does not exist"
 			exit(0)
 		for group in res:

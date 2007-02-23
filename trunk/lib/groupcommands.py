@@ -46,6 +46,7 @@ def check_username(username):
 if __name__=='__main__':
 	
 	commands = {'creategroup': 'Create a new system group and a group directory',
+		'changegroup': 'Change the details of a group',
 		'removegroup': 'Remove a system group',
 		'listgroups': 'Show a list of system groups',
 		'listmembers': 'Show members of a certain group',
@@ -127,6 +128,33 @@ if __name__=='__main__':
 			exit(0)
 
 		print "Group created..."
+
+	if cmd == "changegroup":
+		if os.getuid()!=0:
+			print "You must be root to remove groups"
+			exit(0)
+		parser.set_usage("usage: %s %s [options] groupname" % (shell_cmd_name,cmd))
+		parser.add_option("-d", "--description", dest="description",default=None,
+			help="Change the groups description", metavar="DESCRIPTION")
+		(options, args) = parser.parse_args()
+		
+		if len(args)<2:
+			print "Missing group name for changegroup operation"
+			exit(0)
+		
+		groupname = args[1]
+		print "Group name: %s" % groupname
+		
+		gm = GroupManager()
+		try:
+			changegrp_res = gm.changegroup(groupname,options.description)
+		except Exception, e:
+			print "An error occured while writing to the user LDAP database"
+			print e
+			exit(0)
+		if changegrp_res==-1:
+			print 'The group "%s" does not exist' % groupname
+
 			
 
 	if cmd == "removegroup":
@@ -177,6 +205,8 @@ if __name__=='__main__':
 		parser.set_usage("usage: %s %s [options]" % (shell_cmd_name,cmd))
 		parser.add_option("-t", "--groupType", dest="grouptype",default=None,
 		                  help="only list groups of a certain type (teacher,student,parent or other)", metavar="GROUPTYPE")
+		parser.add_option("-n", "--groupname", dest="groupname",default=None,
+				  help="Limit the result to a certain group",metavar="GROUPNAME")
 		
 		(options, args) = parser.parse_args()
 		if options.grouptype:
@@ -187,7 +217,7 @@ if __name__=='__main__':
 				options.grouptype = None
 		
 		gm = GroupManager()
-		gl = gm.list_groups(options.grouptype)
+		gl = gm.list_groups(options.grouptype,options.groupname)
 		for k in gl.keys():
 			print k
 

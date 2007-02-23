@@ -14,8 +14,10 @@ class GroupManager (LDAPUtil):
 		global conf
 		LDAPUtil.__init__(self,conf.get('LDAPSERVER','host'))
 	
-	def list_groups(self,grouptype):
+	def list_groups(self,grouptype,groupname=None):
 		
+		if groupname==None:
+			groupname = '*'
 		grouptype_ids = groupdef.list_grouptypes_by_id()
 		grouptype_objectclasses = {}
 		for id in grouptype_ids:
@@ -28,8 +30,8 @@ class GroupManager (LDAPUtil):
 				return {}
 			
 		
-		res = self.l.search(path,ldap.SCOPE_SUBTREE,'(& (cn=*) (objectclass=posixgroup))',\
-			['cn','displayedName','description','gidNumber','objectClass'])
+		res = self.l.search(path,ldap.SCOPE_SUBTREE,'(& (cn=%s) (objectclass=posixgroup))' % groupname ,\
+			['cn','displayedName','description','gidNumber','objectClass','dn'])
 
 		group_dict = {}
 		while 1:
@@ -57,6 +59,7 @@ class GroupManager (LDAPUtil):
 					group_dict[cn][k] = v[0]
 				else:
 					group_dict[cn][k] = v
+				group_dict[cn]['dn'] = sres[1][0][0]
 		return group_dict
 	
 	def group_exists(self,groupname):
@@ -121,6 +124,30 @@ class GroupManager (LDAPUtil):
 			return -3
 		
 		return 0
+
+	def changegroup(self,groupname,description=None):
+		"""
+		Change a groups details
+		"""
+		group_info = self.list_groups(None,groupname=groupname)
+		if not group_info.has_key(groupname):
+			return -1	# Group does not exist
+		
+		path = group_info[groupname]['dn']
+		print path
+		group_change = {}
+		if description!=None:
+			if description=='':
+				group_change['description'] = None
+			else:
+				group_change['description'] = description
+		
+		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
+
+		print group_change
+		self.touch_by_dict({path:group_change})
+		return 0
+
 
 	def removegroup(self,groupname,backup_home,remove_home):
 		"""
