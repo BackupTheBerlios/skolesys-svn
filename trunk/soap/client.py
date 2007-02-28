@@ -293,6 +293,16 @@ class SkoleSYS_Client:
 			hwaddr = self.local_hwaddr # Should never fetch another host's (remote display mode) configuration!
 		return pload(self.server.getconf(pdump(self.session_id),pdump(hwaddr),pdump(context),pdump(context_only)))
 	
+	
+	# FileManager
+	def findfiles(self,username=None,groupname=None,minsize=None,regex=None,order=''):
+		return pload(self.server.findfiles(pdump(self.session_id),pdump(username),pdump(groupname),pdump(minsize),pdump(regex),pdump(order)))
+
+	def removefiles(self,rmlist):
+		return pload(self.server.removefiles(pdump(self.session_id),pdump(rmlist)))
+	
+	
+	
 
 
 if __name__=='__main__':
