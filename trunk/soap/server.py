@@ -15,6 +15,7 @@ import pickle
 import skolesys
 import skolesys.lib.usermanager as userman
 import skolesys.lib.groupmanager as groupman
+import skolesys.lib.filemanager as fileman
 from skolesys.lib.conf import conf
 from skolesys.lib.hostmanager import HostManager
 import skolesys.definitions.hostdef as hostdef
@@ -450,7 +451,7 @@ def findfiles(session_id,username,groupname,minsize,regex,order):
 	order = pload(order)
 	
 	fm = fileman.FileManager()
-	return pdump(fm.find(group=groupname,user=username,minsize=minsize,regex=regex,order=order))
+	return pdump(fm.find(user=username,group=groupname,minsize=minsize,regex=regex,order=order))
 
 def removefiles(session_id,files):
 	if not session_valid(pload(session_id)):

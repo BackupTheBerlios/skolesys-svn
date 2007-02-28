@@ -48,7 +48,7 @@ class FileManager:
 	def removefiles(self,file_list):
 		for f in file_list:
 			if os.path.exists(f):
-				os.system('rm %s -Rf' % f)
+				os.system('rm "%s" -Rf' % f)
 
 	
 
