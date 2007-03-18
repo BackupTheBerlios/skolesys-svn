@@ -110,13 +110,32 @@ class UserManager (LDAPUtil):
 		if not glgid.has_key(primarygid):
 			return -10004
 		
+		
+		#uidnumber = self.max(conf.get('LDAPSERVER','basedn'),
+		#		'objectclass=posixaccount','uidNumber',
+		#		int(conf.get('DOMAIN','uid_start')))+1
+		
+		uidnumber = None
+		uidnumbers = []
+		for pw in pwd.getpwall():
+			if int(pw[2]) >= int(conf.get('DOMAIN','uid_start')):
+				uidnumbers += [int(pw[2])]
+		uidnumbers.sort()
+		expect_uidnumber = int(conf.get('DOMAIN','uid_start'))
+		for i in range(100000):
+			if expect_uidnumber != uidnumbers[i]:
+				uidnumber = expect_uidnumber
+				break
+			expect_uidnumber += 1
+		
+		if uidnumber == None:
+			return -10007 # failed to pick an uidnumber
+		
 		user_info = {'uid':uid,
 			'givenname':'%s' % givenname,
 			'cn':'%s %s' % (givenname,familyname),
 			'gidNumber': str(primarygid),
-			'uidnumber': str(self.max(conf.get('LDAPSERVER','basedn'),
-				'objectclass=posixaccount','uidNumber',
-				int(conf.get('DOMAIN','uid_start')))+1),
+			'uidnumber': str(uidnumber),
 			'homeDirectory':'%s/%s/users/%s/.linux' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid),
 			'sn':'%s' % familyname,
 			'objectclass':objectclass,
@@ -149,10 +168,6 @@ class UserManager (LDAPUtil):
 				# Create profile directory
 				os.makedirs(profile_path)
 
-			# Deliver ownership
-			os.system('chown %d.%d %s -R -f' % (posix_uid,int(primarygid),os.path.normpath(home_path)))
-			os.system('chown %d.%d %s -R -f' % (posix_uid,int(primarygid),os.path.normpath(profile_path)))
-
 		except Exception,e:
 			print e
 			return -10003
@@ -161,6 +176,15 @@ class UserManager (LDAPUtil):
 		w.write('%s\n' % passwd)
 		w.close()
 		r.close()
+		
+		# Generate an SSH2 DSA private/public keypair and a putty ppk version
+		linux_home_path = home_path + '/.linux'
+		os.system('expect -f /etc/skolesys/keygen_expect_script %s %s %s' % (linux_home_path,uid,passwd) ) 
+		
+		# Deliver ownership
+		os.system('chown %d.%d %s -R -f' % (posix_uid,int(primarygid),os.path.normpath(home_path)))
+		os.system('chown %d.%d %s -R -f' % (posix_uid,int(primarygid),os.path.normpath(profile_path)))
+
 		return 0	
 		
 	def changeuser(self,uid,givenname=None,familyname=None,passwd=None,primarygid=None,firstyear=None,mail=None):
@@ -203,6 +227,11 @@ class UserManager (LDAPUtil):
 			change_dict['mail'] = mail
 		if passwd:
 			change_dict['userPassword'] = mkpasswd(passwd,3,'crypt')
+			
+			# Generate an SSH2 DSA private/public keypair and a putty ppk version
+			linux_home_path = '%s/%s/users/%s/.linux' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
+			os.system('expect -f /etc/skolesys/keygen_expect_script %s %s %s' % (linux_home_path,uid,passwd) ) 
+		
 		#if userdef.usertype_as_id(usertype) == userdef.usertype_as_id('student') and firstyear != None:
 		#	change_dict['firstSchoolYear'] = str(firstyear)
 		

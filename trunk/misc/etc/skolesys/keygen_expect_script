@@ -1,0 +1,17 @@
+spawn mkdir [lrange $argv 0 0]/.ssh
+interact
+
+spawn rm [lrange $argv 0 0]/.ssh/id_dsa [lrange $argv 0 0]/.ssh/id_dsa.pub [lrange $argv 0 0]/.ssh/authorized_keys [lrange $argv 0 0]/.ssh/[lrange $argv 1 1].ppk
+interact
+
+spawn ssh-keygen -b 1024 -t dsa -N [lrange $argv 2 2] -f [lrange $argv 0 0]/.ssh/id_dsa
+interact
+
+spawn puttygen [lrange $argv 0 0]/.ssh/id_dsa -o [lrange $argv 0 0]/.ssh/[lrange $argv 1 1].ppk
+expect ":"
+send "[lrange $argv 2 2]\r" 
+interact
+
+spawn cp [lrange $argv 0 0]/.ssh/id_dsa.pub [lrange $argv 0 0]/.ssh/authorized_keys
+interact
+

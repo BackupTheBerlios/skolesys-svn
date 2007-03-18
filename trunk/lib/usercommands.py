@@ -144,7 +144,7 @@ if __name__=='__main__':
 		
 		try:
 			useradd_res = um.createuser(username,options.givenname,options.familyname,options.password,\
-				options.usertype,options.primarygroup,options.firstyear)
+				options.usertype,int(options.primarygroup),options.firstyear)
 		except Exception, e:
 			print e
 			print "An error occured while writing to the user LDAP database"
@@ -165,6 +165,11 @@ if __name__=='__main__':
 		if useradd_res==-10004:
 			print "The group \"%s\" does not exist" % primarygroupname
 			exit(0)
+		
+		if useradd_res==-10007:
+			print "Failed to pick an uidnumber for the new user"
+			exit(0)
+			
 			
 		print "User created..."
 

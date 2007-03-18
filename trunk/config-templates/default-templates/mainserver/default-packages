@@ -9,4 +9,7 @@ firestarter
 samba
 apache2
 dnsmasq
+expect
+putty-tools
 python2.4-skolesys-mainserver
+python-paramiko
