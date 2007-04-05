@@ -1,0 +1,198 @@
+<ui version="4.0" >
+ <class>UserEditWdg</class>
+ <widget class="QWidget" name="UserEditWdg" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>392</width>
+    <height>476</height>
+   </rect>
+  </property>
+  <property name="acceptDrops" >
+   <bool>true</bool>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" >
+   <property name="margin" >
+    <number>9</number>
+   </property>
+   <property name="spacing" >
+    <number>6</number>
+   </property>
+   <item row="6" column="1" colspan="2" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType" >
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>20</width>
+       <height>16</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="9" column="3" >
+    <widget class="QPushButton" name="btn_apply" >
+     <property name="enabled" >
+      <bool>false</bool>
+     </property>
+     <property name="text" >
+      <string>Apply</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" >
+    <widget class="QLabel" name="label_6" >
+     <property name="text" >
+      <string>Primary group:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0" >
+    <widget class="QLabel" name="label_5" >
+     <property name="text" >
+      <string>Last name:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" >
+    <widget class="QLabel" name="label_4" >
+     <property name="text" >
+      <string>First name:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" >
+    <widget class="QLabel" name="label_3" >
+     <property name="enabled" >
+      <bool>false</bool>
+     </property>
+     <property name="text" >
+      <string>First school year:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <widget class="QLabel" name="label_7" >
+     <property name="text" >
+      <string>Login name:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" >
+    <widget class="QLabel" name="label_2" >
+     <property name="text" >
+      <string>User type:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="0" colspan="2" >
+    <widget class="QPushButton" name="btn_passwd" >
+     <property name="text" >
+      <string>Change password...</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1" colspan="3" >
+    <widget class="QLabel" name="lbl_usertype" >
+     <property name="text" >
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="3" >
+    <widget class="QLabel" name="lbl_username" >
+     <property name="text" >
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1" colspan="3" >
+    <widget class="QSpinBox" name="sbx_first_school_year" >
+     <property name="enabled" >
+      <bool>false</bool>
+     </property>
+     <property name="maximum" >
+      <number>2050</number>
+     </property>
+     <property name="minimum" >
+      <number>1990</number>
+     </property>
+     <property name="value" >
+      <number>1990</number>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1" colspan="3" >
+    <widget class="QLineEdit" name="led_firstname" />
+   </item>
+   <item row="4" column="1" colspan="3" >
+    <widget class="QLineEdit" name="led_lastname" />
+   </item>
+   <item row="5" column="1" colspan="3" >
+    <widget class="QComboBox" name="cmb_primary_group" />
+   </item>
+   <item row="7" column="0" colspan="4" >
+    <widget class="QLabel" name="label" >
+     <property name="text" >
+      <string>Secondary groups:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="2" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>161</width>
+       <height>27</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="8" column="0" colspan="4" >
+    <widget class="EnhancedTreeView" name="trv_groups" >
+     <property name="acceptDrops" >
+      <bool>true</bool>
+     </property>
+     <property name="alternatingRowColors" >
+      <bool>true</bool>
+     </property>
+     <property name="selectionMode" >
+      <enum>QAbstractItemView::ExtendedSelection</enum>
+     </property>
+     <property name="rootIsDecorated" >
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>EnhancedTreeView</class>
+   <extends>QTreeView</extends>
+   <header>pyqtui4.enhancedtreeview.h</header>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>sbx_first_school_year</tabstop>
+  <tabstop>led_firstname</tabstop>
+  <tabstop>led_lastname</tabstop>
+  <tabstop>cmb_primary_group</tabstop>
+  <tabstop>trv_groups</tabstop>
+  <tabstop>btn_passwd</tabstop>
+  <tabstop>btn_apply</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

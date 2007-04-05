@@ -1,0 +1,170 @@
+<ui version="4.0" >
+ <class>UserViewWdg</class>
+ <widget class="QWidget" name="UserViewWdg" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>392</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Group View</string>
+  </property>
+  <layout class="QGridLayout" >
+   <property name="margin" >
+    <number>4</number>
+   </property>
+   <property name="spacing" >
+    <number>4</number>
+   </property>
+   <item row="2" column="0" colspan="7" >
+    <widget class="EnhancedTreeView" name="trv_userlist" >
+     <property name="dragEnabled" >
+      <bool>true</bool>
+     </property>
+     <property name="alternatingRowColors" >
+      <bool>true</bool>
+     </property>
+     <property name="selectionMode" >
+      <enum>QAbstractItemView::ExtendedSelection</enum>
+     </property>
+     <property name="rootIsDecorated" >
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="6" >
+    <widget class="QLabel" name="label_4" >
+     <property name="maximumSize" >
+      <size>
+       <width>16777215</width>
+       <height>15</height>
+      </size>
+     </property>
+     <property name="text" >
+      <string>Group filter</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="6" >
+    <widget class="QComboBox" name="cmb_groupfilter" >
+     <property name="sizePolicy" >
+      <sizepolicy>
+       <hsizetype>3</hsizetype>
+       <vsizetype>0</vsizetype>
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" >
+    <widget class="QLabel" name="label" >
+     <property name="maximumSize" >
+      <size>
+       <width>16777215</width>
+       <height>15</height>
+      </size>
+     </property>
+     <property name="text" >
+      <string>User type</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <widget class="QComboBox" name="cmb_usertype_filter" />
+   </item>
+   <item row="0" column="2" colspan="3" >
+    <widget class="QLabel" name="lbl_gradefilter" >
+     <property name="sizePolicy" >
+      <sizepolicy>
+       <hsizetype>5</hsizetype>
+       <vsizetype>5</vsizetype>
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize" >
+      <size>
+       <width>16777215</width>
+       <height>15</height>
+      </size>
+     </property>
+     <property name="text" >
+      <string>Class year</string>
+     </property>
+     <property name="margin" >
+      <number>0</number>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3" >
+    <widget class="QLabel" name="lbl_gradefilter_to" >
+     <property name="text" >
+      <string>to</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="4" >
+    <widget class="QSpinBox" name="sbx_firstschoolyear_max" >
+     <property name="maximum" >
+      <number>12</number>
+     </property>
+     <property name="value" >
+      <number>12</number>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2" >
+    <widget class="QSpinBox" name="sbx_firstschoolyear_min" >
+     <property name="maximum" >
+      <number>12</number>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeType" >
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>16</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="5" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeType" >
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" >
+      <size>
+       <width>16</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>EnhancedTreeView</class>
+   <extends>QTreeView</extends>
+   <header>pyqtui4.enhancedtreeview.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
