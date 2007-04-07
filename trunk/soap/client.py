@@ -203,6 +203,13 @@ class SkoleSYS_Client:
 		"""
 		return pload(self.server.detach_groupservice(pdump(self.session_id),pdump(groupname),pdump(servicename)))
 		
+	def restart_groupservice(self,groupname,servicename):
+		"""
+		Restart a service for a group. It is the restart method of the service interface
+		that specifies which actions should be taken.
+		"""
+		return pload(self.server.restart_groupservice(pdump(self.session_id),pdump(groupname),pdump(servicename)))
+
 	def list_groupservices(self,groupname=None):
 		"""
 		List all available services (groupname=None) or only the ones attached to a particular group.

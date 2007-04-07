@@ -361,6 +361,20 @@ def attach_groupservice(session_id,groupname,servicename):
 	return pdump(gm.attach_service(groupname,servicename))
 
 
+def attach_groupservice(session_id,groupname,servicename):
+	"""
+	Attach group to a group service
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	groupname = pload(groupname)
+	servicename = pload(servicename)
+
+	gm = groupman.GroupManager()
+	return pdump(gm.restart_service(groupname,servicename))
+
+
 def detach_groupservice(session_id,groupname,servicename):
 	"""
 	Detach group from a group service
@@ -547,6 +561,7 @@ def startserver():
 	# Group Services
 	server.registerFunction(attach_groupservice)
 	server.registerFunction(detach_groupservice)
+	server.registerFunction(restart_groupservice)
 	server.registerFunction(list_groupservices)
 	server.registerFunction(list_groupservice_options_available)
 	server.registerFunction(get_groupservice_option_values)
