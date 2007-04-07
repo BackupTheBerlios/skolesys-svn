@@ -52,6 +52,7 @@ if __name__=='__main__':
 		'listmembers': 'Show members of a certain group',
 		'listservices': 'List all available group services or just services of a certain group',
 		'listserviceoptions': 'List the options available for a certain service/group combination',
+		'setserviceoption': "Set the value of a certain servicegroup's option",
 		'attachservice': 'Attach a service to a group',
 		'detachservice': 'Detach a service from a group'}
 
@@ -239,7 +240,7 @@ if __name__=='__main__':
 
 	
 	if cmd == "attachservice":
-		parser.set_usage("usage: %s %s groupname" % (shell_cmd_name,cmd))
+		parser.set_usage("usage: %s %s groupname servicename" % (shell_cmd_name,cmd))
 
 		(options, args) = parser.parse_args()
 		if len(args)<2:
@@ -268,7 +269,7 @@ if __name__=='__main__':
 			exit(0)
 
 	if cmd == "detachservice":
-		parser.set_usage("usage: %s %s groupname" % (shell_cmd_name,cmd))
+		parser.set_usage("usage: %s %s groupname servicename" % (shell_cmd_name,cmd))
 
 		(options, args) = parser.parse_args()
 		if len(args)<2:
@@ -350,3 +351,29 @@ if __name__=='__main__':
 			print 'There is no service group by that name. NOTE! the group must be a service group.'
 			exit(-1)
 	
+	if cmd == "setserviceoption":
+		parser.set_usage("usage: %s %s groupname servicename option value" % (shell_cmd_name,cmd))
+
+		groupname = None
+		(options, args) = parser.parse_args()
+		if len(args)>=3:
+			groupname = args[2]
+		if len(args)<5:
+			print parser.usage
+			exit(0)
+		
+		groupname,servicename,option,value = (args[1],args[2],args[3],args[4])
+
+		gm = GroupManager()
+		res = gm.set_service_option_value(groupname,servicename,option,value)
+		
+		if res==-1:
+			print 'Group "%s" does not exist' % groupname
+		if res==-2:
+			print 'The service "%s" does not exist' % servicename
+		if res==-3:
+			print 'The service "%s" failed to load' % groupname
+		if res==-4:
+			print 'Group "%s" is not attached to the service "%s"' % (groupname,servicename)
+			
+		exit(res)
