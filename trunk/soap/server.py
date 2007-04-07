@@ -361,7 +361,7 @@ def attach_groupservice(session_id,groupname,servicename):
 	return pdump(gm.attach_service(groupname,servicename))
 
 
-def attach_groupservice(session_id,groupname,servicename):
+def restart_groupservice(session_id,groupname,servicename):
 	"""
 	Attach group to a group service
 	"""
