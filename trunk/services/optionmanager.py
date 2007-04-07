@@ -92,6 +92,7 @@ class OptionManager:
 		f = open(conf_path,'w')
 		self.conf_parser.write(f)
 		f.close()
+		self.invalidate()
 		del self.conf_parser
 		self.conf_parser = None
 

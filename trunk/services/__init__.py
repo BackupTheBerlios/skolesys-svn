@@ -49,6 +49,7 @@ def _inspect_services():
 	
 
 def create_groupserviceinterface(servicename,groupname):
+	print "iofjoiwef"
 	if not groupservices().count(servicename):
 		print 'The group service "%s" does not exist.' % servicename
 		return None
@@ -56,6 +57,7 @@ def create_groupserviceinterface(servicename,groupname):
 		service_mod = 'skolesys.services.%s.interface' % servicename
 		mod = __import__(service_mod, globals(),locals(),['ServiceInterface'])
 		gsif = mod.ServiceInterface(groupname)
+		print gsif
 		return gsif
 	except Exception, e:
 		print e,
