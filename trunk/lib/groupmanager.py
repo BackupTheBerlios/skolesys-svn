@@ -161,7 +161,11 @@ class GroupManager (LDAPUtil):
 		sres = self.l.result(res,0)
 		if sres[1]==[]:
 			return -1
-		
+	
+		services = self.list_services(groupname)
+		for sname in services:
+			self.detach_service(groupname,sname)
+	
 		if sres[1][0][1].has_key('memberUid'):
 			import usermanager as uman
 			um = uman.UserManager()
@@ -437,3 +441,32 @@ class GroupManager (LDAPUtil):
 		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
 		self.touch_by_dict({dn:{'serviceList': servicelist}})
 		return 0
+
+	def restart_service(self,groupname,servicename):
+		"""
+		Restart service taking new rescent changes in use.
+		"""
+		res = self.l.search(conf.get('LDAPSERVER','basedn'),\
+			ldap.SCOPE_SUBTREE,'(& (cn=%s)(objectclass=skoleSysServiceGroup))'%groupname,['dn','memberuid','servicelist'])
+	
+		sres = self.l.result(res,0)
+		if sres[1]==[]:
+			return -1 # Group does not exist
+	
+		dn = sres[1][0][0]
+		servicelist = []
+		if sres[1][0][1].has_key('serviceList'):
+			servicelist = sres[1][0][1]['serviceList']
+		
+		if not servicelist.count(servicename):
+			return -4 # Group is not attached to the service
+		
+		import skolesys.services as s
+		if not s.groupservices().count(servicename):
+			return -2 # the service does not exist
+		service_inst = s.create_groupserviceinterface(servicename,groupname)
+		if not service_inst:
+			return -3 # the service failed to load
+		
+		return service_inst.restart()
+		

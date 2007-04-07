@@ -11,4 +11,8 @@ class UserServiceInterface(om.OptionManager):
 	def hook_detachservice(self):
 		pass
 
+	def invalidate(self):
+		pass
 
+	def restart(self):
+		pass

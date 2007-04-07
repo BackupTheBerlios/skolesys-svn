@@ -17,3 +17,8 @@ class GroupServiceInterface(om.OptionManager):
 	def hook_groupdel(self,uidnumber):
 		pass
 
+	def invalidate(self):
+		pass
+
+	def restart(self):
+		pass

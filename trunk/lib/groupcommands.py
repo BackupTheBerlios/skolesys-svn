@@ -54,7 +54,8 @@ if __name__=='__main__':
 		'listserviceoptions': 'List the options available for a certain service/group combination',
 		'setserviceoption': "Set the value of a certain servicegroup's option",
 		'attachservice': 'Attach a service to a group',
-		'detachservice': 'Detach a service from a group'}
+		'detachservice': 'Detach a service from a group',
+		'restartservice': 'Restart a service contained by a certain group'}
 
 	shell_cmd_name = os.path.split(argv[0])[-1:][0]
 	
@@ -354,10 +355,7 @@ if __name__=='__main__':
 	if cmd == "setserviceoption":
 		parser.set_usage("usage: %s %s groupname servicename option value" % (shell_cmd_name,cmd))
 
-		groupname = None
 		(options, args) = parser.parse_args()
-		if len(args)>=3:
-			groupname = args[2]
 		if len(args)<5:
 			print parser.usage
 			exit(0)
@@ -377,3 +375,28 @@ if __name__=='__main__':
 			print 'Group "%s" is not attached to the service "%s"' % (groupname,servicename)
 			
 		exit(res)
+
+	if cmd == "restartservice":
+		parser.set_usage("usage: %s %s groupname servicename" % (shell_cmd_name,cmd))
+
+		(options, args) = parser.parse_args()
+		if len(args)<3:
+			print parser.usage
+			exit(0)
+		
+		groupname,servicename = (args[1],args[2])
+
+		gm = GroupManager()
+		res = gm.restart_service(groupname,servicename)
+		
+		if res==-1:
+			print 'Group "%s" does not exist' % groupname
+		if res==-2:
+			print 'The service "%s" does not exist' % servicename
+		if res==-3:
+			print 'The service "%s" failed to load' % groupname
+		if res==-4:
+			print 'Group "%s" is not attached to the service "%s"' % (groupname,servicename)
+			
+		exit(res)
+

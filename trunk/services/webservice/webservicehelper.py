@@ -85,3 +85,8 @@ class WebserviceHelper:
 			os.system('ln -s %s/data %s/www' % (self.resloc,home_path))
 	
 		
+	def restart_apache(self):
+		res = os.system('apache2ctl configtest')
+		if res != 0:
+			return res
+		os.system('apache2ctl graceful')

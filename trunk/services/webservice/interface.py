@@ -26,6 +26,26 @@ class ServiceInterface(gsi.GroupServiceInterface):
 	def get_options_available(self):
 		return self.options
 
+	def hook_attachservice(self,userlist):
+		self.helper.setup_resource_location()
+		
+		print "Hmm. I also need to do something with these users: %s" % ','.join(userlist)
+		return 0
+
+	def hook_detachservice(self,userlist):
+		self.helper.remove_configuration()
+		home_path = "%s/%s/groups/%s" % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),self.groupname)
+                if os.path.exists('%s/www' % home_path):
+                        os.system('rm %s/www' % home_path)
+
+		print "Users %s might be affected" % ','.join(userlist)
+
+	def hook_groupadd(self,user):
+		pass
+
+	def hook_groupdel(self,user):
+		pass
+
 	def invalidate(self):
 		accesstype_to_name = {1: 'intra', 2: 'inter', 3: 'both', None: 'both'}
 		del self.conf_parser
@@ -40,24 +60,5 @@ class ServiceInterface(gsi.GroupServiceInterface):
 		# if servername is set the site should be setup as a virtual host.
 		self.helper.write_configuration(accesstype,authtype,authname,servername)
 		
-	def hook_attachservice(self,userlist):
-		self.helper.setup_resource_location()
-		
-		print "Hmm. I also need to do something with these users: %s" % ','.join(userlist)
-		return 0
-
-	def hook_detachservice(self,userlist):
-		self.helper.remove_configuration()
-		home_path = "%s/%s/groups/%s" % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),self.groupname)
-                if os.path.exists('%s/www' % home_path):
-                        os.system('rm %s/www' % home_path)
-
-		print "Users %s might be affected" % ','.join(userlist)
-		pass
-
-	def hook_groupadd(self,user):
-		pass
-
-	def hook_groupdel(self,user):
-		pass
-
+	def restart(self):
+		self.helper.restart_apache()
