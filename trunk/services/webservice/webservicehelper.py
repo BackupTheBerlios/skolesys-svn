@@ -50,7 +50,7 @@ class WebserviceHelper:
 		if access_type == None:
 			access_type = 'both'
 			
-		if auth_type.lower()=='group':
+		if auth_type != None and auth_type.lower()=='group':
 			if auth_name == None:
 				auth_name = 'Password restriction to %s' % self.groupname
 			auth_str = auth_pam_group
@@ -62,7 +62,7 @@ class WebserviceHelper:
 			d = d.replace('<domain_name>',conf.get('DOMAIN','domain_name'))
 			d = d.replace('<groupname>',self.groupname)
 			d = d.replace('<auth>',auth_str)
-			f = open('/etc/skolesys/www/directories/intra/%s' % self.groupname , 'w')
+			f = open('/etc/skolesys/www/directories/%s/%s' % (access_type,self.groupname) , 'w')
 			f.write(d)
 			f.close()
 		else:

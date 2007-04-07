@@ -28,12 +28,13 @@ class ServiceInterface(gsi.GroupServiceInterface):
 
 	def hook_attachservice(self,userlist):
 		self.helper.setup_resource_location()
-		
+		self.restart()
 		print "Hmm. I also need to do something with these users: %s" % ','.join(userlist)
 		return 0
 
 	def hook_detachservice(self,userlist):
 		self.helper.remove_configuration()
+		self.restart()
 		home_path = "%s/%s/groups/%s" % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),self.groupname)
                 if os.path.exists('%s/www' % home_path):
                         os.system('rm %s/www' % home_path)
