@@ -8,8 +8,9 @@ libwww-perl
 firestarter
 samba
 apache2
+libapache2-mod-auth-pam
 dnsmasq
 expect
 putty-tools
 python2.4-skolesys-mainserver
-python-paramiko
+putty-tools

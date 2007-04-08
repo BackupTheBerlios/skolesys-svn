@@ -28,6 +28,7 @@ class ServiceInterface(gsi.GroupServiceInterface):
 
 	def hook_attachservice(self,userlist):
 		self.helper.setup_resource_location()
+		self.invalidate()
 		self.restart()
 		print "Hmm. I also need to do something with these users: %s" % ','.join(userlist)
 		return 0

@@ -41,4 +41,10 @@ then
 	exit 1
 fi
 
+if ! ss_installer run_script -i /bin/sh enable_mod_auth_pam 
+then
+	echo "ss_installer failed to enable apache mod_auth_pam"
+	exit 1
+fi
+
 exit 0
