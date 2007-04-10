@@ -9,7 +9,7 @@ auth_pam_group = """
 	"""
 
 directory = """
-        Alias /<groupname> /skolesys/denskaegge.dk/services/webservice/<groupname>/data/
+        Alias /<groupname> /skolesys/<domain_name>/services/webservice/<groupname>/data/
 
         <Directory /skolesys/<domain_name>/services/webservice/<groupname>/data/>
                 Options Indexes FollowSymLinks MultiViews
