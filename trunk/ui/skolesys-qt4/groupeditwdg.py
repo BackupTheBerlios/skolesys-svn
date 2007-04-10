@@ -17,6 +17,7 @@ class GroupEditWdg(QtGui.QWidget, baseui.Ui_GroupEditWdg):
 		self.setupUi(self)
 		self.setupServiceCombo()
 		self.connect(self.btn_apply,QtCore.SIGNAL('clicked()'),self.applyChanges)
+		self.connect(self.tbl_serviceoptions.itemDelegate(),QtCore.SIGNAL("dataChanged"),self.serviceOptionChanged)
 		
 		# Setup group model
 		self.usermodel = umod.UserModel(cm.get_connection(),self.trv_users)
@@ -84,7 +85,7 @@ class GroupEditWdg(QtGui.QWidget, baseui.Ui_GroupEditWdg):
 		for attr,val in self.change_info.items():
 			if self.group_info.has_key(attr) and self.group_info[attr]==val:
 				self.change_info.pop(attr)
-		if len(self.change_info.keys())==0:
+		if len(self.change_info.keys())==0 and not self.tbl_serviceoptions.isDirty():
 			return False
 		return True
 
@@ -93,6 +94,9 @@ class GroupEditWdg(QtGui.QWidget, baseui.Ui_GroupEditWdg):
 			return
 		service = str(self.cmb_services.itemData(idx).toString())
 		self.tbl_serviceoptions.setContext(service,self.groupname)
+
+	def serviceOptionChanged(self):
+		self.btn_apply.setEnabled(self.isDirty())
 	
 	def descriptionChanged(self):
 		new_txt = str(self.ted_description.toPlainText().toUtf8())
@@ -203,6 +207,9 @@ class GroupEditWdg(QtGui.QWidget, baseui.Ui_GroupEditWdg):
 			
 		if res >= 0:
 			mainwin.get_mainwindow().emitGroupChanged(self.groupname)
+		
+		if self.tbl_serviceoptions.isDirty():
+			self.tbl_serviceoptions.applyChanges()
 		self.loadGroupData()
 		self.btn_apply.setEnabled(False)
 

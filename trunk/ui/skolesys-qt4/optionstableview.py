@@ -6,6 +6,8 @@ import connectionmanager as cm
 
 class OptionsTableView(QtGui.QTreeView):
 	def __init__(self,parent):
+		self.change_info = {}
+		self.option_info = {}
 		QtGui.QTreeView.__init__(self,parent)
 		model = QtGui.QStandardItemModel()
 		#self.verticalHeader().hide()
@@ -19,6 +21,7 @@ class OptionsTableView(QtGui.QTreeView):
 	def setContext(self,servicename,groupname):
 		proxy = cm.get_connection().get_proxy_handle()
 		options = proxy.list_groupservice_options_available(servicename,groupname)
+		self.option_info = proxy.get_groupservice_option_values(groupname,servicename)
 		self.groupname = groupname
 		self.servicename = servicename
 		self.setOptions(options)
@@ -28,6 +31,7 @@ class OptionsTableView(QtGui.QTreeView):
 		model = self.model()
 		model.insertColumns(0,2)
 		row = 0
+		self.change_info = {}
 		for opt,details in options.items():
 			if details['type']==int:
 				if details.has_key('enum'):
@@ -106,34 +110,59 @@ class OptionsTableView(QtGui.QTreeView):
 				model.setData(idx,QtCore.QVariant(QtGui.QBrush(color)),QtCore.Qt.BackgroundColorRole)
 			self.setRowHeight(ridx,20)
 			
-	def slotDataChanged(self,idx):
+	def isDirty(self):
+		for attr,val in self.change_info.items():
+			if self.option_info.has_key(attr) and self.option_info[attr]==val:
+				self.change_info.pop(attr)
+		if len(self.change_info.keys())==0:
+			return False
+		return True
+	
+	def applyChanges(self):
 		proxy = cm.get_connection().get_proxy_handle()
+		for option_name,value in self.change_info.items():
+			if type(value) == str and value == '':
+				proxy.unset_groupservice_option(self.servicename,self.groupname,option_name)
+			else:
+				proxy.set_groupservice_option_value(self.servicename,self.groupname,option_name,value)
+				self.option_info[option_name] = value
+		if len(self.change_info.keys()):
+			proxy.restart_groupservice(self.groupname,self.servicename)
+		self.change_info = {}
+	
+	def slotDataChanged(self,idx):
+		#proxy = cm.get_connection().get_proxy_handle()
 		if idx.data(pid.IS_CellId) != QtCore.QVariant.Invalid:
 			option_name = str(idx.data(pid.IS_CellId).toString())
 			value = idx.data(pid.IS_ShadowValue)
+			
 			if value.type() == QtCore.QVariant.Int:
 				value,ok = value.toInt()
-				proxy.set_groupservice_option_value(self.servicename,self.groupname,option_name,value)
+				#proxy.set_groupservice_option_value(self.servicename,self.groupname,option_name,value)
+				self.change_info[option_name] = value
 			
 			elif value.type() == QtCore.QVariant.String:
 				value = str(value.toString().toUtf8()).strip()
-				if value == '':
-					proxy.unset_groupservice_option(self.servicename,self.groupname,option_name)
+				if not self.option_info.has_key(option_name) and value == '':
+					self.change_info.pop(option_name)
+					#proxy.unset_groupservice_option(self.servicename,self.groupname,option_name)
 				else:
-					proxy.set_groupservice_option_value(self.servicename,self.groupname,option_name,value)
+					#proxy.set_groupservice_option_value(self.servicename,self.groupname,option_name,value)
+					self.change_info[option_name] = value
 
 			elif value.type() == QtCore.QVariant.Bool:
 				value = str(value.toBool())
-				proxy.set_groupservice_option_value(self.servicename,self.groupname,option_name,value)
+				#proxy.set_groupservice_option_value(self.servicename,self.groupname,option_name,value)
+				self.change_info[option_name] = value
 
 
 if __name__ == '__main__':
 
 	from skolesys.soap.client import SkoleSYS_Client
-	cli = SkoleSYS_Client('https://mainserver.skolesys.local',8443)
-	cli.bind('bdnprrfe')	
-	options = cli.list_groupservice_options_available('servgrp1','webservice')
-	
+	cli = SkoleSYS_Client('https://127.0.0.1',8443)
+	print cli.bind('bdnprrfe')
+	options = cli.list_groupservice_option_available('servgrp1','webservice')
+	print options
 	
 	app = QtGui.QApplication(sys.argv)
 	ui = OptionsTableView(None)
