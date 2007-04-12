@@ -179,7 +179,7 @@ class UserManager (LDAPUtil):
 		
 		# Generate an SSH2 DSA private/public keypair and a putty ppk version
 		linux_home_path = home_path + '/.linux'
-		os.system('expect -f /etc/skolesys/keygen_expect_script %s %s %s' % (linux_home_path,uid,passwd) ) 
+		os.system('expect -f /etc/skolesys/keygen_expect_script %s %s' % (linux_home_path,uid) ) 
 		
 		# Deliver ownership
 		os.system('chown %d.%d %s -R -f' % (posix_uid,int(primarygid),os.path.normpath(home_path)))
@@ -229,8 +229,8 @@ class UserManager (LDAPUtil):
 			change_dict['userPassword'] = mkpasswd(passwd,3,'crypt')
 			
 			# Generate an SSH2 DSA private/public keypair and a putty ppk version
-			linux_home_path = '%s/%s/users/%s/.linux' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
-			os.system('expect -f /etc/skolesys/keygen_expect_script %s %s %s' % (linux_home_path,uid,passwd) ) 
+			#linux_home_path = '%s/%s/users/%s/.linux' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
+			#os.system('expect -f /etc/skolesys/keygen_expect_script %s %s' % (linux_home_path,uid) ) 
 		
 		#if userdef.usertype_as_id(usertype) == userdef.usertype_as_id('student') and firstyear != None:
 		#	change_dict['firstSchoolYear'] = str(firstyear)
