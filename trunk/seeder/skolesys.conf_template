@@ -82,3 +82,9 @@ template_basedir = /etc/skolesys
 [OPTIONS]
 
 default_lang = <lang>
+
+
+
+[TERMINAL_SERVICE]
+
+freenx_server = 10.1.0.50
