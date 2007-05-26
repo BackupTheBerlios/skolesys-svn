@@ -3,7 +3,7 @@ svn_module = "skolesys"
 
 control = {
 	'Package': 'python2.4-skolesys-mainserver',
-	'Version': '0.8.6',
+	'Version': '0.9.5-1',
 	'NameExtension': 'skolesys1_all',
 	'Section': 'python',
 	'Priority': 'optional',
@@ -41,11 +41,14 @@ copy = {
 	'soap': '/usr/lib/python2.4/site-packages/skolesys/',
 	'cfmachine': '/usr/lib/python2.4/site-packages/skolesys/',
 	'tools': '/usr/lib/python2.4/site-packages/skolesys/',
+	'services': '/usr/lib/python2.4/site-packages/skolesys/',
 	'definitions': '/usr/lib/python2.4/site-packages/skolesys/',
 	'config-templates/default-templates': '/etc/skolesys/',
 	'config-templates/custom-templates': '/etc/skolesys/',
 	'config-templates/host-templates': '/etc/skolesys/',
 	'config-templates/skel': '/etc/skolesys/',
+	'config-templates/www': '/etc/skolesys/',
+	'misc/etc/skolesys': '/etc/',
 	'misc/etc/ldap/schema': '/etc/ldap/'}
 
 links = {

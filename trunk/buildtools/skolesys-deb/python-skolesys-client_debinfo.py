@@ -3,8 +3,8 @@ svn_module = "skolesys"
 
 control = {
 	'Package': 'python2.4-skolesys-client',
-	'Version': '0.8.6',
-	'NameExtension': 'skolesys1_all',
+	'Version': '0.9.3',
+	'NameExtension': 'dapper_all',
 	'Section': 'python',
 	'Priority': 'optional',
 	'Architecture': 'all',
