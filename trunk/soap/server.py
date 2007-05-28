@@ -494,24 +494,22 @@ def startserver():
 		print "This command requires root priviledges"
         	sys.exit(1)
 	
-	skolesys_basepath = os.path.split(inspect.getfile(skolesys))[0]
-	
 	certfile = None
 	keyfile = None
 	
 	# Old style filenames before SkoleSYS ver 0.8.1
-	oldstyle_cert_filename = os.path.join(skolesys_basepath,'cert',"cert_%s.pem" % conf.get("DOMAIN","domain_name"))
+	oldstyle_cert_filename = os.path.join('/etc/skolesys/cert',"cert_%s.pem" % conf.get("DOMAIN","domain_name"))
 	if os.path.exists(oldstyle_cert_filename):
 		certfile = oldstyle_cert_filename
-	oldstyle_key_filename = os.path.join(skolesys_basepath,'cert',"key_%s.pem" % conf.get("DOMAIN","domain_name"))
+	oldstyle_key_filename = os.path.join('/etc/skolesys/cert',"key_%s.pem" % conf.get("DOMAIN","domain_name"))
 	if os.path.exists(oldstyle_key_filename):
 		keyfile = oldstyle_key_filename
 	
 	# New style filenames from SkoleSYS ver 0.8.1 and after
-	newstyle_cert_filename = os.path.join(skolesys_basepath,'cert',"%s.cert" % conf.get("DOMAIN","domain_name"))
+	newstyle_cert_filename = os.path.join('/etc/skolesys/cert',"%s.cert" % conf.get("DOMAIN","domain_name"))
 	if os.path.exists(newstyle_cert_filename):
 		certfile = newstyle_cert_filename
-	newstyle_key_filename = os.path.join(skolesys_basepath,'cert',"%s.key" % conf.get("DOMAIN","domain_name"))
+	newstyle_key_filename = os.path.join('/etc/skolesys/cert',"%s.key" % conf.get("DOMAIN","domain_name"))
 	if os.path.exists(newstyle_key_filename):
 		keyfile = newstyle_key_filename
 		
