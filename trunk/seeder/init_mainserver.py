@@ -112,15 +112,23 @@ f.close()
 # Wipe sources.list on mainserver install
 os.system('echo "" > /etc/apt/sources.list')
 
+# fetch the release codename
+w,r = os.popen2('lsb_release -cs')
+codename = r.readline().strip()
+r.close()
+w.close()
+
 # ensure some entries in sources.list
 apt_source_entries = [
-        {'type':'deb','uri':'http://archive.skolesys.dk/testing','distribution':'pilot','components':['main','nonfree']},
-        {'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'dapper','components':['main','restricted','universe']},
-        {'type':'deb-src','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'dapper','components':['main','restricted','universe']},
-        {'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'dapper-backports','components':['main','restricted','universe','multiverse']},
-        {'type':'deb-src','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'dapper-backports','components':['main','restricted','universe','multiverse']},
-        {'type':'deb','uri':'http://security.ubuntu.com/ubuntu','distribution':'dapper-security','components':['main','restricted','universe']},
-        {'type':'deb-src','uri':'http://security.ubuntu.com/ubuntu','distribution':'dapper-security','components':['main','restricted','universe']}]
+	{'type':'deb','uri':'http://archive.skolesys.dk/release','distribution':codename,'components':['main','nonfree']},
+	{'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':codename,'components':['main','restricted','universe']},
+	{'type':'deb-src','uri':'http://archive.ubuntu.com/ubuntu/','distribution':codename,'components':['main','restricted','universe']},
+	{'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'%s-backports' % codename ,'components':['main','restricted','universe','multiverse']},
+	{'type':'deb-src','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'%s-backports' % codename,'components':['main','restricted','universe','multiverse']},
+	{'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'%s-updates' % codename ,'components':['main','restricted','universe','multiverse']},
+	{'type':'deb-src','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'%s-updates' % codename,'components':['main','restricted','universe','multiverse']},
+	{'type':'deb','uri':'http://security.ubuntu.com/ubuntu','distribution':'%s-security' % codename,'components':['main','restricted','universe']},
+	{'type':'deb-src','uri':'http://security.ubuntu.com/ubuntu','distribution':'%s-security' % codename,'components':['main','restricted','universe']}]
 
 slist = apthelper.SourcesList()
 for src in apt_source_entries:
@@ -329,5 +337,5 @@ print "Done configuring the mainserver."
 
 print "Add system groups..."
 
-os.system('ss_usermanager creategroup fuse')
+os.system('ss_groupmanager creategroup fuse')
 
