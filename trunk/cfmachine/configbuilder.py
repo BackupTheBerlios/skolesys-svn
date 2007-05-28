@@ -92,7 +92,7 @@ import tempfile,os
 
 class ConfigBuilder:
 
-	def __init__(self,hosttype_id,hwaddr=None,context=None,context_only=False,pretend=False):
+	def __init__(self,hosttype_id,dist_codename,hwaddr=None,context=None,context_only=False,pretend=False):
 		"""
 		1. Create temp directory.
 		2. Fetch system, domain and hosts information.
@@ -126,6 +126,8 @@ class ConfigBuilder:
 		
 		level_order = ['default','custom','host']
 		
+		dist_order = ['all',dist_codename]
+		
 		system_order = []
 		if not self.context or not self.context_only:
 			system_order += ['common']
@@ -144,9 +146,10 @@ class ConfigBuilder:
 		# Determin the config-files for the specific host type and mac-address
 		for level in level_order:
 			for system in system_order:
-				if os.path.exists("%s/%s-templates/%s" % (template_basedir,level,system)):
-					os.path.walk("%s/%s-templates/%s" % (template_basedir,level,system),\
-						store_link,("%s/%s-templates/%s/" % (template_basedir,level,system),file_location))
+				for dist in dist_order:
+					if os.path.exists("%s/%s-templates/%s/%s" % (template_basedir,level,system,dist)):
+						os.path.walk("%s/%s-templates/%s/%s" % (template_basedir,level,system,dist),\
+							store_link,("%s/%s-templates/%s/%s" % (template_basedir,level,system,dist),file_location))
 		
 		if pretend==True:
 			for fi in file_location.keys():

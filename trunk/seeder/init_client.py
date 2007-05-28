@@ -31,7 +31,7 @@ def init_client(clienttype,hostname=None):
 
 	# ensure some entries in sources.list
 	apt_source_entries = [
-		{'type':'deb','uri':'http://archive.skolesys.dk/release','distribution':codename,'components':['main','nonfree']},
+		{'type':'deb','uri':'http://archive.skolesys.dk/stable','distribution':codename,'components':['main']},
 		{'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':codename,'components':['main','restricted','universe']},
 		{'type':'deb-src','uri':'http://archive.ubuntu.com/ubuntu/','distribution':codename,'components':['main','restricted','universe']},
 		{'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'%s-backports' % codename ,'components':['main','restricted','universe','multiverse']},
@@ -68,8 +68,6 @@ def init_client(clienttype,hostname=None):
 		print
 		print "SkoleSYS Seeder - failed while updating packages"
 		return 1
-	
-	
 
 
 if __name__=='__main__':
