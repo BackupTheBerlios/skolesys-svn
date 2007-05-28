@@ -66,6 +66,11 @@ class SkoleSYS_Client:
 			print "Local login: %s [%s]" % (self.local_if,self.local_hwaddr)
 			self.hwaddr = self.local_hwaddr
 
+		w,r = os.popen('lsb_release -cs')
+		self.dist_codename = r.readline().strip()
+		w.close()
+		r.close()
+
 	def logtext(self,txt):
 		if self.logfile:
 			self.logfile.write("%s\n" % txt)
@@ -292,13 +297,15 @@ class SkoleSYS_Client:
 		return pload(self.server.listhosts(pdump(self.session_id),pdump(hosttype_id)))
 		
 		
-	def getconf(self,hwaddr=None,context=None,context_only=False):
+	def getconf(self,dist_codename=None,hwaddr=None,context=None,context_only=False):
 		if self.remotedisplay == True:
 			print "Error: Cannot fetch configuration through a remotely logged in session"
 			return (0,0)
 		if hwaddr == None:
 			hwaddr = self.local_hwaddr # Should never fetch another host's (remote display mode) configuration!
-		return pload(self.server.getconf(pdump(self.session_id),pdump(hwaddr),pdump(context),pdump(context_only)))
+		if dist_codename == None:
+			dist_codename = self.dist_codename
+		return pload(self.server.getconf(pdump(self.session_id),pdump(dist_codename),pdump(hwaddr),pdump(context),pdump(context_only)))
 	
 	
 	# FileManager

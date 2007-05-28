@@ -69,7 +69,7 @@ else:
 		print "Authentication OK"
 
 print "Fetching host configuration...",
-res = c.getconf(None,options.config_context,context_only)
+res = c.getconf(None,None,options.config_context,context_only)
 
 # Handle errors
 if res[0] == -1:

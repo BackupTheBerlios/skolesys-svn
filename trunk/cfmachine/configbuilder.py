@@ -43,17 +43,24 @@ again holds one directory per hosttype
 	/etc/skolesys/default-templates/contexts/mainserver
 	/etc/skolesys/default-templates/contexts/ltspserver
 
-The host-templates holds a mac-address per host having special configurations
+The host-templates holds a mac-address folder per host having special configurations
 	example:
 	host-templates/01:02:03:04:05:06
 	host-templates/01:23:45:67:89:ab
 
-The configuration hierarchi is as follows for host '01:23:45:67:89:ab' with hosttype 'mainserver':
-	default-templates/common
-	default-templates/mainserver
-	custom-templates/common
-	custom-templates/mainserver
-	host-templates/01:23:45:67:89:ab
+Distribution end points are used to target the specific Ubuntu version of the system requesting its configuration. The ss_getconf
+command on skolesys clients (ltspserver or workstation) will automatically detect the distribution codename.
+
+The configuration hierarchi is as follows for host '01:23:45:67:89:ab' with hosttype 'ltspserver' running on Ubuntu codename 'feisty':
+	default-templates/common/all
+	default-templates/common/feisty
+	default-templates/mainserver/all
+	default-templates/mainserver/feisty
+	custom-templates/common/all
+	custom-templates/common/feisty
+	custom-templates/mainserver/all
+	custom-templates/mainserver/feisty
+	host-templates/01:23:45:67:89:ab/all (you could add 'feisty' here too but there is not much point in it)
 
 So what happens is that all files files under the each of the directories above are parsed 
 recursively using python cheetah. The data used to parse the files origin partially from 
@@ -100,6 +107,7 @@ class ConfigBuilder:
 		"""
 		self.hosttype = hostdef.hosttype_as_text(hosttype_id)
 		self.hwaddr = hostdef.check_hwaddr(hwaddr)
+		self.dist_codename = dist_codename
 		self.context = context
 		self.context_only = context_only
 		self.tempdir = tempfile.mkdtemp(prefix='skolesys_')
@@ -126,7 +134,7 @@ class ConfigBuilder:
 		
 		level_order = ['default','custom','host']
 		
-		dist_order = ['all',dist_codename]
+		dist_order = ['all',self.dist_codename]
 		
 		system_order = []
 		if not self.context or not self.context_only:
@@ -149,7 +157,7 @@ class ConfigBuilder:
 				for dist in dist_order:
 					if os.path.exists("%s/%s-templates/%s/%s" % (template_basedir,level,system,dist)):
 						os.path.walk("%s/%s-templates/%s/%s" % (template_basedir,level,system,dist),\
-							store_link,("%s/%s-templates/%s/%s" % (template_basedir,level,system,dist),file_location))
+							store_link,("%s/%s-templates/%s/%s/" % (template_basedir,level,system,dist),file_location))
 		
 		if pretend==True:
 			for fi in file_location.keys():
@@ -197,5 +205,5 @@ class ConfigBuilder:
 
 if __name__=='__main__':
 	# test
-	a=ConfigBuilder(2,'010203040506')
+	a=ConfigBuilder(1,'feisty','0040b94c8900',pretend=False)
 	
