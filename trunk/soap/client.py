@@ -66,7 +66,7 @@ class SkoleSYS_Client:
 			print "Local login: %s [%s]" % (self.local_if,self.local_hwaddr)
 			self.hwaddr = self.local_hwaddr
 
-		w,r = os.popen('lsb_release -cs')
+		w,r = os.popen2('lsb_release -cs')
 		self.dist_codename = r.readline().strip()
 		w.close()
 		r.close()
