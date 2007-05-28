@@ -1,0 +1,58 @@
+#!/usr/bin/python
+import re,os
+import sys
+
+usage = "Usage: step_version versionfile stepsize(major|minor|micro|build)"
+
+if len(sys.argv)<2:
+	print "Too few arguments..."
+	print usage
+	sys.exit(1)
+
+if not os.path.exists(sys.argv[1]):
+	print 'File "%s" does not exist...' % sys.argv[1]
+	print usage
+	sys.exit(1)
+versionfile = sys.argv[1]
+
+vpart_to_change = 'build'
+if len(sys.argv)>2:
+	vpart_to_change = sys.argv[2]
+
+vparts = ['major','minor','micro','build']
+if not vparts.count(vpart_to_change):
+	print 'Version partition should be (major|minor|micro|build)...'
+	print usage
+	sys.exit(1)
+
+
+f = open(versionfile)
+ver = f.readline().strip()
+f.close()
+c = re.compile('(\d+)\.(\d+)\.(\d+)-(\d+)')
+m = c.match(ver)
+
+if not m:
+	print 'Versionfile must have the format 0.1.2-3'
+	print usage
+	sys.exit(1)
+
+version_list = [
+	int(m.groups()[0]),
+	int(m.groups()[1]),
+	int(m.groups()[2]),
+	int(m.groups()[3])]
+
+part_idx = vparts.index(vpart_to_change)
+version_list[part_idx] = version_list[part_idx] + 1
+if part_idx < 3:
+	print range(part_idx+1,4)
+	for idx in range(part_idx+1,4):
+		version_list[idx] = 0
+	version_list[3] = 1
+
+print version_list
+print "Version Ticker applied version upgrade from %s to %s" % (ver,'%d.%d.%d-%d\n' % tuple(version_list))
+f = open(versionfile,'w')
+f.write('%d.%d.%d-%d\n' % tuple(version_list))
+f.close()

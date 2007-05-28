@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import os.path
-import os
+import os,re
 import sys
 from optparse import OptionParser
 
@@ -97,6 +97,19 @@ if __name__=='__main__':
 	
 	package_name = debinfo.control['Package']
 	package_ver = debinfo.control['Version']
+	
+	# Test if the version is stored in a file
+	filebase_version_match = re.compile('file://(.*)').match(package_ver)
+	if filebase_version_match:
+		version_file = filebase_version_match.groups()[0]
+		if not os.path.exists(version_file):
+			print 'ERROR: Version file "%s" does not exist' % version_file
+			sys.exit(1)
+		vf = open(version_file)
+		package_ver = vf.readline().strip()
+		vf.close()
+	debinfo.control['Version'] = package_ver
+	
 	package_name_extension = debinfo.control['NameExtension']
 
 	if dir(debinfo).count('prebuild_script'):

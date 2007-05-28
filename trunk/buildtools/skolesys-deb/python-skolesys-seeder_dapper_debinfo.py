@@ -3,7 +3,7 @@ svn_module = "skolesys"
 
 control = {
 	'Package': 'python-skolesys-seeder',
-	'Version': '0.9.5-2',
+	'Version': 'file://skolesys_ver',
 	'NameExtension': 'dapper_all',
 	'Section': 'python',
 	'Priority': 'optional',
