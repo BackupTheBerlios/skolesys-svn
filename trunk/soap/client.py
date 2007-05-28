@@ -66,10 +66,8 @@ class SkoleSYS_Client:
 			print "Local login: %s [%s]" % (self.local_if,self.local_hwaddr)
 			self.hwaddr = self.local_hwaddr
 
-		w,r = os.popen2('lsb_release -cs')
-		self.dist_codename = r.readline().strip()
-		w.close()
-		r.close()
+		import skolesys.tools.sysinfo as sysinfo
+		self.dist_codename = sysinfo.get_dist_codename()
 
 	def logtext(self,txt):
 		if self.logfile:

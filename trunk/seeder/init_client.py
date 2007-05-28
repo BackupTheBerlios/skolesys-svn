@@ -4,6 +4,7 @@ import skolesys.tools.mkpasswd as pw
 import getpass,os,time,re,sys
 import inspect
 import skolesys.cfmachine.apthelpers as apthelper
+import skolesys.tools.sysinfo as sysinfo
 from optparse import OptionParser
 
 def init_client(clienttype,hostname=None):
@@ -24,10 +25,7 @@ def init_client(clienttype,hostname=None):
 	os.system('echo "" > /etc/apt/sources.list')
 	
 	# fetch the release codename
-	w,r = os.popen2('lsb_release -cs')
-	codename = r.readline().strip()
-	r.close()
-	w.close()
+	codename = sysinfo.get_dist_codename()
 
 	# ensure some entries in sources.list
 	apt_source_entries = [

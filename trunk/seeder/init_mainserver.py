@@ -4,6 +4,7 @@ import getpass,os,time,re,sys
 import inspect
 import skolesys
 import skolesys.cfmachine.apthelpers as apthelper
+import skolesys.tools.sysinfo as sysinfo
 
 # Check root privilegdes
 if not os.getuid()==0:
@@ -113,10 +114,7 @@ f.close()
 os.system('echo "" > /etc/apt/sources.list')
 
 # fetch the release codename
-w,r = os.popen2('lsb_release -cs')
-codename = r.readline().strip()
-r.close()
-w.close()
+codename = sysinfo.get_dist_codename()
 
 # ensure some entries in sources.list
 apt_source_entries = [
@@ -297,7 +295,7 @@ hm = h.HostManager()
 print hm.register_host(netinfo.if2hwaddr('eth0'),'mainserver',hostdef.hosttype_as_id('mainserver'),update_hosts=False)
 
 import skolesys.cfmachine.configbuilder as confbuilder
-cb = confbuilder.ConfigBuilder(hostdef.hosttype_as_id('mainserver'),sysinfo.get_dist_codename(),netinfo.if2hwaddr('eth0'),'seed-mainserver')
+cb = confbuilder.ConfigBuilder(hostdef.hosttype_as_id('mainserver'),codename,netinfo.if2hwaddr('eth0'),'seed-mainserver')
 curdir = os.getcwd()
 os.chdir(cb.tempdir)
 res = os.system('./install.sh')
