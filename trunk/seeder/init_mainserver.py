@@ -163,7 +163,7 @@ if not res==0:
 	print "SkoleSYS Seeder - failed while installing LDAP utils"
 	sys.exit(1)
 
-res = os.system('apt-get install -y python2.4-skolesys-mainserver')
+res = os.system('apt-get install -y python-skolesys-mainserver')
 if not res==0:
 	print
 	print "SkoleSYS Seeder - failed while installing SkoleSYS mainserver package"
