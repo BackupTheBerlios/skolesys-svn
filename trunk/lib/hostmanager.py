@@ -2,6 +2,7 @@
 from conf import conf
 from ldaptools import LDAPUtil
 from ldiftools import LDIFImporter
+import skolesys.tools.sysinfo as sysinfo
 import skolesys.definitions.hostdef as hostdef
 import re,os,ldap
 
@@ -150,7 +151,7 @@ class HostManager (LDAPUtil):
 		if update_hosts:
 			# update-hosts=False is f.inst. used in seed-mainserver config scripts
 			import skolesys.cfmachine.configbuilder as cb
-			c = cb.ConfigBuilder(hostdef.hosttype_as_id('mainserver'),'',context='update-hosts',context_only=True)
+			c = cb.ConfigBuilder(hostdef.hosttype_as_id('mainserver'),sysinfo.get_dist_codename(),'',context='update-hosts',context_only=True)
 			curdir = os.getcwd()
 			os.chdir(c.tempdir)
 			os.system('./install.sh')

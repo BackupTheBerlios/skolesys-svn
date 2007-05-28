@@ -297,7 +297,7 @@ hm = h.HostManager()
 print hm.register_host(netinfo.if2hwaddr('eth0'),'mainserver',hostdef.hosttype_as_id('mainserver'),update_hosts=False)
 
 import skolesys.cfmachine.configbuilder as confbuilder
-cb = confbuilder.ConfigBuilder(hostdef.hosttype_as_id('mainserver'),netinfo.if2hwaddr('eth0'),'seed-mainserver')
+cb = confbuilder.ConfigBuilder(hostdef.hosttype_as_id('mainserver'),sysinfo.get_dist_codename(),netinfo.if2hwaddr('eth0'),'seed-mainserver')
 curdir = os.getcwd()
 os.chdir(cb.tempdir)
 res = os.system('./install.sh')
