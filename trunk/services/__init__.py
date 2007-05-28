@@ -2,7 +2,7 @@ import skolesys,inspect,os
 import groupserviceinterface as gsi
 import userserviceinterface as usi
 
-location = "%s/services" % os.path.split(inspect.getsourcefile(skolesys))[0]
+location = "%s/services" % os.path.split(inspect.getfile(skolesys))[0]
 files = os.listdir(location)
 exports = []
 services = None

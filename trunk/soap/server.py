@@ -494,7 +494,7 @@ def startserver():
 		print "This command requires root priviledges"
         	sys.exit(1)
 	
-	skolesys_basepath = os.path.split(inspect.getsourcefile(skolesys))[0]
+	skolesys_basepath = os.path.split(inspect.getfile(skolesys))[0]
 	
 	certfile = None
 	keyfile = None

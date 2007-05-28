@@ -11,7 +11,7 @@ if not os.getuid()==0:
         sys.exit(1)
 
 os.system('clear')
-location = os.path.split(inspect.getsourcefile(skolesys))[0]
+location = os.path.split(inspect.getfile(skolesys))[0]
 
 print "SkoleSYS administrator login"
 print "----------------------------"
@@ -88,9 +88,9 @@ if not res==0:
 	sys.exit(1)
 
 # Copy certificate into place
-if not os.path.exists('%s/cert/' % location):
-	os.makedirs('%s/cert/' % location)
-res = os.system('cp %s.key %s.cert %s/cert/' % (domain_name,domain_name,location))
+if not os.path.exists('/etc/skolesys/cert/'):
+	os.makedirs('/etc/skolesys/cert/')
+res = os.system('cp %s.key %s.cert /etc/skolesys/cert/' % (domain_name,domain_name))
 if not res==0:
 	print
 	print "SkoleSYS Seeder - failed while copying certificate into place"
