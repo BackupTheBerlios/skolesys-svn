@@ -4,6 +4,7 @@ import pyqtui4.qt4tools as qt4tools
 import skolesys.definitions.userdef as userdef
 import skolesys.definitions.groupdef as groupdef
 import os
+import paths
 
 class ss_MainWindow(mainwin.MainWindow):
 	def __init__(self,parent):
@@ -21,10 +22,10 @@ class ss_MainWindow(mainwin.MainWindow):
 		
 		self.btn_closetab = QtGui.QToolButton(self.tabwidget)
 		self.btn_closetab.setAutoRaise(True)
-		self.btn_closetab.setIcon(QtGui.QIcon(qt4tools.svg2pixmap('art/close.svg',10,10)))
+		self.btn_closetab.setIcon(QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/close.svg'),10,10)))
 		self.connect(self.btn_closetab,QtCore.SIGNAL('clicked()'),self.removeTab)
 		self.tabwidget.setCornerWidget(self.btn_closetab)
-		self.setWindowIcon(QtGui.QIcon(qt4tools.svg2pixmap('art/logo-non-gradient.svg',10,10)))
+		self.setWindowIcon(QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/logo-non-gradient.svg'),10,10)))
 
 
 	def setupActions(self):
@@ -53,11 +54,11 @@ class ss_MainWindow(mainwin.MainWindow):
 		
 		a = self.addAction('exec_creategroupwizard',self.tr('Create group...'))
 		self.connect(a,QtCore.SIGNAL('triggered()'),self.execCreateGroupWizard)
-		a.setIcon(QtGui.QIcon(qt4tools.svg2pixmap('art/new_group.svg',16,16)))
+		a.setIcon(QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/new_group.svg'),16,16)))
 
 		a = self.addAction('exec_createuserwizard',self.tr('Create user...'))
 		self.connect(a,QtCore.SIGNAL('triggered()'),self.execCreateUserWizard)
-		a.setIcon(QtGui.QIcon(qt4tools.svg2pixmap('art/new_user.svg',16,16)))
+		a.setIcon(QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/new_user.svg'),16,16)))
 
 		a = self.addAction('show_users',self.tr('Show Users'))
 		a.setCheckable(True)
@@ -145,7 +146,7 @@ class ss_MainWindow(mainwin.MainWindow):
 		self.userviewdock = self.insertDockWidget(self.userview,self.tr("Users"))
 		
 		tooltab = tooltab.ToolTabWdg(self.tabwidget)
-		self.tabwidget.addTab(tooltab,QtGui.QIcon(qt4tools.svg2pixmap('art/kfm_home.svg',16,16)),self.tr('Home'))
+		self.tabwidget.addTab(tooltab,QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/kfm_home.svg'),16,16)),self.tr('Home'))
 
 	def showUserView(self,checked):
 		if self.userview == None:
@@ -173,9 +174,9 @@ class ss_MainWindow(mainwin.MainWindow):
 		self.useredits[uid] = useredit
 		tab_title = useredit.led_firstname.text()+" "+useredit.led_lastname.text()
 		
-		usericon = 'art/student.svg'
-		if os.path.exists('art/%s.svg' % userdef.usertype_as_text(useredit.user_info['usertype_id'])):
-			usericon = 'art/%s.svg' % userdef.usertype_as_text(useredit.user_info['usertype_id'])
+		usericon = paths.path_to('art/student.svg')
+		if os.path.exists(paths.path_to('art/%s.svg') % userdef.usertype_as_text(useredit.user_info['usertype_id'])):
+			usericon = paths.path_to('art/%s.svg') % userdef.usertype_as_text(useredit.user_info['usertype_id'])
 		print usericon
 		self.tabwidget.addTab(useredit,QtGui.QIcon(qt4tools.svg2pixmap(usericon,32,32)),tab_title)
 		self.tabwidget.setCurrentWidget(useredit)
@@ -189,7 +190,7 @@ class ss_MainWindow(mainwin.MainWindow):
 		self.groupedits[groupedit] = groupname
 		self.groupedits[groupname] = groupedit
 		tab_title = QtCore.QString.fromUtf8(displayed_name) #groupedit.led_firstname.text()+" "+groupedit.led_lastname.text()
-		self.tabwidget.addTab(groupedit,QtGui.QIcon(qt4tools.svg2pixmap('art/group.svg',16,16)),tab_title)
+		self.tabwidget.addTab(groupedit,QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/group.svg'),16,16)),tab_title)
 		self.tabwidget.setCurrentWidget(groupedit)
 	
 	
@@ -222,7 +223,7 @@ class ss_MainWindow(mainwin.MainWindow):
 		import filemanagerwdg as fileman
 		self.filemanager = fileman.FileManagerWdg(self.tabwidget)
 		tab_title = self.tr("File manager")
-		self.tabwidget.addTab(self.filemanager,QtGui.QIcon(qt4tools.svg2pixmap('art/student.svg',16,16)),tab_title)
+		self.tabwidget.addTab(self.filemanager,QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/student.svg'),16,16)),tab_title)
 		self.tabwidget.setCurrentWidget(self.filemanager)
 		
 		

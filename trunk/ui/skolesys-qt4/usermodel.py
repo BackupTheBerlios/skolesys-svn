@@ -5,6 +5,7 @@ import pyqtui4.enhancedstandarditemmodel as esm
 import skolesys.definitions.userdef as userdef
 import skolesys.tools.schooltime as stime
 import pyqtui4.qt4tools as qt4tools
+import paths
 
 class UserModel(esm.EnhancedStandardItemModel):
 	def __init__(self,conn,parent):
@@ -21,12 +22,12 @@ class UserModel(esm.EnhancedStandardItemModel):
 		self.tr("student","singular")
 		self.tr("parent","singular")
 		self.tr("other","singular")
-		default_icon = 'art/student.svg'
+		default_icon = paths.path_to('art/student.svg')
 		self.icons = {}
 		for usertype in userdef.list_usertypes_by_text():
 			icon = default_icon
-			if os.path.exists('art/%s.svg' % usertype):
-				icon = 'art/%s.svg' % usertype
+			if os.path.exists(paths.path_to('art/%s.svg') % usertype):
+				icon = paths.path_to('art/%s.svg') % usertype
 			self.icons[userdef.usertype_as_id(usertype)] = qt4tools.svg2pixmap(icon,24,24)
 
 	def _addUser(self,uidnumber,uid,cn,usertype_id):

@@ -4,6 +4,7 @@ import pickle
 import pyqtui4.enhancedstandarditemmodel as esm
 import skolesys.definitions.groupdef as groupdef
 import pyqtui4.qt4tools as qt4tools
+import paths
 
 class GroupModel(esm.EnhancedStandardItemModel):
 	def __init__(self,conn,parent):
@@ -27,7 +28,7 @@ class GroupModel(esm.EnhancedStandardItemModel):
 			return
 		self.insertRow(self.rowCount())
 		idx = self.index(self.rowCount()-1,self.columninfo['displayed_name']['columnindex'])
-		self.setData(idx,QtCore.QVariant(qt4tools.svg2pixmap('art/group.svg',24,24)),QtCore.Qt.DecorationRole)
+		self.setData(idx,QtCore.QVariant(qt4tools.svg2pixmap(paths.path_to('art/group.svg'),24,24)),QtCore.Qt.DecorationRole)
 		self.setData(idx,QtCore.QVariant(QtCore.QString.fromUtf8(displayed_name)))
 		self.setData(idx,QtCore.QVariant(gid),QtCore.Qt.UserRole)
 		idx = self.index(self.rowCount()-1,self.columninfo['groupname']['columnindex'])

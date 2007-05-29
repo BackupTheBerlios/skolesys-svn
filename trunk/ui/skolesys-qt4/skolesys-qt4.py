@@ -1,4 +1,4 @@
-#!/usr/python
+#!/usr/bin/python
 import os,sys
 from optparse import OptionParser
 from PyQt4 import QtGui,QtCore
@@ -28,7 +28,7 @@ if options.lang:
 	else:
 		app.installTranslator(trans)
 
-cm.setup_connection('https://mainserver.skolesys.local',8443)
+cm.setup_connection('https://10.1.0.1',8443)
 
 ui = ss_mainwin.get_mainwindow()
 
