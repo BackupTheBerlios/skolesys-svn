@@ -3,7 +3,7 @@ svn_module = "skolesys"
 
 control = {
 	'Package': 'python-skolesys-mainserver',
-	'Version': 'skolesys_ver',
+	'Version': 'file://skolesys_ver',
 	'NameExtension': 'dapper_all',
 	'Section': 'python',
 	'Priority': 'optional',
@@ -12,7 +12,7 @@ control = {
 	'Recommends': '',
 	'Maintainer': 'Jakob Simon-Gaarde <jakob@skolesys.dk>',
 	'Description': 'This is the base control library of the SkoleSYS linux distribution',
-	'Replaces': 'python2.4-skolesys-seeder,python-skolesys-seeder',
+	'Replaces': 'python2.4-skolesys-seeder,python-skolesys-seeder,python2.4-skolesys-mainserver',
 	'Provides': 'python2.3-skolesys-mainserver, python2.4-skolesys-mainserver',
 	'Conflicts': 'python2.4-skolesys-seeder,python2.4-skolesys-client,python-skolesys-seeder,python-skolesys-client',
 	'longdesc': 
@@ -65,6 +65,10 @@ links = {
 	'/etc/rc4.d/S99skolesys': '../init.d/skolesysd',
 	'/etc/rc5.d/S99skolesys': '../init.d/skolesysd',
 	'/etc/rc6.d/K01skolesys': '../init.d/skolesysd'}
+
+preinst = """#!/bin/sh
+rm default-templates -Rf
+"""
 
 postinst = """#!/bin/sh
 set -e
