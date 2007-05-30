@@ -73,16 +73,19 @@ class WebserviceHelper:
 			f = open('/etc/skolesys/www/directories/%s/%s' % (access_type,self.groupname) , 'w')
 			f.write(d)
 			f.close()
+		
+		self.setup_resource_location()
 
 	def setup_resource_location(self):
+		print "bla"
 		if not os.path.exists('%s/data' % self.resloc):
 			os.system('mkdir %s/data' % self.resloc)
 			os.system('chgrp %s %s/data -Rf' % (self.groupname,self.resloc))
 			os.system('chmod g+rwt %s/data -Rf' % self.resloc)
-
+		
 		home_path = "%s/%s/groups/%s" % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),self.groupname)
 		if not os.path.exists('%s/www' % home_path):
-			os.system('ln -s %s/data %s/www' % (self.resloc,home_path))
+			os.system('ln -sf %s/data %s/www' % (self.resloc,home_path))
 	
 		
 	def restart_apache(self):
