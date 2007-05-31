@@ -29,7 +29,7 @@ class PluggableItemDelegate(QtGui.QItemDelegate):
 		print str(index.data(IS_ControlSetup).toString())
 		if self.wm_mapper.regmap.has_key(str(index.data(IS_ControlSetup).toString())):
 			ctrl = self.wm_mapper.regmap[str(index.data(IS_ControlSetup).toString())]
-		
+		print ctrl
 		if ctrl:
 			# Using a reg
 			editor = ctrl.createEditor(parent,option,index)

@@ -4,6 +4,7 @@ from optparse import OptionParser
 from PyQt4 import QtGui,QtCore
 import ss_mainwindow as ss_mainwin
 import connectionmanager as cm
+import paths
 
 parser = OptionParser(usage="%s [options]" % sys.argv[0])
 parser.add_option("-l", "--lang", dest="lang",default=None,
@@ -20,7 +21,7 @@ if options.lang:
 	trans = QtCore.QTranslator()
 	#print __file__
 	#appdir = os.path.split(__file__)[0]
-	lang_file = 'skolesys-qt4_%s.qm' % (options.lang)
+	lang_file = paths.path_to('skolesys-qt4_%s.qm') % (options.lang)
 	print lang_file
 	loadres = trans.load(lang_file)
 	if not loadres:

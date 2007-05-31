@@ -46,17 +46,17 @@ class ComboBoxItemPlugin(ItemDelegatePlugin):
 		items = self.items
 		if items and items.type() == QtCore.QVariant.StringList:
 			txt = comboBox.currentText()
-			model.setItemData(index, {pid.IS_ShadowValue: QtCore.QVariant(txt),QtCore.Qt.EditRole:QtCore.QVariant(txt)})
+			model.setData(index, QtCore.QVariant(txt), pid.IS_ShadowValue)
+			model.setData(index, QtCore.QVariant(txt), QtCore.Qt.EditRole)
 		elif items and items.type() == QtCore.QVariant.Map:
 			idx = comboBox.currentIndex()
 			text = comboBox.currentText()
-			item_data = {}
 			if idx>-1:
 				data = comboBox.itemData(idx)
-				item_data[pid.IS_ShadowValue] = data
+				model.setData(index, data, pid.IS_ShadowValue)
 
-			item_data[QtCore.Qt.EditRole] = QtCore.QVariant(text)
-			model.setItemData(index, item_data)
+			model.setData(index, QtCore.QVariant(text), QtCore.Qt.EditRole)
+			
 			
 	def setModelDataFromValue(self,model,index,value):
 		items = self.items
