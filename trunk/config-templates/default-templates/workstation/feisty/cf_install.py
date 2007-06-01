@@ -17,7 +17,7 @@ the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 Boston, MA 02110-1301, USA.
 '''
 apt_source_entries = [
-	{'type':'deb','uri':'http://archive.skolesys.dk/stable','distribution':'feisty','components':['main']},
+	{'type':'deb','uri':'http://archive.skolesys.dk/$[conf.cfmachine.package_group]','distribution':'feisty','components':['main']},
         {'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'feisty','components':['main','restricted','universe']},
         {'type':'deb-src','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'feisty','components':['main','restricted','universe']},
         {'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'feisty-backports','components':['main','restricted','universe','multiverse']},

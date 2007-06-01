@@ -76,13 +76,13 @@ interface = eth0
 [CFMACHINE]
 
 template_basedir = /etc/skolesys
+package_group = stable
 
 
 
 [OPTIONS]
 
 default_lang = <lang>
-
 
 
 [TERMINAL_SERVICE]
