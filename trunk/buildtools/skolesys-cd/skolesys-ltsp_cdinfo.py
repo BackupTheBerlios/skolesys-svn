@@ -1,4 +1,4 @@
-iso_base = "kubuntu-6.06.1-desktop-i386.iso"
+iso_base = "kubuntu-7.04-beta-desktop-i386.iso"
 
 inst_manifest_excludes = \
 """^ubiquity
