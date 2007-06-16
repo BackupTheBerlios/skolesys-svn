@@ -25,7 +25,8 @@ copy = {'.': '/usr/lib/skolesys-qt4/'}
 
 links = {'/usr/bin/skolesys-qt4': '../lib/skolesys-qt4/skolesys-qt4.py'}
 
-postinst = """
+postinst = """#!/usr/bin/python
+
 import os
 import re
 
@@ -40,7 +41,7 @@ def ui_filter(args,dirname,names):
                         os.system('rm %s' % os.path.join(dirname,n))
 
 os.path.walk('/usr/lib/skolesys-qt4',ui_filter,None)
-os.system('lrelease /usr/lib/skolesys-qt4/skolesys-qt4.pro')
+#os.system('lrelease /usr/lib/skolesys-qt4/skolesys-qt4.pro')
 """
 
 postrm = """#!/bin/sh

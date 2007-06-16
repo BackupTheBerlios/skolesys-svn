@@ -72,20 +72,22 @@ rm default-templates -Rf
 
 postinst = """#!/bin/sh
 set -e
-# Automatically added by dh_pysupport
+
 if [ "$1" = "configure" ] && which update-python-modules >/dev/null 2>&1; then
         update-python-modules -i /usr/share/python-support/python-skolesys-mainserver
 fi
-# End automatically added section
+
+/etc/init.d/skolesysd restart
 """
 
 prerm = """#!/bin/sh
 set -e
-# Automatically added by dh_pysupport
+
+/etc/init.d/skolesysd stop
+
 if which update-python-modules >/dev/null 2>&1; then
         update-python-modules -c -i /usr/share/python-support/python-skolesys-mainserver
 fi
-# End automatically added section
 """
 
 postrm = """#!/bin/sh
