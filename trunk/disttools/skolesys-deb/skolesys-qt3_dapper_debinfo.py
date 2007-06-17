@@ -1,5 +1,5 @@
 fetch_method = "svn"
-svn_module = "skolesys-ui"
+svn_module = "ui/skolesys-qt3"
 
 prebuild_script = \
 """
@@ -20,7 +20,7 @@ os.path.walk('rep',ui_filter,None)
 """
 
 control = {
-	'Package': 'skolesys-ui',
+	'Package': 'skolesys-qt3',
 	'Version': '0.7.9',
 	'NameExtension': 'skolesys1_all',
 	'Section': 'util',
@@ -31,22 +31,22 @@ control = {
 	'Maintainer': 'Jakob Simon-Gaarde <jakob@skolesys.org>',
 	'Description': 'This is the graphical administration tool for SkoleSYS linux distribution',
 	'longdesc': 
-""" The skolesys-ui package provides the nessecary graphical tools for administrating the SkoleSYS
+""" The skolesys-qt3 package provides the nessecary graphical tools for administrating the SkoleSYS
  distribution. The main issue here is creating users and groups, controlling permissions,
  creating user and group spaces, registering client workstations (Windows, Linux, MacOS)
  and registering thin client servers (LTSP).
 """}
 
-perm = {'skolesys-ui.py': '755'}
+perm = {'skolesys-qt3.py': '755'}
 
-copy = {'.': '/usr/lib/skolesys-ui/'}
+copy = {'.': '/usr/lib/skolesys-qt3/'}
 
-links = {'/usr/bin/skolesys-ui': '../lib/skolesys-ui/skolesys-ui.py'}
+links = {'/usr/bin/skolesys-qt3': '../lib/skolesys-qt3/skolesys-qt3.py'}
 
 postrm = """#!/bin/sh
-if [ -e /usr/lib/skolesys-ui ]
+if [ -e /usr/lib/skolesys-qt3 ]
 then
-  find /usr/lib/skolesys-ui -name "*.pyc" -delete
-  find /usr/lib/skolesys-ui -name "*.pyo" -delete
+  find /usr/lib/skolesys-qt3 -name "*.pyc" -delete
+  find /usr/lib/skolesys-qt3 -name "*.pyo" -delete
 fi
 """

@@ -1,5 +1,5 @@
 fetch_method = "svn"
-svn_module = "skolesys-qt4"
+svn_module = "ui/skolesys-qt4"
 
 control = {
 	'Package': 'skolesys-qt4',
