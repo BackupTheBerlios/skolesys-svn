@@ -14,8 +14,8 @@ if __name__=='__main__':
 		os.system('sudo rm debian -R -f')
 	os.makedirs('debian/DEBIAN')
 	
-	parser.add_option("-r", "--svnbase", dest="svnbase",default=None,
-		help="The base folder containing skolesys svn repositories", metavar="SKOLESYS_SVNBASE")
+	parser.add_option("-r", "--svn-repos", dest="svnbase",default=None,
+		help="The subversion repository to fetch from", metavar="SKOLESYS_SVNBASE")
 	parser.add_option("-l", "--iso-location", dest="iso_location",default=None,
 		help="The folder containing the iso file", metavar="SKOLESYS_ISO-LOCATION")
 	parser.add_option("-t", "--tgz-location", dest="tgz_location",default=None,
@@ -61,10 +61,12 @@ if __name__=='__main__':
 		if debinfo.fetch_method=='svn':
 			if not options.svnbase:
 				env_svnbase = os.getenv('SKOLESYS_SVNBASE')
-				if env_svnbase:
+				if dir(debinfo).count('svn_repos'):
+					options.svnbase = debinfo.svn_repos
+				elif env_svnbase:
 					options.svnbase = env_svnbase
 				else:
-					options.svnbase = raw_input("Input the folder containing the svn module %s: " % module)	
+					options.svnbase = raw_input("Input the URL to the subversion repository containing the svn module %s: " % module)	
 			
 			if dir(debinfo).count('svn_module'):
 				svnmodule = debinfo.svn_module
@@ -75,6 +77,9 @@ if __name__=='__main__':
 			
 		if debinfo.fetch_method=='iso':
 			if not options.iso_location:
+				env_isodir = os.getenv('SKOLESYS_ISODIR')
+				if env_isodir:
+					options.iso_location = env_isodir
 				options.iso_location = raw_input("Input the folder containing the iso file %s.iso: " % module)	
 			if not os.path.exists("%s.iso" % os.path.join(options.iso_location,module)):
 				print "ERROR: %s.iso does not exist" % os.path.join(options.iso_location,module)
@@ -88,6 +93,9 @@ if __name__=='__main__':
 		
 		if debinfo.fetch_method=='tgz':
 			if not options.tgz_location:
+				env_tgzdir = os.getenv('SKOLESYS_TGZDIR')
+				if env_tgzdir:
+					options.tgz_location = env_tgzdir
 				options.tgz_location = raw_input("Input the folder containing the tgz file %s.tgz: " % module)	
 			if not os.path.exists("%s.tgz" % os.path.join(options.tgz_location,module)):
 				print "ERROR: %s.tgz does not exist" % os.path.join(options.tgz_location,module)
@@ -118,7 +126,7 @@ if __name__=='__main__':
 
 	# Permissions
 	if dir(debinfo).count('perm'):
-		for src,mod in debinfo.perm:
+		for src,mod in debinfo.perm.items():
 			print 'chmod %s rep/%s -R -f' % (mod,src)
 			os.system('chmod %s rep/%s -R -f' % (mod,src))
 			print "setting file permissions on %s to %s" % (src,mod)

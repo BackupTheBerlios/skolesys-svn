@@ -22,9 +22,9 @@ control = {
  and registering thin client servers (LTSP).
 """}
 
-perm = [['cfmachine/cfinstaller.py', '755'],
-	['soap/getconf.py', '755'],
-	['soap/reghost.py', '755']]
+perm = {'cfmachine/cfinstaller.py': '755',
+	'soap/getconf.py': '755',
+	'soap/reghost.py': '755'}
 
 copy = {
 	'__init__.py': '/usr/share/python-support/python-skolesys-client/skolesys/',

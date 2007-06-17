@@ -19,7 +19,7 @@ control = {
  and registering thin client servers (LTSP).
 """}
 
-perm = [['skolesys-qt4.py', '755']]
+perm = {'skolesys-qt4.py': '755'}
 
 copy = {'.': '/usr/lib/skolesys-qt4/'}
 

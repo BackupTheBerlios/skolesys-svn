@@ -22,12 +22,11 @@ control = {
  and registering thin client servers (LTSP).
 """}
 
-perm = [['cfmachine/cfinstaller.py', '755'],
-	['soap/getconf.py', '755'],
-	['soap/reghost.py', '755']]
+perm = {'cfmachine/cfinstaller.py': '755',
+	'soap/getconf.py': '755',
+	'soap/reghost.py': '755'}
 
-copy = {
-	'__init__.py': '/usr/share/python-support/python-skolesys-client/skolesys/',
+copy = {'__init__.py': '/usr/share/python-support/python-skolesys-client/skolesys/',
 	'soap/__init__.py': '/usr/share/python-support/python-skolesys-client/skolesys/soap',
 	'soap/netinfo.py': '/usr/share/python-support/python-skolesys-client/skolesys/soap',
 	'soap/marshall.py': '/usr/share/python-support/python-skolesys-client/skolesys/soap',
@@ -42,8 +41,7 @@ copy = {
 	'tools': '/usr/share/python-support/python-skolesys-client/skolesys/',
 	'definitions': '/usr/share/python-support/python-skolesys-client/skolesys/'}
 
-links = {
-	'/usr/sbin/ss_installer': '../share/python-support/python-skolesys-client/skolesys/cfmachine/cfinstaller.py',
+links = {'/usr/sbin/ss_installer': '../share/python-support/python-skolesys-client/skolesys/cfmachine/cfinstaller.py',
 	'/usr/sbin/ss_getconf': '../share/python-support/python-skolesys-client/skolesys/soap/getconf.py',
 	'/usr/sbin/ss_reghost': '../share/python-support/python-skolesys-client/skolesys/soap/reghost.py'}
 

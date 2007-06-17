@@ -22,19 +22,19 @@ control = {
  and registering thin client servers (LTSP).
 """}
 
-perm = [['soap/server.py', '755'],
-	['soap/skolesysd', '755'],
-	['lib/usercommands.py', '755'],
-	['lib/groupcommands.py', '755'],
-	['lib/hostcommands.py', '755'],
-	['cfmachine/cfinstaller.py', '755'],
-	['config-templates/default-templates', 'u+wrX,g-wx+rX,o-wx+rX'],
-	['config-templates/default-templates/common/rootdir/etc/ldap.secret','g-r,o-r'],
-	['config-templates/default-templates/common/rootdir/etc/pam_ldap.secret','g-r,o-r'],
-	['config-templates/default-templates/ltspserver/rootdir/etc/firestarter/configuration','g-r,o-r'],
-	['config-templates/default-templates/ltspserver/rootdir/etc/firestarter/inbound','g-Xr,o-Xr'],
-	['config-templates/default-templates/ltspserver/rootdir/etc/cron.hourly/ss_update-hosts','u+rwx,g-rw,o-rw'],
-	['misc/etc','g-r,o-r']]
+perm = {'soap/server.py': '755',
+	'soap/skolesysd': '755',
+	'lib/usercommands.py': '755',
+	'lib/groupcommands.py': '755',
+	'lib/hostcommands.py': '755',
+	'cfmachine/cfinstaller.py': '755',
+	'config-templates/default-templates': 'u+wrX,g-wx+rX,o-wx+rX',
+	'config-templates/default-templates/common/rootdir/etc/ldap.secret':'g-r,o-r',
+	'config-templates/default-templates/common/rootdir/etc/pam_ldap.secret':'g-r,o-r',
+	'config-templates/default-templates/ltspserver/rootdir/etc/firestarter/configuration':'g-r,o-r',
+	'config-templates/default-templates/ltspserver/rootdir/etc/firestarter/inbound':'g-Xr,o-Xr',
+	'config-templates/default-templates/ltspserver/rootdir/etc/cron.hourly/ss_update-hosts':'u+rwx,g-rw,o-rw',
+	'misc/etc':'g-r,o-r'}
 
 copy = {
 	'__init__.py': '/usr/share/python-support/python-skolesys-mainserver/skolesys/',

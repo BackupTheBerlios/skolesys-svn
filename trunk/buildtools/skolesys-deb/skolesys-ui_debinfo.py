@@ -37,7 +37,7 @@ control = {
  and registering thin client servers (LTSP).
 """}
 
-perm = [['skolesys-ui.py', '755']]
+perm = {'skolesys-ui.py': '755'}
 
 copy = {'.': '/usr/lib/skolesys-ui/'}
 

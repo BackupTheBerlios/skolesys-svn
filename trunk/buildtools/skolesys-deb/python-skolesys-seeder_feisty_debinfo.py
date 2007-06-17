@@ -19,12 +19,12 @@ control = {
 """ The SkoleSYS seeder package provides scripts to seed a host as a mainserver or client
 """}
 
-perm = [['seeder/seed_workstation.py', '755'],
-	['seeder/seed_ltspserver.py', '755'],
-	['seeder/seed_mainserver.py', '755'],
-	['cfmachine/cfinstaller.py', '755'],
-	['soap/getconf.py', '755'],
-	['soap/reghost.py', '755']]
+perm = {'seeder/seed_workstation.py': '755',
+	'seeder/seed_ltspserver.py': '755',
+	'seeder/seed_mainserver.py': '755',
+	'cfmachine/cfinstaller.py': '755',
+	'soap/getconf.py': '755',
+	'soap/reghost.py': '755'}
 
 copy = {
 	'__init__.py': '/usr/share/python-support/python-skolesys-seeder/skolesys/',
