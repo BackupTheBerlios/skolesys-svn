@@ -1,0 +1,34 @@
+cd skolesys-deb
+sudo rm *.deb
+
+./version_ticker skolesys_ver $1
+sudo ./build-deb python-skolesys-mainserver_dapper
+sudo ./build-deb --dont-fetch python-skolesys-client_dapper
+sudo ./build-deb --dont-fetch python-skolesys-seeder_dapper
+sudo ./build-deb --dont-fetch python-skolesys-client_feisty
+sudo ./build-deb --dont-fetch python-skolesys-seeder_feisty
+#sudo ./build-deb skolesys-ui_dapper
+sudo ./build-deb skolesys-qt4_feisty
+
+# Dapper dist
+rm ~/skolesys-apt/dapper/main/i386/python*-skolesys*.deb
+#rm ~/skolesys-apt/dapper/main/i386/skolesys-ui*
+cp python*-skolesys*dapper*.deb ~/skolesys-apt/dapper/main/i386/
+#cp skolesys-ui*.deb ~/skolesys-apt/dapper/main/i386/
+
+# Feisty dist
+rm ~/skolesys-apt/feisty/main/i386/python*-skolesys*.deb
+rm ~/skolesys-apt/feisty/main/i386/skolesys-qt4*
+cp python-skolesys*feisty*.deb ~/skolesys-apt/feisty/main/i386/
+cp skolesys-qt4*.deb ~/skolesys-apt/feisty/main/i386/
+
+cd ~/skolesys-apt
+sudo ./build-apt dapper
+sudo ./dist-repo
+scp -r dists pool skolesys.gpg.asc simon@skolesys.dk:/srv/apt/skolesys/stable
+
+sudo ./build-apt feisty
+sudo ./dist-repo
+scp -r dists pool skolesys.gpg.asc simon@skolesys.dk:/srv/apt/skolesys/stable
+
+
