@@ -1,12 +1,5 @@
 <!DOCTYPE TS><TS>
 <context>
-    <name>Actions</name>
-    <message>
-        <source>Views</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>AddRemoveGroupUsersWdg</name>
     <message>
         <source>Form</source>
@@ -34,6 +27,10 @@
     </message>
     <message>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Applying membership changes...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -65,6 +62,10 @@
     </message>
     <message>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Applying membership changes...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -418,6 +419,14 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This wizard will take you through the steps of creating a new user. All user resources will be created and the user can login immediately after finalization.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Filestatistics&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Search through all files created and downloaded by SkoleSYS users. Search for all movie files, audio files etc. based on all users or just a certain user. Use the minimum file size threshold to ignore smaller files.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UserEditWdg</name>
@@ -614,6 +623,58 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import users...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export users...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export groups...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create group...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create user...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Users</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Views</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
