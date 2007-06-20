@@ -50,7 +50,6 @@ if __name__=='__main__':
 	if not dir(debinfo).count('fetch_method'):
 		print "ERROR: %s_debfile.py requires the member 'fetch_method'" % module	
 
-	# Fetch by subversion
 	if options.dont_fetch == False:
 		
 		# Clean workspaces	
@@ -59,6 +58,7 @@ if __name__=='__main__':
 		os.mkdir('rep')
 		
 		if debinfo.fetch_method=='svn':
+			# Fetch by subversion
 			if not options.svnbase:
 				env_svnbase = os.getenv('SKOLESYS_SVNBASE')
 				if dir(debinfo).count('svn_repos'):
