@@ -1,2 +1,2 @@
-cd doctools
+cd docutils
 make html
