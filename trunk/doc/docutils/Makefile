@@ -179,10 +179,10 @@ world:	ps pdf html distfiles
 # Python/C API Reference Manual
 # Skolesys Developer Documentation
 paper-$(PAPER)/devel.dvi: $(DEVELFILES)
-	cd paper-$(PAPER) && $(MKDVI) ../skolesys-tex-doc/devel/devel.tex
+	cd paper-$(PAPER) && $(MKDVI) ../../skolesys-tex-doc/devel/devel.tex
 
 paper-$(PAPER)/devel.pdf: $(DEVELFILES)
-	cd paper-$(PAPER) && $(MKPDF) ../skolesys-tex-doc/devel/devel.tex
+	cd paper-$(PAPER) && $(MKPDF) ../../skolesys-tex-doc/devel/devel.tex
 
 # The remaining part of the Makefile is concerned with various
 # conversions, as described above.  See also the README file.

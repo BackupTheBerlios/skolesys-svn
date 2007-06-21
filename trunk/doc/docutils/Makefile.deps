@@ -21,4 +21,6 @@ HOWTOSTYLES= texinputs/howto.cls \
 
 DEVELFILES= $(HOWTOSTYLES) $(INDEXSTYLES) $(COMMONTEX) \
 	../skolesys-tex-doc/devel/devel.tex \
-	../skolesys-tex-doc/devel/skolesys-deb.tex
+	../skolesys-tex-doc/devel/skolesys-deb.tex \
+	../skolesys-tex-doc/devel/skolesys-apt.tex \
+	../skolesys-tex-doc/devel/skolesys-cd.tex
