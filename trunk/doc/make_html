@@ -1,0 +1,2 @@
+cd doctools
+make html

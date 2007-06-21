@@ -1,0 +1,24 @@
+# LaTeX source dependencies.
+
+COMMONSTYLES= texinputs/python.sty \
+	texinputs/pypaper.sty
+
+INDEXSTYLES=texinputs/python.ist
+
+COMMONTEX=commontex/copyright.tex \
+	commontex/license.tex \
+	commontex/patchlevel.tex \
+	commontex/boilerplate.tex
+
+MANSTYLES= texinputs/fncychap.sty \
+	texinputs/manual.cls \
+	$(COMMONSTYLES)
+
+HOWTOSTYLES= texinputs/howto.cls \
+	$(COMMONSTYLES)
+
+
+
+DEVELFILES= $(HOWTOSTYLES) $(INDEXSTYLES) $(COMMONTEX) \
+	../skolesys-tex-doc/devel/devel.tex \
+	../skolesys-tex-doc/devel/skolesys-deb.tex

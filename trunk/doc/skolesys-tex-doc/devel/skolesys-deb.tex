@@ -1,0 +1,137 @@
+\section{skolesys-deb\label{skolesys-deb}}
+This tool is used to create deb-files for distribution. It can fetch distribution content using svn, iso or tgz. Each deb-file is controlled by a debinfo file, the naming convention for such a file is \member{<module_name>_debinfo.py} - e.g. the module named \member{"python-skolesys-client_feisty"} should be named: \member{"python-skolesys-client_feisty_debinfo.py"}. Module name should not be confused with package name, the package name is specified inside the debinfo file.
+
+\begin{verbatim}
+skolesys-deb[-r svn_repos][-l iso_dir][-t tgz_dir][--dont-fetch] module_name
+\end{verbatim}
+
+
+\begin{tableiii}{l|l|l}{command}{Short-option}{Long-option}{Description}
+  \lineiii{-r \var{url}}{\member{--svnbase=\var{url}}}{URL to the subversion repository to fetch from (use when \member{fetch_method='svn'})}
+  \lineiii{\member{-l \var{dir}}}{\member{--iso-location=\var{dir}}}{The directory containing the iso file (use when \member{fetch_method='iso'})}
+  \lineiii{\member{-l \var{dir}}}{\member{--iso-location=\var{dir}}}{The directory containing the tar.gz file (use when \member{fetch_method='tgz'})}
+  \lineiii{}{\member{--dont-fetch}}{Don't fetch the package contents. This is used if more than one package is based on the same content resource, so if these packages are build successively there is no need to fetch the content more than once.}
+  \lineiii{\member{-h}}{\member{--help}}{Show the help message and exit}
+\end{tableiii}
+
+\subsection{debinfo files\label{debinfo}}
+Describing the naming convention has already revealed that the python interpreter is used for parsing debinfo files, and that is also why I say module name instead of package name. A debinfo file consists of a number of global variables, most of these are optional but there are three mandatory.
+
+Mandatory variables:
+\begin{tableiii}{c|l|l}{textrm}{Name}{Type}{Description}
+  \lineiii{\member{fetch_method}}{\member{string}}{Specify how to fetch the content for the deb-package.}
+  \lineiii{\member{control}}{\member{dict}}{This dictionary holds the normal dpkg control structure. There is a special feature regarding the Version value for grouping packages together giving them the same package version. Simply set the value to point to the file containing the version number in the first line. (e.g. 'Version': 'file://ver_no')}
+  \lineiii{\member{copy}}{\member{dict}}{Specify which files should go where in the filesystem during installation.}
+\end{tableiii}
+
+Optional Variables:
+\begin{tableiii}{c|l|l}{textrm}{Name}{Type}{Description}
+  \lineiii{\member{svn_module}}{\member{string}}{When using subversion as fetch method you can use this variable to specify a certain path in the repository. If this variable is not set skolesys-deb will try to use the module_name as path.}
+  \lineiii{\member{svn_repos}}{\member{string}}{Specify the subversion repository to fetch the package source from. If this variable is set it will override the SKOLESYS_SVNBASE environment variable but not the command line argument -r.}
+  \lineiii{\member{links}}{\member{dict}}{Each key-value entry in the links dict specifies a symbolic link to be created in the filesystem after installation.}
+  \lineiii{\member{perm}}{\member{dict}}{The perm variable can be used to setup file permissions for the files being installed.}
+  \lineiii{\member{preinst}}{\member{string}}{Script to be executed before package installation.}
+  \lineiii{\member{postinst}}{\member{string}}{Script to be executed after package installation.}
+  \lineiii{\member{prerm}}{\member{string}}{Script to be executed before package removal.}
+  \lineiii{\member{postrm}}{\member{string}}{Script to be executed after package removal.}
+\end{tableiii}
+
+Example:
+\begin{verbatim}
+fetch_method = "svn"
+svn_module = "system"
+
+control = {
+	'Package': 'python-skolesys-client',
+	'Version': 'file://skolesys_ver',
+	'NameExtension': 'feisty_all',
+	'Section': 'python',
+	'Priority': 'optional',
+	'Architecture': 'all',
+	'Depends': 'python-support (>= 0.2), python-soappy, python-m2crypto',
+	'Recommends': 'skolesys-qt4',
+	'Maintainer': 'Jakob Simon-Gaarde <jakob@skolesys.dk>',
+	'Replaces': 'python-skolesys-seeder, python2.4-skolesys-seeder, python2.4-skolesys-client',
+	'Conflicts': 'python2.4-skolesys-mainserver, python2.4-skolesys-seeder, python-skolesys-mainserver, python-skolesys-seeder',
+	'Provides': 'python2.5-skolesys-client, python2.3-skolesys-client, python2.4-skolesys-client',
+	'Description': 'This is the soap client part of the SkoleSYS linux distribution',
+	'longdesc': 
+""" The skolesys package provides the nessecary tools for administrating the SkoleSYS
+ distribution. The main issue here is creating users and groups, controlling permissions,
+ creating user and group spaces, registering client workstations (Windows, Linux, MacOS)
+ and registering thin client servers (LTSP).
+"""}
+
+perm = {'cfmachine/cfinstaller.py': '755',
+	'soap/getconf.py': '755',
+	'soap/reghost.py': '755'}
+
+copy = {
+	'__init__.py': '/usr/share/python-support/python-skolesys-client/skolesys/',
+	'soap/__init__.py': '/usr/share/python-support/python-skolesys-client/skolesys/soap',
+	'soap/netinfo.py': '/usr/share/python-support/python-skolesys-client/skolesys/soap',
+	'soap/marshall.py': '/usr/share/python-support/python-skolesys-client/skolesys/soap',
+	'soap/getconf.py': '/usr/share/python-support/python-skolesys-client/skolesys/soap',
+	'soap/reghost.py': '/usr/share/python-support/python-skolesys-client/skolesys/soap',
+	'soap/client.py': '/usr/share/python-support/python-skolesys-client/skolesys/soap',
+	'soap/p2.py': '/usr/share/python-support/python-skolesys-client/skolesys/soap',
+	'cfmachine/__init__.py': '/usr/share/python-support/python-skolesys-client/skolesys/cfmachine',
+	'cfmachine/cfinstaller.py': '/usr/share/python-support/python-skolesys-client/skolesys/cfmachine',
+	'cfmachine/apthelpers.py': '/usr/share/python-support/python-skolesys-client/skolesys/cfmachine',
+	'cfmachine/fstabhelpers.py': '/usr/share/python-support/python-skolesys-client/skolesys/cfmachine',
+	'tools': '/usr/share/python-support/python-skolesys-client/skolesys/',
+	'definitions': '/usr/share/python-support/python-skolesys-client/skolesys/'}
+
+links = {
+	'/usr/sbin/ss_installer': '../share/python-support/python-skolesys-client/skolesys/cfmachine/cfinstaller.py',
+	'/usr/sbin/ss_getconf': '../share/python-support/python-skolesys-client/skolesys/soap/getconf.py',
+	'/usr/sbin/ss_reghost': '../share/python-support/python-skolesys-client/skolesys/soap/reghost.py'}
+
+postinst = """#!/bin/sh
+set -e
+# Automatically added by dh_pysupport
+if [ "$1" = "configure" ] && which update-python-modules >/dev/null 2>&1; then
+        update-python-modules -i /usr/share/python-support/python-skolesys-client
+fi
+# End automatically added section
+"""
+
+prerm = """#!/bin/sh
+set -e
+# Automatically added by dh_pysupport
+if which update-python-modules >/dev/null 2>&1; then
+        update-python-modules -c -i /usr/share/python-support/python-skolesys-client
+fi
+# End automatically added section
+"""
+
+postrm = """#!/bin/sh
+if [ -e /usr/share/python-support/python-skolesys-client/skolesys ]
+then
+  find /usr/share/python-support/python-skolesys-client/skolesys -name "*.pyc" -delete
+  find /usr/share/python-support/python-skolesys-client/skolesys -name "*.pyo" -delete
+fi
+"""
+\end{verbatim}
+
+\subsection{Subversion based modules\label{skolesys-deb-svn}}
+Most of the skolesys-deb modules rely on fetching their content from a subversion repository. It is possible to setup this repository once and for all by setting the SKOLESYS_SVNBASE environment variable. 
+
+However, if you need to fetch content for different skolesys-deb modules from different repositories you can specify the repository for each module by setting the svn_repos variable in the debinfo file or you can do it by using the -r command line option. svn_repos will override SKOLESYS_SVNBASE, -r command line options overrides everything.
+The debinfo variable svn_module specifies the path to fetch from inside the repository. If svn_module is unset skolesys-deb will try to fetch using the module_name as path.
+
+\begin{tableii}{c|l}{}{Environment Variable}{Description}
+  \lineii{\member{SKOLESYS_SVNBASE}}{The default subversion repository or repository parent dir.}
+\end{tableii}
+
+\note{If you need to fetch from the base of a repository you will have to set svn_repos to the parent dir of the repository - so if I need to fetch from the root of the repository located at svn.mydomain.org/srv/svn/skolesys I will need to set svn_repos to somthing like svn+ssh://svn.mydomain.org/srv/svn/ and svn_module to skolesys.}
+
+\subsection{ISO and tar.gz based modules\label{skolesys-deb-iso}}
+There is not much to say about these fetch methods. All skolesys-deb needs to know is where to find the iso or tgz files. Like when using subversion for fetch method you can set environment variables that will serve as default directories for iso/tgz file hunting.
+
+command line options -l iso_dir and -t  tgz_dir can also be used to set the directory location and these will of course override the environment variables if set. 
+
+\begin{tableii}{c|l}{}{Environment Variable}{Description}
+  \lineii{\member{SKOLESYS_ISODIR}}{The default directory when searching for ISO files.}
+  \lineii{\member{SKOLESYS_TGZDIR}}{The default directory when searching for tgz files.}
+\end{tableii}

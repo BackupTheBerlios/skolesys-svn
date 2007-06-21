@@ -1,0 +1,48 @@
+\documentclass{manual}
+
+\title{SkoleSYS Developer Documentation}
+
+\makeindex			% tell \index to actually write the .idx file
+
+
+\begin{document}
+
+\maketitle
+
+\ifhtml
+\chapter*{Front Matter\label{front}}
+\fi
+
+\begin{abstract}
+
+\noindent
+This document addresses the developer specific issues of SkoleSYS. It is
+split up in two main parts - SkoleSYS library documentation and SkoleSYS
+distribution tools (disttools).
+
+SkoleSYS Library Documentation coveres the skolesys python package wich
+is essentially all SkoleSYS logic e.g. client, server, configuration, SOAP
+and more.
+
+SkoleSYS Distribution Tools documents the three tools for deb-packaging,
+APT distribution and install CD creation (skolesys-deb, skolesys-apt and 
+skolesys-cd)
+
+\end{abstract}
+
+\tableofcontents
+
+\chapter{SkoleSYS Distribution Tools (disttools)\label{disttools}} \input{skolesys-deb}
+
+
+% \chapter{Debugging \label{debugging}}
+%
+% XXX Explain Py_DEBUG, Py_TRACE_REFS, Py_REF_DEBUG.
+
+
+
+\input{devel.ind}			% Index -- must be last
+
+\end{document}
+
+
