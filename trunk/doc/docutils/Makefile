@@ -57,7 +57,8 @@
 # Customization -- you *may* have to edit this
 
 # You could set this to a4:
-PAPER=letter
+#PAPER=letter
+PAPER=a4
 
 # Ideally, you shouldn't need to edit beyond this point
 

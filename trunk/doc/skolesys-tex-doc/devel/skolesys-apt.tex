@@ -1,15 +1,15 @@
 \section{skolesys-apt\label{skolesys-apt}}
-After creating debian packages the next thing needed is to make life easier for debian users who want to use the packages. To do that we are going to create a standard debian package repository which debian APT (Advanced Package Tool) relies on. 
+After creating debian packages the next thing needed is to make life easier for debian users who want to use the packages. To do that we are going to create a standard debian package archive which debian APT (Advanced Package Tool) relies on. 
 
-skolesys-apt can do this automatically, all we need to do is create a simple aptinfo file and place the debian files in a distribution hierarchi - also we need a gpg key-pair to sign the APT Release file. If you don't have such a key-pair it will be shown how to gererate it.
+skolesys-apt can do this automatically, all we need to do is create a simple aptinfo file and place the debian files in a distribution hierarchi - also we need a gpg key-pair to sign the APT Release file. If you don't have such a key-pair it will be shown how to gererate it. It will also be shown how to copy a gpg key/pair if you already have one on another server that you want to reuse.
 
-skolesys-apt will create the APT repository on the local filesystem ready to ship by copying the two folders \member{dists} and \member{pool} and the public part of the gpg key-pair to the host running the webserver that is going to expose the repository.
+skolesys-apt will create the APT archive on the local filesystem ready to ship by copying the two folders \member{dists} and \member{pool} and the public part of the gpg key-pair to the host running the webserver that is going to expose the archive.
 
 \index{skolesys-apt}
 \member{Usage: skolesys-apt [-g gpgid] <distribution_name>}
 
 \begin{tableiii}{l|l|l}{command}{Short-option}{Long-option}{Description}
-  \lineiii{-g \var{GPGID}}{\member{--gpgid=\var{GPGID}}}{Use a specific key for signing the APT repository}
+  \lineiii{-g \var{GPGID}}{\member{--gpgid=\var{GPGID}}}{Use a specific key for signing the APT archive}
 \end{tableiii}
 
 There are tree ways to setup the GPG ID of the key to use for signing. Command line option (\member{-r} or \member{---gpgid}), aptfile variable (\member{gpgid}) or by using the environment variable \member{SKOLESYS_GPGID} to set a default gpg id for signing. This also the precedens order. Thus environment varible will be overridden by the aptinfo variable which will be overridden by the command line option.
@@ -23,7 +23,7 @@ There are tree ways to setup the GPG ID of the key to use for signing. Command l
 Prerequisite: You need \member{gnupg} installed to go any further.
 
 \subsubsection{Reuse an existing gpg key-pair\label{skolesys-apt-reusegpg}}
-If you already have a gpg key-pair you wish to use for signing the APT repository it is possible to export the key-pair and then import it on the host where you are running skolesys-apt.
+If you already have a gpg key-pair you wish to use for signing the APT archive it is possible to export the key-pair and then import it on the host where you are running skolesys-apt.
 Let us say that the user gpg-owner on host gpg-source-host has the key-pair we want to export and the user skolesys-devel on host gpg-dest-host needs to import it:
 
 Export key-pair:
@@ -48,7 +48,7 @@ skolesys-devel@gpg-dest-host$ gpg --allow-secret-key-import --import public.gpg.
 \end{verbatim}
 \end{enumerate}
 
-\member{public.gpg.asc} will be the public key block that you must expose to the public to make your signed APT repository validate and thereby accessible to remote debian based systems.
+\member{public.gpg.asc} will be the public key block that you must expose to the public to make your signed APT archive validate and thereby accessible to remote debian based systems.
 
 \subsubsection{Create a gpg key-pair\label{skolesys-apt-creategpg}}
 If you don't have a gpg key-pair to use for this task then you need to create one now.
@@ -72,12 +72,12 @@ sub   2048g/FDD61F6E 2007-06-21
 gpg --export --armor jakob@email.com > public.gpg.asc
  \end{verbatim}
 
- \member{public.gpg.asc} will be the public key block that you must expose to the public to make your signed APT repository validate and thereby accessible to remote debian based systems.
+ \member{public.gpg.asc} will be the public key block that you must expose to the public to make your signed APT archive validate and thereby accessible to remote debian based systems.
 
 \end{enumerate}
 
 \subsection{Creating a distribution hierarchi\label{skolesys-apt-pool}}
-In order to build the repository it is nessecary create a distribution hierarchi that can tell skolesys-apt how to group the packages. In a distribution you might need to divide your packages into components like \member{free}, \member{non-free}, \member{eyecandy} or \member{security}. And if you are targetting binary packages to more than one computer architecture you will need to place them in each there own platform branch (ie. \member{i386}, \member{amd64} or \member{all}). The hierarchi is build using the filesystem. Each aptinfo file target a distribution with their package hierarchi created in a directory named after the distribution codename:
+In order to build the archive it is nessecary create a distribution hierarchi that can tell skolesys-apt how to group the packages. In a distribution you might need to divide your packages into components like \member{free}, \member{non-free}, \member{eyecandy} or \member{security}. And if you are targetting binary packages to more than one computer architecture you will need to place them in each there own platform branch (ie. \member{i386}, \member{amd64} or \member{all}). The hierarchi is build using the filesystem. Each aptinfo file target a distribution with their package hierarchi created in a directory named after the distribution codename:
 
 \citetitle{Pseudo package hierarchi:}
 \begin{verbatim}
@@ -119,16 +119,16 @@ feisty/eyecandy/amd64/beryl-ubuntu-amd64.deb
 \end{verbatim}
 
 \subsection{Creating aptinfo file\label{skolesys-apt-aptinfo}}
-The last step of creating the APT repository is creating the aptinfo file for the distribution. The aptinfo file is the control file used by \member{skolesys-apt} to pickup the information needed to do the creation. Like skolesys-deb you have to use a certain naming convention <distribution_name>_aptinfo.py. Inside the aptinfo file is an important variable called \member{release_info} holding the repository details. 
+The last step of creating the APT archive is creating the aptinfo file for the distribution. The aptinfo file is the control file used by \member{skolesys-apt} to pickup the information needed to do the creation. Like skolesys-deb you have to use a certain naming convention <distribution_name>_aptinfo.py. Inside the aptinfo file is an important variable called \member{release_info} holding the archive details. 
 
 \note{\member{codename} is used by \member{skolesys-apt} to target the distribution hierarchi of packages on the local filesystem (see previous section).}
 
-\note{You can setup a GPG ID targetting a certain key to use for signing a repository pr. aptinfo file by setting the \member{gpgid} variable (see below) this will override the environment variable \member{SKOLESYS_GPGID} but not the command line option -g}
+\note{You can setup a GPG ID targetting a certain key to use for signing an archive pr. aptinfo file by setting the \member{gpgid} variable (see below) this will override the environment variable \member{SKOLESYS_GPGID} but not the command line option -g}
 
 \begin{tableiii}{c|l|l}{textrm}{Name}{Type}{Description}
   \lineiii{\member{origin}}{\member{string}}{Your name or the name of your organization}
-  \lineiii{\member{label}}{\member{string}}{A label describing the specific build of the repository}
-  \lineiii{\member{suite}}{\member{string}}{The common name of the APT repository(ie. 'testing','stable')}
+  \lineiii{\member{label}}{\member{string}}{A label describing the specific build of the archive}
+  \lineiii{\member{suite}}{\member{string}}{The common name of the APT archive(ie. 'testing','stable')}
   \lineiii{\member{version}}{\member{string}}{Version number (ie. 0.9.4-3)}
   \lineiii{\member{description}}{\member{string}}{Description is used to describe the release. For instance 'testing' would contain a warning that the packages have problems.}
 \end{tableiii}
