@@ -6,14 +6,24 @@ skolesys-apt can do this automatically, all we need to do is create a simple apt
 skolesys-apt will create the APT repository on the local filesystem ready to ship by copying the two folders \member{dists} and \member{pool} and the public part of the gpg key-pair to the host running the webserver that is going to expose the repository.
 
 \index{skolesys-apt}
-\member{Usage: skolesys-apt dist_name}
+\member{Usage: skolesys-apt [-g gpgid] <distribution_name>}
+
+\begin{tableiii}{l|l|l}{command}{Short-option}{Long-option}{Description}
+  \lineiii{-g \var{GPGID}}{\member{--gpgid=\var{GPGID}}}{Use a specific key for signing the APT repository}
+\end{tableiii}
+
+There are tree ways to setup the GPG ID of the key to use for signing. Command line option (\member{-r} or \member{---gpgid}), aptfile variable (\member{gpgid}) or by using the environment variable \member{SKOLESYS_GPGID} to set a default gpg id for signing. This also the precedens order. Thus environment varible will be overridden by the aptinfo variable which will be overridden by the command line option.
+
+\begin{tableii}{c|l}{}{Environment Variable}{Description}
+  \lineii{\member{SKOLESYS_GPGID}}{The default GPG ID for signing APT repositories}
+\end{tableii}
 
 \subsection{Prepair gpg key-pair\label{skolesys-apt-gpg}}
 
 Prerequisite: You need \member{gnupg} installed to go any further.
 
 \subsubsection{Reuse an existing gpg key-pair\label{skolesys-apt-reusegpg}}
-If you already have a gpg key-pair you wish to use for signing the APT repository it os possible to export the key-pair and then import it on the host where you are running skolesys-apt.
+If you already have a gpg key-pair you wish to use for signing the APT repository it is possible to export the key-pair and then import it on the host where you are running skolesys-apt.
 Let us say that the user gpg-owner on host gpg-source-host has the key-pair we want to export and the user skolesys-devel on host gpg-dest-host needs to import it:
 
 Export key-pair:
@@ -25,12 +35,12 @@ gpg-owner@gpg-source-host$ gpg --armor --export-secret-keys EEF2B7FA > secret.gp
 gpg-owner@gpg-source-host$ gpg --armor --export EEF2B7FA > public.gpg.asc
 \end{verbatim}
 \end{enumerate}
-\note{EEF2B7FA is the key ID. Use gpg --list-keys to view your key ID's}
+\note{EEF2B7FA is the key ID. Use \member{gpg ---list-keys} to view your key ID's}
 
 Import key-pair:
 
 \begin{enumerate}
- \item Copy the secret.gpg.asc and public.gpg.asc from the source host
+ \item Copy the secret.gpg.asc and public.gpg.asc from the source host to the destination host
  \item log on to the destination host skolesys-developer@gpg-dest-host
  \item Import the key-pair
 \begin{verbatim}
@@ -47,7 +57,7 @@ If you don't have a gpg key-pair to use for this task then you need to create on
  \begin{verbatim}
 gpg --gen-key
 
-.... (I used the no-existing email: jakob@email.com)
+.... (I used the non-existing email: jakob@email.com)
 
 pub   1024D/55117311 2007-06-21
 	Key fingerprint = F461 E5AF 0DE8 B3E4 358D  DEB6 EC23 7CF4 5511 7311
@@ -67,23 +77,79 @@ gpg --export --armor jakob@email.com > public.gpg.asc
 \end{enumerate}
 
 \subsection{Creating a distribution hierarchi\label{skolesys-apt-pool}}
-Most of the skolesys-deb modules rely on fetching their content from a subversion repository. It is possible to setup this repository once and for all by setting the SKOLESYS_SVNBASE environment variable. 
+In order to build the repository it is nessecary create a distribution hierarchi that can tell skolesys-apt how to group the packages. In a distribution you might need to divide your packages into components like \member{free}, \member{non-free}, \member{eyecandy} or \member{security}. And if you are targetting binary packages to more than one computer architecture you will need to place them in each there own platform branch (ie. \member{i386}, \member{amd64} or \member{all}). The hierarchi is build using the filesystem. Each aptinfo file target a distribution with their package hierarchi created in a directory named after the distribution codename:
 
-However, if you need to fetch content for different skolesys-deb modules from different repositories you can specify the repository for each module by setting the svn_repos variable in the debinfo file or you can do it by using the -r command line option. svn_repos will override SKOLESYS_SVNBASE, -r command line options overrides everything.
-The debinfo variable svn_module specifies the path to fetch from inside the repository. If svn_module is unset skolesys-deb will try to fetch using the module_name as path.
+\citetitle{Pseudo package hierarchi:}
+\begin{verbatim}
+codename
+codename/component-1
+codename/component-1/architecture-1
+codename/component-1/architecture-1/package1_arch1.deb
+codename/component-1/architecture-1/package2_arch1.deb
+codename/component-1/architecture-2/architecture-2
+codename/component-1/architecture-2/package1_arch2.deb
+codename/component-1/architecture-2/package2_arch2.deb
+codename/component-2
+codename/component-2/architecture-1
+codename/component-2/architecture-1/package3_arch1.deb
+codename/component-2/architecture-1/package4_arch1.deb
+codename/component-2/architecture-2
+codename/component-2/architecture-2/package3_arch2.deb
+codename/component-2/architecture-2/package4_arch2.deb
+\end{verbatim}
 
-\begin{tableii}{c|l}{}{Environment Variable}{Description}
-  \lineii{\member{SKOLESYS_SVNBASE}}{The default subversion repository or repository parent dir.}
-\end{tableii}
-
-\note{If you need to fetch from the base of a repository you will have to set svn_repos to the parent dir of the repository - so if I need to fetch from the root of the repository located at svn.mydomain.org/srv/svn/skolesys I will need to set svn_repos to somthing like svn+ssh://svn.mydomain.org/srv/svn/ and svn_module to skolesys.}
+\citetitle{A realistic example of a package hierarchi:}
+\begin{verbatim}
+feisty
+feisty/main
+feisty/main/i386
+feisty/main/i386/skolesys-ltsp_4.2-2-skolesys1_i386.deb
+feisty/main/i386/skolesys-ltsp-localdev-kde_4.2-2-skolesys1_i386.deb
+feisty/main/amd64
+feisty/main/amd64/skolesys-ltsp_4.2-2-skolesys1_amd64.deb
+feisty/main/amd64/skolesys-ltsp-localdev-kde_4.2-2-skolesys1_amd64.deb
+feisty/main/all/python-skolesys-client_0.9.5-26-feisty_all.deb
+feisty/main/all/python-skolesys-seeder_0.9.5-26-feisty_all.deb
+feisty/main/all/skolesys-qt4_0.9.5-26-feisty_all.deb
+feisty/eyecandy
+feisty/eyecandy/i386
+feisty/eyecandy/i386/beryl-ubuntu-i386.deb
+feisty/eyecandy/amd64
+feisty/eyecandy/amd64/beryl-ubuntu-amd64.deb
+\end{verbatim}
 
 \subsection{Creating aptinfo file\label{skolesys-apt-aptinfo}}
-There is not much to say about these fetch methods. All skolesys-deb needs to know is where to find the iso or tgz files. Like when using subversion for fetch method you can set environment variables that will serve as default directories for iso/tgz file hunting.
+The last step of creating the APT repository is creating the aptinfo file for the distribution. The aptinfo file is the control file used by \member{skolesys-apt} to pickup the information needed to do the creation. Like skolesys-deb you have to use a certain naming convention <distribution_name>_aptinfo.py. Inside the aptinfo file is an important variable called \member{release_info} holding the repository details. 
 
-command line options -l iso_dir and -t  tgz_dir can also be used to set the directory location and these will of course override the environment variables if set. 
+\note{\member{codename} is used by \member{skolesys-apt} to target the distribution hierarchi of packages on the local filesystem (see previous section).}
+
+\note{You can setup a GPG ID targetting a certain key to use for signing a repository pr. aptinfo file by setting the \member{gpgid} variable (see below) this will override the environment variable \member{SKOLESYS_GPGID} but not the command line option -g}
+
+\begin{tableiii}{c|l|l}{textrm}{Name}{Type}{Description}
+  \lineiii{\member{origin}}{\member{string}}{Your name or the name of your organization}
+  \lineiii{\member{label}}{\member{string}}{A label describing the specific build of the repository}
+  \lineiii{\member{suite}}{\member{string}}{The common name of the APT repository(ie. 'testing','stable')}
+  \lineiii{\member{version}}{\member{string}}{Version number (ie. 0.9.4-3)}
+  \lineiii{\member{description}}{\member{string}}{Description is used to describe the release. For instance 'testing' would contain a warning that the packages have problems.}
+\end{tableiii}
+\citetitle{The release_info variable (key/value description)}
+
+\citetitle{Real example:}
+\begin{verbatim}
+$ cat feisty_aptinfo.py
+release_info = {
+        'origin': 'SkoleSYS',
+        'label': 'SkoleSYS',
+        'suite': 'stable',
+        'version': '0.9.5-2',
+        'codename': 'feisty',
+        'description': '''
+SkoleSYS for feisty 0.9.5-2. This archive contains the SkoleSYS libraries and
+a binary package of LTSP 4.2 for the i386 architecture'''}
+
+gpgid = "EEF2B7FA"
+\end{verbatim}
 
 \begin{tableii}{c|l}{}{Environment Variable}{Description}
-  \lineii{\member{SKOLESYS_ISODIR}}{The default directory when searching for ISO files.}
-  \lineii{\member{SKOLESYS_TGZDIR}}{The default directory when searching for tgz files.}
+  \lineii{\member{SKOLESYS_GPGID}}{The default GPG ID for signing APT repositories}
 \end{tableii}
