@@ -77,9 +77,9 @@ gpg --export --armor jakob@email.com > public.gpg.asc
 \end{enumerate}
 
 \subsection{Creating a distribution hierarchi\label{skolesys-apt-pool}}
-In order to build the archive it is nessecary create a distribution hierarchi that can tell skolesys-apt how to group the packages. In a distribution you might need to divide your packages into components like \member{free}, \member{non-free}, \member{eyecandy} or \member{security}. And if you are targetting binary packages to more than one computer architecture you will need to place them in each there own platform branch (ie. \member{i386}, \member{amd64} or \member{all}). The hierarchi is build using the filesystem. Each aptinfo file target a distribution with their package hierarchi created in a directory named after the distribution codename:
+In order to build the archive it is nessecary create a distribution hierarchi that can tell skolesys-apt how to group the packages. In a distribution you might need to divide your packages into components like \member{free}, \member{non-free}, \member{eyecandy} or \member{security}. And if you are targetting binary packages to more than one computer architecture you will need to place them in each there own platform branch (ie. \member{i386}, \member{amd64} or \member{all}). The hierarchi is build using the filesystem. Each aptinfo file target a distribution with their hierarchi created in a directory named after the distribution codename:
 
-\citetitle{Pseudo package hierarchi:}
+\citetitle{Pseudo distribution hierarchi:}
 \begin{verbatim}
 codename
 codename/component-1
@@ -98,7 +98,7 @@ codename/component-2/architecture-2/package3_arch2.deb
 codename/component-2/architecture-2/package4_arch2.deb
 \end{verbatim}
 
-\citetitle{A realistic example of a package hierarchi:}
+\citetitle{A realistic example of a distribution hierarchi:}
 \begin{verbatim}
 feisty
 feisty/main

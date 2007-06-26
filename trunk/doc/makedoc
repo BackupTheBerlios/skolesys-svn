@@ -1,0 +1,58 @@
+#!/usr/bin/python
+
+from optparse import OptionParser
+import os,sys
+
+doc_root = os.path.dirname(os.path.abspath(__file__))
+
+if __name__=='__main__':
+	
+	commands = {
+		'disttools': 'Register a new host to the network',
+		'reference': 'List the registered information of a host'}
+
+	shell_cmd_name = os.path.split(sys.argv[0])[-1:][0]
+	
+	usage = "usage: %s [options] docname" % shell_cmd_name
+	if len(sys.argv)<2 or not commands.has_key(sys.argv[1]):
+		print usage
+		print 
+		print "Commands:"
+		for cmd,desc in commands.items():
+			print '%s - %s' % (cmd,desc)
+		exit(0)
+		
+	cmd = sys.argv[1]
+	
+	parser = OptionParser(usage=usage)
+
+	if cmd == "disttools":
+		formats = ['html','pdf']
+		parser.set_usage("usage: %s [options] %s" % (shell_cmd_name,cmd))
+		parser.add_option("-f", "--doc-format", dest="docformat",default='html',
+		                  help="Setup the output document format (%s,all)" % ','.join(formats), metavar="FORMAT")
+		(options, args) = parser.parse_args()
+		if formats.count(options.docformat):
+			formats = [options.docformat]
+		elif options.docformat=='all':
+			pass
+		else:
+			print "The format type %s is not supported for %s documentation" % (options.docformat,cmd)
+			sys.exit(1)
+		os.chdir(os.path.join(doc_root,'docutils'))
+		for f in formats:
+			os.system('make %s' % f)
+
+	if cmd == "reference":
+		formats = ['html']
+		parser.set_usage("usage: %s [options] %s" % (shell_cmd_name,cmd))
+		parser.add_option("-f", "--doc-format", dest="docformat",default='html',
+		                  help="Setup the output document format (%s,all)" % ','.join(formats), metavar="FORMAT")
+		(options, args) = parser.parse_args()
+		output_dir = os.path.join(doc_root,'docutils/html/reference')
+		if not os.path.exists(output_dir):
+			os.mkdir(output_dir)
+		
+		os.chdir(output_dir)
+		os.system('pydoc -k skolesys | xargs -n1 pydoc -w')
+
