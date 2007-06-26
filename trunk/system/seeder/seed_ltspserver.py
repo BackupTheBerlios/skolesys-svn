@@ -18,4 +18,6 @@ the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 Boston, MA 02110-1301, USA.
 '''
 import init_client
-init_client.init_client('ltspserver')
+
+if __name__=='__main__':
+	init_client.init_client('ltspserver')
