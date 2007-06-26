@@ -126,23 +126,23 @@ EMACS=     emacs
 WHATSNEW=whatsnew25
 
 # what's what
-MANDVIFILES=	paper-$(PAPER)/devel.dvi 
+MANDVIFILES=	paper-$(PAPER)/disttools.dvi 
 
-MANPDFFILES=	paper-$(PAPER)/devel.pdf
+MANPDFFILES=	paper-$(PAPER)/disttools.pdf
 
-MANPSFILES=	paper-$(PAPER)/devel.ps
+MANPSFILES=	paper-$(PAPER)/disttools.ps
 
 DVIFILES=	$(MANDVIFILES)
 PDFFILES=	$(MANPDFFILES)
 PSFILES=	$(MANPSFILES)
 
-HTMLCSSFILES=html/devel/devel.css
+HTMLCSSFILES=html/disttools/disttools.css
 
-ISILOCSSFILES=isilo/devel/devel.css
+ISILOCSSFILES=isilo/disttools/disttools.css
 
 ALLCSSFILES=$(HTMLCSSFILES) $(ISILOCSSFILES)
 
-INDEXFILES=html/devel/devel.html
+INDEXFILES=html/disttools/disttools.html
 
 ALLHTMLFILES=$(INDEXFILES) html/index.html
 
@@ -154,7 +154,7 @@ include Makefile.deps
 
 # These must be declared phony since there
 # are directories with matching names:
-.PHONY: devel
+.PHONY: disttools
 .PHONY: html info isilo
 
 
@@ -179,11 +179,11 @@ world:	ps pdf html distfiles
 # Targets for each document:
 # Python/C API Reference Manual
 # Skolesys Developer Documentation
-paper-$(PAPER)/devel.dvi: $(DEVELFILES)
-	cd paper-$(PAPER) && $(MKDVI) ../../skolesys-tex-doc/devel/devel.tex
+paper-$(PAPER)/disttools.dvi: $(DISTTOOLSFILES)
+	cd paper-$(PAPER) && $(MKDVI) ../../skolesys-tex-doc/disttools/disttools.tex
 
-paper-$(PAPER)/devel.pdf: $(DEVELFILES)
-	cd paper-$(PAPER) && $(MKPDF) ../../skolesys-tex-doc/devel/devel.tex
+paper-$(PAPER)/disttools.pdf: $(DISTTOOLSFILES)
+	cd paper-$(PAPER) && $(MKPDF) ../../skolesys-tex-doc/disttools/disttools.tex
 
 # The remaining part of the Makefile is concerned with various
 # conversions, as described above.  See also the README file.
@@ -242,24 +242,24 @@ html/index.html: html/index.html.in $(BOILERPLATE) tools/rewrite.py
 
 html:	$(ALLHTMLFILES) $(HTMLCSSFILES)
 
-devel: html/devel/devel.html html/devel/devel.css
-html/devel/devel.html: $(DEVELFILES)
-	$(MKHTML) --dir html/devel ../skolesys-tex-doc/devel/devel.tex
+disttools: html/disttools/disttools.html html/disttools/disttools.css
+html/disttools/disttools.html: $(DISTTOOLSFILES)
+	$(MKHTML) --dir html/disttools ../skolesys-tex-doc/disttools/disttools.tex
 
 
 # The iSilo format is used by the iSilo document reader for PalmOS devices.
 
-ISILOINDEXFILES=isilo/devel/devel.html
+ISILOINDEXFILES=isilo/disttools/disttools.html
 
 $(ISILOINDEXFILES): $(COMMONPERL) html/stdabout.dat perl/isilo.perl
 
-isilo:	isilo/python-devel.pdb
+isilo:	isilo/python-disttools.pdb
 
-isilo/python-devel.pdb: isilo/devel/devel.html isilo/devel/devel.css
+isilo/python-disttools.pdb: isilo/disttools/disttools.html isilo/disttools/disttools.css
 	$(MKISILO) "-iPython/C API Reference Manual" \
-		isilo/devel/devel.html $@
-isilo/devel/devel.html: $(DEVELFILES)
-	$(MKISILOHTML) --dir isilo/devel ../skolesys-tex-doc/devel/devel.tex
+		isilo/disttools/disttools.html $@
+isilo/disttools/disttools.html: $(DISTTOOLSFILES)
+	$(MKISILOHTML) --dir isilo/disttools ../skolesys-tex-doc/disttools/disttools.tex
 
 # These are useful if you need to transport the iSilo-ready HTML to
 # another machine to perform the conversion:
@@ -277,10 +277,10 @@ WEBCHECKER=$(PYTHON) ../Tools/webchecker/webchecker.py
 HTMLBASE=  file:`pwd`/html
 
 webcheck: $(ALLHTMLFILES)
-	$(WEBCHECKER) $(HTMLBASE)/devel/
+	$(WEBCHECKER) $(HTMLBASE)/disttools/
 
 fastwebcheck: $(ALLHTMLFILES)
-	$(WEBCHECKER) -x $(HTMLBASE)/devel/
+	$(WEBCHECKER) -x $(HTMLBASE)/disttools/
 
 
 # Release packaging targets:
@@ -458,8 +458,8 @@ clobber:
 	rm -f paper-$(PAPER)/*.tex paper-$(PAPER)/*.ind paper-$(PAPER)/*.idx
 	rm -f paper-$(PAPER)/*.l2h paper-$(PAPER)/*.how paper-$(PAPER)/README
 	rm -rf html/index.html
-	rm -rf html/devel/
-	rm -rf isilo/devel/
+	rm -rf html/disttools/
+	rm -rf isilo/disttools/
 	rm -f isilo/python-*.pdb isilo-$(RELEASE).zip
 
 realclean distclean:  clobber
