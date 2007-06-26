@@ -21,15 +21,8 @@ Boston, MA 02110-1301, USA.
 import re,grp,os,ldap
 from sys import argv,exit
 
-# Check root privilegdes
-if not os.getuid()==0:
-	print "This command requires root priviledges"
-	exit(0)
-	
-	
 from getpass import getpass,getuser
 from optparse import OptionParser
-from conf import conf
 from groupmanager import GroupManager
 import skolesys.definitions.groupdef as groupdef
 
@@ -86,6 +79,13 @@ if __name__=='__main__':
 			print '%s - %s' % (cmd,desc)
 		exit(0)
 		
+	# Check root privilegdes
+	if not os.getuid()==0:
+		print "This command requires root priviledges"
+		exit(0)
+		
+	from conf import conf
+	
 	cmd = argv[1]
 	
 	parser = OptionParser(usage=usage)

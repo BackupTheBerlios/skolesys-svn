@@ -22,11 +22,6 @@ import re,os
 from sys import argv,exit,path
 path += ['.']
 
-# Check root privilegdes
-if not os.getuid()==0:
-	print "This command requires root priviledges"
-	exit(2000)
-	
 from optparse import OptionParser
 from skolesys.cfmachine.apthelpers import SourcesList
 from skolesys.cfmachine.fstabhelpers import Fstab
@@ -54,6 +49,11 @@ if __name__=='__main__':
 			print '%s - %s' % (cmd,desc)
 		exit(101)
 		
+	# Check root privilegdes
+	if not os.getuid()==0:
+		print "This command requires root priviledges"
+		exit(2000)
+	
 	cmd = argv[1]
 	
 	parser = OptionParser(usage=usage)

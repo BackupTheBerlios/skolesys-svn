@@ -21,10 +21,6 @@ Boston, MA 02110-1301, USA.
 # Check root privilegdes
 import os
 import sys
-if not os.getuid()==0:
-	print "This command requires root priviledges"
-	sys.exit(0)
-
 import inspect
 import os.path
 import SOAPpy
@@ -34,7 +30,6 @@ import skolesys
 import skolesys.lib.usermanager as userman
 import skolesys.lib.groupmanager as groupman
 import skolesys.lib.filemanager as fileman
-from skolesys.lib.conf import conf
 from skolesys.lib.hostmanager import HostManager
 import skolesys.definitions.hostdef as hostdef
 from skolesys.cfmachine.configbuilder import ConfigBuilder
@@ -610,5 +605,10 @@ def startserver():
 
 
 if __name__ == '__main__':
+	if not os.getuid()==0:
+		print "This command requires root priviledges"
+		sys.exit(0)
+	from skolesys.lib.conf import conf
+	
 	startserver()
 	sys.exit(0)
