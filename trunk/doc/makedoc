@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 from optparse import OptionParser
-import os,sys
+import os,sys,re
 
 doc_root = os.path.dirname(os.path.abspath(__file__))
 
@@ -53,6 +53,15 @@ if __name__=='__main__':
 		if not os.path.exists(output_dir):
 			os.mkdir(output_dir)
 		
+		c = re.compile('([-_A-Za-z0-9\.]*)( |$)')
 		os.chdir(output_dir)
-		os.system('pydoc -k skolesys | xargs -n1 pydoc -w')
+		w,r = os.popen2('pydoc -k skolesys')
+		mod_lines = r.readlines()
+		w.close()
+		r.close()
+		for l in mod_lines:
+			m = c.match(l)
+			if m:
+				os.system('pydoc -w %s' % m.groups()[0])
+				
 
