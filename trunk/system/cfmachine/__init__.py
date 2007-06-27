@@ -21,7 +21,7 @@ SkoleSYS host can request its own (maybe unique) configuration.
 When a host requests an updated configuration cfmachine starts by 
 collecting all relevant information for the domain, host type and even
 the specific host. The configuration is returned as a tarball which the
-requesting host them extracts and deploys by calling the install.sh
+requesting host then extracts and deploys by calling the install.sh
 script enclosed in the tarball.
 
 The configuration system is template based and default templates come with
@@ -33,6 +33,14 @@ context). For the system to deliver the best suited configuration
 for a specific host it must send its distibution release "codename"
 (ie. dapper or feisty). This is done automatically when using the 
 ss_getconf command from a host.
+
+  Usage: ss_getconf [options]
+
+  Options:
+    -h, --help            show this help message and exit
+    -c CONFCONTEXT, --config-context=CONFCONTEXT
+                          Retrieve a specialized configuration for a given event
+                          or context
 
 It is easy to add custom configurations to host-types, contexts and even
 specific hosts. ie. if we need to alter /etc/nsswitch.conf which by default
@@ -50,7 +58,7 @@ Here are some examples of where to place the modified nsswitch.conf:
   /etc/skolesys/custom-templates/ltspserver/all/rootdir/etc/nsswitch.conf
 
 3. All workstation host types using (k)ubuntu release codename "feisty"
-  /etc/skolesys/custom-templates/ltspserver/feisty/rootdir/etc/nsswitch.conf
+  /etc/skolesys/custom-templates/workstation/feisty/rootdir/etc/nsswitch.conf
 
 4. Special treatment for host 00:11:22:33:44:55
   /etc/skolesys/host-templates/01:23:45:67:89:ab/all/rootdir/etc/nsswitch.conf
