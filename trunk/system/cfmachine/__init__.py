@@ -65,6 +65,7 @@ Here are some examples of where to place the modified nsswitch.conf:
 
 """
 
+__author__ = "Jakob Simon-Gaarde <jakob@skolesys.dk>"
 __all__ = ["infocollection","configbuilder","fstabhelpers","apthelpers"]
 
 def _get_exports_list(module):

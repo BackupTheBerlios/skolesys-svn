@@ -22,6 +22,8 @@ InfoCollection takes all information from skolesys.conf and host
 information from LDAP and places it into a nicely structured dictionary.
 """
 
+__author__ = "Jakob Simon-Gaarde <jakob@skolesys.dk>"
+
 import re
 from skolesys.lib.hostmanager import *
 import skolesys.definitions.hostdef as hostdef
@@ -30,10 +32,74 @@ from math import ceil
 
 class InfoCollection:
 	"""
-	Collect info from LDAP, skolesys.conf e.t.c. to be used
-	by the configuration template system.
+	Collect info from LDAP, skolesys.conf etc. InfoCollector is
+	build to supply data for cheetah which is the template engine
+	cfmachine uses, but can just as well be used for other purposes
+	than configuration.
+	
+	Usage example: (root priviledge is required)
+	
+	>>> import skolesys.cfmachine.infocollection as ic
+	>>> ic_inst = ic.InfoCollection('00:0c:29:d1:74:64')
+	>>> conf = ic_inst.get_collection()
+	>>> import pprint
+	>>> pprint.pprint(conf)
+	{'conf': {'cfmachine': {'package_group': 'testing',
+				'template_basedir': '/etc/skolesys'},
+		'domain': {'domain_name': 'denskaegge.dk',
+			'domain_root': '/skolesys',
+			'gid_start': '5000',
+			'homes_host': 'mainserver.skolesys.local',
+			'local_domain_name': 'skolesys.local',
+			'ltspclient_iprange': '192.168.10.1 192.168.19.254',
+			'ltspserver_dynamic_iprange': '192.168.1.1 192.168.1.254',
+			'ltspserver_ip': '192.168.0.1',
+			'ltspserver_iprange': '10.1.0.50 10.1.0.254',
+			'ltspserver_subnet': '192.168.0.0',
+			'ltspserver_subnet_short': '192.168',
+			'ltspserver_subnetmask': '255.255.0.0',
+			'mainserver_domain_name': 'mainserver.skolesys.local',
+			'mainserver_dynamic_iprange': '10.1.50.1 10.1.60.254',
+			'mainserver_hostname': 'mainserver',
+			'mainserver_ip': '10.1.0.1',
+			'mainserver_subnet': '10.1.0.0',
+			'mainserver_subnet_short': '10.1',
+			'mainserver_subnetmask': '255.255.0.0',
+			'uid_start': '5000',
+			'workstation_iprange': '10.1.2.1 10.1.9.254'},
+		'ldapserver': {'admin': 'cn=admin,dc=denskaegge,dc=skolesys,dc=org',
+				'basedn': 'dc=denskaegge,dc=skolesys,dc=org',
+				'groups_ou': 'ou=Groups',
+				'host': 'mainserver.skolesys.local',
+				'hosts_ou': 'ou=Hosts',
+				'logins_ou': 'ou=Logins',
+				'others_ou': 'ou=Others',
+				'parents_ou': 'ou=Parents',
+				'passwd': 'bdnprrfe',
+				'primary_ou': 'ou=Primary',
+				'samba_ou': 'ou=Samba',
+				'service_ou': 'ou=Service',
+				'smb_groups_ou': 'ou=Groups',
+				'smb_machines_ou': 'ou=Computers',
+				'smb_users_ou': 'ou=Users',
+				'students_ou': 'ou=Students',
+				'system_ou': 'ou=System',
+				'teachers_ou': 'ou=Teachers'},
+		'options': {'default_lang': 'da'},
+		'soap_service': {'passwd': 'bdnprrfe', 'interface': 'eth2'},
+		'terminal_service': {'freenx': '10.1.0.50'}},
+	'hosts': {'ltspserver': [{'cn': 'ltsp1',
+				'hostName': 'ltsp1',
+				'hostType': 'ltspserver',
+				'ipHostNumber': '10.1.0.50',
 	"""
 	def __init__(self,hwaddr=None):
+		"""
+		hwaddr	The registered MAC of a host
+		
+		The constructor calls all the info collecting methods
+		(conf_info(), host_info(), user_info())
+		"""
 		self.data = {}
 		self.hwaddr = hostdef.check_hwaddr(hwaddr)
 		self.conf_info()
@@ -41,6 +107,18 @@ class InfoCollection:
 		self.user_info()
 
 	def conf_info(self):
+		"""
+		Read skolesys.conf and populate the member info dictionary. Many of
+		the conf values are elabourated before they are stored in the dictionary.
+		ie. subnets are registered with the following format in skolesys.conf:
+			ltspserver_subnet = 192.168.0.0/16
+		but this method expands that information to:
+			ltspserver_subnet	192.168.0.0
+			ltspserver_subnet_short	192.168
+			ltspserver_subnetmask	255.255.0.0
+		This kind of post elabouration is nessecary so cheetah can reach the right
+		data when needed.
+		"""
 		from skolesys.lib.conf import conf
 		# conf data
 		self.data['conf'] = {}
@@ -120,7 +198,7 @@ class InfoCollection:
 
 	def get_collection(self):
 		"""
-		Fetch the info collection data container
+		Fetch the info collection data dictionary
 		"""
 		return self.data
 

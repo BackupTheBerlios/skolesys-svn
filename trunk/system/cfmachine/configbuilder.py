@@ -15,6 +15,9 @@
 # the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA 02110-1301, USA.
 
+__author__ = "Jakob Simon-Gaarde <jakob@skolesys.dk>"
+
+
 from infocollection import InfoCollection
 import skolesys.definitions.hostdef as hostdef
 from Cheetah.Template import Template

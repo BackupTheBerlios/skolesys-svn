@@ -70,7 +70,7 @@ skolesys.tools
 Here will be placed all ad-hoc functions.
 
 """
-
+__author__ = "Jakob Simon-Gaarde <jakob@skolesys.dk>"
 __all__ = ["lib","soap","cfmachine","tools","definitions","services"]
 
 def _get_exports_list(module):
