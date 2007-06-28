@@ -15,10 +15,16 @@
 # the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA 02110-1301, USA.
 
+"""
+class InfoCollection
+--------------------
+InfoCollection takes all information from skolesys.conf and host
+information from LDAP and places it into a nicely structured dictionary.
+"""
+
 import re
 from skolesys.lib.hostmanager import *
 import skolesys.definitions.hostdef as hostdef
-from skolesys.lib.conf import *
 from Cheetah.Template import Template
 from math import ceil
 
@@ -35,6 +41,7 @@ class InfoCollection:
 		self.user_info()
 
 	def conf_info(self):
+		from skolesys.lib.conf import conf
 		# conf data
 		self.data['conf'] = {}
 		sections = conf.sections()

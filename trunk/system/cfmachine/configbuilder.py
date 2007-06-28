@@ -118,6 +118,9 @@ class ConfigBuilder:
 
 	def __init__(self,hosttype_id,dist_codename,hwaddr=None,context=None,context_only=False,pretend=False):
 		"""
+		Build the configuration for a certain hosttype or host. It works in a threaded or
+		asynchronious environment by ensuring that a unique temp space is created in /tmp 
+		
 		1. Create temp directory.
 		2. Fetch system, domain and hosts information.
 		3. Initiate the configuration parser.
@@ -127,16 +130,21 @@ class ConfigBuilder:
 		self.dist_codename = dist_codename
 		self.context = context
 		self.context_only = context_only
+		
+		# Create a temp directory
 		self.tempdir = tempfile.mkdtemp(prefix='skolesys_')
+		
+		# Collect info about domain and host
 		self.infocollection = InfoCollection(self.hwaddr)
+		
+		# Build the configuration
 		self.build_config(pretend)
+		
 		
 	def build_config(self,pretend):
 		"""
-		Build the configuration for a certain hosttype or host. It works in a threaded or
-		asynchronious environment by ensuring that a unique temp space is created in /tmp 
-		2. Parse the templates
-		3. Create a resulting archive file for export
+		1. Parse the templates
+		2. Create a resulting archive file for export
 		"""
 		
 		def store_link(args,dirname,fnames):
