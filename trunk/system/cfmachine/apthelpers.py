@@ -41,6 +41,8 @@ class SourcesList:
 	deb-src http://dk.archive.ubuntu.com/ubuntu/    dapper  main restricted universe
 	deb     http://security.ubuntu.com/ubuntu       dapper-security main restricted universe
 	deb     http://dk.archive.ubuntu.com/ubuntu/    dapper-backports        main restricted universe multiverse
+	>>>
+	>>>
 	>>> sl.add_source('deb','http://test.domain.com','groovy',['cool','stuff'])
 	>>> sl.print_sources_list()
 	deb-src http://dk.archive.ubuntu.com/ubuntu/    dapper-backports        main restricted universe multiverse
@@ -136,8 +138,8 @@ class SourcesList:
 		Return a nicely formatted list of strings ready to be written
 		into a sources.list file or printed to the screen.
 		
-		see:	SourcesList.print_sources_list()
-			SourcesList.write_sources_list()
+		see:	print_sources_list()
+				write_sources_list()
 		"""
 		output = []
 		for src_key in self.sources_map.keys():
