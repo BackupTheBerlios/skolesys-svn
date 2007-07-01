@@ -15,19 +15,77 @@
 # the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA 02110-1301, USA.
 
+"""
+fstab helper classes
+"""
+
+__author__ = "Jakob Simon-Gaarde <jakob@skolesys.dk>"
+
 import re
 
 class Fstab:
-
+	"""
+	Parse and edit APT /etc/fstab type files.
+	
+	Usage example:
+	>>> import skolesys.cfmachine.fstabhelpers as fh
+	>>> helper = fh.Fstab('/etc/fstab')
+	>>> helper.print_fstab()
+	# /etc/fstab: static file system information.
+	#
+	# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+	proc    /proc   proc    defaults        0       0
+	# /dev/hda7
+	UUID=4fc18c48-1746-4416-ab0b-510781a4c323       /       ext3    defaults,errors=remount-ro      0       1
+	/dev/hda4       /var/lib/vmware/vmachines       ext3    defaults        0       2
+	# /dev/hda4
+	# /dev/hda5
+	UUID=1cbcce94-ac64-45d0-9948-80daf09e7020       /media/hda5     ext3    defaults        0       2
+	# /dev/hda3
+	UUID=d8cc665c-fa27-4d6f-9f01-f29c22c0aeb4       none    swap    sw      0       0
+	/dev/hdc        /media/cdrom0   utf8,udf,iso9660        user,noauto     0       0
+	/dev/hdb        /media/cdrom1   utf8,udf,iso9660        user,noauto     0       0
+	/dev/   /media/floppy0  auto    rw,user,noauto  0       0
+	>>>
+	>>>
+	>>> helper.add_entry('/dev/sda1','/media/sda1','vfat','defaults','0','3')
+	>>> helper.print_fstab()
+	# /etc/fstab: static file system information.
+	#
+	# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+	proc    /proc   proc    defaults        0       0
+	# /dev/hda7
+	UUID=4fc18c48-1746-4416-ab0b-510781a4c323       /       ext3    defaults,errors=remount-ro      0       1
+	/dev/hda4       /var/lib/vmware/vmachines       ext3    defaults        0       2
+	# /dev/hda4
+	# /dev/hda5
+	UUID=1cbcce94-ac64-45d0-9948-80daf09e7020       /media/hda5     ext3    defaults        0       2
+	# /dev/hda3
+	UUID=d8cc665c-fa27-4d6f-9f01-f29c22c0aeb4       none    swap    sw      0       0
+	/dev/hdc        /media/cdrom0   utf8,udf,iso9660        user,noauto     0       0
+	/dev/hdb        /media/cdrom1   utf8,udf,iso9660        user,noauto     0       0
+	/dev/   /media/floppy0  auto    rw,user,noauto  0       0
+	/dev/sda1       /media/sda1     vfat    defaults        0       3
+"""	
 	def __init__(self,filename=None):
+		"""
+		filename	path to fstab file
+		
+		If no filename is parsed it will be attempted to read from 
+		/etc/fstab
+		"""		
 		self.mount_map = self.parse_fstab(filename)
 
 	def parse_fstab(self,filename):
 		"""
-		Parse the fstab file.
-		If no value is passed to filename then /etc/apt/sources.list is default
-		"""
-		self.dirty = False
+		filename	path to sources.list file
+		
+		Parse the fstab file used for defining static information about filesystems
+		If no value is passed to filename then /etc/fstab is used by default.
+		This method parses the fstab file populating a dictionary with the
+		mount points and mount options.
+		The dictionary is returned when the parser has finished.
+		"""		self.dirty = False
 		rx_mountpoint = re.compile('^\s*(?!#)(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s*$')
 		
 		self.filename = filename

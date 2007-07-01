@@ -17,6 +17,126 @@
 # the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA 02110-1301, USA.
 
+"""
+ss_installer -> cfinstaller.py  (symlink on installed systems)
+
+cfinstaller is a client confuguration deployment tool. It is accessible
+from command line as ss_installer (symlink created when one of the 
+SkoleSYS packages are installed (python-skolesys-mainserver,
+python-skolesys-client or python-skolesys-seeder).
+
+ss_installer can perform the following operations:
+
+  Command (Argument 1)   |  Description
+  ----------------------------------------------------------------------------------
+  mod_fstab              |  Modify fstab
+  mod_apt_sources        |  Modify sources.list
+  install_packages       |  Install deb/apt packages
+  copy_files             |  Copy files recursively from a base directory to the root fs
+  set_hostname           |  Set the hostname for the host
+  run_script             |  Run a script file
+  kick_daemons           |  Kick some daemons that need to reload the configuration changes
+
+Usage: ss_installer command (controlfile|scriptname)
+(scriptname when the command is run_script)
+
+When ss_installer is executed it runs only one of the commands. It takes a 
+controlfile as Argument 2 that describes how to perform a certain command.
+Control data for ss_installer is stored as local variables in the 
+controlfile:
+
+  ss_installer Command   | Control file variable
+  -------------------------------------------------
+  mod_fstab              | fstab_entries
+  mod_apt_sources        | apt_source_entries
+  install_packages       | packagelist_files
+  copy_files             | copy_files_rootdir
+  set_hostname           | hostname
+  kick_daemons           | kick_daemons
+
+Note. run_script command takes the path to the script as argument 2 instead
+of a controlfile.
+
+The following example is taken out of the configuration system's
+default-templates (default-templates/common/all/install.sh). It uses
+ss_installer to deploy host configurations:
+
+install.sh:
+----------
+#!/bin/sh
+if ! ss_installer mod_apt_sources cf_install
+then
+        echo "ss_installer failed to update source.list"
+        exit 1
+fi
+
+if ! ss_installer install_packages cf_install
+then
+        echo "ss_installer failed to install packages"
+        exit 1
+fi
+
+if ! ss_installer copy_files cf_install
+then
+        echo "ss_installer failed to copy configuration files"
+        exit 1
+fi
+
+if ! ss_installer set_hostname cf_install
+then
+        echo "ss_installer failed to set the hostname"
+        exit 1
+fi
+
+if ! ss_installer kick_daemons cf_install
+then
+        echo "ss_installer failed kick daemons"
+        exit 1
+fi
+
+if ! ss_installer mod_fstab cf_install
+then
+        echo "ss_installer failed update fstab"
+        exit 1
+fi
+exit 0
+
+This is the controlfile used by the script. It also taken from the
+default configuration templates (default-templates/mainserver/feisty/cf_install.py)
+
+cf_install.py: 
+-------------
+apt_source_entries = [
+	{'type':'deb','uri':'http://archive.skolesys.dk/$[conf.cfmachine.package_group]','distribution':'dapper','components':['main']},
+        {'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'dapper','components':['main','restricted','universe']},
+        {'type':'deb-src','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'dapper','components':['main','restricted','universe']},
+        {'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'dapper-backports','components':['main','restricted','universe','multiverse']},
+        {'type':'deb-src','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'dapper-backports','components':['main','restricted','universe','multiverse']},
+        {'type':'deb','uri':'http://security.ubuntu.com/ubuntu','distribution':'dapper-security','components':['main','restricted','universe']},
+        {'type':'deb-src','uri':'http://security.ubuntu.com/ubuntu','distribution':'dapper-security','components':['main','restricted','universe']}]
+
+fstab_entries = [
+	{'sourcefs':'mainserver.skolesys.local:/skolesys','mountpoint':'/skolesys','fstype':'nfs','options':'defaults','dump':'0','fsckorder':'0'}]
+	
+packagelist_files = [
+	'default-packages','custom-packages']
+
+copy_files_rootdir = \
+	'rootdir'
+
+hostname = \
+	'$reciever.hostName'
+
+kick_daemons = [
+	'/etc/init.d/networking restart',
+	'/etc/init.d/dhcp3-server restart',
+	'/etc/init.d/nfs-kernel-server restart',
+	'/etc/init.d/nfs-common restart',
+	'/etc/init.d/tftpd-hpa restart']
+"""
+
+__author__ = "Jakob Simon-Gaarde <jakob@skolesys.dk>"
+
 import re,os
 from sys import argv,exit,path
 path += ['.']
