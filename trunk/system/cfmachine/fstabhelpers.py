@@ -85,7 +85,8 @@ class Fstab:
 		This method parses the fstab file populating a dictionary with the
 		mount points and mount options.
 		The dictionary is returned when the parser has finished.
-		"""		self.dirty = False
+		"""
+		self.dirty = False
 		rx_mountpoint = re.compile('^\s*(?!#)(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s*$')
 		
 		self.filename = filename
