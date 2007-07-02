@@ -61,7 +61,8 @@ if __name__=='__main__':
 		'groupdel': 'Remove a user from a group',
 		'listusers': 'Show a list of system users',
 		'listusergroups': 'Show a list of groups a certain user is member of',
-		'changeuser': 'Change a users details'}
+		'changeuser': 'Change a users details',
+		'authenticate': 'Authenticate a user by username'}
 
 	shell_cmd_name = os.path.split(argv[0])[-1:][0]
 	
@@ -416,3 +417,45 @@ if __name__=='__main__':
 			exit(0)
 		for group in res:
 			print group
+
+	if cmd == "authenticate":
+		if os.getuid()!=0:
+			print "You must be root to add users to groups"
+			exit(0)
+		
+		parser.set_usage("usage: %s %s uid" % (shell_cmd_name,cmd))
+		parser.add_option("-p", "--password", dest="password",default=None,
+		                  help="users password - avoid using this we don't like passwords in clear text!",
+		                  metavar="PASSWORD")
+		(options, args) = parser.parse_args()
+		if len(args)<2:
+			print "Missing username for authentication"
+			exit(0)
+		
+		# username (uid)
+		username = check_username(args[1])
+		if not username:
+			print "The given username is invalid."
+			exit(0)
+		# password
+		if not options.password:
+			options.password = getpass("User's password: ")
+						
+		print "Username: %s" % username
+		
+		um = UserManager()
+		try:
+			res = um.authenticate(username,options.password)
+		except Exception, e:
+			print "An error occured while writing to the user LDAP database"
+			print e
+			exit(1)
+		
+		if res == -10601:
+			print "The user \"%s\" does not exist " % username
+			exit(res)
+		if res == -10602:
+			print "Authentication failed - unknown reason"
+			exit(res)
+			
+		print 'User "%s" authenticated successfully...' % username

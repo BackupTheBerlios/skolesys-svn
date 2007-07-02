@@ -419,13 +419,16 @@ class UserManager (LDAPUtil):
 		if res[0]==97:
 			return 0
 		# Other undefined error
-		return -10601
+		return -10602
+
 
 	def check_permission(self,uid,service):
 		pass
 	
+
 	def grant_access(self,uid,service):
 		pass
+
 
 	def revoke_access(self,uid,service):
 		pass
