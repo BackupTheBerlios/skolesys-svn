@@ -530,7 +530,7 @@ def startserver():
 		print "This command requires root priviledges"
 		sys.exit(1)
 	
-	from skolesys.conf import conf
+	from skolesys.lib.conf import conf
 	
 	session_timeout = int(conf.get("SOAP_SERVICE","session_timeout"))
 	sessions = sessionhandler.SessionHandler(session_timeout)
