@@ -25,10 +25,10 @@ cp skolesys-qt4*.deb ~/skolesys-apt/feisty/main/i386/
 cd ~/skolesys-apt
 sudo ./build-apt dapper
 sudo ./dist-repo
-scp -r dists pool skolesys.gpg.asc simon@skolesys.dk:/srv/apt/skolesys/testing
+scp -r dists pool skolesys.gpg.asc <username>@<host>:/path/to/testing/repo      
 
 sudo ./build-apt feisty
 sudo ./dist-repo
-scp -r dists pool skolesys.gpg.asc simon@skolesys.dk:/srv/apt/skolesys/testing
+scp -r dists pool skolesys.gpg.asc <username>@<host>:/path/to/testing/repo 
 
 
