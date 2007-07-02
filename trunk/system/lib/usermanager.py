@@ -408,16 +408,21 @@ class UserManager (LDAPUtil):
 
 	
 	def authenticate(self,uid,passwd):
-		userinfo = self.list_users(uid)
+		userinfo = self.list_users(None,uid)
 		if not userinfo.has_key(uid):
 			# User does not exist
 			return -10601
 		
 		res_id = self.l.simple_bind(userinfo[uid]['dn'],passwd)
-		res = l.result(res_id)
+		try:
+			res = self.l.result(res_id)
+		except ldap.INVALID_CREDENTIALS, e:
+			# Invalid credentials
+			return -10603
 		
 		if res[0]==97:
 			return 0
+
 		# Other undefined error
 		return -10602
 

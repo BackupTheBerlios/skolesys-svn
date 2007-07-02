@@ -70,10 +70,11 @@ def test_binded(session_id):
 			return pdump(sessions.get_session_variable(session_id,'authenticated')[1])
 	return pdump(False)
 
-def bind(session_id,encrypted_passwd):
+def bind(session_id,uid,encrypted_passwd):
 	global sessions
 	session_id=pload(session_id)
 	encrypted_passwd=pload(encrypted_passwd)
+	uid=pload(uid)
 
 	if not sessions.session_exists(session_id):
 		return pdump(False)
@@ -83,11 +84,16 @@ def bind(session_id,encrypted_passwd):
 	nonce = sessions.get_session_variable(session_id,'nonce')[1]
 	sessions.unset_session_variable(session_id,'nonce')
 	plain = p2_decrypt(encrypted_passwd,nonce)
-	if plain==conf.get('SOAP_SERVICE','passwd'):
+	
+	#if plain==conf.get('SOAP_SERVICE','passwd'):
+	um = userman.UserManager()
+	if um.authenticate(uid,plain)==0:
 		sessions.set_session_variable(session_id,'authenticated',True)
 		return pdump(True)
+
 	sessions.set_session_variable(session_id,'authenticated',False)
 	return pdump(False)
+
 
 def get_id():
 	global sessions
@@ -590,6 +596,8 @@ def startserver():
 	server.registerFunction(removeuser)
 	server.registerFunction(groupadd)
 	server.registerFunction(groupdel)
+
+	# User permissions
 	
 	# Group Management
 	server.registerFunction(group_exists)

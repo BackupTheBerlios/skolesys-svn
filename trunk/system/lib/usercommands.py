@@ -22,7 +22,6 @@ from sys import argv,exit
 
 from getpass import getpass,getuser
 from optparse import OptionParser
-from usermanager import UserManager
 import skolesys.definitions.userdef as userdef
 
 
@@ -80,6 +79,7 @@ if __name__=='__main__':
 		print "This command requires root priviledges"
 		exit(0)
 		
+	from usermanager import UserManager
 	from conf import conf
 	
 	cmd = argv[1]
@@ -457,5 +457,8 @@ if __name__=='__main__':
 		if res == -10602:
 			print "Authentication failed - unknown reason"
 			exit(res)
+		if res == -10603:
+			print "Invalid credentials."
+			exit(res)
 			
-		print 'User "%s" authenticated successfully...' % username
+		print 'User "%s" authenticated successfully.' % username

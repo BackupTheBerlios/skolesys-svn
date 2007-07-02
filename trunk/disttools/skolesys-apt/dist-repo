@@ -1,0 +1,3 @@
+find dists | grep -i binary-i386/Packages.bz2 | xargs sudo rm
+rm pool/main/*ltsp_*.deb
+
