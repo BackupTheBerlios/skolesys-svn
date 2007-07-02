@@ -417,8 +417,9 @@ class UserManager (LDAPUtil):
 		res = l.result(res_id)
 		
 		if res[0]==97:
-			res = 0
-			break
+			return 0
+		# Other undefined error
+		return -10601
 
 	def check_permission(self,uid,service):
 		pass

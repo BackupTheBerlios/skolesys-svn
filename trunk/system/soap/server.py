@@ -528,7 +528,7 @@ def startserver():
 	# Check root privilegdes
 	if not os.getuid()==0:
 		print "This command requires root priviledges"
-			sys.exit(1)
+		sys.exit(1)
 	
 	from skolesys.conf import conf
 	
