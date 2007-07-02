@@ -573,6 +573,7 @@ def startserver():
 	# Security
 	server.registerFunction(get_id)
 	server.registerFunction(challenge_response_key)
+	server.registerFunction(print_sessions)
 	server.registerFunction(bind)
 	server.registerFunction(test_session_id)
 	server.registerFunction(test_binded)
