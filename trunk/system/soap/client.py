@@ -97,7 +97,13 @@ class SkoleSYS_Client:
 		else:
 			self.logtext("(!!) NO SESSIONID RECIEVED")
 
-	def bind(self,plain_passwd):
+	def print_sessions(self):
+		return pload(self.server.print_sessions())
+
+	def bind(self,uid,plain_passwd):
+		"""
+		Authenticate user and bind the connection to that user.
+		"""
 		nonce = pload(self.server.challenge_response_key(pdump(self.session_id)))
 		if nonce:
 			self.logtext("BIND-CHALLENGE NONCE: %s" % nonce)
@@ -105,7 +111,7 @@ class SkoleSYS_Client:
 			self.logtext("(!!) NO BIND-CHALLENGE NONCE RECIEVED")
 			return False
 		passwd_encrypted = p2_encrypt(plain_passwd,nonce)
-		return pload(self.server.bind(pdump(self.session_id),pdump(passwd_encrypted)))
+		return pload(self.server.bind(pdump(self.session_id),pdump(uid),pdump(passwd_encrypted)))
 
 	def test_session_id(self):
 		"Test if the proxy has a valid session id"
