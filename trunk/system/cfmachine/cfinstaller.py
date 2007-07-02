@@ -54,7 +54,7 @@ controlfile:
   set_hostname           | hostname
   kick_daemons           | kick_daemons
 
-Note. run_script command takes the path to the script as argument 2 instead
+Note. run_script command takes the path to a script as argument 2 instead
 of a controlfile.
 
 The following example is taken out of the configuration system's

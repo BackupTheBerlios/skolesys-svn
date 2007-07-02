@@ -67,17 +67,20 @@ smb_machines_ou = ou=Computers
 smb_users_ou = ou=Users
 smb_groups_ou = ou=Groups
 
+
 [SOAP_SERVICE]
 
 passwd = <schooladmin_passwd>
 interface = eth0
+
+# Session timeout in seconds
+session_timeout = 1200
 
 
 [CFMACHINE]
 
 template_basedir = /etc/skolesys
 package_group = stable
-
 
 
 [OPTIONS]

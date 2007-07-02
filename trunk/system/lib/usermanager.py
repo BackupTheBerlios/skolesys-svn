@@ -406,3 +406,25 @@ class UserManager (LDAPUtil):
 		
 		return grouplist
 
+	
+	def authenticate(self,uid,passwd):
+		userinfo = self.list_users(uid)
+		if not userinfo.has_key(uid):
+			# User does not exist
+			return -10601
+		
+		res_id = self.l.simple_bind(userinfo[uid]['dn'],passwd)
+		res = l.result(res_id)
+		
+		if res[0]==97:
+			res = 0
+			break
+
+	def check_permission(self,uid,service):
+		pass
+	
+	def grant_access(self,uid,service):
+		pass
+
+	def revoke_access(self,uid,service):
+		pass

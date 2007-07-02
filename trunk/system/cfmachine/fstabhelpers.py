@@ -16,7 +16,14 @@
 # Boston, MA 02110-1301, USA.
 
 """
-fstab helper classes
+fstab helper classes used by cfinstaller (ss_installer) to update the
+fstab on SkoleSYS registered hosts that recieve their configuration via
+the ss_getconf script.
+More precisely it is cfinstaller (ss_installer) that executes the
+helper:
+	
+	ss_installer mod_fstab controlfile
+
 """
 
 __author__ = "Jakob Simon-Gaarde <jakob@skolesys.dk>"
@@ -31,41 +38,25 @@ class Fstab:
 	>>> import skolesys.cfmachine.fstabhelpers as fh
 	>>> helper = fh.Fstab('/etc/fstab')
 	>>> helper.print_fstab()
-	# /etc/fstab: static file system information.
-	#
-	# <file system> <mount point>   <type>  <options>       <dump>  <pass>
-	proc    /proc   proc    defaults        0       0
-	# /dev/hda7
-	UUID=4fc18c48-1746-4416-ab0b-510781a4c323       /       ext3    defaults,errors=remount-ro      0       1
-	/dev/hda4       /var/lib/vmware/vmachines       ext3    defaults        0       2
-	# /dev/hda4
-	# /dev/hda5
-	UUID=1cbcce94-ac64-45d0-9948-80daf09e7020       /media/hda5     ext3    defaults        0       2
+	proc            /proc                       proc                defaults                    0   0
+	/dev/hda5       /                           ext3                defaults,errors=remount-ro  0   1
+	/dev/hda4       /var/lib/vmware/vmachines   ext3                defaults                    0   2
 	# /dev/hda3
-	UUID=d8cc665c-fa27-4d6f-9f01-f29c22c0aeb4       none    swap    sw      0       0
-	/dev/hdc        /media/cdrom0   utf8,udf,iso9660        user,noauto     0       0
-	/dev/hdb        /media/cdrom1   utf8,udf,iso9660        user,noauto     0       0
-	/dev/   /media/floppy0  auto    rw,user,noauto  0       0
+	/dev/hda2       none                       swap                 sw                          0   0
+	/dev/hdc        /media/cdrom0               utf8,udf,iso9660    user,noauto                 0   0
+	/dev/hdb        /media/cdrom1               utf8,udf,iso9660    user,noauto                 0   0
 	>>>
 	>>>
 	>>> helper.add_entry('/dev/sda1','/media/sda1','vfat','defaults','0','3')
 	>>> helper.print_fstab()
-	# /etc/fstab: static file system information.
-	#
-	# <file system> <mount point>   <type>  <options>       <dump>  <pass>
-	proc    /proc   proc    defaults        0       0
-	# /dev/hda7
-	UUID=4fc18c48-1746-4416-ab0b-510781a4c323       /       ext3    defaults,errors=remount-ro      0       1
-	/dev/hda4       /var/lib/vmware/vmachines       ext3    defaults        0       2
-	# /dev/hda4
-	# /dev/hda5
-	UUID=1cbcce94-ac64-45d0-9948-80daf09e7020       /media/hda5     ext3    defaults        0       2
+	proc            /proc                       proc                defaults                    0   0
+	/dev/hda5       /                           ext3                defaults,errors=remount-ro  0   1
+	/dev/hda4       /var/lib/vmware/vmachines   ext3                defaults                    0   2
 	# /dev/hda3
-	UUID=d8cc665c-fa27-4d6f-9f01-f29c22c0aeb4       none    swap    sw      0       0
-	/dev/hdc        /media/cdrom0   utf8,udf,iso9660        user,noauto     0       0
-	/dev/hdb        /media/cdrom1   utf8,udf,iso9660        user,noauto     0       0
-	/dev/   /media/floppy0  auto    rw,user,noauto  0       0
-	/dev/sda1       /media/sda1     vfat    defaults        0       3
+	/dev/hda2       none                       swap                 sw                          0   0
+	/dev/hdc        /media/cdrom0               utf8,udf,iso9660    user,noauto                 0   0
+	/dev/hdb        /media/cdrom1               utf8,udf,iso9660    user,noauto                 0   0
+	/dev/sda1       /media/sda1                 vfat                defaults                    0   3
 """	
 	def __init__(self,filename=None):
 		"""
@@ -121,6 +112,13 @@ class Fstab:
 		return mount_map
 					
 	def format_for_output(self):
+		"""
+		Return a nicely formatted list of strings ready to be written
+		into the fstab file or printed to the screen.
+		
+		see:	print_fstab()
+				write_fstab()
+		"""
 		output = []
 		for mnt_key in self.mount_map.keys():
 			mnt = self.mount_map[mnt_key]
@@ -136,9 +134,25 @@ class Fstab:
 		return final_out
 			
 	def print_fstab(self):
+		"""
+		Print the filesystem mountpoints to stdout as they will be
+		written to file
+		"""
 		print '\n'.join(self.format_for_output())
 		
-	def add_entry(self,sourcefs,mountpoint,fstype,options,dump,fsckorder):
+	def add_entry(self,sourcefs,mountpoint,fstype,options='defaults',dump='0',fsckorder='0'):
+		"""
+		sourcefs	The filesystem to be mounted (ie. '/dev/hda2')
+		mountpoint	The point to where the filesystem should be mounted (ie. '/home/erik/data')
+		fstype		Filesystem type (ie. 'vfat', 'ext2', 'ext3')
+		options 	Mount with following filesystem options (def: 'defaults')
+		dump 		Dump can be used for scheduled backups with the dump command (def: '0')
+		fsckorder 	Set the order in which a filesystem should be checked with the fsck command (def: '0')
+		
+		Add filesystems to the memory-based fstab (self.mount_map). Duplicate 
+		sourcefs/mountpoint combinations will not occur as they are saved in a 
+		dictionary.
+		"""
 		order = self.order
 		if self.mount_map.has_key((sourcefs,mountpoint)):
 			order = self.mount_map[(sourcefs,mountpoint)]['order']
@@ -157,6 +171,12 @@ class Fstab:
 			'linetype':'mnt'}
 			
 	def write_fstab(self,filename=None):
+		"""
+		filename	Path to the file to create/overwrite
+		
+		Write the filesystem mountpoints nicely formatted in fstab format 
+		to file.
+		"""
 		if not filename:
 			filename = self.filename
 		f = open(filename,'w')

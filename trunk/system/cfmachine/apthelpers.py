@@ -16,7 +16,13 @@
 # Boston, MA 02110-1301, USA.
 
 """
-APT (debian's Advanced Package Tool) related helper classes
+APT (debian's Advanced Package Tool) related helper classes. This
+script is used by the SkoleSYS configuration system cfmachine when
+deploying a configuration on a SkoleSYS registered host.
+More precisely it is cfinstaller (ss_installer) that executes the
+helper:
+	
+	ss_installer mod_apt_sources controlfile
 """
 
 __author__ = "Jakob Simon-Gaarde <jakob@skolesys.dk>"

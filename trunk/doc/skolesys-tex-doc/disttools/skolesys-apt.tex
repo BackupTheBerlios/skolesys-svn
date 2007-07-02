@@ -9,7 +9,7 @@ skolesys-apt will create the APT archive on the local filesystem ready to ship b
 \member{Usage: skolesys-apt [-g gpgid] <distribution_name>}
 
 \begin{tableiii}{l|l|l}{command}{Short-option}{Long-option}{Description}
-  \lineiii{-g \var{GPGID}}{\member{--gpgid=\var{GPGID}}}{Use a specific key for signing the APT archive}
+  \lineiii{-g \var{GPGID}}{\member{---gpgid=\var{GPGID}}}{Use a specific key for signing the APT archive}
 \end{tableiii}
 
 There are tree ways to setup the GPG ID of the key to use for signing. Command line option (\member{-r} or \member{---gpgid}), aptfile variable (\member{gpgid}) or by using the environment variable \member{SKOLESYS_GPGID} to set a default gpg id for signing. This also the precedens order. Thus environment varible will be overridden by the aptinfo variable which will be overridden by the command line option.

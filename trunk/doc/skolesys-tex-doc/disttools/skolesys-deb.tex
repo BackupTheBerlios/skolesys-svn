@@ -6,11 +6,11 @@ This tool is used to create deb-files for distribution. It can fetch distributio
 
 
 \begin{tableiii}{l|l|l}{command}{Short-option}{Long-option}{Description}
-  \lineiii{-r \var{url}}{\member{--svnbase=\var{url}}}{URL to the subversion repository to fetch from (use when \member{fetch_method='svn'})}
-  \lineiii{\member{-l \var{dir}}}{\member{--iso-location=\var{dir}}}{The directory containing the iso file (use when \member{fetch_method='iso'})}
-  \lineiii{\member{-l \var{dir}}}{\member{--iso-location=\var{dir}}}{The directory containing the tar.gz file (use when \member{fetch_method='tgz'})}
-  \lineiii{}{\member{--dont-fetch}}{Don't fetch the package contents. This is used if more than one package is based on the same content resource, so if these packages are build successively there is no need to fetch the content more than once.}
-  \lineiii{\member{-h}}{\member{--help}}{Show the help message and exit}
+  \lineiii{-r \var{url}}{\member{---svnbase=\var{url}}}{URL to the subversion repository to fetch from (use when \member{fetch_method='svn'})}
+  \lineiii{\member{-l \var{dir}}}{\member{---iso-location=\var{dir}}}{The directory containing the iso file (use when \member{fetch_method='iso'})}
+  \lineiii{\member{-l \var{dir}}}{\member{---iso-location=\var{dir}}}{The directory containing the tar.gz file (use when \member{fetch_method='tgz'})}
+  \lineiii{}{\member{---dont-fetch}}{Don't fetch the package contents. This is used if more than one package is based on the same content resource, so if these packages are build successively there is no need to fetch the content more than once.}
+  \lineiii{\member{-h}}{\member{---help}}{Show the help message and exit}
 \end{tableiii}
 \citetitle{skolesys-deb command line options}
 \subsection{debinfo files\label{debinfo}}

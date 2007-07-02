@@ -37,70 +37,94 @@ import time
 import random
 from marshall import pdump,pload
 from netinfo import if2ip,ip2hwaddr
+import sessionhandler
 
-random.seed(time.time())
+sessions = None
 
-sessions = {}
+def print_sessions():
+	global sessions
+	return pdump(str(sessions.sessions))
 
 def session_valid(session_id):
-	if sessions.has_key(session_id):
-		if sessions[session_id].has_key('authenticated'):
-			return sessions[session_id]['authenticated']
+	global sessions
+	if sessions.session_exists(session_id):
+		if sessions.has_session_variable(session_id,'authenticated'):
+			return sessions.get_session_variable(session_id,'authenticated')[1]
 	return False
 
 def test_session_id(session_id):
 	"""
 	Test if the given session ID is still valid
 	"""
+	global sessions
 	session_id=pload(session_id)
-	if sessions.has_key(session_id):
+	if sessions.session_exists(session_id):
 		return pdump(True)
 	return pdump(False)
 
 def test_binded(session_id):
+	global sessions
 	session_id=pload(session_id)
-	if sessions.has_key(session_id):
-		if sessions[session_id].has_key('authenticated'):
-			return pdump(sessions[session_id]['authenticated'])
+	if sessions.session_exists(session_id):
+		if sessions.has_session_variable(session_id,'authenticated'):
+			return pdump(sessions.get_session_variable(session_id,'authenticated')[1])
 	return pdump(False)
 
 def bind(session_id,encrypted_passwd):
+	global sessions
 	session_id=pload(session_id)
 	encrypted_passwd=pload(encrypted_passwd)
 
-	if not sessions.has_key(session_id):
+	if not sessions.session_exists(session_id):
 		return pdump(False)
-	if not sessions[session_id].has_key('nonce'):
+	if not sessions.has_session_variable(session_id,'nonce'):
 		return pdump(False)
 	
-	um = userman.UserManager()
-	plain = p2_decrypt(encrypted_passwd,sessions[session_id].pop('nonce'))
+	nonce = sessions.get_session_variable(session_id,'nonce')[1]
+	sessions.unset_session_variable(session_id,'nonce')
+	plain = p2_decrypt(encrypted_passwd,nonce)
 	if plain==conf.get('SOAP_SERVICE','passwd'):
-		sessions[session_id]['authenticated'] = True
+		sessions.set_session_variable(session_id,'authenticated',True)
 		return pdump(True)
-	sessions[session_id]['authenticated'] = False
+	sessions.set_session_variable(session_id,'authenticated',False)
 	return pdump(False)
 
 def get_id():
+	global sessions
 	new_id = md5.new(str(time.time())*random.randint(0,100000)).hexdigest()
-	sessions[new_id] = {'authenticated': False}
+	if sessions.create_session(new_id):
+		sessions.set_session_variable(new_id,'authenticated',False)
 	return pdump(new_id)
 
 def challenge_response_key(session_id):
+	global sessions
 	session_id=pload(session_id)
-	if not sessions.has_key(session_id):
+	if not sessions.session_exists(session_id):
 		return pdump(None)
-	if not sessions[session_id].has_key('challenge_count'):
-		sessions[session_id]['challenge_count']=0
-	if sessions[session_id]['challenge_count'] >= 3:
+	
+	if not sessions.has_session_variable(session_id,'challenge_count'):
+		sessions.set_session_variable(session_id,'challenge_count',0)
+	challenge_count = sessions.get_session_variable(session_id,'challenge_count')[1]
+	if challenge_count >= 3:
 		return pdump(False)
+	
 	nonce = md5.new(str(str(time.time())*random.randint(0,100000))+session_id).hexdigest()
-	sessions[session_id]['nonce'] = nonce
-	sessions[session_id]['challenge_count']+=1
+	sessions.set_session_variable(session_id,'nonce',nonce)
+	challenge_count+=1
+	sessions.set_session_variable(session_id,'challenge_count',challenge_count)
 	return pdump(nonce)
+
+def kill_session(session_id):
+	global sessions
+	session_id=pload(session_id)
+	if not sessions.session_exists(session_id):
+		return pdump(None)
+	sessions.remove_session(session_id)
+	return pdump(True)
 
 
 # The real functionality starts here
+
 def domain_name(session_id):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
@@ -500,10 +524,16 @@ class MyServer(SOAPpy.SOAPServer):
 
 
 def startserver():
+	global sessions
 	# Check root privilegdes
 	if not os.getuid()==0:
 		print "This command requires root priviledges"
-        	sys.exit(1)
+			sys.exit(1)
+	
+	from skolesys.conf import conf
+	
+	session_timeout = int(conf.get("SOAP_SERVICE","session_timeout"))
+	sessions = sessionhandler.SessionHandler(session_timeout)
 	
 	certfile = None
 	keyfile = None
