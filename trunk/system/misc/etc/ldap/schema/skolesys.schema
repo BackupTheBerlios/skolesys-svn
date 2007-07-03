@@ -20,7 +20,7 @@ attributetype ( 1.3.6.1.4.1.27410.1.1.2 NAME 'schoolClassName'
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 # Common user attributes
-attributetype ( 1.3.6.1.4.1.27410.1.1.3 NAME 'access'
+attributetype ( 1.3.6.1.4.1.27410.1.1.3 NAME 'accessIdentifier'
         EQUALITY caseExactIA5Match
         SUBSTR caseExactIA5SubstringsMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
@@ -75,25 +75,25 @@ attributetype ( 1.3.6.1.4.1.27410.1.3.2 NAME 'serviceList'
 objectclass ( 1.3.6.1.4.1.27410.2.1.1 NAME 'skoleSysTeacher'
 	DESC 'SkoleSys student'
 	SUP top AUXILIARY
-	MAY (userString1 $ userString2 $ access ) )
+	MAY (userString1 $ userString2 $ accessIdentifier ) )
 
 # SkoleSYS Student
 objectclass ( 1.3.6.1.4.1.27410.2.1.2 NAME 'skoleSysStudent'
 	DESC 'SkoleSys student'
 	SUP top AUXILIARY
-	MAY (firstSchoolYear $ schoolClassName $ userString1 $ userString2 $ access ) )
+	MAY (firstSchoolYear $ schoolClassName $ userString1 $ userString2 $ accessIdentifier ) )
 
 # SkoleSYS Parent
 objectclass ( 1.3.6.1.4.1.27410.2.1.3 NAME 'skoleSysParent'
 	DESC 'SkoleSys student'
 	SUP top AUXILIARY
-	MAY (userString1 $ userString2 $ access ) )
+	MAY (userString1 $ userString2 $ accessIdentifier ) )
 
 # SkoleSYS Other
 objectclass ( 1.3.6.1.4.1.27410.2.1.4 NAME 'skoleSysOther'
 	DESC 'SkoleSys student'
 	SUP top AUXILIARY
-	MAY (userString1 $ userString2 $ access ) )
+	MAY (userString1 $ userString2 $ accessIdentifier ) )
 
 
 #### Skolesys Host classes ####
@@ -112,15 +112,22 @@ objectclass ( 1.3.6.1.4.1.27410.2.3.1 NAME 'skoleSysPrimaryGroup'
 	SUP posixGroup STRUCTURAL
 	MUST ( cn $ displayedName ) )
 
-# Primary
+# System
 objectclass ( 1.3.6.1.4.1.27410.2.3.2 NAME 'skoleSysSystemGroup'
 	DESC 'SkoleSYS System group'
 	SUP posixGroup STRUCTURAL
 	MUST ( cn $ displayedName ) )
 
-# Primary
+# Service
 objectclass ( 1.3.6.1.4.1.27410.2.3.3 NAME 'skoleSysServiceGroup'
 	DESC 'SkoleSYS service group.'
 	SUP posixGroup STRUCTURAL
 	MUST ( cn $ displayedName )
 	MAY serviceList )
+
+#### SkoleSYS domain classes ####
+objectclass ( 1.3.6.1.4.1.27410.2.4.1 NAME 'skoleSysDomain'
+	DESC 'SkoleSYS domain.'
+	SUP dNSDomain STRUCTURAL
+	MAY accessIdentifier )
+

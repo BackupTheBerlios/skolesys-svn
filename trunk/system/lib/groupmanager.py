@@ -385,6 +385,7 @@ class GroupManager (LDAPUtil):
 	def attach_service(self,groupname,servicename):
 		"""
 		Attach the groupservice servicename to the group groupname
+		1. LDAP insertion + run the service's hook_attachservice func 
 		"""
 		res = self.l.search(conf.get('LDAPSERVER','basedn'),\
 			ldap.SCOPE_SUBTREE,'(& (cn=%s)(objectclass=skoleSysServiceGroup))'%groupname,['dn','memberuid','servicelist'])

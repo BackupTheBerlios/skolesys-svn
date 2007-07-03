@@ -17,7 +17,7 @@ userPassword: <passwd>
 # School Domain
 ###############
 dn: <basedn>
-objectClass: dNSDomain
+objectClass: skoleSysDomain
 objectClass: top
 objectClass: domainRelatedObject
 associatedDomain: <domain_name>
