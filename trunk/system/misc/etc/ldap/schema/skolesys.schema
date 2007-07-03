@@ -19,6 +19,25 @@ attributetype ( 1.3.6.1.4.1.27410.1.1.2 NAME 'schoolClassName'
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
+# Common user attributes
+attributetype ( 1.3.6.1.4.1.27410.1.1.3 NAME 'access'
+        EQUALITY caseExactIA5Match
+        SUBSTR caseExactIA5SubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.27410.1.1.4 NAME 'userString1'
+        DESC 'User string for the school to define'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.27410.1.1.5 NAME 'userString2'
+        DESC 'User string for the school to define'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+
 # host attributes
 attributetype ( 1.3.6.1.4.1.27410.1.2.1 NAME 'hostName'
 	DESC 'The hostname defined for a certain host within the internal SkoleSYS network'
@@ -28,18 +47,6 @@ attributetype ( 1.3.6.1.4.1.27410.1.2.1 NAME 'hostName'
 
 attributetype ( 1.3.6.1.4.1.27410.1.2.2 NAME 'hostType'
 	DESC 'The type of a certain host within the internal SkoleSYS network mainserver,ltspserver or workstation'
-	EQUALITY caseIgnoreMatch
-	SUBSTR caseIgnoreSubstringsMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-
-attributetype ( 1.3.6.1.4.1.27410.1.2.3 NAME 'userString1'
-	DESC 'User string for the school to define'
-	EQUALITY caseIgnoreMatch
-	SUBSTR caseIgnoreSubstringsMatch
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-
-attributetype ( 1.3.6.1.4.1.27410.1.2.4 NAME 'userString2'
-	DESC 'User string for the school to define'
 	EQUALITY caseIgnoreMatch
 	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
@@ -68,25 +75,25 @@ attributetype ( 1.3.6.1.4.1.27410.1.3.2 NAME 'serviceList'
 objectclass ( 1.3.6.1.4.1.27410.2.1.1 NAME 'skoleSysTeacher'
 	DESC 'SkoleSys student'
 	SUP top AUXILIARY
-	MAY (userString1 $ userString2) )
+	MAY (userString1 $ userString2 $ access ) )
 
 # SkoleSYS Student
 objectclass ( 1.3.6.1.4.1.27410.2.1.2 NAME 'skoleSysStudent'
 	DESC 'SkoleSys student'
 	SUP top AUXILIARY
-	MAY (firstSchoolYear $ schoolClassName $ userString1 $ userString2) )
+	MAY (firstSchoolYear $ schoolClassName $ userString1 $ userString2 $ access ) )
 
 # SkoleSYS Parent
 objectclass ( 1.3.6.1.4.1.27410.2.1.3 NAME 'skoleSysParent'
 	DESC 'SkoleSys student'
 	SUP top AUXILIARY
-	MAY (userString1 $ userString2) )
+	MAY (userString1 $ userString2 $ access ) )
 
 # SkoleSYS Other
 objectclass ( 1.3.6.1.4.1.27410.2.1.4 NAME 'skoleSysOther'
 	DESC 'SkoleSys student'
 	SUP top AUXILIARY
-	MAY (userString1 $ userString2) )
+	MAY (userString1 $ userString2 $ access ) )
 
 
 #### Skolesys Host classes ####
