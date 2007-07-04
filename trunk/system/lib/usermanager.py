@@ -427,13 +427,3 @@ class UserManager (LDAPUtil):
 		return -10602
 
 
-	def check_permission(self,uid,service):
-		pass
-	
-
-	def grant_access(self,uid,service):
-		pass
-
-
-	def revoke_access(self,uid,service):
-		pass
