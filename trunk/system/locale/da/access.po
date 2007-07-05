@@ -17,6 +17,7 @@
 
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2007-07-05\n"
 "Project-Id-Version: SkoleSYS\n"
 "Last-Translator: Jakob Simon-Gaarde <jakob@sskolesys.dk>\n"
 "Language-Team: Danish\n"
