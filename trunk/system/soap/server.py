@@ -28,6 +28,7 @@ import skolesys
 import skolesys.lib.usermanager as userman
 import skolesys.lib.groupmanager as groupman
 import skolesys.lib.filemanager as fileman
+import skolesys.lib.accessmanager as accessman
 from skolesys.lib.hostmanager import HostManager
 import skolesys.definitions.hostdef as hostdef
 from skolesys.cfmachine.configbuilder import ConfigBuilder
@@ -88,6 +89,7 @@ def bind(session_id,uid,encrypted_passwd):
 	#if plain==conf.get('SOAP_SERVICE','passwd'):
 	um = userman.UserManager()
 	if um.authenticate(uid,plain)==0:
+		sessions.set_session_variable(session_id,'uid',uid)
 		sessions.set_session_variable(session_id,'authenticated',True)
 		return pdump(True)
 
@@ -517,6 +519,120 @@ def removefiles(session_id,files):
 	fm = fileman.FileManager()
 	return pdump(fm.removefiles(files))
 
+# Access 
+def grant_access(session_id,uid,access_ident):
+	"""
+	Permit a user (uid) to the access to services or resources
+	that require the access identifier (access_ident).
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	uid = pload(uid)
+	access_ident = pload(access_ident)
+
+	am = accessman.AccessManager()
+	
+	# Check if the current binded user has permission to access this service 
+	binded_uid = sessions.get_session_variable(pload(session_id),'uid')[1]
+	if not am.check_permission(binded_uid,'access.granter')==1:
+		return pdump(-9999) # Access denied	
+
+	return pdump(am.grant_access(uid,access_ident))
+
+def revoke_access(session_id,uid,access_ident):
+	"""
+	Remove permission for a user (uid) to the access
+	services or resources that require the access
+	identifier (access_ident).
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	uid = pload(uid)
+	access_ident = pload(access_ident)
+
+	am = accessman.AccessManager()
+	# Check if the current binded user has permission to access this service 
+	binded_uid = sessions.get_session_variable(pload(session_id),'uid')[1]
+	if not am.check_permission(binded_uid,'access.granter')==1:
+		return pdump(-9999) # Access denied	
+
+	return pdump(am.revoke_access(uid,access_ident))
+
+def check_permission(session_id,uid,access_ident):
+	"""
+	Check to see if the given user (uid) is permitted to
+	access services or resources where access identifier
+	(access_ident) is required.
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	uid = pload(uid)
+	access_ident = pload(access_ident)
+
+	am = accessman.AccessManager()
+	# Check if the current binded user has permission to access this service 
+	binded_uid = sessions.get_session_variable(pload(session_id),'uid')[1]
+	if not am.check_permission(binded_uid,'access.granter')==1:
+		return pdump(-9999) # Access denied	
+
+	return pdump(am.check_permission(uid,access_ident))
+
+
+def list_permissions(session_id,uid):
+	"""
+	Fetch user's permissions as a list of access identities 
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	uid = pload(uid)
+
+	am = accessman.AccessManager()
+	# Check if the current binded user has permission to access this service 
+	binded_uid = sessions.get_session_variable(pload(session_id),'uid')[1]
+	if not am.check_permission(binded_uid,'access.granter')==1:
+		return pdump(-9999) # Access denied	
+
+	return pdump(am.list_permissions(uid))
+
+def list_my_permissions(session_id):
+	"""
+	Fetch user's permissions as a list of access identities 
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	am = accessman.AccessManager()
+	binded_uid = sessions.get_session_variable(pload(session_id),'uid')[1]
+
+	return pdump(am.list_permissions(binded_uid))
+
+def check_my_permission(session_id,access_ident):
+	"""
+	Fetch user's permissions as a list of access identities 
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	access_ident = pload(access_ident)
+	am = accessman.AccessManager()
+	binded_uid = sessions.get_session_variable(pload(session_id),'uid')[1]
+
+	return pdump(am.check_permission(binded_uid,access_ident))
+
+def list_access_identifiers(session_id):
+	"""
+	Fetch all access identities for the domain
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	am = accessman.AccessManager()
+
+	return pdump(am.list_access_identifiers())
 
 class MyServer(SOAPpy.SOAPServer):
     def __init__(self,addr=('localhost', 8000), ssl_context=None):
@@ -598,6 +714,13 @@ def startserver():
 	server.registerFunction(groupdel)
 
 	# User permissions
+	server.registerFunction(grant_access)
+	server.registerFunction(revoke_access)
+	server.registerFunction(check_permission)
+	server.registerFunction(list_permissions)
+	server.registerFunction(list_access_identifiers)
+	server.registerFunction(check_my_permission)
+	server.registerFunction(list_my_permissions)
 	
 	# Group Management
 	server.registerFunction(group_exists)

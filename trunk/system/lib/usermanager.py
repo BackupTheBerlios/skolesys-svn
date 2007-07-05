@@ -416,7 +416,7 @@ class UserManager (LDAPUtil):
 		res_id = self.l.simple_bind(userinfo[uid]['dn'],passwd)
 		try:
 			res = self.l.result(res_id)
-		except ldap.INVALID_CREDENTIALS, e:
+		except ldap.LDAPError, e:
 			# Invalid credentials
 			return -10603
 		

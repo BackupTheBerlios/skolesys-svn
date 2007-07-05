@@ -56,6 +56,7 @@ links = {
 	'/usr/sbin/ss_usermanager': '../share/python-support/python-skolesys-mainserver/skolesys/lib/usercommands.py',
 	'/usr/sbin/ss_groupmanager': '../share/python-support/python-skolesys-mainserver/skolesys/lib/groupcommands.py',
 	'/usr/sbin/ss_hostmanager': '../share/python-support/python-skolesys-mainserver/skolesys/lib/hostcommands.py',
+	'/usr/sbin/ss_accessmanager': '../share/python-support/python-skolesys-mainserver/skolesys/lib/accesscommands.py',
 	'/usr/sbin/ss_soapserver': '../share/python-support/python-skolesys-mainserver/skolesys/soap/server.py',
 	'/usr/sbin/ss_installer': '../share/python-support/python-skolesys-mainserver/skolesys/cfmachine/cfinstaller.py',
 	'/etc/init.d/skolesysd': '/usr/share/python-support/python-skolesys-mainserver/skolesys/soap/skolesysd',

@@ -108,7 +108,7 @@ if __name__=='__main__':
 			exit(res)
 
 		if res==-13102:
-			print 'User "%s" already as access to "%s"' % (username,access_ident)
+			print 'User "%s" already has access to "%s"' % (username,access_ident)
 			exit(res)
 		
 		if res==-13102:
