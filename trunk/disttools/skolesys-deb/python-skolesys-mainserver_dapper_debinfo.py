@@ -22,6 +22,25 @@ control = {
  and registering thin client servers (LTSP).
 """}
 
+prebuild_script = \
+"""
+import os
+import re
+
+rx_pofile = re.compile('^(.*)\.po$')
+
+def po_compiler(args,dirname,names):
+        for n in names:
+                m = rx_pofile.match(n)
+                if m:
+			print "msgfmt -c -v -o %s.mo %s.po" % (os.path.join(dirname,m.groups()[0]),os.path.join(dirname,m.groups()[0]))
+                        os.system("msgfmt -c -v -o %s.mo %s.po" % (os.path.join(dirname,m.groups()[0]),os.path.join(dirname,m.groups()[0])))
+                        print "Building gettext file %s ..." % os.path.join(dirname,n)
+                        os.system('rm %s' % os.path.join(dirname,n))
+
+os.path.walk('rep/locale',po_compiler,None)
+"""
+
 perm = {'soap/server.py': '755',
 	'soap/skolesysd': '755',
 	'lib/usercommands.py': '755',
@@ -49,6 +68,7 @@ copy = {
 	'config-templates/host-templates': '/etc/skolesys/',
 	'config-templates/skel': '/etc/skolesys/',
 	'config-templates/www': '/etc/skolesys/',
+	'locale': '/usr/share/',
 	'misc/etc/skolesys': '/etc/',
 	'misc/etc/ldap/schema': '/etc/ldap/'}
 
