@@ -1,0 +1,82 @@
+# This file is part of the SkoleSYS libraries
+# Copyright (C) 2007 Jakob Simon-Gaarde <info at skolesys.dk>
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Library General Public
+# License version 2 as published by the Free Software Foundation.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Library General Public License for more details.
+#
+# You should have received a copy of the GNU Library General Public License
+# along with this library; see the file COPYING.LIB.  If not, write to
+# the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+# Boston, MA 02110-1301, USA.
+
+msgid ""
+msgstr ""
+"Project-Id-Version: SkoleSYS\n"
+"Last-Translator: Jakob Simon-Gaarde <jakob@sskolesys.dk>\n"
+"Language-Team: English\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "you do not have access to"
+msgstr "you do not have access to"
+
+msgid "user.create"
+msgstr "Create users"
+
+msgid "user.modify"
+msgstr "Modify standard user information"
+
+msgid "user.remove"
+msgstr "Remove users"
+
+msgid "user.view"
+msgstr "View standard user information"
+
+msgid "group.create"
+msgstr "Create groups and projects"
+
+msgid "group.modify"
+msgstr "Modify groups and projects"
+
+msgid "group.remove"
+msgstr "Remove groups and projects"
+
+msgid "group.view"
+msgstr "View information of groups and projects"
+
+msgid "file.browse"
+msgstr "Browse other user's files"
+
+msgid "file.remove"
+msgstr "Delete other user's files"
+
+msgid "file.backup"
+msgstr "Create backups of other user's files"
+
+msgid "access.granter"
+msgstr "Grant access to other users"
+
+msgid "service.group.attach"
+msgstr "Attach project group services"
+
+msgid "service.group.detach"
+msgstr "Detach project group services"
+
+msgid "service.group.property.set"
+msgstr "Edit properties of project group services"
+
+msgid "membership.create"
+msgstr "Create memberships"
+
+msgid "membership.remove"
+msgstr "Remove memberships"
+
+msgid "self.modify"
+msgstr "Modify your own standard information"

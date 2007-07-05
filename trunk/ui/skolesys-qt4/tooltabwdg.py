@@ -37,7 +37,7 @@ class ToolTabWdg(QtGui.QWidget, baseui.Ui_ToolTabWdg,ar.ActionRequester):
 		self.connect(self.btn_open_fileman,QtCore.SIGNAL("clicked()"),self.openFileManager)
 		self.connect(mainwin.get_mainwindow(),QtCore.SIGNAL("permissionsChanged"),self.setupPermissions)
 		self.btn_new_group.setIcon(QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/new_group.svg'),72,72)))
-		self.setupPermissions(cm.get_proxy_handle().my_permissions())
+		self.setupPermissions(cm.get_proxy_handle().list_my_permissions())
 		
 		
 	def execCreateUserWizard(self):

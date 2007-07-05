@@ -48,7 +48,7 @@ class ss_MainWindow(mainwin.MainWindow):
 		self.connect(self.btn_closetab,QtCore.SIGNAL('clicked()'),self.removeTab)
 		self.tabwidget.setCornerWidget(self.btn_closetab)
 		self.setWindowIcon(QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/logo-non-gradient.svg'),10,10)))
-		self.setupPermissions(conman.get_proxy_handle().my_permissions())
+		self.setupPermissions(conman.get_proxy_handle().list_my_permissions())
 
 
 	def setupActions(self):
@@ -273,7 +273,7 @@ class ss_MainWindow(mainwin.MainWindow):
 		if not conn.proxy.test_binded():
 			print "Not binded"
 			return
-		access_idents = conn.proxy.my_permissions()
+		access_idents = conn.proxy.list_my_permissions()
 		if not self.old_access_idents == access_idents:
 			print "permissions_changed"
 			self.old_access_idents = access_idents

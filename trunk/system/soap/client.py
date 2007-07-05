@@ -380,12 +380,18 @@ class SkoleSYS_Client:
 		
 		return pload(self.server.list_permissions(pdump(self.session_id),pdump(uid)))
 
-	def my_permissions(self):
+	def list_my_permissions(self):
 		"""
 		Fetch the curren binded user's permissions as a list of access identifiers
 		"""
-		return pload(self.server.my_permissions(pdump(self.session_id)))
+		return pload(self.server.list_my_permissions(pdump(self.session_id)))
 	
+	def check_my_permission(self,access_ident):
+		"""
+		Fetch the curren binded user's permissions as a list of access identifiers
+		"""
+		return pload(self.server.check_my_permission(pdump(self.session_id),pdump(access_ident)))
+
 	def list_access_identifiers(self):
 		"""
 		Fetch all access identifiers for the domain
