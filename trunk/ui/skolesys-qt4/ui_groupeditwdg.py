@@ -2,14 +2,12 @@
 
 # Form implementation generated from reading ui file 'ui_groupeditwdg.ui'
 #
-# Created: Tue Feb 27 23:56:56 2007
-#      by: PyQt4 UI code generator 4.0.1
+# Created: Wed Jul  4 23:56:48 2007
+#      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
 
 import sys
-from optionstableview import OptionsTableView
-from pyqtui4.enhancedtreeview import EnhancedTreeView
 from PyQt4 import QtCore, QtGui
 
 class Ui_GroupEditWdg(object):
@@ -130,3 +128,6 @@ class Ui_GroupEditWdg(object):
         self.lbl_groupname.setText(QtGui.QApplication.translate("GroupEditWdg", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("GroupEditWdg", "Group Name:", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_apply.setText(QtGui.QApplication.translate("GroupEditWdg", "Apply", None, QtGui.QApplication.UnicodeUTF8))
+
+from optionstableview import OptionsTableView
+from pyqtui4.enhancedtreeview import EnhancedTreeView

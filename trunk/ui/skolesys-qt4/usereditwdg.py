@@ -43,7 +43,7 @@ class UserEditWdg(QtGui.QWidget, baseui.Ui_UserEditWdg,ar.ActionRequester):
 		self.username = username
 		self.setupUi(self)
 		
-		self.groupmodel = gmod.GroupModel(cm.get_connection(),self.trv_groups)
+		self.groupmodel = gmod.GroupModel(self.trv_groups)
 		self.modelhelper = pmh.PluggableModelHelper(self.groupmodel)
 		self.modelhelper.setView(self.trv_groups)
 		for colidx in xrange(self.groupmodel.columnCount()):
@@ -88,7 +88,7 @@ class UserEditWdg(QtGui.QWidget, baseui.Ui_UserEditWdg,ar.ActionRequester):
 		return True
 
 	def loadUserData(self):
-		proxy = cm.get_connection().get_proxy_handle()
+		proxy = cm.get_proxy_handle()
 		self.user_info = proxy.list_users(uid=self.username)
 		if self.user_info.has_key(self.username):
 			self.change_info = {}
@@ -166,7 +166,7 @@ class UserEditWdg(QtGui.QWidget, baseui.Ui_UserEditWdg,ar.ActionRequester):
 		self.trv_groups.resizeColumnsToContent()
 		
 	def applyChanges(self):
-		proxy = cm.get_connection().get_proxy_handle()
+		proxy = cm.get_proxy_handle()
 		if self.change_info.has_key('groups_by_name'):
 			groups_before = self.user_info.pop('groups_by_name')
 			groups_now = self.change_info.pop('groups_by_name')
@@ -202,7 +202,7 @@ class UserEditWdg(QtGui.QWidget, baseui.Ui_UserEditWdg,ar.ActionRequester):
 				ce.setAccepted(False)
 		
 	def changePassword(self):
-		proxy = cm.get_connection().get_proxy_handle()
+		proxy = cm.get_proxy_handle()
 		import changepasswordwdg as chpasswd
 		passwd = chpasswd.promptForPassword()
 		res = proxy.changeuser(self.username,None,None,passwd,None,None)

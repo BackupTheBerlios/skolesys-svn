@@ -2,13 +2,12 @@
 
 # Form implementation generated from reading ui file 'ui_groupviewwdg.ui'
 #
-# Created: Tue Feb 27 23:56:55 2007
-#      by: PyQt4 UI code generator 4.0.1
+# Created: Wed Jul  4 23:56:48 2007
+#      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
 
 import sys
-from pyqtui4.enhancedtreeview import EnhancedTreeView
 from PyQt4 import QtCore, QtGui
 
 class Ui_GroupViewWdg(object):
@@ -63,3 +62,5 @@ class Ui_GroupViewWdg(object):
         GroupViewWdg.setWindowTitle(QtGui.QApplication.translate("GroupViewWdg", "Group View", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("GroupViewWdg", "User filter", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("GroupViewWdg", "Group type", None, QtGui.QApplication.UnicodeUTF8))
+
+from pyqtui4.enhancedtreeview import EnhancedTreeView

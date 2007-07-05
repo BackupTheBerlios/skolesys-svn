@@ -2,13 +2,12 @@
 
 # Form implementation generated from reading ui file 'ui_filemanagerwdg.ui'
 #
-# Created: Tue Feb 27 23:56:56 2007
-#      by: PyQt4 UI code generator 4.0.1
+# Created: Wed Jul  4 23:56:48 2007
+#      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
 
 import sys
-from pyqtui4.enhancedtreeview import EnhancedTreeView
 from PyQt4 import QtCore, QtGui
 
 class Ui_FileManagerWdg(object):
@@ -171,3 +170,5 @@ class Ui_FileManagerWdg(object):
         self.btn_close.setText(QtGui.QApplication.translate("FileManagerWdg", "Close", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_backup.setText(QtGui.QApplication.translate("FileManagerWdg", "Backup...", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_delete.setText(QtGui.QApplication.translate("FileManagerWdg", "Delete", None, QtGui.QApplication.UnicodeUTF8))
+
+from pyqtui4.enhancedtreeview import EnhancedTreeView

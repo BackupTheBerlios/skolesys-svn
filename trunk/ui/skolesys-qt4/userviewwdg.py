@@ -32,7 +32,7 @@ class UserViewWdg(QtGui.QWidget, ui_uvwdg.Ui_UserViewWdg):
 	def __init__(self,parent):
 		QtGui.QWidget.__init__(self,parent)
 		
-		self.proxy = cm.get_connection().get_proxy_handle()
+		self.proxy = cm.get_proxy_handle()
 		self.setupUi(self)
 		self.setupModel()
 		self.setupUserTypeCombo()
@@ -94,7 +94,7 @@ class UserViewWdg(QtGui.QWidget, ui_uvwdg.Ui_UserViewWdg):
 		pass
 	
 	def setupModel(self):
-		self.usermodel = umod.UserModel(cm.get_connection(),self.trv_userlist)
+		self.usermodel = umod.UserModel(self.trv_userlist)
 		self.modelhelper = pmh.PluggableModelHelper(self.usermodel)
 		self.modelhelper.setView(self.trv_userlist)
 		for colidx in xrange(self.usermodel.columnCount()):

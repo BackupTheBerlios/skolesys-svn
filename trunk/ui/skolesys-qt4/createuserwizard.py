@@ -89,7 +89,7 @@ class CreateUserWizard(QtGui.QDialog, baseui.Ui_CreateUserWizard):
 		
 
 	def setupGroupPage(self):
-		proxy = cm.get_connection().get_proxy_handle()
+		proxy = cm.get_proxy_handle()
 		# Primary group combo
 		
 		self.cmb_primary_group.clear()
@@ -101,7 +101,7 @@ class CreateUserWizard(QtGui.QDialog, baseui.Ui_CreateUserWizard):
 		self.connect(self.cmb_primary_group,QtCore.SIGNAL("activated(int)"),self.updateGroupPage)
 
 		# Secondary groups
-		self.groupmodel = gmod.GroupModel(cm.get_connection(),self.trv_groups)
+		self.groupmodel = gmod.GroupModel(self.trv_groups)
 		self.modelhelper = pmh.PluggableModelHelper(self.groupmodel)
 		self.modelhelper.setView(self.trv_groups)
 		for colidx in xrange(self.groupmodel.columnCount()):
@@ -134,7 +134,7 @@ class CreateUserWizard(QtGui.QDialog, baseui.Ui_CreateUserWizard):
 		self.pal_org = QtGui.QPalette(self.led_login.palette())
 	
 	def checkLogin(self):
-		proxy = cm.get_connection().get_proxy_handle()
+		proxy = cm.get_proxy_handle()
 		login=str(self.led_login.text().toUtf8())
 		self.led_login.setText(login.lower())
 		pal = QtGui.QPalette(self.pal_org)
@@ -213,7 +213,7 @@ class CreateUserWizard(QtGui.QDialog, baseui.Ui_CreateUserWizard):
 			firstyear = self.sbx_first_school_year.value()
 		primarygroup,ok = self.cmb_primary_group.itemData(self.cmb_primary_group.currentIndex()).toInt()
 		passwd = str(self.led_passwd.text().toUtf8())
-		proxy = cm.get_connection().get_proxy_handle()
+		proxy = cm.get_proxy_handle()
 		res = proxy.createuser(uid,givenname,familyname,passwd,usertype_id,primarygroup,firstyear)
 		if res>=0:
 			import ss_mainwindow as mainwin
@@ -269,7 +269,7 @@ class CreateUserWizard(QtGui.QDialog, baseui.Ui_CreateUserWizard):
 	def removeGroups(self):
 		mimedata = self.groupmodel.generateMimeData(self.trv_groups.selectedIndexes())
 		groups = pickle.loads(mimedata['application/x-skolesysgroups-pyobj'])
-		proxy = cm.get_connection().get_proxy_handle()
+		proxy = cm.get_proxy_handle()
 		for grp in groups:
 			self.groupmodel._removeGroup(grp['gid'])
 		
@@ -279,7 +279,7 @@ class CreateUserWizard(QtGui.QDialog, baseui.Ui_CreateUserWizard):
 
 	def hook_dropOnGroupView(self,obj,de):
 		dragged_groups = pickle.loads(de.mimeData().data('application/x-skolesysgroups-pyobj'))
-		proxy = cm.get_connection().get_proxy_handle()
+		proxy = cm.get_proxy_handle()
 		for grp in dragged_groups:
 			self.groupmodel._addGroup(grp['gid'],grp['groupname'],grp['displayed_name'],grp['grouptype_id'])
 		

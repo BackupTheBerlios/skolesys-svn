@@ -65,7 +65,6 @@ class CreateGroupWizard(QtGui.QDialog, baseui.Ui_CreateGroupWizard):
 
 
 	def checkName(self):
-		#proxy = cm.get_connection().get_proxy_handle()
 		displayed_name = str(self.led_groupname.text().toUtf8())
 		self.groupname = charmapping.system_nicefy_string(displayed_name)
 		self.updateNamePage()
@@ -124,7 +123,7 @@ class CreateGroupWizard(QtGui.QDialog, baseui.Ui_CreateGroupWizard):
 	
 	def finish(self):
 		description = str(self.ted_description.toPlainText().toUtf8())
-		proxy = cm.get_connection().get_proxy_handle()
+		proxy = cm.get_proxy_handle()
 		displayed_name = str(self.led_groupname.text().toUtf8())
 		grouptype_id,ok = self.cmb_grouptype.itemData(self.cmb_grouptype.currentIndex()).toInt()
 		org_groupname = self.groupname
@@ -186,7 +185,7 @@ class CreateGroupWizard(QtGui.QDialog, baseui.Ui_CreateGroupWizard):
 	def removeGroups(self):
 		mimedata = self.groupmodel.generateMimeData(self.trv_groups.selectedIndexes())
 		groups = pickle.loads(mimedata['application/x-skolesysgroups-pyobj'])
-		proxy = cm.get_connection().get_proxy_handle()
+		proxy = cm.get_proxy_handle()
 		for grp in groups:
 			self.groupmodel._removeGroup(grp['gid'])
 		
@@ -196,7 +195,7 @@ class CreateGroupWizard(QtGui.QDialog, baseui.Ui_CreateGroupWizard):
 
 	def hook_dropOnGroupView(self,obj,de):
 		dragged_groups = pickle.loads(de.mimeData().data('application/x-skolesysgroups-pyobj'))
-		proxy = cm.get_connection().get_proxy_handle()
+		proxy = cm.get_proxy_handle()
 		for grp in dragged_groups:
 			self.groupmodel._addGroup(grp['gid'],grp['groupname'],grp['displayed_name'],grp['grouptype_id'])
 		

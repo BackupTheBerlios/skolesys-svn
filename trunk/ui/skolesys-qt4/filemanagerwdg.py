@@ -31,7 +31,7 @@ class FileManagerWdg(QtGui.QWidget, baseui.Ui_FileManagerWdg):
 	def __init__(self,parent):
 		QtGui.QWidget.__init__(self,parent)
 		# Get connection handle
-		self.proxy = cm.get_connection().get_proxy_handle()
+		self.proxy = cm.get_proxy_handle()
 		
 		# Setup GUI
 		self.setupUi(self)

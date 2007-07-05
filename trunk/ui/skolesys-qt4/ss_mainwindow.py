@@ -22,6 +22,7 @@ import pyqtui4.mainwindow as mainwin
 import pyqtui4.qt4tools as qt4tools
 import skolesys.definitions.userdef as userdef
 import skolesys.definitions.groupdef as groupdef
+import connectionmanager as conman
 import os
 import paths
 
@@ -30,6 +31,7 @@ class ss_MainWindow(mainwin.MainWindow):
 		self.setupCentralTabWidget()
 		mainwin.MainWindow.__init__(self,parent,self.tabwidget)
 		
+		self.old_access_idents = []
 		self.groupview = None
 		self.userview = None
 		self.filemanager = None
@@ -38,6 +40,7 @@ class ss_MainWindow(mainwin.MainWindow):
 		self.setupActions()
 		self.setupMenus()
 		self.setupToolBars()
+		self.startPermissionMonitor()
 		
 		self.btn_closetab = QtGui.QToolButton(self.tabwidget)
 		self.btn_closetab.setAutoRaise(True)
@@ -45,6 +48,7 @@ class ss_MainWindow(mainwin.MainWindow):
 		self.connect(self.btn_closetab,QtCore.SIGNAL('clicked()'),self.removeTab)
 		self.tabwidget.setCornerWidget(self.btn_closetab)
 		self.setWindowIcon(QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/logo-non-gradient.svg'),10,10)))
+		self.setupPermissions(conman.get_proxy_handle().my_permissions())
 
 
 	def setupActions(self):
@@ -68,9 +72,6 @@ class ss_MainWindow(mainwin.MainWindow):
 		a = self.addAction('open_filemanager',self.tr('File manager'))
 		self.connect(a,QtCore.SIGNAL('triggered()'),self.openFileManager)
 
-		a = self.addAction('open_filemanager',self.tr('File manager'))
-		self.connect(a,QtCore.SIGNAL('triggered()'),self.openFileManager)
-		
 		a = self.addAction('exec_creategroupwizard',self.tr('Create group...'))
 		self.connect(a,QtCore.SIGNAL('triggered()'),self.execCreateGroupWizard)
 		a.setIcon(QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/new_group.svg'),16,16)))
@@ -86,6 +87,9 @@ class ss_MainWindow(mainwin.MainWindow):
 		a = self.addAction('show_groups',self.tr('Show Groups'))
 		a.setCheckable(True)
 		self.connect(a,QtCore.SIGNAL('toggled(bool)'),self.showGroupView)
+		
+		self.connect(self,QtCore.SIGNAL('permissionsChanged'),self.setupPermissions)
+		
 		
 	def removeTab(self,idx=None):
 		"""
@@ -255,6 +259,41 @@ class ss_MainWindow(mainwin.MainWindow):
 				ce.setAccepted(False)
 				break
 	
+	# Permissions
+	def startPermissionMonitor(self):
+		perm_timer = QtCore.QTimer(self);
+		self.connect(perm_timer, QtCore.SIGNAL('timeout()'), self.checkPermissions);
+		perm_timer.start(5000);
+	
+	def checkPermissions(self):
+		conn = conman.get_connection()
+		if conn==None:
+			print "No connection"
+			return
+		if not conn.proxy.test_binded():
+			print "Not binded"
+			return
+		access_idents = conn.proxy.my_permissions()
+		if not self.old_access_idents == access_idents:
+			print "permissions_changed"
+			self.old_access_idents = access_idents
+			self.emitPermissionsChanged(access_idents)
+		
+	def setupPermissions(self,access_idents):
+		action_map_perm = {
+			'import_users' : 'user.create',
+			'export_users' : 'user.view',
+			'export_groups' : 'group.view',
+			'open_filemanager' : 'filestats.browse',
+			'exec_creategroupwizard' : 'group.create',
+			'exec_createuserwizard' : 'user.create'
+		}
+		for action_key,acc_ident in action_map_perm.items():
+			if not access_idents.count(acc_ident):
+				self.action(action_key).setDisabled(True)
+			else:
+				self.action(action_key).setDisabled(False)
+	
 	# Signal events
 	
 	# Users
@@ -283,6 +322,9 @@ class ss_MainWindow(mainwin.MainWindow):
 	def emitGroupMembershipsChanged(self,groupname):
 		self.emit(QtCore.SIGNAL("groupMembershipsChanged"),groupname)
 		
+	def emitPermissionsChanged(self,access_idents):
+		self.emit(QtCore.SIGNAL("permissionsChanged"),access_idents)
+
 singleton_mainwindow = None
 
 def get_mainwindow():

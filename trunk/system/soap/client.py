@@ -30,6 +30,7 @@ class SkoleSYS_Client:
 			url = "%s:%d/" % (host,port)
 		else:
 			url = host
+		self.url = url
 		self.server = SOAPpy.SOAPProxy(url)
 		self._get_id()
 		
@@ -91,7 +92,18 @@ class SkoleSYS_Client:
 			self.logfile.write("%s\n" % txt)
 
 	def _get_id(self):
-		self.session_id = pload(self.server.get_id())
+		try:
+			self.session_id = pload(self.server.get_id())
+		except:
+			self.session_id = None
+		
+		try:
+			if not self.session_id:
+				self.server = SOAPpy.SOAPProxy(self.url)
+				self.session_id = pload(self.server.get_id())
+		except:
+			self.session_id = None
+
 		if self.session_id:
 			self.logtext("RECIEVED SESSIONID: %s" % self.session_id)
 		else:
@@ -336,9 +348,51 @@ class SkoleSYS_Client:
 	def removefiles(self,rmlist):
 		return pload(self.server.removefiles(pdump(self.session_id),pdump(rmlist)))
 	
+	# AccessManager
+	def grant_access(self,uid,access_ident):
+		"""
+		Required access identifier: "access.granter"
+		Permit a user (uid) to the access to services or resources
+		that require the access identifier (access_ident).
+		"""
+		return pload(self.server.grant_access(pdump(self.session_id),pdump(uid),pdump(access_ident)))
 	
-	
+	def revoke_access(self,uid,access_ident):
+		"""
+		Required access identifier: "access.granter"
+		Remove permission for a user (uid) to the access 
+		services or resources that require the access identifier (access_ident).
+		"""
+		return pload(self.server.revoke_access(pdump(self.session_id),pdump(uid),pdump(access_ident)))
 
+	def check_permission(self,uid,access_ident):
+		"""
+		Required access identifier: "access.granter"
+		Check if a user has access to a certain service or resource
+		"""
+		return pload(self.server.check_permission(pdump(self.session_id),pdump(uid),pdump(access_ident)))
+
+	def list_permissions(self,uid):
+		"""
+		Required access identifier: "access.granter"
+		Fetch user's permissions as a list of access identifiers
+		"""
+		
+		return pload(self.server.list_permissions(pdump(self.session_id),pdump(uid)))
+
+	def my_permissions(self):
+		"""
+		Fetch the curren binded user's permissions as a list of access identifiers
+		"""
+		return pload(self.server.my_permissions(pdump(self.session_id)))
+	
+	def list_access_identifiers(self):
+		"""
+		Fetch all access identifiers for the domain
+		"""
+		return pload(self.server.list_access_identifiers(pdump(self.session_id)))
+	
+	
 
 if __name__=='__main__':
     c=SkoleSYS_Client('https://127.0.0.1',8443)

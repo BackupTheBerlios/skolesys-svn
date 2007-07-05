@@ -2,13 +2,12 @@
 
 # Form implementation generated from reading ui file 'ui_usereditwdg.ui'
 #
-# Created: Tue Feb 27 23:56:55 2007
-#      by: PyQt4 UI code generator 4.0.1
+# Created: Wed Jul  4 23:56:49 2007
+#      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
 
 import sys
-from pyqtui4.enhancedtreeview import EnhancedTreeView
 from PyQt4 import QtCore, QtGui
 
 class Ui_UserEditWdg(object):
@@ -124,3 +123,5 @@ class Ui_UserEditWdg(object):
         self.lbl_usertype.setText(QtGui.QApplication.translate("UserEditWdg", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
         self.lbl_username.setText(QtGui.QApplication.translate("UserEditWdg", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("UserEditWdg", "Secondary groups:", None, QtGui.QApplication.UnicodeUTF8))
+
+from pyqtui4.enhancedtreeview import EnhancedTreeView

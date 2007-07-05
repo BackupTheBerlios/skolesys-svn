@@ -2,19 +2,18 @@
 
 # Form implementation generated from reading ui file 'ui_addremovegroupuserswdg.ui'
 #
-# Created: Tue Feb 27 23:56:56 2007
-#      by: PyQt4 UI code generator 4.0.1
+# Created: Wed Jul  4 23:56:48 2007
+#      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
 
 import sys
-from pyqtui4.enhancedtreeview import EnhancedTreeView
 from PyQt4 import QtCore, QtGui
 
 class Ui_AddRemoveGroupUsersWdg(object):
     def setupUi(self, AddRemoveGroupUsersWdg):
         AddRemoveGroupUsersWdg.setObjectName("AddRemoveGroupUsersWdg")
-        AddRemoveGroupUsersWdg.resize(QtCore.QSize(QtCore.QRect(0,0,664,770).size()).expandedTo(AddRemoveGroupUsersWdg.minimumSizeHint()))
+        AddRemoveGroupUsersWdg.resize(QtCore.QSize(QtCore.QRect(0,0,664,744).size()).expandedTo(AddRemoveGroupUsersWdg.minimumSizeHint()))
 
         self.gridlayout = QtGui.QGridLayout(AddRemoveGroupUsersWdg)
         self.gridlayout.setMargin(9)
@@ -130,3 +129,5 @@ class Ui_AddRemoveGroupUsersWdg(object):
         self.label_2.setText(QtGui.QApplication.translate("AddRemoveGroupUsersWdg", "Remove membership:", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_ok.setText(QtGui.QApplication.translate("AddRemoveGroupUsersWdg", "OK", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_cancel.setText(QtGui.QApplication.translate("AddRemoveGroupUsersWdg", "Cancel", None, QtGui.QApplication.UnicodeUTF8))
+
+from pyqtui4.enhancedtreeview import EnhancedTreeView

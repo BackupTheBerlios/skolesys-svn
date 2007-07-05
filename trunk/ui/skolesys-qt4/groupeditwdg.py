@@ -39,7 +39,7 @@ class GroupEditWdg(QtGui.QWidget, baseui.Ui_GroupEditWdg):
 		self.connect(self.tbl_serviceoptions.itemDelegate(),QtCore.SIGNAL("dataChanged"),self.serviceOptionChanged)
 		
 		# Setup group model
-		self.usermodel = umod.UserModel(cm.get_connection(),self.trv_users)
+		self.usermodel = umod.UserModel(self.trv_users)
 		self.modelhelper = pmh.PluggableModelHelper(self.usermodel)
 		self.modelhelper.setView(self.trv_users)
 		for colidx in xrange(self.usermodel.columnCount()):
@@ -60,7 +60,7 @@ class GroupEditWdg(QtGui.QWidget, baseui.Ui_GroupEditWdg):
 		self.connect(mainwin.get_mainwindow(),QtCore.SIGNAL('groupMembershipsChanged'),self.updateUsersView)
 	
 	def setupServiceCombo(self):
-		proxy = cm.get_connection().get_proxy_handle()
+		proxy = cm.get_proxy_handle()
 		
 		services_in_use = proxy.list_groupservices(self.groupname)
 		if services_in_use!=-1:
@@ -71,7 +71,7 @@ class GroupEditWdg(QtGui.QWidget, baseui.Ui_GroupEditWdg):
 
 	
 	def loadGroupData(self):
-		proxy = cm.get_connection().get_proxy_handle()
+		proxy = cm.get_proxy_handle()
 		res = proxy.list_groups(groupname=self.groupname)
 		if res.has_key(self.groupname):
 			self.change_info = {}
@@ -186,7 +186,7 @@ class GroupEditWdg(QtGui.QWidget, baseui.Ui_GroupEditWdg):
 		gridlayout.addWidget(btn_add,1,1,1,1)
 		gridlayout.addWidget(btn_cancel,1,2,1,1)
 		
-		proxy = cm.get_connection().get_proxy_handle()
+		proxy = cm.get_proxy_handle()
 		all_services = proxy.list_groupservices()
 		services_in_use = proxy.list_groupservices(self.groupname)
 		for serv in services_in_use:
@@ -205,7 +205,7 @@ class GroupEditWdg(QtGui.QWidget, baseui.Ui_GroupEditWdg):
 				self.currentServiceChanged(self.cmb_services.currentIndex())
 
 	def applyChanges(self):
-		proxy = cm.get_connection().get_proxy_handle()
+		proxy = cm.get_proxy_handle()
 		if self.change_info.has_key('users_by_name'):
 			users_before = self.group_info.pop('users_by_name')
 			users_now = self.change_info.pop('users_by_name')

@@ -2,13 +2,12 @@
 
 # Form implementation generated from reading ui file 'ui_createuserwizard.ui'
 #
-# Created: Tue Feb 27 23:56:55 2007
-#      by: PyQt4 UI code generator 4.0.1
+# Created: Wed Jul  4 23:56:48 2007
+#      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
 
 import sys
-from pyqtui4.enhancedtreeview import EnhancedTreeView
 from PyQt4 import QtCore, QtGui
 
 class Ui_CreateUserWizard(object):
@@ -273,3 +272,5 @@ class Ui_CreateUserWizard(object):
         self.btn_back.setText(QtGui.QApplication.translate("CreateUserWizard", "< Back", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_next.setText(QtGui.QApplication.translate("CreateUserWizard", "Next >", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_finish.setText(QtGui.QApplication.translate("CreateUserWizard", "Finish", None, QtGui.QApplication.UnicodeUTF8))
+
+from pyqtui4.enhancedtreeview import EnhancedTreeView

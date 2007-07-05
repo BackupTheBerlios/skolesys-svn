@@ -20,24 +20,24 @@ Boston, MA 02110-1301, USA.
 import sys
 from PyQt4 import QtCore,QtGui
 from skolesys.soap.client import SkoleSYS_Client
+import loginwdg
 import pickle
 
 class ConnectionManager:
 	def __init__(self,host,port):
 		self.proxy = SkoleSYS_Client(host,port)
-		self.proxy.bind('bdnprrfe')
 		
-	def get_proxy_handle(self):
+	def _get_proxy_handle(self):
 		counter = 0
+		# Check if it is nessecary to request a new session id
+		# the SOAP server may have flushed the session info
+		if not self.proxy.test_session_id():
+			self.proxy._get_id()
+			
 		while not self.proxy.test_binded() and counter<3:
-			passwd = QtGui.QInputDialog.getText(None,
-				QtGui.qApp.translate("ConnectionManager","SkoleSYS Administration"),\
-				QtGui.qApp.translate("ConnectionManager","Enter administrator password"),\
-				QtGui.QLineEdit.Password)
-			print passwd
-			if passwd[1]==False:
-				sys.exit(0)
-			if self.proxy.bind(str(passwd[0].toUtf8())):
+				
+			username,passwd = loginwdg.get_credentials()
+			if self.proxy.bind(username,passwd):
 				break
 			counter+=1
 		if counter>=3:
@@ -55,6 +55,11 @@ def get_connection():
 	global conn
 	return conn
 
+def get_proxy_handle():
+	global conn
+	if not conn:
+		return None
+	return conn._get_proxy_handle()
 
 if __name__=='__main__':
 	a = QtGui.QApplication(sys.argv)

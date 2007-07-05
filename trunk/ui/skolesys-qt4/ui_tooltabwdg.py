@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui_tooltabwdg.ui'
 #
-# Created: Tue Feb 27 23:56:55 2007
-#      by: PyQt4 UI code generator 4.0.1
+# Created: Wed Jul  4 23:56:48 2007
+#      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -135,3 +135,4 @@ class Ui_ToolTabWdg(object):
         "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt;\">New Group</span></p>\n"
         "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Create a new group by following the steps of this wizard. Group resources will be allocated and users can be added as members.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_new_group.setText(QtGui.QApplication.translate("ToolTabWdg", "...", None, QtGui.QApplication.UnicodeUTF8))
+

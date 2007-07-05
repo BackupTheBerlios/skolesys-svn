@@ -2,13 +2,12 @@
 
 # Form implementation generated from reading ui file 'ui_addremoveusergroupswdg.ui'
 #
-# Created: Tue Feb 27 23:56:56 2007
-#      by: PyQt4 UI code generator 4.0.1
+# Created: Wed Jul  4 23:56:48 2007
+#      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
 
 import sys
-from pyqtui4.enhancedtreeview import EnhancedTreeView
 from PyQt4 import QtCore, QtGui
 
 class Ui_AddRemoveUserGroupsWdg(object):
@@ -130,3 +129,5 @@ class Ui_AddRemoveUserGroupsWdg(object):
         self.label_2.setText(QtGui.QApplication.translate("AddRemoveUserGroupsWdg", "Remove membership:", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_ok.setText(QtGui.QApplication.translate("AddRemoveUserGroupsWdg", "OK", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_cancel.setText(QtGui.QApplication.translate("AddRemoveUserGroupsWdg", "Cancel", None, QtGui.QApplication.UnicodeUTF8))
+
+from pyqtui4.enhancedtreeview import EnhancedTreeView

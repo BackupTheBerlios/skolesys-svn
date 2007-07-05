@@ -25,11 +25,12 @@ import skolesys.definitions.userdef as userdef
 import skolesys.tools.schooltime as stime
 import pyqtui4.qt4tools as qt4tools
 import paths
+import connectionmanager as cm
 
 class UserModel(esm.EnhancedStandardItemModel):
-	def __init__(self,conn,parent):
+	def __init__(self,parent):
 		esm.EnhancedStandardItemModel.__init__(self,parent)
-		self.proxy = conn.get_proxy_handle()
+		self.proxy = cm.get_proxy_handle()
 		self.users = {}
 		self.columninfo = {
 			'uidnumber': {'text': self.tr('User ID'), 'columnindex': 3},

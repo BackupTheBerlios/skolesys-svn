@@ -24,11 +24,12 @@ import pyqtui4.enhancedstandarditemmodel as esm
 import skolesys.definitions.groupdef as groupdef
 import pyqtui4.qt4tools as qt4tools
 import paths
+import connectionmanager as cm
 
 class GroupModel(esm.EnhancedStandardItemModel):
-	def __init__(self,conn,parent):
+	def __init__(self,parent):
 		esm.EnhancedStandardItemModel.__init__(self,parent)
-		self.proxy = conn.get_proxy_handle()
+		self.proxy = cm.get_proxy_handle()
 		self.groups = {}
 		self.exclude_grouptype_ids=[]
 		self.exclude_gid_numbers=[]

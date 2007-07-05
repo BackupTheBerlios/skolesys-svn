@@ -31,7 +31,7 @@ class GroupViewWdg(QtGui.QWidget, ui_gvwdg.Ui_GroupViewWdg):
 	def __init__(self,parent):
 		QtGui.QWidget.__init__(self,parent)
 		
-		self.proxy = cm.get_connection().get_proxy_handle()
+		self.proxy = cm.get_proxy_handle()
 		self.setupUi(self)
 		self.setupModel()
 		self.setupGroupTypeCombo()
@@ -52,7 +52,7 @@ class GroupViewWdg(QtGui.QWidget, ui_gvwdg.Ui_GroupViewWdg):
 
 	
 	def setupModel(self):
-		self.groupmodel = gmod.GroupModel(cm.get_connection(),self.trv_grouplist)
+		self.groupmodel = gmod.GroupModel(self.trv_grouplist)
 		self.modelhelper = pmh.PluggableModelHelper(self.groupmodel)
 		self.modelhelper.setView(self.trv_grouplist)
 		for colidx in xrange(self.groupmodel.columnCount()):

@@ -28,12 +28,12 @@ QtCore.Qt.ForegroundRole = 9
 class FileInfoModel(esm.EnhancedStandardItemModel):
 	def __init__(self,parent):
 		esm.EnhancedStandardItemModel.__init__(self,parent)
-		self.proxy = cm.get_connection().get_proxy_handle()
+		self.proxy = cm.get_proxy_handle()
 		self.files = {}
 		self.exclude_grouptype_ids=[]
 		self.exclude_gid_numbers=[]
 		self.displayed_groupnames = {}
-		self.proxy = cm.get_connection().get_proxy_handle()
+		self.proxy = cm.get_proxy_handle()
 		groups = self.proxy.list_groups()
 		for grpname,details in groups.items():
 			self.displayed_groupnames[grpname] = details['displayedName']

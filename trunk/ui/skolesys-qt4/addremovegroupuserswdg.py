@@ -42,7 +42,7 @@ class AddRemoveGroupUsersWdg(QtGui.QDialog, baseui.Ui_AddRemoveGroupUsersWdg):
 		
 	def setupModels(self):
 		
-		self.groupmodel = gmod.GroupModel(cm.get_connection(),self.trv_groups)
+		self.groupmodel = gmod.GroupModel(self.trv_groups)
 		group_modelhelper = pmh.PluggableModelHelper(self.groupmodel)
 		group_modelhelper.setView(self.trv_groups)
 		for colidx in xrange(self.groupmodel.columnCount()):
@@ -55,7 +55,7 @@ class AddRemoveGroupUsersWdg(QtGui.QDialog, baseui.Ui_AddRemoveGroupUsersWdg):
 
 		self.trv_groups.resizeColumnsToContent()
 
-		self.avail_usermodel = umod.UserModel(cm.get_connection(),self.trv_available)
+		self.avail_usermodel = umod.UserModel(self.trv_available)
 		avail_modelhelper = pmh.PluggableModelHelper(self.avail_usermodel)
 		avail_modelhelper.setView(self.trv_available)
 		# Hide some columns
@@ -68,7 +68,7 @@ class AddRemoveGroupUsersWdg(QtGui.QDialog, baseui.Ui_AddRemoveGroupUsersWdg):
 		self.trv_available.resizeColumnsToContent()
 		self.avail_usermodel.setAcceptedMimeTypes(['application/x-skolesysusers-pyobj'])
 		
-		self.add_usermodel = umod.UserModel(cm.get_connection(),self.trv_add)
+		self.add_usermodel = umod.UserModel(self.trv_add)
 		add_modelhelper = pmh.PluggableModelHelper(self.add_usermodel)
 		add_modelhelper.setView(self.trv_add)
 		# Hide some columns
@@ -79,7 +79,7 @@ class AddRemoveGroupUsersWdg(QtGui.QDialog, baseui.Ui_AddRemoveGroupUsersWdg):
 		self.trv_add.connectEvent("dropEvent",self.hook_dropOnAddView)
 		self.add_usermodel.setAcceptedMimeTypes(['application/x-skolesysusers-pyobj'])
 
-		self.remove_usermodel = umod.UserModel(cm.get_connection(),self.trv_remove)
+		self.remove_usermodel = umod.UserModel(self.trv_remove)
 		remove_modelhelper = pmh.PluggableModelHelper(self.remove_usermodel)
 		remove_modelhelper.setView(self.trv_remove)
 		# Hide some columns
@@ -138,7 +138,7 @@ class AddRemoveGroupUsersWdg(QtGui.QDialog, baseui.Ui_AddRemoveGroupUsersWdg):
 		del_users = self.remove_usermodel.userNames()
 		touched_groups = {}
 		touched_users = {}
-		proxy = cm.get_connection().get_proxy_handle()
+		proxy = cm.get_proxy_handle()
 
 		steps = len(del_users)*len(groups) + len(add_users)*len(groups)
 		step_factor = 100.0/steps

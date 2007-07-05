@@ -38,7 +38,7 @@ class OptionsTableView(QtGui.QTreeView):
 		self.connect(self.itemDelegate(),QtCore.SIGNAL("dataChanged"),self.slotDataChanged)
 	
 	def setContext(self,servicename,groupname):
-		proxy = cm.get_connection().get_proxy_handle()
+		proxy = cm.get_proxy_handle()
 		options = proxy.list_groupservice_options_available(servicename,groupname)
 		self.option_info = proxy.get_groupservice_option_values(groupname,servicename)
 		self.groupname = groupname
@@ -138,7 +138,7 @@ class OptionsTableView(QtGui.QTreeView):
 		return True
 	
 	def applyChanges(self):
-		proxy = cm.get_connection().get_proxy_handle()
+		proxy = cm.get_proxy_handle()
 		for option_name,value in self.change_info.items():
 			if type(value) == str and value == '':
 				proxy.unset_groupservice_option(self.servicename,self.groupname,option_name)
@@ -150,7 +150,6 @@ class OptionsTableView(QtGui.QTreeView):
 		self.change_info = {}
 	
 	def slotDataChanged(self,idx):
-		#proxy = cm.get_connection().get_proxy_handle()
 		if idx.data(pid.IS_CellId) != QtCore.QVariant.Invalid:
 			option_name = str(idx.data(pid.IS_CellId).toString())
 			value = idx.data(pid.IS_ShadowValue)

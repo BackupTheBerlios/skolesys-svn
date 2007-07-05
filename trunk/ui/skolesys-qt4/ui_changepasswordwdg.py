@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui_changepasswordwdg.ui'
 #
-# Created: Tue Feb 27 23:56:55 2007
-#      by: PyQt4 UI code generator 4.0.1
+# Created: Wed Jul  4 23:56:48 2007
+#      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -80,3 +80,4 @@ class Ui_ChangePasswordWdg(object):
         self.label.setText(QtGui.QApplication.translate("ChangePasswordWdg", "New password:", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_cancel.setText(QtGui.QApplication.translate("ChangePasswordWdg", "Cancel", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_ok.setText(QtGui.QApplication.translate("ChangePasswordWdg", "OK", None, QtGui.QApplication.UnicodeUTF8))
+
