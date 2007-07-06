@@ -25,59 +25,60 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "you do not have access to"
+msgid "you do not have access to_infinitive"
 msgstr "you do not have access to"
 
-msgid "user.create"
+msgid "user.create_infinitive"
 msgstr "Create users"
 
-msgid "user.modify"
+msgid "user.modify_infinitive"
 msgstr "Modify standard user information"
 
-msgid "user.remove"
+msgid "user.remove_infinitive"
 msgstr "Remove users"
 
-msgid "user.view"
+msgid "user.view_infinitive"
 msgstr "View standard user information"
 
-msgid "group.create"
+msgid "group.create_infinitive"
 msgstr "Create groups and projects"
 
-msgid "group.modify"
+msgid "group.modify_infinitive"
 msgstr "Modify groups and projects"
 
-msgid "group.remove"
+msgid "group.remove_infinitive"
 msgstr "Remove groups and projects"
 
-msgid "group.view"
+msgid "group.view_infinitive"
 msgstr "View information of groups and projects"
 
-msgid "file.browse"
+msgid "file.browse_infinitive"
 msgstr "Browse other user's files"
 
-msgid "file.remove"
+msgid "file.remove_infinitive"
 msgstr "Delete other user's files"
 
-msgid "file.backup"
+msgid "file.backup_infinitive"
 msgstr "Create backups of other user's files"
 
-msgid "access.granter"
+msgid "access.granter_infinitive"
 msgstr "Grant access to other users"
 
-msgid "service.group.attach"
+msgid "service.group.attach_infinitive"
 msgstr "Attach project group services"
 
-msgid "service.group.detach"
+msgid "service.group.detach_infinitive"
 msgstr "Detach project group services"
 
-msgid "service.group.property.set"
+msgid "service.group.property.set_infinitive"
 msgstr "Edit properties of project group services"
 
-msgid "membership.create"
+msgid "membership.create_infinitive"
 msgstr "Create memberships"
 
-msgid "membership.remove"
+msgid "membership.remove_infinitive"
 msgstr "Remove memberships"
 
-msgid "self.modify"
+msgid "self.modify_infinitive"
 msgstr "Modify your own standard information"
+

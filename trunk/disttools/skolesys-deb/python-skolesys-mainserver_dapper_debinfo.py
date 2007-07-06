@@ -92,6 +92,24 @@ rm default-templates -Rf
 """
 
 postinst = """#!/bin/sh
+ss_accessmanager add_access_identifier user.create
+ss_accessmanager add_access_identifier user.remove
+ss_accessmanager add_access_identifier user.modify
+ss_accessmanager add_access_identifier user.view
+ss_accessmanager add_access_identifier group.create
+ss_accessmanager add_access_identifier group.remove
+ss_accessmanager add_access_identifier group.modify
+ss_accessmanager add_access_identifier group.view
+ss_accessmanager add_access_identifier file.browse
+ss_accessmanager add_access_identifier file.remove
+ss_accessmanager add_access_identifier file.backup
+ss_accessmanager add_access_identifier access.granter
+ss_accessmanager add_access_identifier service.group.attach
+ss_accessmanager add_access_identifier service.group.detach
+ss_accessmanager add_access_identifier service.group.property.set
+ss_accessmanager add_access_identifier membership.create
+ss_accessmanager add_access_identifier membership.remove
+ss_accessmanager add_access_identifier self.modify
 set -e
 
 if [ "$1" = "configure" ] && which update-python-modules >/dev/null 2>&1; then

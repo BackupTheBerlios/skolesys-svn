@@ -29,6 +29,7 @@ import skolesys.lib.usermanager as userman
 import skolesys.lib.groupmanager as groupman
 import skolesys.lib.filemanager as fileman
 import skolesys.lib.accessmanager as accessman
+import skolesys.tools.lang
 from skolesys.lib.hostmanager import HostManager
 import skolesys.definitions.hostdef as hostdef
 from skolesys.cfmachine.configbuilder import ConfigBuilder
@@ -634,6 +635,21 @@ def list_access_identifiers(session_id):
 
 	return pdump(am.list_access_identifiers())
 
+
+def tr(session_id,domain,msg,lang):
+	"""
+	Fetch all access identities for the domain
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	domain = pload(domain)
+	msg = pload(msg)
+	lang = pload(lang)
+
+	return pdump(skolesys.tools.lang.tr(domain,msg,lang))
+
+
 class MyServer(SOAPpy.SOAPServer):
     def __init__(self,addr=('localhost', 8000), ssl_context=None):
         SOAPpy.SOAPServer.__init__(self,addr,ssl_context=ssl_context)
@@ -752,6 +768,9 @@ def startserver():
 	# File Management
 	server.registerFunction(findfiles)
 	server.registerFunction(removefiles)
+	
+	# Translation
+	server.registerFunction(tr)
 
 	if os.fork()==0:
 		os.setsid()

@@ -1,0 +1,41 @@
+#!/usr/bin/python
+
+# This file is part of the SkoleSYS libraries
+# Copyright (C) 2007 Jakob Simon-Gaarde <info at skolesys.dk>
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Library General Public
+# License version 2 as published by the Free Software Foundation.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Library General Public License for more details.
+#
+# You should have received a copy of the GNU Library General Public License
+# along with this library; see the file COPYING.LIB.  If not, write to
+# the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+# Boston, MA 02110-1301, USA.
+
+"""
+NOTE! This script must be run from the root of a locale directory.
+The script searches recursively in all directories below after *.po files
+When a *.po file is encountered it will be compiled th gettext format and
+moved to /usr/share/locale/...
+"""
+
+import os,re
+
+def compile_msg(arg,dirname,names):
+	rx_pofile = re.compile("^(.*)\.po$")
+	dirname = os.path.normpath(dirname)
+	for name in names:
+		m = rx_pofile.match(name)
+		if m:
+			basename = m.groups()[0]
+			os.system("msgfmt -c -v -o %s/%s.mo %s/%s.po" % (dirname,basename,dirname,basename))
+			os.system("sudo mv -f %s/%s.mo /usr/share/locale/%s" % (dirname,basename,dirname))
+			
+
+os.path.walk('.',compile_msg,None)
+

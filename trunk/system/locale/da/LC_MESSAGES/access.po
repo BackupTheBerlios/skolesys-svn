@@ -28,56 +28,57 @@ msgstr ""
 msgid "you do not have access to"
 msgstr "Du har ikke adgang til at"
 
-msgid "user.create"
+msgid "user.create_infinitive"
 msgstr "Oprette brugere"
 
-msgid "user.modify"
+msgid "user.modify_infinitive"
 msgstr "Redigere stamoplysninger for brugere"
 
-msgid "user.remove"
+msgid "user.remove_infinitive"
 msgstr "Fjerne brugere"
 
-msgid "user.view"
+msgid "user.view_infinitive"
 msgstr "Læse stamoplysninger for brugere"
 
-msgid "group.create"
+msgid "group.create_infinitive"
 msgstr "Oprette grupper og projekter"
 
-msgid "group.modify"
+msgid "group.modify_infinitive"
 msgstr "Redigere grupper og projekter"
 
-msgid "group.remove"
+msgid "group.remove_infinitive"
 msgstr "Nedlægge grupper og projekter"
 
-msgid "group.view"
+msgid "group.view_infinitive"
 msgstr "Læse oplysninger om grupper og projekter"
 
-msgid "file.browse"
+msgid "file.browse_infinitive"
 msgstr "Navigere i andre brugeres filer"
 
-msgid "file.remove"
+msgid "file.remove_infinitive"
 msgstr "Slette andre brugeres filer"
 
-msgid "file.backup"
+msgid "file.backup_infinitive"
 msgstr "Lave backup af andre brugeres filer"
 
-msgid "access.granter"
+msgid "access.granter_infinitive"
 msgstr "Give adgang for andre"
 
-msgid "service.group.attach"
+msgid "service.group.attach_infinitive"
 msgstr "Aktivere projektgruppetjenester"
 
-msgid "service.group.detach"
+msgid "service.group.detach_infinitive"
 msgstr "Deaktivere projektgruppetjenester"
 
-msgid "service.group.property.set"
+msgid "service.group.property.set_infinitive"
 msgstr "Sætte egenskaber for projektgruppetjenester"
 
-msgid "membership.create"
+msgid "membership.create_infinitive"
 msgstr "Oprette medlemskaber"
 
-msgid "membership.remove"
+msgid "membership.remove_infinitive"
 msgstr "Nedlægge medlemskaber"
 
-msgid "self.modify"
+msgid "self.modify_infinitive"
 msgstr "Redigere egne stamoplysninger"
+
