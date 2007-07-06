@@ -1,5 +1,16 @@
 <!DOCTYPE TS><TS>
 <context>
+    <name>AccessTools</name>
+    <message>
+        <source>Access denied</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You do not have access to %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AddRemoveGroupUsersWdg</name>
     <message>
         <source>Form</source>
@@ -97,17 +108,6 @@
     </message>
     <message>
         <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ConnectionManager</name>
-    <message>
-        <source>SkoleSYS Administration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enter administrator password</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -390,6 +390,25 @@
     <message>
         <source>All</source>
         <comment>plural</comment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LoginWdg</name>
+    <message>
+        <source>Login</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type credentials</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Username</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

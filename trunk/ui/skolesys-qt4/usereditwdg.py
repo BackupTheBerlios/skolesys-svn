@@ -77,6 +77,17 @@ class UserEditWdg(QtGui.QWidget, baseui.Ui_UserEditWdg,ar.ActionRequester):
 		self.tr("student","singular")
 		self.tr("parent","singular")
 		self.tr("other","singular")
+		if not cm.get_proxy_handle().check_my_permission('user.modify'):
+			self.setEnabled(False)
+			
+		self.connect(mainwin.get_mainwindow(),QtCore.SIGNAL('permissionsChanged'),self.setupPermissions)
+		
+	
+	def setupPermissions(self,access_idents):
+		if access_idents.count('user.modify'):
+			self.setEnabled(True)
+		else:
+			self.setEnabled(False)
 		
 	
 	def isDirty(self):

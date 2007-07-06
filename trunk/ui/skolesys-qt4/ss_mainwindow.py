@@ -25,6 +25,7 @@ import skolesys.definitions.groupdef as groupdef
 import connectionmanager as conman
 import os
 import paths
+import accesstools
 
 class ss_MainWindow(mainwin.MainWindow):
 	def __init__(self,parent):
@@ -49,6 +50,9 @@ class ss_MainWindow(mainwin.MainWindow):
 		self.tabwidget.setCornerWidget(self.btn_closetab)
 		self.setWindowIcon(QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/logo-non-gradient.svg'),10,10)))
 		self.setupPermissions(conman.get_proxy_handle().list_my_permissions())
+		accesstools.check_permission('group.create')
+
+
 
 
 	def setupActions(self):
@@ -188,6 +192,10 @@ class ss_MainWindow(mainwin.MainWindow):
 			self.groupviewdock.hide()
 
 	def editUser(self,uid):
+		# Check if the user has propper permissions and present a nice message if not
+		# This is ofcourse also checked on the server side.
+		if not accesstools.check_permission_multi_or(('user.modify','user.view')):
+			return
 		if self.useredits.has_key(uid):
 			self.tabwidget.setCurrentWidget(self.useredits[uid])
 			return
@@ -205,6 +213,10 @@ class ss_MainWindow(mainwin.MainWindow):
 		self.tabwidget.setCurrentWidget(useredit)
 		
 	def editGroup(self,groupname,displayed_name):
+		# Check if the user has propper permissions and present a nice message if not
+		# This is ofcourse also checked on the server side.
+		if not accesstools.check_permission_multi_or(('group.modify','group.view')):
+			return
 		if self.groupedits.has_key(groupname):
 			self.tabwidget.setCurrentWidget(self.groupedits[groupname])
 			return
@@ -229,16 +241,31 @@ class ss_MainWindow(mainwin.MainWindow):
 		pass
 	
 	def execCreateUserWizard(self):
+		# Check if the user has propper permissions and present a nice message if not
+		# This is ofcourse also checked on the server side.
+		if not accesstools.check_permission('user.create'):
+			return
+		
 		import createuserwizard as cuw
 		wiz = cuw.CreateUserWizard(self)
 		wiz.exec_()
 
 	def execCreateGroupWizard(self):
+		# Check if the user has propper permissions and present a nice message if not
+		# This is ofcourse also checked on the server side.
+		if not accesstools.check_permission('group.create'):
+			return
+
 		import creategroupwizard as cgw
 		wiz = cgw.CreateGroupWizard(self)
 		wiz.exec_()
 	
 	def openFileManager(self):
+		# Check if the user has propper permissions and present a nice message if not
+		# This is ofcourse also checked on the server side.
+		if not accesstools.check_permission('file.browse'):
+			return
+		
 		if self.filemanager!=None:
 			self.tabwidget.setCurrentWidget(self.filemanager)
 			return
@@ -284,7 +311,7 @@ class ss_MainWindow(mainwin.MainWindow):
 			'import_users' : 'user.create',
 			'export_users' : 'user.view',
 			'export_groups' : 'group.view',
-			'open_filemanager' : 'filestats.browse',
+			'open_filemanager' : 'file.browse',
 			'exec_creategroupwizard' : 'group.create',
 			'exec_createuserwizard' : 'user.create'
 		}

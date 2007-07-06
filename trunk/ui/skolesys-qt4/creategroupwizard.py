@@ -1,21 +1,19 @@
-'''
-This file is part of the SkoleSYS libraries
-Copyright (C) 2007 Jakob Simon-Gaarde <info at skolesys.dk>
-
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Library General Public
-License version 2 as published by the Free Software Foundation.
-
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Library General Public License for more details.
-
-You should have received a copy of the GNU Library General Public License
-along with this library; see the file COPYING.LIB.  If not, write to
-the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-Boston, MA 02110-1301, USA.
-'''
+# This file is part of the SkoleSYS libraries
+# Copyright (C) 2007 Jakob Simon-Gaarde <info at skolesys.dk>
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Library General Public
+# License version 2 as published by the Free Software Foundation.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Library General Public License for more details.
+#
+# You should have received a copy of the GNU Library General Public License
+# along with this library; see the file COPYING.LIB.  If not, write to
+# the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+# Boston, MA 02110-1301, USA.
 
 from PyQt4 import QtCore, QtGui
 import ui_creategroupwizard as baseui
@@ -26,12 +24,14 @@ import skolesys.definitions.groupdef as groupdef
 import skolesys.definitions.userdef as userdef
 import skolesys.tools.charmapping as charmapping
 import pyqtui4.pluggablemodelhelper as pmh
-
+import accesstools
+import ss_mainwindow as mainwin
 
 class CreateGroupWizard(QtGui.QDialog, baseui.Ui_CreateGroupWizard):
 	
 	def __init__(self,parent):
 		QtGui.QWidget.__init__(self,parent)
+
 		self.groupview = None
 		
 		self.name_page_ok = False
@@ -44,7 +44,6 @@ class CreateGroupWizard(QtGui.QDialog, baseui.Ui_CreateGroupWizard):
 		self.connect(self.btn_back,QtCore.SIGNAL("clicked()"),self.back)
 		self.connect(self.btn_next,QtCore.SIGNAL("clicked()"),self.next)
 		self.connect(self.btn_finish,QtCore.SIGNAL("clicked()"),self.finish)
-		
 
 	def setupNamePage(self):
 		self.connect(self.led_groupname,QtCore.SIGNAL("textChanged(const QString&)"),self.checkName)
@@ -136,7 +135,9 @@ class CreateGroupWizard(QtGui.QDialog, baseui.Ui_CreateGroupWizard):
 			
 		
 		res = proxy.creategroup(groupname,displayed_name,grouptype_id,description)
-		print res
+		if res>=0:
+			import ss_mainwindow as mainwin
+			mainwin.get_mainwindow().emitGroupCreated(groupname)
 		
 		self.accept()
 

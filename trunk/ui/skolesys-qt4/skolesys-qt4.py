@@ -24,6 +24,7 @@ from PyQt4 import QtGui,QtCore
 import ss_mainwindow as ss_mainwin
 import connectionmanager as cm
 import paths
+import servermessages as servermsg
 
 parser = OptionParser(usage="%s [options]" % sys.argv[0])
 parser.add_option("-l", "--lang", dest="lang",default=None,
@@ -33,6 +34,8 @@ parser.add_option("-l", "--lang", dest="lang",default=None,
 
 if not options.lang:
 	options.lang = 'en'
+	if os.environ.has_key('LANG'):
+		options.lang = os.environ['LANG'][:2]
 
 app = QtGui.QApplication(sys.argv)
 
@@ -47,6 +50,8 @@ if options.lang:
 		print "Failed to load language file: %s" % lang_file
 	else:
 		app.installTranslator(trans)
+	
+	servermsg.init_server_messages(options.lang)
 
 cm.setup_connection('https://10.1.0.1',8443)
 

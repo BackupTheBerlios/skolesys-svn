@@ -398,6 +398,14 @@ class SkoleSYS_Client:
 		"""
 		return pload(self.server.list_access_identifiers(pdump(self.session_id)))
 	
+	# Translations
+	def tr(self,domain,msg,lang=None):
+		"""
+		Get the translation for the message (msg) of a certain textdomain (domain).
+		By default the mainserver conf.domain.default_lang is the resulting language,
+		but this can be overridden by passing a language string (lang) (ie. en, da).
+		"""
+		return pload(self.server.tr(pdump(self.session_id),pdump(domain),pdump(msg),pdump(lang)))
 	
 
 if __name__=='__main__':

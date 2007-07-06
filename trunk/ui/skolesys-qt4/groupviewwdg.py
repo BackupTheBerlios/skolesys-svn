@@ -24,6 +24,7 @@ import skolesys.definitions.groupdef as groupdef
 import connectionmanager as cm
 import pyqtui4.pluggablemodelhelper as pmh
 import pickle
+import ss_mainwindow as mainwin
 
 
 class GroupViewWdg(QtGui.QWidget, ui_gvwdg.Ui_GroupViewWdg):
@@ -41,6 +42,11 @@ class GroupViewWdg(QtGui.QWidget, ui_gvwdg.Ui_GroupViewWdg):
 		self.trv_grouplist.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
 		self.connect(self.trv_grouplist,QtCore.SIGNAL("customContextMenuRequested(const QPoint&)"),self.grouplistContextMenu)
 		self.connect(self.trv_grouplist,QtCore.SIGNAL("itemDoubleClicked(QTreeWidgetItem *,int)"),self.doubleClickEdit)
+		
+		# Recieve notice on altered, deleted or changed groups
+		self.connect(mainwin.get_mainwindow(),QtCore.SIGNAL("groupChanged"),self.updateGroupView)
+		self.connect(mainwin.get_mainwindow(),QtCore.SIGNAL("groupDeleted"),self.updateGroupView)
+		self.connect(mainwin.get_mainwindow(),QtCore.SIGNAL("groupCreated"),self.updateGroupView)
 	
 	def grouplistContextMenu(self,pos):
 		menu = QtGui.QMenu(self)

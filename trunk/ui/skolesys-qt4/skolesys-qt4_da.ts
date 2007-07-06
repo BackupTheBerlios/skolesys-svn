@@ -1,5 +1,16 @@
 <!DOCTYPE TS><TS>
 <context>
+    <name>AccessTools</name>
+    <message>
+        <source>Access denied</source>
+        <translation>Adgang nægtet</translation>
+    </message>
+    <message>
+        <source>You do not have access to %1.</source>
+        <translation>Du har ikke adgang til at %1.</translation>
+    </message>
+</context>
+<context>
     <name>AddRemoveGroupUsersWdg</name>
     <message>
         <source>Form</source>
@@ -98,17 +109,6 @@
     <message>
         <source>OK</source>
         <translation>OK</translation>
-    </message>
-</context>
-<context>
-    <name>ConnectionManager</name>
-    <message>
-        <source>SkoleSYS Administration</source>
-        <translation>SkoleSYS Administration</translation>
-    </message>
-    <message>
-        <source>Enter administrator password</source>
-        <translation>Indtast administratorens adgangskode</translation>
     </message>
 </context>
 <context>
@@ -391,6 +391,25 @@
         <source>All</source>
         <comment>plural</comment>
         <translation>Alle grupper</translation>
+    </message>
+</context>
+<context>
+    <name>LoginWdg</name>
+    <message>
+        <source>Login</source>
+        <translation>Log ind</translation>
+    </message>
+    <message>
+        <source>Type credentials</source>
+        <translation>Indtast brugernavn og adgangskode</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation>Adgangskode</translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation>Brugernavn</translation>
     </message>
 </context>
 <context>

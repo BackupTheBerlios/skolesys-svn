@@ -98,6 +98,7 @@ class UserModel(esm.EnhancedStandardItemModel):
 			groupmembers = self.proxy.list_members(groupname)
 		users = self.proxy.list_users(usertype_id)
 		for u,v in users.items():
+			
 			if groupname and type(groupmembers)==list and not groupmembers.count(v['uid']):
 				continue
 

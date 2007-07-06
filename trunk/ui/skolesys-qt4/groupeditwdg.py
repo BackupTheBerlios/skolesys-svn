@@ -58,6 +58,19 @@ class GroupEditWdg(QtGui.QWidget, baseui.Ui_GroupEditWdg):
 
 		# Connect change signals
 		self.connect(mainwin.get_mainwindow(),QtCore.SIGNAL('groupMembershipsChanged'),self.updateUsersView)
+		self.connect(mainwin.get_mainwindow(),QtCore.SIGNAL('permissionsChanged'),self.setupPermissions)
+		
+		if not cm.get_proxy_handle().check_my_permission('group.modify'):
+			self.setEnabled(False)
+	
+	
+	def setupPermissions(self,access_idents):
+		if access_idents.count('group.modify'):
+			self.setEnabled(True)
+		else:
+			self.setEnabled(False)
+			
+		
 	
 	def setupServiceCombo(self):
 		proxy = cm.get_proxy_handle()

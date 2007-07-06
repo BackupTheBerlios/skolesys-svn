@@ -56,7 +56,7 @@ class ToolTabWdg(QtGui.QWidget, baseui.Ui_ToolTabWdg,ar.ActionRequester):
 		button_map_perm = {
 			self.btn_new_user : 'user.create',
 			self.btn_new_group : 'group.create',
-			self.btn_open_fileman : 'filestats.browse'
+			self.btn_open_fileman : 'file.browse'
 		}
 		for btn,acc_ident in button_map_perm.items():
 			if not access_idents.count(acc_ident):
