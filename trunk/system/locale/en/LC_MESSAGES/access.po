@@ -25,8 +25,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "you do not have access to_infinitive"
-msgstr "you do not have access to"
+
+msgid "soap.bind_infinitive"
+msgstr "Access the administration program"
 
 msgid "user.create_infinitive"
 msgstr "Create users"

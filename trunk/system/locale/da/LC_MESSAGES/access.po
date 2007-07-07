@@ -25,8 +25,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "you do not have access to"
-msgstr "Du har ikke adgang til at"
+msgid "soap.bind_infinitive"
+msgstr "Starte administrationsprogrammet"
 
 msgid "user.create_infinitive"
 msgstr "Oprette brugere"

@@ -92,6 +92,13 @@ rm default-templates -Rf
 """
 
 postinst = """#!/bin/sh
+set -e
+
+if [ "$1" = "configure" ] && which update-python-modules >/dev/null 2>&1; then
+        update-python-modules -i /usr/share/python-support/python-skolesys-mainserver
+fi
+
+ss_accessmanager add_access_identifier soap.bind
 ss_accessmanager add_access_identifier user.create
 ss_accessmanager add_access_identifier user.remove
 ss_accessmanager add_access_identifier user.modify
@@ -110,11 +117,6 @@ ss_accessmanager add_access_identifier service.group.property.set
 ss_accessmanager add_access_identifier membership.create
 ss_accessmanager add_access_identifier membership.remove
 ss_accessmanager add_access_identifier self.modify
-set -e
-
-if [ "$1" = "configure" ] && which update-python-modules >/dev/null 2>&1; then
-        update-python-modules -i /usr/share/python-support/python-skolesys-mainserver
-fi
 
 /etc/init.d/skolesysd restart
 """

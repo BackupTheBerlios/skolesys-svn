@@ -29,8 +29,8 @@ import skolesys.lib.usermanager as userman
 import skolesys.lib.groupmanager as groupman
 import skolesys.lib.filemanager as fileman
 import skolesys.lib.accessmanager as accessman
+import skolesys.lib.hostmanager as hostman
 import skolesys.tools.lang
-from skolesys.lib.hostmanager import HostManager
 import skolesys.definitions.hostdef as hostdef
 from skolesys.cfmachine.configbuilder import ConfigBuilder
 from M2Crypto import SSL
@@ -42,6 +42,13 @@ from netinfo import if2ip,ip2hwaddr
 import sessionhandler
 
 sessions = None
+
+# Make global manager instances
+am = accessman.AccessManager()
+um = userman.UserManager()
+gm = groupman.GroupManager()
+fm = fileman.FileManager()
+hm = hostman.HostManager()
 
 def print_sessions():
 	global sessions
@@ -73,10 +80,13 @@ def test_binded(session_id):
 	return pdump(False)
 
 def bind(session_id,uid,encrypted_passwd):
-	global sessions
+	global sessions,um
 	session_id=pload(session_id)
 	encrypted_passwd=pload(encrypted_passwd)
 	uid=pload(uid)
+
+	if not has_perm(uid,'soap.bind'):
+		return pdump(-9999) # Access denied
 
 	if not sessions.session_exists(session_id):
 		return pdump(False)
@@ -88,7 +98,6 @@ def bind(session_id,uid,encrypted_passwd):
 	plain = p2_decrypt(encrypted_passwd,nonce)
 	
 	#if plain==conf.get('SOAP_SERVICE','passwd'):
-	um = userman.UserManager()
 	if um.authenticate(uid,plain)==0:
 		sessions.set_session_variable(session_id,'uid',uid)
 		sessions.set_session_variable(session_id,'authenticated',True)
@@ -131,6 +140,24 @@ def kill_session(session_id):
 	sessions.remove_session(session_id)
 	return pdump(True)
 
+# Access related internal funcs
+
+def has_perm(uid,access_ident):
+	global am
+	# Check if the current binded user has permission to access this service 
+	if uid==None:
+		return False
+
+	if not am.check_permission(uid,access_ident)==1:
+		return False # Access denied
+
+	return True
+
+def session_uid(session_id):
+	if sessions.session_exists(session_id):
+		if sessions.has_session_variable(session_id,'uid'):
+			return sessions.get_session_variable(pload(session_id),'uid')[1]
+	return None
 
 # The real functionality starts here
 
@@ -142,21 +169,21 @@ def domain_name(session_id):
 
 # Users
 def list_users(session_id,usertype_id,uid):
+	global um
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	usertype_id = pload(usertype_id)
 	uid = pload(uid)
-	um = userman.UserManager()
 	return pdump(um.list_users(usertype_id,uid))
 
 def list_usergroups(session_id,uid):
 	"""
 	List groups of a certain user "uid"
 	"""
+	global um
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	uid = pload(uid)
-	um = userman.UserManager()
 	return pdump(um.list_usergroups(uid))
 
 def user_exists(session_id,uid):
@@ -164,16 +191,17 @@ def user_exists(session_id,uid):
 	Do a quick lookup in the mainserver LDAP to see if a 
 	certain uid exists.
 	"""
+	global um
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	uid=pload(uid)
-	um = userman.UserManager()
 	return pdump(um.user_exists(uid))
 
 def createuser(session_id,uid,givenname,familyname,passwd,usertype_id,primarygroup,firstyear):
 	"""
 	Add a new user. firstyear defines the students first year in school.
 	"""
+	global um
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	uid=pload(uid)
@@ -184,13 +212,13 @@ def createuser(session_id,uid,givenname,familyname,passwd,usertype_id,primarygro
 	primarygroup=pload(primarygroup)
 	firstyear=pload(firstyear)
 	
-	um = userman.UserManager()
 	return pdump(um.createuser(uid,givenname,familyname,passwd,usertype_id,primarygroup,firstyear))
 
 def changeuser(session_id,uid,givenname,familyname,passwd,primarygroup,firstyear):
 	"""
 	Add a new user. firstyear defines the students first year in school.
 	"""
+	global um
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	uid=pload(uid)
@@ -200,55 +228,55 @@ def changeuser(session_id,uid,givenname,familyname,passwd,primarygroup,firstyear
 	primarygroup=pload(primarygroup)
 	firstyear=pload(firstyear)
 	
-	um = userman.UserManager()
 	return pdump(um.changeuser(uid,givenname,familyname,passwd,primarygroup,firstyear))
 
 
 def removeuser(session_id,uid,backup_home,remove_home):
+	global um
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	uid=pload(uid)
 	backup_home=pload(backup_home)
 	remove_home=pload(remove_home)
 	
-	um = userman.UserManager()
 	return pdump(um.deluser(uid,backup_home,remove_home))
 
 def groupadd(session_id,uid,groupname):
+	global um
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	uid=pload(uid)
 	groupname=pload(groupname)
 
-	um = userman.UserManager()
 	return pdump(um.groupadd(uid,groupname))
 
 def groupdel(session_id,uid,groupname):
+	global um
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	uid=pload(uid)
 	groupname=pload(groupname)
 
-	um = userman.UserManager()
 	return pdump(um.groupdel(uid,groupname))
 
 # Groups
 def list_groups(session_id,usertype_id,groupname):
+	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	usertype_id = pload(usertype_id)
 	groupname = pload(groupname)
-	gm = groupman.GroupManager()
+
 	return pdump(gm.list_groups(usertype_id,groupname))
 
 def list_members(session_id,groupname):
 	"""
 	List members of a certain group "groupname"
 	"""
+	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	groupname = pload(groupname)
-	gm = groupman.GroupManager()
 	return pdump(gm.list_members(groupname))
 
 def group_exists(session_id,groupname):
@@ -256,13 +284,14 @@ def group_exists(session_id,groupname):
 	Do a quick lookup in the mainserver LDAP to see if a 
 	certain groupname exists.
 	"""
+	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	groupname=pload(groupname)
-	gm = groupman.GroupManager()
 	return pdump(gm.group_exists(groupname))
 
 def creategroup(session_id,groupname,displayed_name,usertype_id,description):
+	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	groupname=pload(groupname)
@@ -270,29 +299,29 @@ def creategroup(session_id,groupname,displayed_name,usertype_id,description):
 	usertype_id=pload(usertype_id)
 	description=pload(description)
 	
-	gm = groupman.GroupManager()
 	return pdump(gm.creategroup(groupname,displayed_name,usertype_id,description))
 
 def changegroup(session_id,groupname,description):
+	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	groupname=pload(groupname)
 	description=pload(description)
 
-	gm = groupman.GroupManager()
 	return pdump(gm.changegroup(groupname,description))
 
 def removegroup(session_id,groupname,backup_home,remove_home):
+	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	groupname=pload(groupname)
 	backup_home=pload(backup_home)
 	remove_home=pload(remove_home)
 	
-	gm = groupman.GroupManager()
 	return pdump(gm.removegroup(groupname,backup_home,remove_home))
 
 def register_host(session_id,hostname,hosttype_id,hwaddr):
+	global hm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
@@ -300,70 +329,70 @@ def register_host(session_id,hostname,hosttype_id,hwaddr):
 	hosttype_id = pload(hosttype_id)
 	hwaddr = pload(hwaddr)
 
-	hm = HostManager()
 	return pdump(hm.register_host(hwaddr,hostname,hosttype_id))
 
 def hostname_exists(session_id,hostname):
 	"""
 	Check if a certain hostname is already registered
 	"""
+	global hm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
 	hostname = pload(hostname)
 
-	hm = HostManager()
 	return pdump(hm.host_exists(hostname=hostname))
 
 def hwaddr_exists(session_id,hwaddr):
 	"""
 	Check if a certain hwaddr (mac-address) is already registered
 	"""
+	global hm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
 	hwaddr = pload(hwaddr)
 
-	hm = HostManager()
 	return pdump(hm.host_exists(hwaddr=hwaddr))
 
 def hostinfo_by_hwaddr(session_id,hwaddr):
 	"""
 	Fetch the registration info of a certain host by hwaddr
 	"""
+	global hm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
 	hwaddr = pload(hwaddr)
 
-	hm = HostManager()
 	return pdump(hm.host_info(hwaddr=hwaddr))
 
 def hostinfo_by_hostname(session_id,hostname):
 	"""
 	Fetch the registration info of a certain host by hwaddr
 	"""
+	global hm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
 	hostname = pload(hostname)
 
-	hm = HostManager()
 	return pdump(hm.host_info(hostname=hostname))
 
 def listhosts(session_id,hosttype_id):
 	"""
 	Fetch a list og registered hosts
 	"""
+	global hm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
 	hosttype_id = pload(hosttype_id)
 
-	hm = HostManager()
 	return pdump(hm.list_hosts(hosttype_id))
 
 def getconf(session_id,dist_codename,hwaddr,context,context_only):
+	global hm
 	dist_codename = pload(dist_codename)
 	context = pload(context)
 	context_only = pload(context_only)
@@ -374,7 +403,6 @@ def getconf(session_id,dist_codename,hwaddr,context,context_only):
 		return pdump(False)
 	
 	hwaddr = pload(hwaddr)
-	hm = HostManager()
 	hinfo = hm.host_info(hwaddr)
 	if not hinfo:
 		return pdump([-1,'']) # Only registered hosts can ask for configurations
@@ -396,13 +424,13 @@ def attach_groupservice(session_id,groupname,servicename):
 	"""
 	Attach group to a group service
 	"""
+	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
 	groupname = pload(groupname)
 	servicename = pload(servicename)
 
-	gm = groupman.GroupManager()
 	return pdump(gm.attach_service(groupname,servicename))
 
 
@@ -410,13 +438,13 @@ def restart_groupservice(session_id,groupname,servicename):
 	"""
 	Attach group to a group service
 	"""
+	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
 	groupname = pload(groupname)
 	servicename = pload(servicename)
 
-	gm = groupman.GroupManager()
 	return pdump(gm.restart_service(groupname,servicename))
 
 
@@ -424,13 +452,13 @@ def detach_groupservice(session_id,groupname,servicename):
 	"""
 	Detach group from a group service
 	"""
+	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
 	groupname = pload(groupname)
 	servicename = pload(servicename)
 
-	gm = groupman.GroupManager()
 	return pdump(gm.detach_service(groupname,servicename))
 
 
@@ -438,12 +466,12 @@ def list_groupservices(session_id,groupname):
 	"""
 	Fetch a simple list of group service names.
 	"""
+	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 	
 	groupname = pload(groupname)
 
-	gm = groupman.GroupManager()
 	return pdump(gm.list_services(groupname))
 
 def list_groupservice_options_available(session_id,groupname,servicename):
@@ -454,28 +482,29 @@ def list_groupservice_options_available(session_id,groupname,servicename):
 	the options_available might change by adding options like "use_ssl" and "pop3_server".
 	SkoleSYS UI is implemented with this in mind.
 	"""
+	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
 	groupname = pload(groupname)
 	servicename = pload(servicename)
 	
-	gm = groupman.GroupManager()
 	return pdump(gm.list_service_options_available(servicename,groupname))
 
 
 def get_groupservice_option_values(session_id,groupname,servicename):
+	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
 	groupname = pload(groupname)
 	servicename = pload(servicename)
 	
-	gm = groupman.GroupManager()
 	return pdump(gm.get_service_option_values(groupname,servicename))
 
 
 def set_groupservice_option_value(session_id,groupname,servicename,variable,value):
+	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
@@ -484,10 +513,10 @@ def set_groupservice_option_value(session_id,groupname,servicename,variable,valu
 	variable = pload(variable)
 	value = pload(value)
 	
-	gm = groupman.GroupManager()
 	return pdump(gm.set_service_option_value(groupname,servicename,variable,value))
 
 def unset_groupservice_option(session_id,groupname,servicename,variable):
+	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
@@ -495,11 +524,11 @@ def unset_groupservice_option(session_id,groupname,servicename,variable):
 	servicename = pload(servicename)
 	variable = pload(variable)
 	
-	gm = groupman.GroupManager()
 	return pdump(gm.unset_service_option(groupname,servicename,variable))
 
 
 def findfiles(session_id,username,groupname,minsize,regex,order):
+	global fm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
@@ -509,15 +538,14 @@ def findfiles(session_id,username,groupname,minsize,regex,order):
 	regex = pload(regex)
 	order = pload(order)
 	
-	fm = fileman.FileManager()
 	return pdump(fm.find(user=username,group=groupname,minsize=minsize,regex=regex,order=order))
 
 def removefiles(session_id,files):
+	global fm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
 	files = pload(files)
-	fm = fileman.FileManager()
 	return pdump(fm.removefiles(files))
 
 # Access 
@@ -526,18 +554,15 @@ def grant_access(session_id,uid,access_ident):
 	Permit a user (uid) to the access to services or resources
 	that require the access identifier (access_ident).
 	"""
+	global am
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
 	uid = pload(uid)
 	access_ident = pload(access_ident)
 
-	am = accessman.AccessManager()
-	
-	# Check if the current binded user has permission to access this service 
-	binded_uid = sessions.get_session_variable(pload(session_id),'uid')[1]
-	if not am.check_permission(binded_uid,'access.granter')==1:
-		return pdump(-9999) # Access denied	
+	if not has_perm(session_uid(pload(session_id)),'access.granter'):
+		return pdump(-9999) # Access denied
 
 	return pdump(am.grant_access(uid,access_ident))
 
@@ -547,13 +572,13 @@ def revoke_access(session_id,uid,access_ident):
 	services or resources that require the access
 	identifier (access_ident).
 	"""
+	global am
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
 	uid = pload(uid)
 	access_ident = pload(access_ident)
 
-	am = accessman.AccessManager()
 	# Check if the current binded user has permission to access this service 
 	binded_uid = sessions.get_session_variable(pload(session_id),'uid')[1]
 	if not am.check_permission(binded_uid,'access.granter')==1:
@@ -567,13 +592,13 @@ def check_permission(session_id,uid,access_ident):
 	access services or resources where access identifier
 	(access_ident) is required.
 	"""
+	global am
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
 	uid = pload(uid)
 	access_ident = pload(access_ident)
 
-	am = accessman.AccessManager()
 	# Check if the current binded user has permission to access this service 
 	binded_uid = sessions.get_session_variable(pload(session_id),'uid')[1]
 	if not am.check_permission(binded_uid,'access.granter')==1:
@@ -586,12 +611,12 @@ def list_permissions(session_id,uid):
 	"""
 	Fetch user's permissions as a list of access identities 
 	"""
+	global am
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
 	uid = pload(uid)
 
-	am = accessman.AccessManager()
 	# Check if the current binded user has permission to access this service 
 	binded_uid = sessions.get_session_variable(pload(session_id),'uid')[1]
 	if not am.check_permission(binded_uid,'access.granter')==1:
@@ -603,10 +628,10 @@ def list_my_permissions(session_id):
 	"""
 	Fetch user's permissions as a list of access identities 
 	"""
+	global am
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
-	am = accessman.AccessManager()
 	binded_uid = sessions.get_session_variable(pload(session_id),'uid')[1]
 
 	return pdump(am.list_permissions(binded_uid))
@@ -615,11 +640,11 @@ def check_my_permission(session_id,access_ident):
 	"""
 	Fetch user's permissions as a list of access identities 
 	"""
+	global am
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
 	access_ident = pload(access_ident)
-	am = accessman.AccessManager()
 	binded_uid = sessions.get_session_variable(pload(session_id),'uid')[1]
 
 	return pdump(am.check_permission(binded_uid,access_ident))
@@ -628,20 +653,18 @@ def list_access_identifiers(session_id):
 	"""
 	Fetch all access identities for the domain
 	"""
+	global am
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
-	am = accessman.AccessManager()
 
 	return pdump(am.list_access_identifiers())
 
 
-def tr(session_id,domain,msg,lang):
+def tr(domain,msg,lang):
 	"""
 	Fetch all access identities for the domain
 	"""
-	if not session_valid(pload(session_id)):
-		return pdump(False)
 
 	domain = pload(domain)
 	msg = pload(msg)
