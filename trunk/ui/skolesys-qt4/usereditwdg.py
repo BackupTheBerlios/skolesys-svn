@@ -39,6 +39,7 @@ class UserEditWdg(QtGui.QWidget, baseui.Ui_UserEditWdg,ar.ActionRequester):
 		self.user_info = {}
 		self.gid_add_list = []
 		self.gid_rm_list = []
+		self.force_close_without_save = False
 		
 		self.username = username
 		self.setupUi(self)
@@ -77,16 +78,23 @@ class UserEditWdg(QtGui.QWidget, baseui.Ui_UserEditWdg,ar.ActionRequester):
 		self.tr("student","singular")
 		self.tr("parent","singular")
 		self.tr("other","singular")
-		if not cm.get_proxy_handle().check_my_permission('user.modify'):
-			self.setEnabled(False)
+		
+		self.setupPermissions(cm.get_proxy_handle().list_my_permissions())
 			
 		self.connect(mainwin.get_mainwindow(),QtCore.SIGNAL('permissionsChanged'),self.setupPermissions)
 		
 	
 	def setupPermissions(self,access_idents):
-		if access_idents.count('user.modify'):
+		may_modify = False
+		if access_idents.count('user.modify') or \
+		   (access_idents.count('self.modify') and cm.get_binded_user()==self.username):
+			may_modify = True
+
+		if may_modify:
+			self.force_close_without_save = False
 			self.setEnabled(True)
 		else:
+			self.force_close_without_save = True
 			self.setEnabled(False)
 		
 	
@@ -205,9 +213,9 @@ class UserEditWdg(QtGui.QWidget, baseui.Ui_UserEditWdg,ar.ActionRequester):
 		self.btn_apply.setEnabled(False)
 		
 	def closeEvent(self,ce):
-		if self.isDirty():
+		if not self.force_close_without_save and self.isDirty():
 			res = QtGui.QMessageBox.question(
-				self,self.tr("Close"),self.tr("Changes have been made, do you wish to close without saving?"),
+				None,self.tr("Close"),self.tr("Changes have been made, do you wish to close without saving?"),
 				0x00800000,0x00010000)
 			if res==0x00010000:
 				ce.setAccepted(False)

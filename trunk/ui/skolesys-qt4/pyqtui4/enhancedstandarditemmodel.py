@@ -50,3 +50,6 @@ class EnhancedStandardItemModel(QtGui.QStandardItemModel):
 
 	def setAcceptedMimeTypes(self,list_of_mimetypes):
 		self.accepted_mime_types = list_of_mimetypes
+		
+	#def flags(self,index):
+		#return QtCore.Qt.ItemFlags(QtCore.Qt.ItemIsUserCheckable)

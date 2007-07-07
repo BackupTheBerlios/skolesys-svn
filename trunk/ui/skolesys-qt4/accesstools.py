@@ -19,19 +19,24 @@ from PyQt4 import QtCore, QtGui
 import connectionmanager as cm
 import servermessages as servermsg
 
-def check_permission(access_ident):
+
+def access_denied_dialog(access_ident):
+	qmsg = servermsg.get_translator().q_tr('access','%s_infinitive' % access_ident)
+	res = QtGui.QMessageBox.information(
+		None,QtCore.QCoreApplication.translate("AccessTools","Access denied"),
+		QtCore.QCoreApplication.translate("AccessTools","You do not have access to %1.").arg(qmsg.toLower()))
+
+def check_permission(access_ident,show_message=True):
 	access = cm.get_proxy_handle().check_my_permission(access_ident)
 	if access:
 		return True
 	else:
-		qmsg = servermsg.get_translator().q_tr('access','%s_infinitive' % access_ident)
-		res = QtGui.QMessageBox.information(
-			None,QtCore.QCoreApplication.translate("AccessTools","Access denied"),
-			QtCore.QCoreApplication.translate("AccessTools","You do not have access to %1.").arg(qmsg.toLower()))
+		if show_message:
+			access_denied_dialog(access_ident)
 		return False
 
 
-def check_permission_multi_or(access_idents):
+def check_permission_multi_or(access_idents,show_message=True):
 	if not len(access_idents):
 		return True
 	proxy = cm.get_proxy_handle()
@@ -42,10 +47,11 @@ def check_permission_multi_or(access_idents):
 			sufficient = True
 			break
 	if not sufficient:
-		check_permission(access_idents[0])
+		if show_message:
+			access_denied_dialog(access_idents[0])
 	return sufficient
 
-def check_permission_multi_and(access_idents):
+def check_permission_multi_and(access_idents,show_message=True):
 	proxy = cm.get_proxy_handle()
 	my_access = proxy.list_my_permissions()
 	sufficient = True
@@ -54,5 +60,6 @@ def check_permission_multi_and(access_idents):
 			sufficient = False
 			break
 	if not sufficient:
-		check_permission(acc_ident)
+		if show_message:
+			access_denied_dialog(acc_ident)
 	return sufficient

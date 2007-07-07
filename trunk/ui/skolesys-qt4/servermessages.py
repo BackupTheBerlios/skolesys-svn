@@ -25,8 +25,7 @@ class ServerMessages:
 	def tr(self,domain,msg,lang=None):
 		if lang == None:
 			lang = self.lang
-		proxy = cm.get_proxy_handle()
-		print lang
+		proxy = cm.get_raw_proxy_handle()
 		return proxy.tr(domain,msg,lang)
 
 	def q_tr(self,domain,msg,lang=None):

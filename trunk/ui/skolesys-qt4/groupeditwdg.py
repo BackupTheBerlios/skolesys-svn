@@ -37,6 +37,7 @@ class GroupEditWdg(QtGui.QWidget, baseui.Ui_GroupEditWdg):
 		self.setupServiceCombo()
 		self.connect(self.btn_apply,QtCore.SIGNAL('clicked()'),self.applyChanges)
 		self.connect(self.tbl_serviceoptions.itemDelegate(),QtCore.SIGNAL("dataChanged"),self.serviceOptionChanged)
+		self.force_close_without_save = False
 		
 		# Setup group model
 		self.usermodel = umod.UserModel(self.trv_users)
@@ -60,18 +61,18 @@ class GroupEditWdg(QtGui.QWidget, baseui.Ui_GroupEditWdg):
 		self.connect(mainwin.get_mainwindow(),QtCore.SIGNAL('groupMembershipsChanged'),self.updateUsersView)
 		self.connect(mainwin.get_mainwindow(),QtCore.SIGNAL('permissionsChanged'),self.setupPermissions)
 		
-		if not cm.get_proxy_handle().check_my_permission('group.modify'):
-			self.setEnabled(False)
+		self.setupPermissions(cm.get_proxy_handle().list_my_permissions())
 	
 	
 	def setupPermissions(self,access_idents):
 		if access_idents.count('group.modify'):
+			self.force_close_without_save = False
 			self.setEnabled(True)
 		else:
+			self.force_close_without_save = True
 			self.setEnabled(False)
 			
 		
-	
 	def setupServiceCombo(self):
 		proxy = cm.get_proxy_handle()
 		
@@ -249,9 +250,9 @@ class GroupEditWdg(QtGui.QWidget, baseui.Ui_GroupEditWdg):
 		
 
 	def closeEvent(self,ce):
-		if self.isDirty():
+		if not self.force_close_without_save and self.isDirty():
 			res = QtGui.QMessageBox.question(
-				self,self.tr("Close"),self.tr("Changes have been made, do you wish to close without saving?"),
+				None,self.tr("Close"),self.tr("Changes have been made, do you wish to close without saving?"),
 				0x00800000,0x00010000)
 			if res==0x00010000:
 				ce.setAccepted(False)
@@ -265,7 +266,6 @@ if __name__ == '__main__':
 	
 	from skolesys.soap.client import SkoleSYS_Client
 	cli = SkoleSYS_Client('https://mainserver.skolesys.local',8443)
-	cli.bind('bdnprrfe')	
 	options = cli.list_groupservice_options_available('servgrp1','webservice')
 	ui.tbl_serviceoptions.setOptions(options)
 	ui.tbl_serviceoptions.cli = cli

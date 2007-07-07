@@ -405,7 +405,7 @@ class SkoleSYS_Client:
 		By default the mainserver conf.domain.default_lang is the resulting language,
 		but this can be overridden by passing a language string (lang) (ie. en, da).
 		"""
-		return pload(self.server.tr(pdump(self.session_id),pdump(domain),pdump(msg),pdump(lang)))
+		return pload(self.server.tr(pdump(domain),pdump(msg),pdump(lang)))
 	
 
 if __name__=='__main__':

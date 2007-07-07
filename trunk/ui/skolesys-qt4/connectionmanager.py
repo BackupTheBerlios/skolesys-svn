@@ -22,6 +22,7 @@ from PyQt4 import QtCore,QtGui
 from skolesys.soap.client import SkoleSYS_Client
 import loginwdg
 import pickle
+import accesstools
 
 class ConnectionManager:
 	def __init__(self,host,port):
@@ -37,8 +38,15 @@ class ConnectionManager:
 		while not self.proxy.test_binded() and counter<3:
 				
 			username,passwd = loginwdg.get_credentials()
-			if self.proxy.bind(username,passwd):
+			bindres = self.proxy.bind(username,passwd)
+			if type(bindres) == bool and bindres==True:	
+				self.binded_user = username
 				break
+
+			if type(bindres) == int and bindres==-9999:
+				# Acess denied
+				accesstools.access_denied_dialog('soap.bind')
+				sys.exit(0)
 			counter+=1
 		if counter>=3:
 			print "The connection manager has cut this session from further use"
@@ -54,6 +62,27 @@ def setup_connection(host,port):
 def get_connection():
 	global conn
 	return conn
+
+def get_binded_user():
+	global conn
+	if not conn:
+		return None
+	if not conn.proxy.test_binded():
+		return None
+	return conn.binded_user
+
+
+def get_raw_proxy_handle():
+	"""
+	Get the raw (maybe unbinded/unconnected) proxy object.
+	It can be used for calling services that don't require
+	special access. Such as servermessages.
+	"""
+	global conn
+	if not conn:
+		return None
+	return conn.proxy
+	
 
 def get_proxy_handle():
 	global conn

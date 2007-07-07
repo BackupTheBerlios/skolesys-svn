@@ -22,7 +22,7 @@ import pyqtui4.mainwindow as mainwin
 import pyqtui4.qt4tools as qt4tools
 import skolesys.definitions.userdef as userdef
 import skolesys.definitions.groupdef as groupdef
-import connectionmanager as conman
+import connectionmanager as cm
 import os
 import paths
 import accesstools
@@ -49,10 +49,7 @@ class ss_MainWindow(mainwin.MainWindow):
 		self.connect(self.btn_closetab,QtCore.SIGNAL('clicked()'),self.removeTab)
 		self.tabwidget.setCornerWidget(self.btn_closetab)
 		self.setWindowIcon(QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/logo-non-gradient.svg'),10,10)))
-		self.setupPermissions(conman.get_proxy_handle().list_my_permissions())
-		accesstools.check_permission('group.create')
-
-
+		self.setupPermissions(cm.get_proxy_handle().list_my_permissions())
 
 
 	def setupActions(self):
@@ -83,6 +80,10 @@ class ss_MainWindow(mainwin.MainWindow):
 		a = self.addAction('exec_createuserwizard',self.tr('Create user...'))
 		self.connect(a,QtCore.SIGNAL('triggered()'),self.execCreateUserWizard)
 		a.setIcon(QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/new_user.svg'),16,16)))
+
+		a = self.addAction('exec_accessmanager',self.tr('Access Manager...'))
+		self.connect(a,QtCore.SIGNAL('triggered()'),self.execAccessManager)
+		#a.setIcon(QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/new_group.svg'),16,16)))
 
 		a = self.addAction('show_users',self.tr('Show Users'))
 		a.setCheckable(True)
@@ -119,6 +120,19 @@ class ss_MainWindow(mainwin.MainWindow):
 				return idx
 		return None
 
+	def removeTabByWidget(self,wdg):
+		"""
+		Remove the tab at index idx gracefully. If idx is not passed to removeTab
+		the current tab is attempted to be removed. First tab cannot be removed.
+		If a tab was removed the index of the tab is returned, otherwise None
+		"""
+		if not wdg:
+			return
+		idx = self.tabwidget.indexOf(wdg)
+		if idx<0:
+			return
+		self.removeTab(idx)
+
 	def setupCentralTabWidget(self):
 		self.tabwidget = QtGui.QTabWidget(None)
 
@@ -139,6 +153,8 @@ class ss_MainWindow(mainwin.MainWindow):
 		self.insertMenuItem('tools','open_filemanager')
 		self.insertMenuItem('tools','exec_createuserwizard')
 		self.insertMenuItem('tools','exec_creategroupwizard')
+		self.insertMenuSeparator('tools')
+		self.insertMenuItem('tools','exec_accessmanager')
 
 	def setupToolBars(self):
 		self.addToolBar('tools',self.tr('Tools'))
@@ -194,8 +210,15 @@ class ss_MainWindow(mainwin.MainWindow):
 	def editUser(self,uid):
 		# Check if the user has propper permissions and present a nice message if not
 		# This is ofcourse also checked on the server side.
-		if not accesstools.check_permission_multi_or(('user.modify','user.view')):
+		may_open = False
+		if uid==cm.get_binded_user() and accesstools.check_permission('self.modify',False):
+			may_open = True
+		elif accesstools.check_permission_multi_or(('user.modify','user.view')):
+			may_open = True
+
+		if may_open == False:
 			return
+		
 		if self.useredits.has_key(uid):
 			self.tabwidget.setCurrentWidget(self.useredits[uid])
 			return
@@ -208,9 +231,22 @@ class ss_MainWindow(mainwin.MainWindow):
 		usericon = paths.path_to('art/student.svg')
 		if os.path.exists(paths.path_to('art/%s.svg') % userdef.usertype_as_text(useredit.user_info['usertype_id'])):
 			usericon = paths.path_to('art/%s.svg') % userdef.usertype_as_text(useredit.user_info['usertype_id'])
-		print usericon
 		self.tabwidget.addTab(useredit,QtGui.QIcon(qt4tools.svg2pixmap(usericon,32,32)),tab_title)
 		self.tabwidget.setCurrentWidget(useredit)
+		
+	def closeUserEdits(self,selfmod=False):
+		"""
+		Close all user edit tabs
+		"""
+		useredits = list(self.useredits.keys())
+		for usered in useredits:
+			if type(usered) == str:
+				continue
+			if selfmod and usered.username==cm.get_binded_user():
+				continue
+			usered.force_close_without_save = True
+			self.removeTabByWidget(usered)
+
 		
 	def editGroup(self,groupname,displayed_name):
 		# Check if the user has propper permissions and present a nice message if not
@@ -227,6 +263,14 @@ class ss_MainWindow(mainwin.MainWindow):
 		tab_title = QtCore.QString.fromUtf8(displayed_name) #groupedit.led_firstname.text()+" "+groupedit.led_lastname.text()
 		self.tabwidget.addTab(groupedit,QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/group.svg'),16,16)),tab_title)
 		self.tabwidget.setCurrentWidget(groupedit)
+		
+	def closeGroupEdits(self):
+		groupedits = list(self.groupedits.keys())
+		for grouped in groupedits:
+			if type(grouped) == str:
+				continue
+			grouped.force_close_without_save = True
+			self.removeTabByWidget(grouped)
 	
 	
 	# Tools
@@ -260,6 +304,16 @@ class ss_MainWindow(mainwin.MainWindow):
 		wiz = cgw.CreateGroupWizard(self)
 		wiz.exec_()
 	
+	def execAccessManager(self):
+		# Check if the user has propper permissions and present a nice message if not
+		# This is ofcourse also checked on the server side.
+		if not accesstools.check_permission('access.granter'):
+			return
+
+		import accessmanagerwdg as amwdg
+		am = amwdg.AccessManagerWdg(self)
+		am.exec_()
+		
 	def openFileManager(self):
 		# Check if the user has propper permissions and present a nice message if not
 		# This is ofcourse also checked on the server side.
@@ -293,7 +347,7 @@ class ss_MainWindow(mainwin.MainWindow):
 		perm_timer.start(5000);
 	
 	def checkPermissions(self):
-		conn = conman.get_connection()
+		conn = cm.get_connection()
 		if conn==None:
 			print "No connection"
 			return
@@ -320,7 +374,19 @@ class ss_MainWindow(mainwin.MainWindow):
 				self.action(action_key).setDisabled(True)
 			else:
 				self.action(action_key).setDisabled(False)
+		
+		if accesstools.check_permission_multi_or(('user.modify','user.view'),False)==False:
+			# No access to users allowed
+			self.closeUserEdits(accesstools.check_permission('self.modify',False))
+		
+		if accesstools.check_permission_multi_or(('group.modify','group.view'),False)==False:
+			# No access to users allowed
+			self.closeGroupEdits()
 	
+		if accesstools.check_permission('file.browse',False)==False:
+			# No access to users allowed
+			self.removeTabByWidget(self.filemanager)
+			
 	# Signal events
 	
 	# Users
