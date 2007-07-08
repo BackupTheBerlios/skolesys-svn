@@ -100,6 +100,9 @@ class EnhancedTreeView(QtGui.QTreeWidget):
 			for func in self.hooked_functions[eventname]:
 				func(self,eventobj)
 
+	def currentChanged(self,idx,oldidx):
+		self._callback("currentChanged",idx)
+
 	def dragEnterEvent(self,dee):
 		self.base_cls.dragEnterEvent(self,dee)
 		self._callback("dragEnterEvent",dee)

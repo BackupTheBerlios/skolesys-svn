@@ -45,7 +45,7 @@ class ConnectionManager:
 
 			if type(bindres) == int and bindres==-9999:
 				# Acess denied
-				accesstools.access_denied_dialog('soap.bind')
+				accesstools.access_denied_dialog('access.soap.bind')
 				sys.exit(0)
 			counter+=1
 		if counter>=3:

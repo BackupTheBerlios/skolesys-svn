@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_creategroupwizard.ui'
 #
-# Created: Sat Jul  7 20:29:15 2007
+# Created: Sun Jul  8 02:19:56 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!

@@ -87,7 +87,7 @@ class UserEditWdg(QtGui.QWidget, baseui.Ui_UserEditWdg,ar.ActionRequester):
 	def setupPermissions(self,access_idents):
 		may_modify = False
 		if access_idents.count('user.modify') or \
-		   (access_idents.count('self.modify') and cm.get_binded_user()==self.username):
+		   (access_idents.count('user.self.modify') and cm.get_binded_user()==self.username):
 			may_modify = True
 
 		if may_modify:

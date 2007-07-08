@@ -36,6 +36,7 @@ class ss_MainWindow(mainwin.MainWindow):
 		self.groupview = None
 		self.userview = None
 		self.filemanager = None
+		self.accessmanager = None
 		self.useredits = {}
 		self.groupedits = {}
 		self.setupActions()
@@ -211,7 +212,7 @@ class ss_MainWindow(mainwin.MainWindow):
 		# Check if the user has propper permissions and present a nice message if not
 		# This is ofcourse also checked on the server side.
 		may_open = False
-		if uid==cm.get_binded_user() and accesstools.check_permission('self.modify',False):
+		if uid==cm.get_binded_user() and accesstools.check_permission('user.self.modify',False):
 			may_open = True
 		elif accesstools.check_permission_multi_or(('user.modify','user.view')):
 			may_open = True
@@ -311,8 +312,9 @@ class ss_MainWindow(mainwin.MainWindow):
 			return
 
 		import accessmanagerwdg as amwdg
-		am = amwdg.AccessManagerWdg(self)
-		am.exec_()
+		if not self.accessmanager:
+			self.accessmanager = amwdg.AccessManagerWdg(self)
+		self.accessmanager.exec_()
 		
 	def openFileManager(self):
 		# Check if the user has propper permissions and present a nice message if not
@@ -377,7 +379,7 @@ class ss_MainWindow(mainwin.MainWindow):
 		
 		if accesstools.check_permission_multi_or(('user.modify','user.view'),False)==False:
 			# No access to users allowed
-			self.closeUserEdits(accesstools.check_permission('self.modify',False))
+			self.closeUserEdits(accesstools.check_permission('user.self.modify',False))
 		
 		if accesstools.check_permission_multi_or(('group.modify','group.view'),False)==False:
 			# No access to users allowed
