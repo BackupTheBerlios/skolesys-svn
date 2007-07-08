@@ -25,7 +25,26 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "soap.bind_infinitive"
+msgid "user_description"
+msgstr "Brugerhåndering"
+
+msgid "group_description"
+msgstr "Gruppehåndtering"
+
+msgid "file_description"
+msgstr "Filhåndtering"
+
+msgid "access_description"
+msgstr "Rettighedshåndtering"
+
+msgid "membership_description"
+msgstr "Håndtering af Medlemskaber"
+
+msgid "service_description"
+msgstr "Håndtering af projekttjenester"
+
+
+msgid "access.soap.bind_infinitive"
 msgstr "Starte administrationsprogrammet"
 
 msgid "user.create_infinitive"
@@ -79,6 +98,6 @@ msgstr "Oprette medlemskaber"
 msgid "membership.remove_infinitive"
 msgstr "Nedlægge medlemskaber"
 
-msgid "self.modify_infinitive"
+msgid "user.self.modify_infinitive"
 msgstr "Redigere egne stamoplysninger"
 

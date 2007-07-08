@@ -25,8 +25,26 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "user_description"
+msgstr "User Management"
 
-msgid "soap.bind_infinitive"
+msgid "group_description"
+msgstr "Group Management"
+
+msgid "file_description"
+msgstr "File Management"
+
+msgid "access_description"
+msgstr "Access Management"
+
+msgid "membership_description"
+msgstr "Membership Management"
+
+msgid "service_description"
+msgstr "Project Service Management"
+
+
+msgid "access.soap.bind_infinitive"
 msgstr "Access the administration program"
 
 msgid "user.create_infinitive"
@@ -80,6 +98,6 @@ msgstr "Create memberships"
 msgid "membership.remove_infinitive"
 msgstr "Remove memberships"
 
-msgid "self.modify_infinitive"
+msgid "user.self.modify_infinitive"
 msgstr "Modify your own standard information"
 

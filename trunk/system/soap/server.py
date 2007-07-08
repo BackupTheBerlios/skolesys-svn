@@ -85,7 +85,7 @@ def bind(session_id,uid,encrypted_passwd):
 	encrypted_passwd=pload(encrypted_passwd)
 	uid=pload(uid)
 
-	if not has_perm(uid,'soap.bind'):
+	if not has_perm(uid,'access.soap.bind'):
 		return pdump(-9999) # Access denied
 
 	if not sessions.session_exists(session_id):
@@ -156,7 +156,7 @@ def has_perm(uid,access_ident):
 def session_uid(session_id):
 	if sessions.session_exists(session_id):
 		if sessions.has_session_variable(session_id,'uid'):
-			return sessions.get_session_variable(pload(session_id),'uid')[1]
+			return sessions.get_session_variable(session_id,'uid')[1]
 	return None
 
 # The real functionality starts here
