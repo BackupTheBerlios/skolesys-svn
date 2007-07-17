@@ -181,8 +181,10 @@ class GroupManager (LDAPUtil):
 			return -1
 	
 		services = self.list_services(groupname)
-		for sname in services:
-			self.detach_service(groupname,sname)
+		if type(services) == list:
+			# service group
+			for sname in services:
+				self.detach_service(groupname,sname)
 	
 		if sres[1][0][1].has_key('memberUid'):
 			import usermanager as uman
@@ -253,7 +255,7 @@ class GroupManager (LDAPUtil):
 		
 		sres = self.l.result(res,0)
 		if sres[1]==[]:
-			return -1 # Group does not exist
+			return -1 # Group does not exist or is not a service group
 		
 		servicelist = []
 		if sres[1][0][1].has_key('serviceList'):

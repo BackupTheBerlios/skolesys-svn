@@ -235,7 +235,7 @@ if __name__=='__main__':
 			print "You must be root to add users"
 			exit(0)
 		parser.set_usage("usage: %s %s accessident" % (shell_cmd_name,cmd))
-
+		parser.add_option("-i", "--ignore", action="store_true", dest="ignore", default=False,help="Ignore already existing")
 		(options, args) = parser.parse_args()
 		
 		if len(args)<2:
@@ -257,6 +257,8 @@ if __name__=='__main__':
 
 		if res==-13502:
 			print 'Access identifier "%s" already exists on this domain' % access_ident
+			if options.ignore:
+				exit(0)
 			exit(res)
 
 		if res==-13503:
