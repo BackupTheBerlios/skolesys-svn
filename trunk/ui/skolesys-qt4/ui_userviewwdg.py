@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_userviewwdg.ui'
 #
-# Created: Sun Jul  8 02:19:56 2007
+# Created: Sun Jul  8 11:01:53 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -25,6 +25,7 @@ class Ui_UserViewWdg(object):
         self.trv_userlist.setAlternatingRowColors(True)
         self.trv_userlist.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.trv_userlist.setRootIsDecorated(False)
+        self.trv_userlist.setSortingEnabled(True)
         self.trv_userlist.setObjectName("trv_userlist")
         self.gridlayout.addWidget(self.trv_userlist,2,0,1,7)
 

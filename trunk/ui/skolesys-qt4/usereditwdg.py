@@ -40,6 +40,7 @@ class UserEditWdg(QtGui.QWidget, baseui.Ui_UserEditWdg,ar.ActionRequester):
 		self.gid_add_list = []
 		self.gid_rm_list = []
 		self.force_close_without_save = False
+		self.permissions = cm.get_proxy_handle().list_my_permissions()
 		
 		self.username = username
 		self.setupUi(self)
@@ -85,6 +86,7 @@ class UserEditWdg(QtGui.QWidget, baseui.Ui_UserEditWdg,ar.ActionRequester):
 		
 	
 	def setupPermissions(self,access_idents):
+		self.permissions = access_idents
 		may_modify = False
 		if access_idents.count('user.modify') or \
 		   (access_idents.count('user.self.modify') and cm.get_binded_user()==self.username):
@@ -96,6 +98,11 @@ class UserEditWdg(QtGui.QWidget, baseui.Ui_UserEditWdg,ar.ActionRequester):
 		else:
 			self.force_close_without_save = True
 			self.setEnabled(False)
+		
+		if access_idents.count('membership.create'):
+			self.trv_groups.setEnabled(True)
+		else:
+			self.trv_groups.setEnabled(False)
 		
 	
 	def isDirty(self):
@@ -141,6 +148,8 @@ class UserEditWdg(QtGui.QWidget, baseui.Ui_UserEditWdg,ar.ActionRequester):
 	def groupsContextMenu(self,pos):
 		menu = QtGui.QMenu(self)
 		dropaction = menu.addAction(self.tr('Drop membership'))
+		if not self.permissions.count('membership.remove'):
+			dropaction.setEnabled(False)
 		self.connect(dropaction,QtCore.SIGNAL('triggered()'),self.dropMembership)
 		menu.exec_(QtGui.QCursor.pos())
 
@@ -186,16 +195,21 @@ class UserEditWdg(QtGui.QWidget, baseui.Ui_UserEditWdg,ar.ActionRequester):
 		
 	def applyChanges(self):
 		proxy = cm.get_proxy_handle()
+		# Groups
+		permissions = proxy.list_my_permissions()
+		allow_groupadd = permissions.count('membership.create')
+		allow_groupdel = permissions.count('membership.remove')
 		if self.change_info.has_key('groups_by_name'):
 			groups_before = self.user_info.pop('groups_by_name')
 			groups_now = self.change_info.pop('groups_by_name')
 			for groupname in groups_now:
-				if not groups_before.count(groupname):
+				if not groups_before.count(groupname) and allow_groupadd:
 					proxy.groupadd(self.username,groupname)
 			for groupname in groups_before:
-				if not groups_now.count(groupname):
+				if not groups_now.count(groupname) and allow_groupdel:
 					proxy.groupdel(self.username,groupname)
 		
+		# Standard info
 		givenname,familyname,primarygroup,firstyear = None,None,None,None
 		if self.change_info.has_key('givenName'):
 			givenname = self.change_info['givenName']

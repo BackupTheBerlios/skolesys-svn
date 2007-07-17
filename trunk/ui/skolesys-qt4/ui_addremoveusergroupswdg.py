@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_addremoveusergroupswdg.ui'
 #
-# Created: Sun Jul  8 02:19:55 2007
+# Created: Sun Jul  8 11:01:53 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -41,6 +41,7 @@ class Ui_AddRemoveUserGroupsWdg(object):
         self.trv_remove.setAlternatingRowColors(True)
         self.trv_remove.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.trv_remove.setRootIsDecorated(False)
+        self.trv_remove.setSortingEnabled(True)
         self.trv_remove.setObjectName("trv_remove")
         self.gridlayout1.addWidget(self.trv_remove,4,1,1,1)
 
@@ -57,6 +58,7 @@ class Ui_AddRemoveUserGroupsWdg(object):
         self.trv_add.setAlternatingRowColors(True)
         self.trv_add.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.trv_add.setRootIsDecorated(False)
+        self.trv_add.setSortingEnabled(True)
         self.trv_add.setObjectName("trv_add")
         self.gridlayout1.addWidget(self.trv_add,2,1,1,1)
 
@@ -73,6 +75,7 @@ class Ui_AddRemoveUserGroupsWdg(object):
         self.trv_available.setAlternatingRowColors(True)
         self.trv_available.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.trv_available.setRootIsDecorated(False)
+        self.trv_available.setSortingEnabled(True)
         self.trv_available.setObjectName("trv_available")
         self.gridlayout1.addWidget(self.trv_available,2,0,3,1)
 
@@ -99,6 +102,7 @@ class Ui_AddRemoveUserGroupsWdg(object):
         self.trv_users.setAlternatingRowColors(True)
         self.trv_users.setSelectionMode(QtGui.QAbstractItemView.NoSelection)
         self.trv_users.setRootIsDecorated(False)
+        self.trv_users.setSortingEnabled(True)
         self.trv_users.setObjectName("trv_users")
         self.gridlayout1.addWidget(self.trv_users,0,0,1,2)
         self.gridlayout.addWidget(self.grp_main,0,0,1,3)

@@ -38,6 +38,9 @@ class ConnectionManager:
 		while not self.proxy.test_binded() and counter<3:
 				
 			username,passwd = loginwdg.get_credentials()
+			if username==None:
+				# Login was cancelled
+				sys.exit(0)
 			bindres = self.proxy.bind(username,passwd)
 			if type(bindres) == bool and bindres==True:	
 				self.binded_user = username

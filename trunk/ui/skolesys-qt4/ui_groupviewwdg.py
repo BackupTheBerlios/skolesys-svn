@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_groupviewwdg.ui'
 #
-# Created: Sun Jul  8 02:19:55 2007
+# Created: Sun Jul  8 11:01:52 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -25,6 +25,7 @@ class Ui_GroupViewWdg(object):
         self.trv_grouplist.setAlternatingRowColors(True)
         self.trv_grouplist.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.trv_grouplist.setRootIsDecorated(False)
+        self.trv_grouplist.setSortingEnabled(True)
         self.trv_grouplist.setObjectName("trv_grouplist")
         self.gridlayout.addWidget(self.trv_grouplist,2,0,1,3)
 

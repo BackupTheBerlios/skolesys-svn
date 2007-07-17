@@ -38,6 +38,7 @@ class GroupEditWdg(QtGui.QWidget, baseui.Ui_GroupEditWdg):
 		self.connect(self.btn_apply,QtCore.SIGNAL('clicked()'),self.applyChanges)
 		self.connect(self.tbl_serviceoptions.itemDelegate(),QtCore.SIGNAL("dataChanged"),self.serviceOptionChanged)
 		self.force_close_without_save = False
+		self.permissions = cm.get_proxy_handle().list_my_permissions()
 		
 		# Setup group model
 		self.usermodel = umod.UserModel(self.trv_users)
@@ -61,18 +62,35 @@ class GroupEditWdg(QtGui.QWidget, baseui.Ui_GroupEditWdg):
 		self.connect(mainwin.get_mainwindow(),QtCore.SIGNAL('groupMembershipsChanged'),self.updateUsersView)
 		self.connect(mainwin.get_mainwindow(),QtCore.SIGNAL('permissionsChanged'),self.setupPermissions)
 		
-		self.setupPermissions(cm.get_proxy_handle().list_my_permissions())
+		self.setupPermissions(self.permissions)
 	
 	
 	def setupPermissions(self,access_idents):
+		self.permissions = access_idents
 		if access_idents.count('group.modify'):
 			self.force_close_without_save = False
 			self.setEnabled(True)
 		else:
 			self.force_close_without_save = True
 			self.setEnabled(False)
-			
 		
+		# Group members
+		if access_idents.count('membership.create'):
+			self.trv_users.setEnabled(True)
+		else:
+			self.trv_users.setEnabled(False)
+			
+		# Project services add
+		if access_idents.count('service.group.attach'):
+			self.btn_add_service.setEnabled(True)
+		else:
+			self.btn_add_service.setEnabled(False)	
+		# Project service properties
+		if access_idents.count('service.group.property.set'):
+			self.tbl_serviceoptions.setEnabled(True)
+		else:
+			self.tbl_serviceoptions.setEnabled(False)	
+
 	def setupServiceCombo(self):
 		proxy = cm.get_proxy_handle()
 		
@@ -142,6 +160,8 @@ class GroupEditWdg(QtGui.QWidget, baseui.Ui_GroupEditWdg):
 	def usersContextMenu(self,pos):
 		menu = QtGui.QMenu(self)
 		dropaction = menu.addAction(self.tr('Drop membership'))
+		if not self.permissions.count('membership.remove'):
+			dropaction.setEnabled(False)
 		self.connect(dropaction,QtCore.SIGNAL('triggered()'),self.dropMembership)
 		menu.exec_(QtGui.QCursor.pos())
 
@@ -220,14 +240,17 @@ class GroupEditWdg(QtGui.QWidget, baseui.Ui_GroupEditWdg):
 
 	def applyChanges(self):
 		proxy = cm.get_proxy_handle()
+		permissions = proxy.list_my_permissions()
+		allow_groupadd = permissions.count('membership.create')
+		allow_groupdel = permissions.count('membership.remove')
 		if self.change_info.has_key('users_by_name'):
 			users_before = self.group_info.pop('users_by_name')
 			users_now = self.change_info.pop('users_by_name')
 			for uid in users_now:
-				if not users_before.count(uid):
+				if not users_before.count(uid) and allow_groupadd:
 					proxy.groupadd(uid,self.groupname)
 			for uid in users_before:
-				if not users_now.count(uid):
+				if not users_now.count(uid)  and allow_groupdel:
 					proxy.groupdel(uid,self.groupname)
 		
 		description = None

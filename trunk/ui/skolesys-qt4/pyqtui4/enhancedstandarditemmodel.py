@@ -52,3 +52,4 @@ class EnhancedStandardItemModel(QtGui.QStandardItemModel):
 		self.accepted_mime_types = list_of_mimetypes
 		
 
+

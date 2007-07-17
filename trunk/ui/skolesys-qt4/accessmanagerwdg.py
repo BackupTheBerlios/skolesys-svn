@@ -74,6 +74,7 @@ class AccessManagerWdg(QtGui.QDialog, ui_amwdg.Ui_AccessManagerWdg):
 		
 		for grp,ai_list in access_groups.items():
 			grp_item = QtGui.QTreeWidgetItem(self.trw_access_idents,[ai_list['text']])
+			grp_item.setData(0,32,QtCore.QVariant(grp))
 			self.trw_access_idents.addTopLevelItem(grp_item)
 			for access_ident in ai_list['access_idents']:
 				ai_item = QtGui.QTreeWidgetItem(grp_item,[access_ident['text']])
@@ -96,15 +97,23 @@ class AccessManagerWdg(QtGui.QDialog, ui_amwdg.Ui_AccessManagerWdg):
 		uidnumber = idx.data(QtCore.Qt.UserRole).toInt()[0]
 		uid = self.usermodel.users[uidnumber]['uid']
 		self.current_uid = uid
+		binded_uid = cm.get_binded_user()
+		
 		permlist = cm.get_proxy_handle().list_permissions(uid)
 		for idx in xrange(self.trw_access_idents.topLevelItemCount()):
 			topitem = self.trw_access_idents.topLevelItem(idx)
+			access_group = str(topitem.data(0,32).toString())
 			for cidx in xrange(topitem.childCount()):
 				childitem = topitem.child(cidx)
 				if permlist.count(str(childitem.data(0,32).toString())):
 					childitem.setCheckState(0,QtCore.Qt.Checked)
 				else:
 					childitem.setCheckState(0,QtCore.Qt.Unchecked)
+				if access_group=='access' and self.current_uid==binded_uid:
+					# Prevent user from revoking access.granter and access.soap.bind
+					childitem.setFlags(QtCore.Qt.ItemIsUserCheckable)
+				else:
+					childitem.setFlags(QtCore.Qt.ItemIsUserCheckable|QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsSelectable)
 		self.trw_access_idents.setEnabled(True)
 		self.connect(self.trw_access_idents,QtCore.SIGNAL('itemChanged ( QTreeWidgetItem * , int )'),self.accessChanged)
 	

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_groupeditwdg.ui'
 #
-# Created: Sun Jul  8 02:19:55 2007
+# Created: Sun Jul  8 11:01:52 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -36,6 +36,7 @@ class Ui_GroupEditWdg(object):
         self.trv_users.setAcceptDrops(True)
         self.trv_users.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.trv_users.setRootIsDecorated(False)
+        self.trv_users.setSortingEnabled(True)
         self.trv_users.setObjectName("trv_users")
         self.gridlayout1.addWidget(self.trv_users,0,0,1,1)
 

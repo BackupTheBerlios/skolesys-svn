@@ -46,6 +46,9 @@
          <property name="rootIsDecorated" >
           <bool>false</bool>
          </property>
+         <property name="sortingEnabled" >
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
       </layout>
@@ -184,7 +187,7 @@
   <customwidget>
    <class>EnhancedTreeView</class>
    <extends>QTreeView</extends>
-   <header>pyqtui4/enhancedtreeview.h</header>
+   <header>pyqtui4.enhancedtreeview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

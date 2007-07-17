@@ -30,14 +30,18 @@ class LoginWdg(QtGui.QDialog, baseui.Ui_LoginWdg):
 		QtGui.QWidget.__init__(self,parent)
 		self.setupUi(self)
 		self.connect(self.btn_login,QtCore.SIGNAL("clicked()"),self.accept)
+		self.connect(self.ed_username,QtCore.SIGNAL("returnPressed()"),self.ed_passwd.setFocus)
+		self.connect(self.ed_passwd,QtCore.SIGNAL("returnPressed()"),self.accept)
+		self.btn_login.setDefault(False)
+		self.btn_login.setAutoDefault(False)
 		
-	def accept(self):
-		QtGui.QDialog.accept(self)
 	
 def get_credentials():
 	ui = LoginWdg(None)
-	ui.exec_()
-	return (str(ui.ed_username.text().toUtf8()),str(ui.ed_passwd.text().toUtf8()))
+	if ui.exec_()==QtGui.QDialog.Accepted:
+		return (str(ui.ed_username.text().toUtf8()),str(ui.ed_passwd.text().toUtf8()))
+	else:
+		return None,None
 
 if __name__ == '__main__':
 	import sys

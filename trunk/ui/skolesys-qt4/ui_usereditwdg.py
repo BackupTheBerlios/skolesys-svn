@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_usereditwdg.ui'
 #
-# Created: Sun Jul  8 02:19:56 2007
+# Created: Sun Jul  8 11:01:53 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -98,6 +98,7 @@ class Ui_UserEditWdg(object):
         self.trv_groups.setAlternatingRowColors(True)
         self.trv_groups.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.trv_groups.setRootIsDecorated(False)
+        self.trv_groups.setSortingEnabled(True)
         self.trv_groups.setObjectName("trv_groups")
         self.gridlayout.addWidget(self.trv_groups,8,0,1,4)
 

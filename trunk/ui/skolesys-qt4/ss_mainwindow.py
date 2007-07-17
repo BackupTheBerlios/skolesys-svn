@@ -369,7 +369,8 @@ class ss_MainWindow(mainwin.MainWindow):
 			'export_groups' : 'group.view',
 			'open_filemanager' : 'file.browse',
 			'exec_creategroupwizard' : 'group.create',
-			'exec_createuserwizard' : 'user.create'
+			'exec_createuserwizard' : 'user.create',
+			'exec_accessmanager' : 'access.granter'
 		}
 		for action_key,acc_ident in action_map_perm.items():
 			if not access_idents.count(acc_ident):
