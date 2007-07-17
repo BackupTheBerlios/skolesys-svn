@@ -35,6 +35,7 @@ os.chdir(cwd)
 copy = {'doc': '/usr/share/doc/python-pyinotify/',
 	'COPYING': '/usr/share/doc/python-pyinotify',
 	'README': '/usr/share/doc/python-pyinotify',
+	'src/pyinotify/__init__.py': '/usr/share/python-support/python-pyinotify/pyinotify',
 	'src/pyinotify/iglob.py': '/usr/share/python-support/python-pyinotify/pyinotify',
 	'src/pyinotify/inotify.py': '/usr/share/python-support/python-pyinotify/pyinotify',
 	'src/pyinotify/pyinotify.py': '/usr/share/python-support/python-pyinotify/pyinotify',
