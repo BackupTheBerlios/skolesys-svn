@@ -18,7 +18,7 @@
 # Boston, MA 02110-1301, USA.
 
 from sys import exit,argv
-import os
+import os,sys
 	
 from stat import S_IRUSR,S_IWUSR,S_IRGRP,S_IROTH
 import skolesys.soap.client as ss_client
@@ -82,9 +82,11 @@ if __name__=='__main__':
 	if options.config_context == 'update-hosts' and context_only:
 		pass
 	else:
-		passwd = getpass.getpass('Mainserver admin password: ')
-		if not c.bind(passwd):
-			print "Wrong password"
+		username = raw_input('Username: ')
+		passwd = getpass.getpass('Password: ')
+		if not c.bind(username,passwd):
+			print "Invalid credentials"
+			sys.exit(1)
 		else:
 			print "Authentication OK"
 	

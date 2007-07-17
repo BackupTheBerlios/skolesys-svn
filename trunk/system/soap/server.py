@@ -204,6 +204,10 @@ def createuser(session_id,uid,givenname,familyname,passwd,usertype_id,primarygro
 	global um
 	if not session_valid(pload(session_id)):
 		return pdump(False)
+
+	if not has_perm(session_uid(pload(session_id)),'user.create'):
+		return pdump(-9999) # Access denied
+
 	uid=pload(uid)
 	givenname=pload(givenname)
 	familyname=pload(familyname)
@@ -221,6 +225,10 @@ def changeuser(session_id,uid,givenname,familyname,passwd,primarygroup,firstyear
 	global um
 	if not session_valid(pload(session_id)):
 		return pdump(False)
+
+	if not has_perm(session_uid(pload(session_id)),'user.modify'):
+		return pdump(-9999) # Access denied
+
 	uid=pload(uid)
 	givenname=pload(givenname)
 	familyname=pload(familyname)
@@ -235,6 +243,10 @@ def removeuser(session_id,uid,backup_home,remove_home):
 	global um
 	if not session_valid(pload(session_id)):
 		return pdump(False)
+
+	if not has_perm(session_uid(pload(session_id)),'user.remove'):
+		return pdump(-9999) # Access denied
+
 	uid=pload(uid)
 	backup_home=pload(backup_home)
 	remove_home=pload(remove_home)
@@ -245,6 +257,10 @@ def groupadd(session_id,uid,groupname):
 	global um
 	if not session_valid(pload(session_id)):
 		return pdump(False)
+
+	if not has_perm(session_uid(pload(session_id)),'membership.create'):
+		return pdump(-9999) # Access denied
+
 	uid=pload(uid)
 	groupname=pload(groupname)
 
@@ -254,6 +270,10 @@ def groupdel(session_id,uid,groupname):
 	global um
 	if not session_valid(pload(session_id)):
 		return pdump(False)
+
+	if not has_perm(session_uid(pload(session_id)),'membership.remove'):
+		return pdump(-9999) # Access denied
+
 	uid=pload(uid)
 	groupname=pload(groupname)
 
@@ -287,6 +307,7 @@ def group_exists(session_id,groupname):
 	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
+
 	groupname=pload(groupname)
 	return pdump(gm.group_exists(groupname))
 
@@ -294,6 +315,10 @@ def creategroup(session_id,groupname,displayed_name,usertype_id,description):
 	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
+
+	if not has_perm(session_uid(pload(session_id)),'group.create'):
+		return pdump(-9999) # Access denied
+
 	groupname=pload(groupname)
 	displayed_name=pload(displayed_name)
 	usertype_id=pload(usertype_id)
@@ -305,6 +330,10 @@ def changegroup(session_id,groupname,description):
 	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
+
+	if not has_perm(session_uid(pload(session_id)),'group.modify'):
+		return pdump(-9999) # Access denied
+
 	groupname=pload(groupname)
 	description=pload(description)
 
@@ -314,6 +343,10 @@ def removegroup(session_id,groupname,backup_home,remove_home):
 	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
+
+	if not has_perm(session_uid(pload(session_id)),'group.remove'):
+		return pdump(-9999) # Access denied
+
 	groupname=pload(groupname)
 	backup_home=pload(backup_home)
 	remove_home=pload(remove_home)
@@ -401,7 +434,7 @@ def getconf(session_id,dist_codename,hwaddr,context,context_only):
 		pass
 	elif not session_valid(pload(session_id)):
 		return pdump(False)
-	
+
 	hwaddr = pload(hwaddr)
 	hinfo = hm.host_info(hwaddr)
 	if not hinfo:
@@ -428,6 +461,9 @@ def attach_groupservice(session_id,groupname,servicename):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
+	if not has_perm(session_uid(pload(session_id)),'service.group.attach'):
+		return pdump(-9999) # Access denied
+
 	groupname = pload(groupname)
 	servicename = pload(servicename)
 
@@ -441,6 +477,9 @@ def restart_groupservice(session_id,groupname,servicename):
 	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
+
+	if not has_perm(session_uid(pload(session_id)),'service.group.property.set'):
+		return pdump(-9999) # Access denied
 
 	groupname = pload(groupname)
 	servicename = pload(servicename)
@@ -456,6 +495,9 @@ def detach_groupservice(session_id,groupname,servicename):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
+	if not has_perm(session_uid(pload(session_id)),'service.group.detach'):
+		return pdump(-9999) # Access denied
+
 	groupname = pload(groupname)
 	servicename = pload(servicename)
 
@@ -469,7 +511,7 @@ def list_groupservices(session_id,groupname):
 	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
-	
+
 	groupname = pload(groupname)
 
 	return pdump(gm.list_services(groupname))
@@ -486,6 +528,9 @@ def list_groupservice_options_available(session_id,groupname,servicename):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
+	if not has_perm(session_uid(pload(session_id)),'service.group.property.read'):
+		return pdump(-9999) # Access denied
+
 	groupname = pload(groupname)
 	servicename = pload(servicename)
 	
@@ -497,6 +542,9 @@ def get_groupservice_option_values(session_id,groupname,servicename):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
+	if not has_perm(session_uid(pload(session_id)),'service.group.property.read'):
+		return pdump(-9999) # Access denied
+
 	groupname = pload(groupname)
 	servicename = pload(servicename)
 	
@@ -507,6 +555,9 @@ def set_groupservice_option_value(session_id,groupname,servicename,variable,valu
 	global gm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
+
+	if not has_perm(session_uid(pload(session_id)),'service.group.property.set'):
+		return pdump(-9999) # Access denied
 
 	groupname = pload(groupname)
 	servicename = pload(servicename)
@@ -520,6 +571,9 @@ def unset_groupservice_option(session_id,groupname,servicename,variable):
 	if not session_valid(pload(session_id)):
 		return pdump(False)
 
+	if not has_perm(session_uid(pload(session_id)),'service.group.property.set'):
+		return pdump(-9999) # Access denied
+
 	groupname = pload(groupname)
 	servicename = pload(servicename)
 	variable = pload(variable)
@@ -531,6 +585,9 @@ def findfiles(session_id,username,groupname,minsize,regex,order):
 	global fm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
+
+	if not has_perm(session_uid(pload(session_id)),'file.browse'):
+		return pdump(-9999) # Access denied
 
 	username = pload(username)
 	groupname = pload(groupname)
@@ -544,6 +601,9 @@ def removefiles(session_id,files):
 	global fm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
+
+	if not has_perm(session_uid(pload(session_id)),'file.remove'):
+		return pdump(-9999) # Access denied
 
 	files = pload(files)
 	return pdump(fm.removefiles(files))
@@ -579,10 +639,8 @@ def revoke_access(session_id,uid,access_ident):
 	uid = pload(uid)
 	access_ident = pload(access_ident)
 
-	# Check if the current binded user has permission to access this service 
-	binded_uid = sessions.get_session_variable(pload(session_id),'uid')[1]
-	if not am.check_permission(binded_uid,'access.granter')==1:
-		return pdump(-9999) # Access denied	
+	if not has_perm(session_uid(pload(session_id)),'access.granter'):
+		return pdump(-9999) # Access denied
 
 	return pdump(am.revoke_access(uid,access_ident))
 
@@ -599,10 +657,8 @@ def check_permission(session_id,uid,access_ident):
 	uid = pload(uid)
 	access_ident = pload(access_ident)
 
-	# Check if the current binded user has permission to access this service 
-	binded_uid = sessions.get_session_variable(pload(session_id),'uid')[1]
-	if not am.check_permission(binded_uid,'access.granter')==1:
-		return pdump(-9999) # Access denied	
+	if not has_perm(session_uid(pload(session_id)),'access.granter'):
+		return pdump(-9999) # Access denied
 
 	return pdump(am.check_permission(uid,access_ident))
 
@@ -617,10 +673,8 @@ def list_permissions(session_id,uid):
 
 	uid = pload(uid)
 
-	# Check if the current binded user has permission to access this service 
-	binded_uid = sessions.get_session_variable(pload(session_id),'uid')[1]
-	if not am.check_permission(binded_uid,'access.granter')==1:
-		return pdump(-9999) # Access denied	
+	if not has_perm(session_uid(pload(session_id)),'access.granter'):
+		return pdump(-9999) # Access denied
 
 	return pdump(am.list_permissions(uid))
 

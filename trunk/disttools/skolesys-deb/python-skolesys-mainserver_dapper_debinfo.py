@@ -8,7 +8,7 @@ control = {
 	'Section': 'python',
 	'Priority': 'optional',
 	'Architecture': 'all',
-	'Depends': 'python-support, python-cheetah, python-smbpasswd, python-soappy, m2crypto, python-ldap',
+	'Depends': 'python-statmon, python-support, python-cheetah, python-smbpasswd, python-soappy, m2crypto, python-ldap',
 	'Recommends': '',
 	'Maintainer': 'Jakob Simon-Gaarde <jakob@skolesys.dk>',
 	'Description': 'This is the base control library of the SkoleSYS linux distribution',
@@ -98,25 +98,26 @@ if [ "$1" = "configure" ] && which update-python-modules >/dev/null 2>&1; then
         update-python-modules -i /usr/share/python-support/python-skolesys-mainserver
 fi
 
-ss_accessmanager add_access_identifier user.create
-ss_accessmanager add_access_identifier user.remove
-ss_accessmanager add_access_identifier user.modify
-ss_accessmanager add_access_identifier user.view
-ss_accessmanager add_access_identifier user.self.modify
-ss_accessmanager add_access_identifier group.create
-ss_accessmanager add_access_identifier group.remove
-ss_accessmanager add_access_identifier group.modify
-ss_accessmanager add_access_identifier group.view
-ss_accessmanager add_access_identifier file.browse
-ss_accessmanager add_access_identifier file.remove
-ss_accessmanager add_access_identifier file.backup
-ss_accessmanager add_access_identifier access.granter
-ss_accessmanager add_access_identifier access.soap.bind
-ss_accessmanager add_access_identifier service.group.attach
-ss_accessmanager add_access_identifier service.group.detach
-ss_accessmanager add_access_identifier service.group.property.set
-ss_accessmanager add_access_identifier membership.create
-ss_accessmanager add_access_identifier membership.remove
+ss_accessmanager add_access_identifier user.create -i
+ss_accessmanager add_access_identifier user.remove -i
+ss_accessmanager add_access_identifier user.modify -i
+ss_accessmanager add_access_identifier user.view -i
+ss_accessmanager add_access_identifier user.self.modify -i
+ss_accessmanager add_access_identifier group.create -i
+ss_accessmanager add_access_identifier group.remove -i
+ss_accessmanager add_access_identifier group.modify -i
+ss_accessmanager add_access_identifier group.view -i
+ss_accessmanager add_access_identifier file.browse -i
+ss_accessmanager add_access_identifier file.remove -i
+ss_accessmanager add_access_identifier file.backup -i
+ss_accessmanager add_access_identifier access.granter -i
+ss_accessmanager add_access_identifier access.soap.bind -i
+ss_accessmanager add_access_identifier service.group.attach -i
+ss_accessmanager add_access_identifier service.group.detach -i
+ss_accessmanager add_access_identifier service.group.property.set -i
+ss_accessmanager add_access_identifier service.group.property.read -i
+ss_accessmanager add_access_identifier membership.create -i
+ss_accessmanager add_access_identifier membership.remove -i
 
 /etc/init.d/skolesysd restart
 """
