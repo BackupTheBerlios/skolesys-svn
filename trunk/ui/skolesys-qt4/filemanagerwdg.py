@@ -87,13 +87,22 @@ class FileManagerWdg(QtGui.QWidget, baseui.Ui_FileManagerWdg):
 	
 	def setupContentTypeFilterCombo(self):
 		self.cmb_contenttypefilter.clear()
+		#self.cmb_contenttypefilter.addItem(self.tr('All content types',"plural content types"),QtCore.QVariant(''))
+		#self.cmb_contenttypefilter.addItem(self.tr('Movies (mpg,avi,wmv,...)',"Content types"),QtCore.QVariant(".*\.(avi|mpg|mpeg|wmv)$"))
+		#self.cmb_contenttypefilter.addItem(self.tr('Sound (mp3,wav,ogg,...)',"Content types"),QtCore.QVariant(".*\.(wav|mp2|mpeg3|mp3|wma)$"))
+		#self.cmb_contenttypefilter.addItem(self.tr('Windows executables (exe,dll,bat,...)',"Content types"),QtCore.QVariant(".*\.(exe|ocx|dll|com|bat)$"))
+		#self.cmb_contenttypefilter.addItem(self.tr('OpenOffice docs (odt,ods,odb,...)',"Content types"),QtCore.QVariant(".*\.(odt|ods|odp|odg|odm|odb|odt)$"))
+		#self.cmb_contenttypefilter.addItem(self.tr('MS Office docs (doc,xls,mdb,...)',"Content types"),QtCore.QVariant(".*\.(doc|xls|ppt|mdb)$"))
+		#self.cmb_contenttypefilter.addItem(self.tr('Archives (zip,rar,cab,...)',"Content types"),QtCore.QVariant(".*\.(zip|arc|arj|lz|rar|tar|tgz|gz|bz2|gzip|cpio|cab|lzh|lha)$"))
+		
 		self.cmb_contenttypefilter.addItem(self.tr('All content types',"plural content types"),QtCore.QVariant(''))
-		self.cmb_contenttypefilter.addItem(self.tr('Movies (mpg,avi,wmv,...)',"Content types"),QtCore.QVariant(".*\.(avi|mpg|mpeg|wmv)$"))
-		self.cmb_contenttypefilter.addItem(self.tr('Sound (mp3,wav,ogg,...)',"Content types"),QtCore.QVariant(".*\.(wav|mp2|mpeg3|mp3|wma)$"))
-		self.cmb_contenttypefilter.addItem(self.tr('Windows executables (exe,dll,bat,...)',"Content types"),QtCore.QVariant(".*\.(exe|ocx|dll|com|bat)$"))
-		self.cmb_contenttypefilter.addItem(self.tr('OpenOffice docs (odt,ods,odb,...)',"Content types"),QtCore.QVariant(".*\.(odt|ods|odp|odg|odm|odb|odt)$"))
-		self.cmb_contenttypefilter.addItem(self.tr('MS Office docs (doc,xls,mdb,...)',"Content types"),QtCore.QVariant(".*\.(doc|xls|ppt|mdb)$"))
-		self.cmb_contenttypefilter.addItem(self.tr('Archives (zip,rar,cab,...)',"Content types"),QtCore.QVariant(".*\.(zip|arc|arj|lz|rar|tar|tgz|gz|bz2|gzip|cpio|cab|lzh|lha)$"))
+		self.cmb_contenttypefilter.addItem(self.tr('Movies (mpg,avi,wmv,...)',"Content types"),QtCore.QVariant("avi|mpg|mpeg|wmv"))
+		self.cmb_contenttypefilter.addItem(self.tr('Sound (mp3,wav,ogg,...)',"Content types"),QtCore.QVariant("wav|mp2|mpeg3|mp3|wma"))
+		self.cmb_contenttypefilter.addItem(self.tr('Windows executables (exe,dll,bat,...)',"Content types"),QtCore.QVariant("exe|ocx|dll|com|bat"))
+		self.cmb_contenttypefilter.addItem(self.tr('OpenOffice docs (odt,ods,odb,...)',"Content types"),QtCore.QVariant("odt|ods|odp|odg|odm|odb|odt"))
+		self.cmb_contenttypefilter.addItem(self.tr('MS Office docs (doc,xls,mdb,...)',"Content types"),QtCore.QVariant("doc|xls|ppt|mdb"))
+		self.cmb_contenttypefilter.addItem(self.tr('Archives (zip,rar,cab,...)',"Content types"),QtCore.QVariant("zip|arc|arj|lz|rar|tar|tgz|gz|bz2|gzip|cpio|cab|lzh|lha"))
+
 		self.connect(self.cmb_contenttypefilter,QtCore.SIGNAL('activated(int)'),self.updateFileView)
 
 	def makeBytesHumanReadable(self,bytes,decimal_clip=2):
@@ -154,12 +163,12 @@ class FileManagerWdg(QtGui.QWidget, baseui.Ui_FileManagerWdg):
 		# Get content type filter
 		idx = self.cmb_contenttypefilter.currentIndex()
 		if idx > -1:
-			contenttypefilter = str(self.cmb_contenttypefilter.itemData(idx).toString().toUtf8())
-			if contenttypefilter=='':
+			contenttypefilter = str(self.cmb_contenttypefilter.itemData(idx).toString().toUtf8()).split('|')
+			if contenttypefilter==['']:
 				# contenttype filter set to "All"
 				contenttypefilter = None
-				
-		self.fileinfomodel.loadFileInfo(username=userfilter,groupname=groupfilter,regex=contenttypefilter,minsize=minsize)
+			print contenttypefilter
+		self.fileinfomodel.loadFileInfo(username=userfilter,groupname=groupfilter,extensions=contenttypefilter,minsize=minsize)
 		#for colidx in xrange(self.fileinfomodel.columnCount()):
 			#self.trv_files.resizeColumnToContents(colidx)
 		QtGui.QApplication.restoreOverrideCursor()

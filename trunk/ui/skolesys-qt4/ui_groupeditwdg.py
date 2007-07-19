@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_groupeditwdg.ui'
 #
-# Created: Sun Jul  8 11:01:52 2007
+# Created: Thu Jul 19 19:06:31 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!

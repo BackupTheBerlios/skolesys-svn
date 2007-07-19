@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_filemanagerwdg.ui'
 #
-# Created: Sun Jul  8 11:01:52 2007
+# Created: Thu Jul 19 19:06:31 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -133,6 +133,7 @@ class Ui_FileManagerWdg(object):
         self.trv_files.setAlternatingRowColors(True)
         self.trv_files.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.trv_files.setRootIsDecorated(False)
+        self.trv_files.setSortingEnabled(True)
         self.trv_files.setObjectName("trv_files")
         self.gridlayout1.addWidget(self.trv_files,1,0,1,2)
         self.gridlayout.addWidget(self.groupBox,0,0,1,4)

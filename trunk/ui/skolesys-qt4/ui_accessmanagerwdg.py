@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_accessmanagerwdg.ui'
 #
-# Created: Sun Jul  8 11:01:53 2007
+# Created: Thu Jul 19 19:06:32 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -45,6 +45,7 @@ class Ui_AccessManagerWdg(object):
         self.trv_userlist.setSizePolicy(sizePolicy)
         self.trv_userlist.setAlternatingRowColors(True)
         self.trv_userlist.setRootIsDecorated(False)
+        self.trv_userlist.setSortingEnabled(True)
         self.trv_userlist.setObjectName("trv_userlist")
         self.vboxlayout.addWidget(self.trv_userlist)
 

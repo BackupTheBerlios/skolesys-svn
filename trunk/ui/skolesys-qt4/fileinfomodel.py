@@ -18,7 +18,7 @@ Boston, MA 02110-1301, USA.
 '''
 
 from PyQt4 import QtCore,QtGui
-import pickle,re
+import pickle,re,os
 import pyqtui4.enhancedstandarditemmodel as esm
 import connectionmanager as cm
 
@@ -66,7 +66,7 @@ class FileInfoModel(esm.EnhancedStandardItemModel):
 			return self.tr("%1 MB").arg(val)
 	
 	def _addFileInfo(self,filename,dirname,username,groupname,filesize,permissions):
-		path = "%s/%s" % (dirname,filename) # the obvious ... full path
+		path = os.path.join(dirname,filename) # the obvious ... full path
 		if self.files.has_key(path):
 			return
 		self.insertRow(self.rowCount())
@@ -75,10 +75,10 @@ class FileInfoModel(esm.EnhancedStandardItemModel):
 		#pix.load('art/kdmconfig.png')
 		#pix = pix.scaled(QtCore.QSize(24,24))
 		#self.setData(idx,QtCore.QVariant(pix),QtCore.Qt.DecorationRole)
-		self.setData(idx,QtCore.QVariant(QtCore.QString.fromUtf8(filename)))
+		self.setData(idx,QtCore.QVariant(QtCore.QString.fromUtf8(filename.encode('utf-8'))))
 		
 		idx = self.index(self.rowCount()-1,self.columninfo['dirname']['columnindex'])
-		self.setData(idx,QtCore.QVariant(QtCore.QString.fromUtf8(dirname)))
+		self.setData(idx,QtCore.QVariant(QtCore.QString.fromUtf8(dirname.encode('utf-8'))))
 		
 		idx = self.index(self.rowCount()-1,self.columninfo['username']['columnindex'])
 		self.setData(idx,QtCore.QVariant(username))
@@ -109,7 +109,7 @@ class FileInfoModel(esm.EnhancedStandardItemModel):
 		self.setData(idx,QtCore.QVariant(permissions))
 		
 		idx = self.index(self.rowCount()-1,0)
-		self.setData(idx,QtCore.QVariant(QtCore.QString.fromUtf8(path)),QtCore.Qt.UserRole)
+		self.setData(idx,QtCore.QVariant(QtCore.QString.fromUtf8(path.encode('utf-8'))),QtCore.Qt.UserRole)
 		
 		self.files[path] = {
 			'filename':filename,
@@ -134,12 +134,12 @@ class FileInfoModel(esm.EnhancedStandardItemModel):
 			filenames += [fname]
 		return filenames
 	
-	def loadFileInfo(self,username=None,groupname=None,minsize=None,regex=None,order=''):
+	def loadFileInfo(self,username=None,groupname=None,minsize=None,extensions=None,regex=None,order=''):
 		self.clear()
 		self.initialSetup()
 		self.files = {}
 		
-		files = self.proxy.findfiles(username,groupname,minsize,regex,order)
+		files = self.proxy.findfiles(username,groupname,minsize,extensions,regex,order)
 		for f in files:
 			self._addFileInfo(
 				f['filename'],f['dirname'],
