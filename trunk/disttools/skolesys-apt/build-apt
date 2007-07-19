@@ -13,6 +13,8 @@ if __name__=='__main__':
 	
 	parser.add_option("-g", "--gpgid", dest="gpgid",default=None,
 		help="Use a certain secret gpg key to sign the repository.", metavar="SKOLESYS_GPGID")
+        parser.add_option("--passphrase", dest="passphrase",default=None,
+                help="Pass a passphrase for the gpgid.", metavar="SKOLESYS_PASSPHRASE")
 	
 	(options, args) = parser.parse_args()
 
@@ -125,8 +127,20 @@ if __name__=='__main__':
 	f = open('dists/%s/Release' % codename, 'w')
 	f.write(buf)
 	f.close()
-	if not gpgid:
-		os.system('gpg -abs -o dists/%s/Release.gpg dists/%s/Release' % (codename,codename))
+
+	if options.passphrase:
+		f=open('passphrase','w')
+		f.write("%s\n" % options.passphrase)
+		f.close()
+		if not gpgid:
+			os.system('gpg --batch --passphrase-fd 0 -abs -o dists/%s/Release.gpg dists/%s/Release < passphrase' % (codename,codename))
+		else:
+			os.system('gpg --batch --passphrase-fd 0 -abs --default-key %s -o dists/%s/Release.gpg dists/%s/Release < passphrase' % (gpgid,codename,codename))
+		os.remove('passphrase')
+
 	else:
-		os.system('gpg -abs --default-key %s -o dists/%s/Release.gpg dists/%s/Release' % (gpgid,codename,codename))
+		if not gpgid:
+			os.system('gpg -abs -o dists/%s/Release.gpg dists/%s/Release' % (codename,codename))
+		else:
+			os.system('gpg -abs --default-key %s -o dists/%s/Release.gpg dists/%s/Release' % (gpgid,codename,codename))
 	

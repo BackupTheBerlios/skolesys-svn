@@ -3,7 +3,7 @@ fetch_method = "tgz"
 control = {
 	'Package': 'python-pysqlite2',
 	'Version': '2.3.4',
-	'NameExtension': 'skolesys1_i386',
+	'NameExtension': 'dapper_i386',
 	'Section': 'python',
 	'Priority': 'optional',
 	'Architecture': 'i386',
