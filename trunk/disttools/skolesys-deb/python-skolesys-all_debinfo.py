@@ -48,7 +48,7 @@ postinst = """#!/bin/sh
 set -e
 
 if [ "$1" = "configure" ] && which update-python-modules >/dev/null 2>&1; then
-        update-python-modules -i /usr/share/python-support/python-skolesys-all
+        update-python-modules -a -f -i /usr/share/python-support/python-skolesys-all
 fi
 
 """

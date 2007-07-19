@@ -28,24 +28,30 @@ prebuild_script = \
 import os
 cwd = os.getcwd()
 os.chdir('rep')
-os.system('python setup.py build')
+os.system('python2.4 setup.py build')
+os.system('mkdir bin_python2.4 bin_python2.5')
+os.system('cp src/pyinotify/_inotify.so bin_python2.4/_inotify.so')
+os.system('rm src/pyinotify/_inotify.so src/pyinotify/pyinotify.pyo')
+os.system('python2.5 setup.py build')
+os.system('cp src/pyinotify/_inotify.so bin_python2.5/_inotify.so')
 os.chdir(cwd)
 """
 
 copy = {'doc': '/usr/share/doc/python-pyinotify/',
 	'COPYING': '/usr/share/doc/python-pyinotify',
 	'README': '/usr/share/doc/python-pyinotify',
-	'src/pyinotify/__init__.py': '/usr/share/python-support/python-pyinotify/pyinotify',
+	'src/pyinotify.pth': '/usr/share/python-support/python-pyinotify',
 	'src/pyinotify/iglob.py': '/usr/share/python-support/python-pyinotify/pyinotify',
 	'src/pyinotify/inotify.py': '/usr/share/python-support/python-pyinotify/pyinotify',
 	'src/pyinotify/pyinotify.py': '/usr/share/python-support/python-pyinotify/pyinotify',
-	'src/pyinotify/_inotify.so': '/usr/share/python-support/python-pyinotify/pyinotify'}
+	'bin_python2.4/_inotify.so': '/usr/lib/python-support/python-pyinotify/python2.4/pyinotify',
+	'bin_python2.5/_inotify.so': '/usr/lib/python-support/python-pyinotify/python2.5/pyinotify'}
 
 postinst = """#!/bin/sh
 set -e
 
 if [ "$1" = "configure" ] && which update-python-modules >/dev/null 2>&1; then
-	update-python-modules -i /usr/share/python-support/python-pyinotify
+	update-python-modules -a -f -i /usr/share/python-support/python-pyinotify
 fi
 """
 

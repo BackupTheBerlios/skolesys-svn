@@ -31,21 +31,20 @@ os.chdir('rep')
 os.system('python2.4 setup.py build')
 os.chdir(cwd)
 """
-
 copy = {'doc': '/usr/share/doc/python-pyinotify/',
 	'COPYING': '/usr/share/doc/python-pyinotify',
 	'README': '/usr/share/doc/python-pyinotify',
-	'src/pyinotify/__init__.py': '/usr/share/python-support/python-pyinotify/pyinotify',
+	'src/pyinotify.pth': '/usr/share/python-support/python-pyinotify',
 	'src/pyinotify/iglob.py': '/usr/share/python-support/python-pyinotify/pyinotify',
 	'src/pyinotify/inotify.py': '/usr/share/python-support/python-pyinotify/pyinotify',
 	'src/pyinotify/pyinotify.py': '/usr/share/python-support/python-pyinotify/pyinotify',
-	'src/pyinotify/_inotify.so': '/usr/share/python-support/python-pyinotify/pyinotify'}
+	'src/pyinotify/_inotify.so': '/usr/lib/python-support/python-pyinotify/python2.4/pyinotify'}
 
 postinst = """#!/bin/sh
 set -e
 
 if [ "$1" = "configure" ] && which update-python-modules >/dev/null 2>&1; then
-	update-python-modules -i /usr/share/python-support/python-pyinotify
+	update-python-modules -a -f -i /usr/share/python-support/python-pyinotify
 fi
 """
 

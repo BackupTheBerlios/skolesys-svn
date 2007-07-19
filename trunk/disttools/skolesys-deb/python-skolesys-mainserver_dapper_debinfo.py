@@ -95,7 +95,7 @@ postinst = """#!/bin/sh
 set -e
 
 if [ "$1" = "configure" ] && which update-python-modules >/dev/null 2>&1; then
-        update-python-modules -i /usr/share/python-support/python-skolesys-mainserver
+        update-python-modules -a -f -i /usr/share/python-support/python-skolesys-mainserver
 fi
 
 ss_accessmanager add_access_identifier user.create -i
