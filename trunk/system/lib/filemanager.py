@@ -72,7 +72,6 @@ class FileManager:
 		next_ctime = time.mktime(next_sync) + (add_day * _ONE_DAY_IN_SECONDS)
 		remaining_seconds = next_ctime - time.mktime(time.localtime())
 		self.timer = threading.Timer(remaining_seconds,self._timeout,[])
-		self.timer = threading.Timer(30,self._timeout,[])
 		self.timer.start()
 
 	def _timeout(self):

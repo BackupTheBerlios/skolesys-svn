@@ -98,6 +98,8 @@ if [ "$1" = "configure" ] && which update-python-modules >/dev/null 2>&1; then
         update-python-modules -a -f -i /usr/share/python-support/python-skolesys-mainserver
 fi
 
+/etc/init.d/slapd restart
+
 ss_accessmanager add_access_identifier user.create -i
 ss_accessmanager add_access_identifier user.remove -i
 ss_accessmanager add_access_identifier user.modify -i
