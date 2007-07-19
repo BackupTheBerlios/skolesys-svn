@@ -4,6 +4,7 @@
 # ------
 domain_name = <domain_name>
 local_domain_name = skolesys.local
+fs_encodings = UTF-8:ISO-8859-1
 
 homes_host  = mainserver.skolesys.local
 domain_root  = /skolesys
@@ -70,7 +71,6 @@ smb_groups_ou = ou=Groups
 
 [SOAP_SERVICE]
 
-passwd = <schooladmin_passwd>
 interface = eth0
 
 # Session timeout in seconds

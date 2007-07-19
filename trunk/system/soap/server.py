@@ -47,7 +47,7 @@ sessions = None
 am = accessman.AccessManager()
 um = userman.UserManager()
 gm = groupman.GroupManager()
-fm = fileman.FileManager()
+fm = None
 hm = hostman.HostManager()
 
 def print_sessions():
@@ -581,7 +581,7 @@ def unset_groupservice_option(session_id,groupname,servicename,variable):
 	return pdump(gm.unset_service_option(groupname,servicename,variable))
 
 
-def findfiles(session_id,username,groupname,minsize,regex,order):
+def findfiles(session_id,username,groupname,minsize,extensions,regex,order):
 	global fm
 	if not session_valid(pload(session_id)):
 		return pdump(False)
@@ -592,10 +592,11 @@ def findfiles(session_id,username,groupname,minsize,regex,order):
 	username = pload(username)
 	groupname = pload(groupname)
 	minsize = pload(minsize)
+	extensions = pload(extensions)
 	regex = pload(regex)
 	order = pload(order)
 	
-	return pdump(fm.find(user=username,group=groupname,minsize=minsize,regex=regex,order=order))
+	return pdump(fm.find(user=username,group=groupname,minsize=minsize,extensions=extensions,regex=regex,order=order))
 
 def removefiles(session_id,files):
 	global fm
@@ -739,13 +740,11 @@ class MyServer(SOAPpy.SOAPServer):
 
 
 def startserver():
-	global sessions
+	global sessions,fm
 	# Check root privilegdes
 	if not os.getuid()==0:
 		print "This command requires root priviledges"
 		sys.exit(1)
-	
-	from skolesys.lib.conf import conf
 	
 	session_timeout = int(conf.get("SOAP_SERVICE","session_timeout"))
 	sessions = sessionhandler.SessionHandler(session_timeout)
@@ -853,6 +852,11 @@ def startserver():
 		os.setsid()
 		sys.stdout=open("/dev/null", 'w')
 		sys.stdin=open("/dev/null", 'r')
+		fm = fileman.FileManager(
+			'%s/fileinfo.db' % conf.get('DOMAIN','domain_root') ,
+			['%s/%s' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'))],
+			conf.get('DOMAIN','fs_encodings').split(':'))
+
 		while 1:
 			try:
 				server.serve_forever()
