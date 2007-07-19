@@ -342,8 +342,8 @@ class SkoleSYS_Client:
 	
 	
 	# FileManager
-	def findfiles(self,username=None,groupname=None,minsize=None,regex=None,order=''):
-		return pload(self.server.findfiles(pdump(self.session_id),pdump(username),pdump(groupname),pdump(minsize),pdump(regex),pdump(order)))
+	def findfiles(self,username=None,groupname=None,minsize=None,extensions=None,regex=None,order=''):
+		return pload(self.server.findfiles(pdump(self.session_id),pdump(username),pdump(groupname),pdump(minsize),pdump(extensions),pdump(regex),pdump(order)))
 
 	def removefiles(self,rmlist):
 		return pload(self.server.removefiles(pdump(self.session_id),pdump(rmlist)))
