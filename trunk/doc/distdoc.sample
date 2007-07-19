@@ -2,5 +2,5 @@
 
 # Alter the username/server and path and use this script to distribute documentation
 
-rsync -azv --delete docutils/html/devel -e ssh username@server:/srv/www/doc.skolesys.dk/
-rsync -azv --delete docutils/html/reference -e ssh username@server:/srv/www/doc.skolesys.dk/
+rsync -azv --delete docutils/html/disttools -e ssh <user>@<server>:/srv/www/skolesys/doc.skolesys.dk/
+rsync -azv --delete docutils/html/reference -e ssh <user>@<server>:/srv/www/skolesys/doc.skolesys.dk/

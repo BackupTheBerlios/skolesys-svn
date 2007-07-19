@@ -6,7 +6,7 @@ skolesys-apt can do this automatically, all we need to do is create a simple apt
 skolesys-apt will create the APT archive on the local filesystem ready to ship by copying the two folders \member{dists} and \member{pool} and the public part of the gpg key-pair to the host running the webserver that is going to expose the archive.
 
 \index{skolesys-apt}
-\member{Usage: skolesys-apt [-g gpgid] <distribution_name>}
+\member{Usage: skolesys-apt [-g gpgid] [--passphrase=PASSPHRASE] <distribution_name>}
 
 \begin{tableiii}{l|l|l}{command}{Short-option}{Long-option}{Description}
   \lineiii{-g \var{GPGID}}{\member{---gpgid=\var{GPGID}}}{Use a specific key for signing the APT archive}
