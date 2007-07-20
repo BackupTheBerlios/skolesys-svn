@@ -1,6 +1,8 @@
 #! /usr/bin/python
 import os
 import skolesys.cfmachine.apthelpers as ah
+import skolesys.tools.sysinfo as sysinfo
+dist_codename = sysinfo.get_dist_codename()
 
 skolesys_rep='http://archive.skolesys.dk/stable'
 os.environ['LANG']='C'
@@ -9,9 +11,8 @@ os.system('wget %s/skolesys.gpg.asc' % skolesys_rep)
 os.system('gpg --import skolesys.gpg.asc')
 os.system('gpg --armor --export EEF2B7FA | apt-key add -')
 sl = ah.SourcesList('/etc/apt/sources.list')
-sl.add_source('deb','%s'%skolesys_rep,'dapper',['main'])
-sl.add_source('deb','http://dk.archive.ubuntu.com/ubuntu/','dapper',['universe'])
+sl.add_source('deb',skolesys_rep,dist_codename,['main'])
+sl.add_source('deb','http://dk.archive.ubuntu.com/ubuntu/',dist_codename,['universe'])
 sl.print_sources_list()
 sl.write_sources_list('/etc/apt/sources.list')
 os.system('apt-get update')
-

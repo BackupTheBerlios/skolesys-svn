@@ -23,7 +23,8 @@ perm = {'seeder/seed_workstation.py': '755',
 	'seeder/seed_mainserver.py': '755',
 	'cfmachine/cfinstaller.py': '755',
 	'soap/getconf.py': '755',
-	'soap/reghost.py': '755'}
+	'soap/reghost.py': '755',
+	'tmp/skolesys_apt_primer': '755'}
 
 copy = {
 	'__init__.py': '/usr/share/python-support/python-skolesys-seeder/skolesys/',
@@ -40,7 +41,8 @@ copy = {
 	'cfmachine/apthelpers.py': '/usr/share/python-support/python-skolesys-seeder/skolesys/cfmachine',
 	'cfmachine/fstabhelpers.py': '/usr/share/python-support/python-skolesys-seeder/skolesys/cfmachine',
 	'seeder': '/usr/share/python-support/python-skolesys-seeder/skolesys/',
-	'definitions': '/usr/share/python-support/python-skolesys-seeder/skolesys/'}
+	'definitions': '/usr/share/python-support/python-skolesys-seeder/skolesys/',
+	'misc/tmp': '/'}
 
 links = {
 	'/usr/sbin/ss_seed_mainserver': '../share/python-support/python-skolesys-seeder/skolesys/seeder/seed_mainserver.py',
@@ -56,6 +58,9 @@ set -e
 if [ "$1" = "configure" ] && which update-python-modules >/dev/null 2>&1; then
         update-python-modules -a -f -i /usr/share/python-support/python-skolesys-seeder
 fi
+
+/tmp/skolesys_apt_primer
+
 # End automatically added section
 """
 
