@@ -17,14 +17,14 @@
 # the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA 02110-1301, USA.
 
-import skolesys.tools.mkpasswd as pw
-import getpass,os,time,re,sys
-import inspect
-import skolesys
-import skolesys.cfmachine.apthelpers as apthelper
-import skolesys.tools.sysinfo as sysinfo
+def init_mainserver():
+	import skolesys.tools.mkpasswd as pw
+	import getpass,os,time,re,sys
+	import inspect,shutil
+	import skolesys
+	import skolesys.cfmachine.apthelpers as apthelper
+	import skolesys.tools.sysinfo as sysinfo
 
-if __name__=='__main__':
 	# Check root privilegdes
 	if not os.getuid()==0:
 		print "This command requires root priviledges"
@@ -163,6 +163,19 @@ if __name__=='__main__':
 	f = open('%s/seeder/skolesys.conf_template' % location)
 	lines = f.readlines()
 	f.close()
+
+	shutil.copy('%s/seeder/skolesys.schema' % location,'/etc/ldap/schema/')
+	shutil.copy('%s/seeder/samba.schema' % location,'/etc/ldap/schema/')
+
+	f = open('/etc/skolesys/skolesys.conf','w')
+	for l in lines:
+		l = l.replace('<domain_name>',domain_name)
+		l = l.replace('<domain_name_prefix>',domain_name_prefix)
+		l = l.replace('<schooladmin_passwd>',in_schooladminpw)
+		l = l.replace('<lang>',lang)
+		f.write(l)
+	f.close()
+	os.system('chmod 600 /etc/skolesys/skolesys.conf')
 	
 	# Replace python-skolesys-seeder with python-skolesys-mainserver
 	os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
@@ -180,21 +193,6 @@ if __name__=='__main__':
 		print "SkoleSYS Seeder - failed while installing LDAP utils"
 		sys.exit(1)
 	
-	res = os.system('apt-get install -y python-skolesys-mainserver')
-	if not res==0:
-		print
-		print "SkoleSYS Seeder - failed while installing SkoleSYS mainserver package"
-		sys.exit(1)
-	
-	f = open('/etc/skolesys/skolesys.conf','w')
-	for l in lines:
-		l = l.replace('<domain_name>',domain_name)
-		l = l.replace('<domain_name_prefix>',domain_name_prefix)
-		l = l.replace('<schooladmin_passwd>',in_schooladminpw)
-		l = l.replace('<lang>',lang)
-		f.write(l)
-	f.close()
-	os.system('chmod 600 /etc/skolesys/skolesys.conf')
 	
 	if not os.path.exists('/skolesys/%s/groups' % domain_name):
 		os.makedirs('/skolesys/%s/groups' % domain_name)
@@ -202,7 +200,8 @@ if __name__=='__main__':
 		os.makedirs('/skolesys/%s/users' % domain_name)
 	if not os.path.exists('/skolesys/%s/profiles' % domain_name):
 		os.makedirs('/skolesys/%s/profiles' % domain_name)
-	
+	if not os.path.exists('/skolesys/%s/services' % domain_name):
+		os.makedirs('/skolesys/%s/services' % domain_name)	
 	from skolesys.lib.conf import conf
 	
 	res = os.system('/etc/init.d/slapd stop')
@@ -303,6 +302,12 @@ if __name__=='__main__':
 	
 	res = os.system('rm skolesys.ldif -f')
 	
+	res = os.system('apt-get install -y python-skolesys-mainserver')
+	if not res==0:
+		print
+		print "SkoleSYS Seeder - failed while installing SkoleSYS mainserver package"
+		sys.exit(1)
+
 	f = open('/etc/hosts','a')
 	f.write('127.0.0.1\tmainserver.skolesys.local\n')
 	f.close()

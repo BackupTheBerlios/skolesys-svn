@@ -18,3 +18,4 @@
 # Boston, MA 02110-1301, USA.
 
 import init_mainserver
+init_mainserver.init_mainserver()

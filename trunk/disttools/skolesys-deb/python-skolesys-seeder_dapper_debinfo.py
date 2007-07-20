@@ -42,7 +42,9 @@ copy = {
 	'cfmachine/fstabhelpers.py': '/usr/share/python-support/python-skolesys-seeder/skolesys/cfmachine',
 	'seeder': '/usr/share/python-support/python-skolesys-seeder/skolesys/',
 	'definitions': '/usr/share/python-support/python-skolesys-seeder/skolesys/',
-	'misc/tmp': '/'}
+	'misc/etc/ldap/schema/skolesys.schema': '/usr/share/python-support/python-skolesys-seeder/skolesys/seeder',
+	'misc/etc/ldap/schema/samba.schema': '/usr/share/python-support/python-skolesys-seeder/skolesys/seeder'
+}
 
 links = {
 	'/usr/sbin/ss_seed_mainserver': '../share/python-support/python-skolesys-seeder/skolesys/seeder/seed_mainserver.py',
@@ -58,8 +60,6 @@ set -e
 if [ "$1" = "configure" ] && which update-python-modules >/dev/null 2>&1; then
         update-python-modules -a -f -i /usr/share/python-support/python-skolesys-seeder
 fi
-
-/tmp/skolesys_apt_primer
 
 # End automatically added section
 """
