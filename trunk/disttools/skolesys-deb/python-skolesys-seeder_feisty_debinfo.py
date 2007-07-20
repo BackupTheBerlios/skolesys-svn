@@ -36,6 +36,8 @@ copy = {
 	'soap/reghost.py': '/usr/share/python-support/python-skolesys-seeder/skolesys/soap',
 	'soap/client.py': '/usr/share/python-support/python-skolesys-seeder/skolesys/soap',
 	'soap/p2.py': '/usr/share/python-support/python-skolesys-seeder/skolesys/soap',
+	'lib/__init__.py': '/usr/share/python-support/python-skolesys-seeder/skolesys/lib',
+	'lib/conf.py': '/usr/share/python-support/python-skolesys-seeder/skolesys/lib',
 	'cfmachine/__init__.py': '/usr/share/python-support/python-skolesys-seeder/skolesys/cfmachine',
 	'cfmachine/cfinstaller.py': '/usr/share/python-support/python-skolesys-seeder/skolesys/cfmachine',
 	'cfmachine/apthelpers.py': '/usr/share/python-support/python-skolesys-seeder/skolesys/cfmachine',

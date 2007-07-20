@@ -164,9 +164,6 @@ def init_mainserver():
 	lines = f.readlines()
 	f.close()
 
-	shutil.copy('%s/seeder/skolesys.schema' % location,'/etc/ldap/schema/')
-	shutil.copy('%s/seeder/samba.schema' % location,'/etc/ldap/schema/')
-
 	f = open('/etc/skolesys/skolesys.conf','w')
 	for l in lines:
 		l = l.replace('<domain_name>',domain_name)
@@ -192,7 +189,9 @@ def init_mainserver():
 		print
 		print "SkoleSYS Seeder - failed while installing LDAP utils"
 		sys.exit(1)
-	
+
+	shutil.copy('%s/seeder/skolesys.schema' % location,'/etc/ldap/schema/')
+	shutil.copy('%s/seeder/samba.schema' % location,'/etc/ldap/schema/')
 	
 	if not os.path.exists('/skolesys/%s/groups' % domain_name):
 		os.makedirs('/skolesys/%s/groups' % domain_name)
@@ -292,8 +291,8 @@ def init_mainserver():
 		print "SkoleSYS Seeder - failed while restarting the LDAP Server"
 		sys.exit(1)
 		
-	print "Sleeping 2 seconds to ensure slapd restart..."
-	time.sleep(2)
+	print "Sleeping 5 seconds to ensure slapd restart..."
+	time.sleep(5)
 	res = os.system('ldapadd -x -D "cn=admin,dc=skolesys,dc=org" -w %s -f skolesys.ldif' % in_adminpw)
 	if not res==0:
 		print
