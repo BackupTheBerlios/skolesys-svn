@@ -223,28 +223,27 @@ def init_mainserver():
 	f = open('skolesys.ldif','w')
 	c = re.compile('(ou=(\S+))')
 	
-	def fetch_conf_ou(ou):
-		global conf
+	def fetch_conf_ou(ou,conf):
 		try:
 			return c.match(conf.get('LDAPSERVER','%s_ou' % ou)).groups()
 		except:
 			print "skolesys.conf needs the required variable '%s_ou' to be set." % ou
 			sys.exit(1)
 	
-	groups_ou,groups = fetch_conf_ou('groups')
-	logins_ou,logins = fetch_conf_ou('logins')
-	teachers_ou,teachers = fetch_conf_ou('teachers')
-	students_ou,students = fetch_conf_ou('students')
-	parents_ou,parents = fetch_conf_ou('parents')
-	others_ou,others = fetch_conf_ou('others')
-	primary_ou,primary = fetch_conf_ou('primary')
-	system_ou,system = fetch_conf_ou('system')
-	service_ou,service = fetch_conf_ou('service')
-	samba_ou,samba = fetch_conf_ou('samba')
-	smb_users_ou,smb_users = fetch_conf_ou('smb_users')
-	smb_machines_ou,smb_machines = fetch_conf_ou('smb_machines')
-	smb_groups_ou,smb_groups = fetch_conf_ou('smb_groups')
-	hosts_ou,hosts = fetch_conf_ou('hosts')
+	groups_ou,groups = fetch_conf_ou('groups',conf)
+	logins_ou,logins = fetch_conf_ou('logins',conf)
+	teachers_ou,teachers = fetch_conf_ou('teachers',conf)
+	students_ou,students = fetch_conf_ou('students',conf)
+	parents_ou,parents = fetch_conf_ou('parents',conf)
+	others_ou,others = fetch_conf_ou('others',conf)
+	primary_ou,primary = fetch_conf_ou('primary',conf)
+	system_ou,system = fetch_conf_ou('system',conf)
+	service_ou,service = fetch_conf_ou('service',conf)
+	samba_ou,samba = fetch_conf_ou('samba',conf)
+	smb_users_ou,smb_users = fetch_conf_ou('smb_users',conf)
+	smb_machines_ou,smb_machines = fetch_conf_ou('smb_machines',conf)
+	smb_groups_ou,smb_groups = fetch_conf_ou('smb_groups',conf)
+	hosts_ou,hosts = fetch_conf_ou('hosts',conf)
 	
 	domain_name_prefix = conf.get('DOMAIN','domain_name').split('.')[0]
 	
@@ -300,6 +299,10 @@ def init_mainserver():
 		sys.exit(1)
 	
 	res = os.system('rm skolesys.ldif -f')
+
+	f = open('/etc/hosts','a')
+	f.write('127.0.0.1\tmainserver.skolesys.local\n')
+	f.close()
 	
 	res = os.system('apt-get install -y python-skolesys-mainserver')
 	if not res==0:
@@ -307,9 +310,6 @@ def init_mainserver():
 		print "SkoleSYS Seeder - failed while installing SkoleSYS mainserver package"
 		sys.exit(1)
 
-	f = open('/etc/hosts','a')
-	f.write('127.0.0.1\tmainserver.skolesys.local\n')
-	f.close()
 	
 	import skolesys.lib.hostmanager as h
 	import skolesys.definitions.hostdef as hostdef
