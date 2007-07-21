@@ -358,5 +358,5 @@ def init_mainserver():
 	
 	print "Add system groups..."
 	
-	os.system('ss_groupmanager creategroup fuse')
+	os.system('ss_groupmanager creategroup fuse -t primary -d USB')
 	
