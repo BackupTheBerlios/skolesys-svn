@@ -1,18 +1,138 @@
 #! /usr/bin/python
-import os
-import skolesys.cfmachine.apthelpers as ah
-import skolesys.tools.sysinfo as sysinfo
-dist_codename = sysinfo.get_dist_codename()
+import os,re
 
-skolesys_rep='http://archive.skolesys.dk/stable'
-os.environ['LANG']='C'
 
-os.system('wget %s/skolesys.gpg.asc' % skolesys_rep)
-os.system('gpg --import skolesys.gpg.asc')
-os.system('gpg --armor --export EEF2B7FA | apt-key add -')
-sl = ah.SourcesList('/etc/apt/sources.list')
-sl.add_source('deb',skolesys_rep,dist_codename,['main'])
-sl.add_source('deb','http://dk.archive.ubuntu.com/ubuntu/',dist_codename,['universe'])
-sl.print_sources_list()
-sl.write_sources_list('/etc/apt/sources.list')
-os.system('apt-get update')
+class SourcesList:
+	
+	def __init__(self,filename=None):
+		"""
+		filename	path to sources.list file
+		
+		If no filename is parsed it will be attempted to read from 
+		/etc/apt/sources.list.
+		"""
+		self.sources_map = self.parse_sources_list(filename)
+		self.dirty = False
+		
+	def parse_sources_list(self,filename):
+		"""
+		filename	path to sources.list file
+		
+		Parse the source.list file used by apt to access debian repositories.
+		If no value is passed to filename then /etc/apt/sources.list is default.
+		This method parses the source.list file populating a dictionary with
+		the source entries.
+		The dictionary is returned when the parser has finished.
+		"""
+		rx_deb = re.compile('\s*(?!#)(deb|deb-src)\s+(\S+)\s+(\S+)\s+(.+)')
+		rx_comp_split = re.compile('\s+')
+		
+		self.filename = filename
+		if not filename:
+			self.filename = '/etc/apt/sources.list'
+		f = open(self.filename)
+		deb_lines = f.readlines()
+		f.close()
+		sources_map = {}
+		for l in deb_lines:
+			m = rx_deb.match(l)
+			
+			if m:
+				components = m.groups()[-1:][0]
+				components = rx_comp_split.split(components.strip())
+				
+				if not sources_map.has_key(m.groups()[:-1]):
+					sources_map[m.groups()[:-1]] = {
+						'type':m.groups()[0],
+						'uri':m.groups()[1],
+						'distribution':m.groups()[2],
+						'components':[]}
+				for comp in components:
+					if not sources_map[m.groups()[:-1]]['components'].count(comp):
+						sources_map[m.groups()[:-1]]['components'] += [comp]
+		return sources_map	
+	
+	def add_source(self,typ,uri,distribution,components):
+		"""
+		typ		"deb" or "deb-src"
+		uri		ie. "http://archive.skolesys.dk"
+		distribution	ie. "feisty"
+		components	List of strings
+		
+		Add sources to the memory-based sources.list (self.sources_map). 
+		components should be a list of strings.
+		Duplicate sources will not occur as they are saved in a dictionary.
+		"""
+		if type(components)==str:
+			components = [components]
+		if not type(components)==list and not type(components)==tuple:
+			raise TypeError,'components most be a list, string or a tuple'
+		key = (typ,uri,distribution)
+		if not self.sources_map.has_key(key):
+			self.sources_map[key] = {
+				'type':key[0],
+				'uri':key[1],
+				'distribution':key[2],
+				'components':[]}
+		for comp in components:
+			if not self.sources_map[key]['components'].count(comp):
+				self.dirty = True
+				self.sources_map[key]['components'] += [comp]
+			
+		
+	def format_for_output(self):
+		"""
+		Return a nicely formatted list of strings ready to be written
+		into a sources.list file or printed to the screen.
+		
+		see:	print_sources_list()
+				write_sources_list()
+		"""
+		output = []
+		for src_key in self.sources_map.keys():
+			src = self.sources_map[src_key]
+			output += ["%s\t%s\t%s\t%s" % (src['type'],src['uri'],src['distribution'],' '.join(src['components']))]
+		return output
+
+	def write_sources_list(self,filename=None):
+		"""
+		filename	Path to the file to create/overwrite
+		
+		Write the sources nicely formatted in sources.list format 
+		to file.
+		"""
+		if not filename:
+			filename = self.filename
+		f = open(filename,'w')
+		f.write('\n'.join(self.format_for_output()))
+		f.close()
+
+
+
+def get_dist_codename():
+	w,r = os.popen2('lsb_release -cs')
+	dist_codename = r.readline().strip()
+	r.close()
+	w.close()
+	return dist_codename
+
+
+
+
+if __name__=='__main__':
+	dist_codename = sysinfo.get_dist_codename()
+
+	skolesys_rep='http://archive.skolesys.dk/stable'
+	os.environ['LANG']='C'
+
+	os.system('wget %s/skolesys.gpg.asc --directory-prefix=/tmp' % skolesys_rep)
+	os.system('apt-key add /tmp/skolesys.gpg.asc')
+
+	sl = ah.SourcesList('/etc/apt/sources.list')
+	sl.add_source('deb',skolesys_rep,dist_codename,['main'])
+	sl.add_source('deb','http://dk.archive.ubuntu.com/ubuntu/',dist_codename,['universe'])
+	sl.write_sources_list('/etc/apt/sources.list')
+
+	os.system('apt-get update')
+	#os.system('apt-get install python-skolesys-seeder')
+
