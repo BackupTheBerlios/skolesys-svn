@@ -120,7 +120,7 @@ def get_dist_codename():
 
 
 if __name__=='__main__':
-	dist_codename = sysinfo.get_dist_codename()
+	dist_codename = get_dist_codename()
 
 	skolesys_rep='http://archive.skolesys.dk/stable'
 	os.environ['LANG']='C'
@@ -128,11 +128,11 @@ if __name__=='__main__':
 	os.system('wget %s/skolesys.gpg.asc --directory-prefix=/tmp' % skolesys_rep)
 	os.system('apt-key add /tmp/skolesys.gpg.asc')
 
-	sl = ah.SourcesList('/etc/apt/sources.list')
+	sl = SourcesList('/etc/apt/sources.list')
 	sl.add_source('deb',skolesys_rep,dist_codename,['main'])
 	sl.add_source('deb','http://dk.archive.ubuntu.com/ubuntu/',dist_codename,['universe'])
 	sl.write_sources_list('/etc/apt/sources.list')
 
 	os.system('apt-get update')
-	#os.system('apt-get install python-skolesys-seeder')
+	os.system('apt-get install python-skolesys-seeder')
 
