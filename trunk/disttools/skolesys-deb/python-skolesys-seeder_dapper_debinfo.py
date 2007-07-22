@@ -23,8 +23,7 @@ perm = {'seeder/seed_workstation.py': '755',
 	'seeder/seed_mainserver.py': '755',
 	'cfmachine/cfinstaller.py': '755',
 	'soap/getconf.py': '755',
-	'soap/reghost.py': '755',
-	'tmp/skolesys_apt_primer': '755'}
+	'soap/reghost.py': '755'}
 
 copy = {
 	'__init__.py': '/usr/share/python-support/python-skolesys-seeder/skolesys/',
