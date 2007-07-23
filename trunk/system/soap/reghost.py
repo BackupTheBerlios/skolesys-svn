@@ -107,7 +107,8 @@ if __name__=='__main__':
 	
 	c=ss_client.SkoleSYS_Client(server_url,portnum)
 	print
-	passwd = getpass.getpass('Mainserver admin password: ')
+	username = raw_input('Username: ')
+	passwd = getpass.getpass('Password: ')
 	if not c.bind(passwd):
 		print "Wrong password"
 	else:
