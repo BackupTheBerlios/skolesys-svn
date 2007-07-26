@@ -307,6 +307,19 @@ class SkoleSYS_Client:
 			
 		return pload(self.server.hwaddr_exists(pdump(self.session_id),pdump(hwaddr)))
 	
+
+	def remove_host(self,hostname=None,hwaddr=None):
+		"""
+		Remove a certain host registered on the Mainserver
+		"""
+		if hostname and not hwaddr:
+			return pload(self.server.remove_host_by_hostname(pdump(self.session_id),pdump(hostname)))
+		
+		if hwaddr == None:
+			hwaddr = self.hwaddr
+			
+		return pload(self.server.remove_host_by_hwaddr(pdump(self.session_id),pdump(hwaddr)))
+
 	
 	def hostinfo(self,hostname=None,hwaddr=None):
 		"""

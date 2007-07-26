@@ -364,6 +364,32 @@ def register_host(session_id,hostname,hosttype_id,hwaddr):
 
 	return pdump(hm.register_host(hwaddr,hostname,hosttype_id))
 
+def remove_host_by_hwaddr(session_id,hwaddr):
+	"""
+	Remove host registered on the Mainserver by hwaddr
+	"""
+	global hm
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	hwaddr = pload(hwaddr)
+
+	return pdump(hm.remove_host(hwaddr=hwaddr))
+
+
+def remove_host_by_hostname(session_id,hostname):
+	"""
+	Remove host registered on the Mainserver by hostname
+	"""
+	global hm
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	hostname = pload(hostname)
+
+	return pdump(hm.remove_host(hostname=hostname))
+
+
 def hostname_exists(session_id,hostname):
 	"""
 	Check if a certain hostname is already registered
@@ -387,6 +413,18 @@ def hwaddr_exists(session_id,hwaddr):
 	hwaddr = pload(hwaddr)
 
 	return pdump(hm.host_exists(hwaddr=hwaddr))
+
+def hostinfo_by_hwaddr(session_id,hwaddr):
+	"""
+	Fetch the registration info of a certain host by hwaddr
+	"""
+	global hm
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	hwaddr = pload(hwaddr)
+
+	return pdump(hm.host_info(hwaddr=hwaddr))
 
 def hostinfo_by_hwaddr(session_id,hwaddr):
 	"""
@@ -834,6 +872,8 @@ def startserver():
 	
 	# Host Management
 	server.registerFunction(register_host)
+	server.registerFunction(remove_host_by_hwaddr)
+	server.registerFunction(remove_host_by_hostname)
 	server.registerFunction(hostname_exists)
 	server.registerFunction(hwaddr_exists)
 	server.registerFunction(hostinfo_by_hwaddr)

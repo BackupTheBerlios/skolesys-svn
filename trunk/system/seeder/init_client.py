@@ -72,7 +72,7 @@ def init_client(clienttype,hostname=None):
 	os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
 	os.environ['DEBCONF_ADMIN_EMAIL'] = ''
 	
-	res = os.system('ss_reghost -n %s -t %s' % (hostname,clienttype))
+	res = os.system('ss_reghost -n %s -t %s -r' % (hostname,clienttype))
 	if not res==0:
 		print
 		print "SkoleSYS Seeder - failed while updating packages"
