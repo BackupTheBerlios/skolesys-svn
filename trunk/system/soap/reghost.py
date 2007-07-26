@@ -125,8 +125,9 @@ if __name__=='__main__':
 			f.close()
 			os.chmod('/etc/skolesys/skolesoap.conf',S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH)
 	
-	if options.remove and c.host_exists(hostname=options.hostname):
-		c.remove_host(hostname=options.hostname)
+	if options.remove and c.host_exists(hwaddr=c.hwaddr):
+		c.remove_host(hwaddr=c.hwaddr)
+
 	res = c.register_host(options.hostname,hosttype_id)
 	
 	print "Registering the host...",
