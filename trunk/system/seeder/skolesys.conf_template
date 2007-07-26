@@ -3,10 +3,10 @@
 # Global
 # ------
 domain_name = <domain_name>
-local_domain_name = skolesys.local
+local_domain_name = localnet
 fs_encodings = UTF-8:ISO-8859-1
 
-homes_host  = mainserver.skolesys.local
+homes_host  = mainserver.localnet
 domain_root  = /skolesys
 uid_start   = 5000
 gid_start   = 5000
@@ -14,7 +14,7 @@ gid_start   = 5000
 # Mainserver network setup
 # ------------------------
 mainserver_hostname = mainserver
-mainserver_domain_name = mainserver.skolesys.local
+mainserver_domain_name = mainserver.localnet
 mainserver_ip = 10.1.0.1
 mainserver_subnet = 10.1.0.0/16
 
@@ -40,7 +40,7 @@ ltspserver_dynamic_iprange = 192.168.1.1 192.168.1.254
 [LDAPSERVER]
 
 # Global
-host = mainserver.skolesys.local
+host = mainserver.localnet
 basedn = dc=<domain_name_prefix>,dc=skolesys,dc=org
 admin = cn=admin,dc=<domain_name_prefix>,dc=skolesys,dc=org
 passwd = <schooladmin_passwd>

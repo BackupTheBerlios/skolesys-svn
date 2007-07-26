@@ -58,9 +58,9 @@ if __name__=='__main__':
 			portnum = soapconf['soap_client']['port']
 	
 	if not server_url:
-		server_url = raw_input('Mainserver url [https://mainserver.skolesys.local]: ')
+		server_url = raw_input('Mainserver url [https://mainserver.localnet]: ')
 		if server_url == '':
-			server_url = 'https://mainserver.skolesys.local'
+			server_url = 'https://mainserver.localnet'
 		
 	if not portnum:
 		portnum = raw_input('Mainserver port [8443]: ')

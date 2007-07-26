@@ -116,7 +116,7 @@ apt_source_entries = [
         {'type':'deb-src','uri':'http://security.ubuntu.com/ubuntu','distribution':'dapper-security','components':['main','restricted','universe']}]
 
 fstab_entries = [
-	{'sourcefs':'mainserver.skolesys.local:/skolesys','mountpoint':'/skolesys','fstype':'nfs','options':'defaults','dump':'0','fsckorder':'0'}]
+	{'sourcefs':'mainserver.localnet:/skolesys','mountpoint':'/skolesys','fstype':'nfs','options':'defaults','dump':'0','fsckorder':'0'}]
 	
 packagelist_files = [
 	'default-packages','custom-packages']

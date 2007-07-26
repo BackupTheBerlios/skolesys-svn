@@ -179,6 +179,6 @@ class SourcesList:
 if __name__ == '__main__':
 	# test
 	am = SourcesList()
-	am.add_source('deb','http://mainserver.skolesys.local/debian','pilot',['main','nonfree','bla'])
+	am.add_source('deb','http://mainserver.localnet/debian','pilot',['main','nonfree','bla'])
 	print am.dirty
 	am.print_sources_list()

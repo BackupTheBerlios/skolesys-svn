@@ -301,7 +301,7 @@ def init_mainserver():
 	res = os.system('rm skolesys.ldif -f')
 
 	f = open('/etc/hosts','a')
-	f.write('127.0.0.1\tmainserver.skolesys.local\n')
+	f.write('127.0.0.1\tmainserver.localnet\n')
 	f.close()
 	
 	res = os.system('apt-get install -y python-skolesys-mainserver')

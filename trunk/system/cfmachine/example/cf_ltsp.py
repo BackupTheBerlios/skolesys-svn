@@ -16,10 +16,10 @@
 # Boston, MA 02110-1301, USA.
 
 apt_source_entries = [
-	{'type':'deb','uri':'http://mainserver.skolesys.local/debian','distribution':'pilot','components':['main','nonfree']}]
+	{'type':'deb','uri':'http://mainserver.localnet/debian','distribution':'pilot','components':['main','nonfree']}]
 
 fstab_entries = [
-	{'sourcefs':'mainserver.skolesys.local:/skolesys','mountpoint':'/skolesys','fstype':'nfs','options':'defaults','dump':'0','fsckorder':'0'}]
+	{'sourcefs':'mainserver.localnet:/skolesys','mountpoint':'/skolesys','fstype':'nfs','options':'defaults','dump':'0','fsckorder':'0'}]
 	
 packagelist_files = [
 	'default-packages','custom-packages']

@@ -35,7 +35,7 @@ if len(sys.argv)>1:
 	a.installTranslator(trans)
 	
 QObject.connect(a,SIGNAL("lastWindowClosed()"),a,SLOT("quit()"))
-conn = ConnectionManager('https://mainserver.skolesys.local',8443)
+conn = ConnectionManager('https://mainserver.localnet',8443)
 w = LaunchDlg(conn)
 w.setIcon(load_pixmap('app_logo.png'))
 a.setMainWidget(w)

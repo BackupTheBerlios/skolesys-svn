@@ -186,6 +186,6 @@ class Fstab:
 if __name__ == '__main__':
 	# test
 	a=Fstab()
-	a.add_entry('mainserver.skolesys.local:/skolesys', '/skolesys','nfs','defaults','0','0')
+	a.add_entry('mainserver.localnet:/skolesys', '/skolesys','nfs','defaults','0','0')
 	a.print_fstab()
 	a.write_fstab()

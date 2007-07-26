@@ -71,9 +71,9 @@ if __name__=='__main__':
 		portnum = options.portnum
 	
 	if not server_url:
-		server_url = raw_input('Mainserver SOAP url [https://mainserver.skolesys.local]: ')
+		server_url = raw_input('Mainserver SOAP url [https://mainserver.localnet]: ')
 		if server_url == '':
-			server_url = 'https://mainserver.skolesys.local'
+			server_url = 'https://mainserver.localnet'
 		
 	if not portnum:
 		portnum = raw_input('Mainserver SOAP port [8443]: ')
@@ -109,7 +109,7 @@ if __name__=='__main__':
 	print
 	username = raw_input('Username: ')
 	passwd = getpass.getpass('Password: ')
-	if not c.bind(passwd):
+	if not c.bind(username,passwd):
 		print "Wrong password"
 	else:
 		print "Authentication OK"
@@ -124,6 +124,7 @@ if __name__=='__main__':
 	
 	print "Registering the host...",
 	res = c.register_host(options.hostname,hosttype_id)
+	print res
 	
 	# Handle errors
 	if res==-5:
