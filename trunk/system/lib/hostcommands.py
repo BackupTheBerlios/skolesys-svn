@@ -30,6 +30,7 @@ if __name__=='__main__':
 	
 	commands = {
 		'hostadd': 'Register a new host to the network',
+		'remove_host': 'remove a host from the network',
 		'hostinfo': 'List the registered information of a host',
 		'listhosts': 'List registered hosts',
 		'join_domain': 'Let a host join a samba domain'}
@@ -170,6 +171,42 @@ if __name__=='__main__':
 			print "%-20s   %-15s   %-17s   %s" % ('Hostname','IPaddress','HWaddress','Hosttype')
 		print "%-20s   %-15s   %-17s   %s" % (hinfo['hostName'][0],hinfo['ipHostNumber'][0],hinfo['macAddress'][0],hinfo['hostType'][0])
 			
+		
+	if cmd == "remove_host":
+		parser.set_usage("usage: %s %s ( -m hwaddr | -n hostname ) [options]" % (shell_cmd_name,cmd))
+		parser.add_option("-m", "--hw-addr", dest="hwaddr",default=None,
+			help="The hardware address of the host's network interface (mac-address)", metavar="HWADDR")
+		parser.add_option("-n", "--hostname", dest="hostname",default=None,
+			help="The hostname of the host", metavar="HOSTNAME")
+		(options, args) = parser.parse_args()
+		
+		# Create a host manager instance
+		hm = hostmanager.HostManager()
+		
+		if options.hwaddr:
+			hwaddr = hostdef.check_hwaddr(options.hwaddr)
+			if not hwaddr:
+				print 'The hwaddr: "%s" is not valid.' % options.hwaddr
+				exit(0)
+			hinfo = hm.remove_host(hwaddr=hwaddr)
+			matchtype = 'hwaddr'
+			matchstring = hwaddr
+			
+		elif options.hostname:
+			hostname = hostdef.check_hostname(options.hostname)
+			if not hostname:
+				print 'The hostname: "%s" is not valid.' % options.hostname
+				exit(0)
+			res = hm.remove_host(hostname=hostname)
+			matchtype = 'hostname'
+			matchstring = hostname
+		else:
+			print "You must enter either option -m or -n."
+			exit(-1)
+		if not res==0:
+			print 'No host exists with the %s: "%s"' % (matchtype,matchstring)
+			exit(-1)
+
 		
 	if cmd == "listhosts":
 		parser.set_usage("usage: %s %s [options]" % (shell_cmd_name,cmd))

@@ -99,6 +99,7 @@ class HostManager (LDAPUtil):
 		if not self.host_info(hwaddr=hwaddr,hostname=hostname):
 			return False
 		return True
+
 		
 	def ipaddr_exists(self,ipaddr):
 		"""
@@ -178,6 +179,36 @@ class HostManager (LDAPUtil):
 		
 		return 1		
 	
+	def remove_host(self,hwaddr=None, hostname=None):
+		"""
+		Remove a registered SkoleSYS host from LDAP
+		"""
+		hostspath = "%s,%s" % (conf.get('LDAPSERVER','hosts_ou'),conf.get('LDAPSERVER','basedn'))
+		if hwaddr:
+			hwaddr = hostdef.check_hwaddr(hwaddr)
+			if not hwaddr:
+				return -1
+			res = self.l.search(hostspath,\
+					ldap.SCOPE_ONELEVEL,'(& (macAddress=%s)(objectclass=skoleSysHost))'%hwaddr,['dn'])
+			sres = self.l.result(res,0)
+			if sres[1]==[]:
+				return -2
+			dn = sres[1][0][0]
+			
+		if hostname:
+			res = self.l.search(hostspath,\
+					ldap.SCOPE_ONELEVEL,'(& (hostName=%s)(objectclass=skoleSysHost))'%hostname,['dn'])
+			sres = self.l.result(res,0)
+			if sres[1]==[]:
+				return -3
+			dn = sres[1][0][0]
+		
+		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
+		self.delete(dn)
+		return 0
+
+
+
 	def host_info(self,hwaddr=None,hostname=None):
 		hostspath = "%s,%s" % (conf.get('LDAPSERVER','hosts_ou'),conf.get('LDAPSERVER','basedn'))
 		if hwaddr:

@@ -61,7 +61,10 @@ if __name__=='__main__':
 				help="The hostname of the host being registered", metavar="HOSTNAME")
 	parser.add_option("-t", "--hosttype", dest="hosttype",default=None,
 				help="The host's host type (mainserver,ltspserver,workstation or ltspclient)", metavar="HOSTTYPE")
-	
+	parser.add_option("-r", "--remove",
+		action="store_true", dest="remove", default=False,
+		help="Remove the entry if one already exists for this host")
+
 	(options, args) = parser.parse_args()
 			
 	if options.server_url:
@@ -121,6 +124,10 @@ if __name__=='__main__':
 			f.write("port\t= %s\n" % portnum)
 			f.close()
 			os.chmod('/etc/skolesys/skolesoap.conf',S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH)
+	
+	if options.remove and c.host_exists(hostname=options.hostname):
+		c.remove_host(hostname=options.hostname)
+	res = c.register_host(options.hostname,hosttype_id)
 	
 	print "Registering the host...",
 	res = c.register_host(options.hostname,hosttype_id)
