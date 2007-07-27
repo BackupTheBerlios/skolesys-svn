@@ -288,7 +288,7 @@ if __name__ == '__main__':
 	ui = GroupEditWdg(None,None)
 	
 	from skolesys.soap.client import SkoleSYS_Client
-	cli = SkoleSYS_Client('https://mainserver.localnet',8443)
+	cli = SkoleSYS_Client('https://mainserver.localnet',10033)
 	options = cli.list_groupservice_options_available('servgrp1','webservice')
 	ui.tbl_serviceoptions.setOptions(options)
 	ui.tbl_serviceoptions.cli = cli

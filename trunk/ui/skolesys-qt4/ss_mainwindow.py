@@ -73,6 +73,7 @@ class ss_MainWindow(mainwin.MainWindow):
 			
 		a = self.addAction('open_filemanager',self.tr('File manager'))
 		self.connect(a,QtCore.SIGNAL('triggered()'),self.openFileManager)
+		a.setIcon(QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/stats.svg'),16,16)))
 
 		a = self.addAction('exec_creategroupwizard',self.tr('Create group...'))
 		self.connect(a,QtCore.SIGNAL('triggered()'),self.execCreateGroupWizard)
@@ -84,7 +85,7 @@ class ss_MainWindow(mainwin.MainWindow):
 
 		a = self.addAction('exec_accessmanager',self.tr('Access Manager...'))
 		self.connect(a,QtCore.SIGNAL('triggered()'),self.execAccessManager)
-		#a.setIcon(QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/new_group.svg'),16,16)))
+		a.setIcon(QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/access.svg'),16,16)))
 
 		a = self.addAction('show_users',self.tr('Show Users'))
 		a.setCheckable(True)
@@ -329,7 +330,7 @@ class ss_MainWindow(mainwin.MainWindow):
 		import filemanagerwdg as fileman
 		self.filemanager = fileman.FileManagerWdg(self.tabwidget)
 		tab_title = self.tr("File manager")
-		self.tabwidget.addTab(self.filemanager,QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/student.svg'),16,16)),tab_title)
+		self.tabwidget.addTab(self.filemanager,QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/stats.svg'),16,16)),tab_title)
 		self.tabwidget.setCurrentWidget(self.filemanager)
 		
 		

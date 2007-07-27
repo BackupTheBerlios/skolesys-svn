@@ -177,7 +177,7 @@ class OptionsTableView(QtGui.QTreeView):
 if __name__ == '__main__':
 
 	from skolesys.soap.client import SkoleSYS_Client
-	cli = SkoleSYS_Client('https://127.0.0.1',8443)
+	cli = SkoleSYS_Client('https://127.0.0.1',10033)
 	options = cli.list_groupservice_option_available('servgrp1','webservice')
 	print options
 	

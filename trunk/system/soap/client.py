@@ -422,7 +422,7 @@ class SkoleSYS_Client:
 	
 
 if __name__=='__main__':
-    c=SkoleSYS_Client('https://127.0.0.1',8443)
+    c=SkoleSYS_Client('https://127.0.0.1',10033)
     print c.bind('secret')
     userdict = c.list_users(4)
     for user in userdict.keys():

@@ -1,5 +1,5 @@
 Ldap, 389, lan,
-SkoleSYS, 8443, lan,
+SkoleSYS, 10033, lan,
 HTTP, 80, lan,
 DNS, 53, lan,
 DHCP, 67-68, lan,

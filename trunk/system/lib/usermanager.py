@@ -159,7 +159,8 @@ class UserManager (LDAPUtil):
 			'objectclass':objectclass,
 			'mail': uid,
 			'title':title,
-			'userPassword':mkpasswd(passwd,3,'crypt')}
+			'loginShell': '/bin/zsh',
+			'userPassword':mkpasswd(passwd,3,'ssha')}
 		if userdef.usertype_as_id(usertype) == userdef.usertype_as_id('student') and firstyear != None:
 			user_info['firstSchoolYear'] = str(firstyear)
 			
@@ -250,7 +251,7 @@ class UserManager (LDAPUtil):
 		if mail:
 			change_dict['mail'] = mail
 		if passwd:
-			change_dict['userPassword'] = mkpasswd(passwd,3,'crypt')
+			change_dict['userPassword'] = mkpasswd(passwd,3,'ssha')
 			
 			# Generate an SSH2 DSA private/public keypair and a putty ppk version
 			#linux_home_path = '%s/%s/users/%s/.linux' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)

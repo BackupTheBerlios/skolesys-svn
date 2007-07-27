@@ -79,9 +79,9 @@ if __name__=='__main__':
 			server_url = 'https://mainserver.localnet'
 		
 	if not portnum:
-		portnum = raw_input('Mainserver SOAP port [8443]: ')
+		portnum = raw_input('Mainserver SOAP port [10033]: ')
 		if portnum == '':
-			portnum = 8443
+			portnum = 10033
 	else:
 		portnum = int(portnum)
 	

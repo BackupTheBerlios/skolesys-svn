@@ -819,7 +819,7 @@ def startserver():
 		sys.exit(0)
 	ssl_context = SSL.Context()
 	ssl_context.load_cert(certfile,keyfile=keyfile)
-	server = MyServer((addr, 8443),ssl_context = ssl_context)
+	server = MyServer((addr, 10033),ssl_context = ssl_context)
 	print "Starting SOAP service on interface %s (%s)" % (netif,addr)
 	
 	# Security

@@ -53,7 +53,7 @@ if options.lang:
 	
 	servermsg.init_server_messages(options.lang)
 
-cm.setup_connection('https://10.1.0.1',8443)
+cm.setup_connection('https://10.1.0.1',10033)
 
 ui = ss_mainwin.get_mainwindow()
 

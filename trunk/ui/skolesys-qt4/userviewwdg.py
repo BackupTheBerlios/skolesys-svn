@@ -181,7 +181,7 @@ if __name__ == '__main__':
 	trans = QtCore.QTranslator()
 	trans.load('skolesys-qt4_da.qm')
 	app.installTranslator(trans)
-	cm.setup_connection('https://mainserver.localnet',8443)
+	cm.setup_connection('https://mainserver.localnet',10033)
 	ui = UserViewWdg(None)
 	print ui.usermodel.userNames()
 	
