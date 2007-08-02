@@ -41,7 +41,7 @@ msgid "membership_description"
 msgstr "Membership Management"
 
 msgid "service_description"
-msgstr "Project Service Management"
+msgstr "Project Group Service Management"
 
 
 msgid "access.soap.bind_infinitive"
@@ -91,6 +91,9 @@ msgstr "Detach project group services"
 
 msgid "service.group.property.set_infinitive"
 msgstr "Edit properties of project group services"
+
+msgid "service.group.property.read_infinitive"
+msgstr "Read properties of project group services"
 
 msgid "membership.create_infinitive"
 msgstr "Create memberships"

@@ -41,7 +41,7 @@ msgid "membership_description"
 msgstr "Håndtering af Medlemskaber"
 
 msgid "service_description"
-msgstr "Håndtering af projekttjenester"
+msgstr "Håndtering af projektgruppetjenester"
 
 
 msgid "access.soap.bind_infinitive"
@@ -91,6 +91,9 @@ msgstr "Deaktivere projektgruppetjenester"
 
 msgid "service.group.property.set_infinitive"
 msgstr "Sætte egenskaber for projektgruppetjenester"
+
+msgid "service.group.property.read_infinitive"
+msgstr "Læse egenskaber for projektgruppetjenester"
 
 msgid "membership.create_infinitive"
 msgstr "Oprette medlemskaber"
