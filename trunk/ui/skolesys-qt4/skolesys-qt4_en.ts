@@ -1,5 +1,28 @@
 <!DOCTYPE TS><TS>
 <context>
+    <name>AccessManagerWdg</name>
+    <message>
+        <source>Access Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Users:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Permissions:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Access</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>AccessTools</name>
     <message>
         <source>Access denied</source>
@@ -694,6 +717,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Views</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Access Manager...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

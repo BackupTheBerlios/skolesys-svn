@@ -7,7 +7,7 @@ SOURCES = addremovegroupuserswdg.py addremoveusergroupswdg.py changepasswordwdg.
 	creategroupwizard.py createuserwizard.py dragdroptreeview.py groupeditwdg.py groupmodel.py \
 	grouptreeview.py groupviewwdg.py hookabledragdroptreeview.py hookabletreeview.py itemcontrolhelper.py \
 	optionstableview.py skolesys-qt4.py ss_mainwindow.py tooltabwdg.py usereditwdg.py usermodel.py \
-	userviewwdg.py accesstools.py accessmanagerwdg.ui
+	userviewwdg.py accesstools.py accessmanagerwdg.py
 
 
 TRANSLATIONS = skolesys-qt4_da.ts skolesys-qt4_en.ts
