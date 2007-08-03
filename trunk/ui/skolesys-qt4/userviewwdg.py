@@ -23,6 +23,7 @@ import usermodel as umod
 import skolesys.definitions.userdef as userdef
 import connectionmanager as cm
 import pickle
+import accesstools
 import pyqtui4.pluggablemodelhelper as pmh
 import ss_mainwindow as mainwin
 
@@ -72,6 +73,11 @@ class UserViewWdg(QtGui.QWidget, ui_uvwdg.Ui_UserViewWdg):
 			ss_mainwin.get_mainwindow().editUser(u['uid'])
 		
 	def editMemberships(self):
+		# Check if the user has propper permissions and present a nice message if not
+		# This is ofcourse also checked on the server side.
+		if not accesstools.check_permission_multi_or(('membership.create','membership.remove')):
+			return
+
 		mimedata = self.usermodel.generateMimeData(self.trv_userlist.selectedIndexes())
 		users = pickle.loads(mimedata['application/x-skolesysusers-pyobj'])
 		if not len(users):
@@ -90,9 +96,16 @@ class UserViewWdg(QtGui.QWidget, ui_uvwdg.Ui_UserViewWdg):
 			ss_mainwin.get_mainwindow().editUser(u['uid'])
 			
 	def deleteUsers(self):
-		print "Delete users"
-		pass
-	
+		mimedata = self.usermodel.generateMimeData(self.trv_userlist.selectedIndexes())
+		users = pickle.loads(mimedata['application/x-skolesysusers-pyobj'])
+		if not len(users):
+			# No users selected
+			return
+		
+		import removeuserswdg
+		m = removeuserswdg.RemoveUsersWdg(users,self)
+		m.exec_()
+		
 	def setupModel(self):
 		self.usermodel = umod.UserModel(self.trv_userlist)
 		self.modelhelper = pmh.PluggableModelHelper(self.usermodel)

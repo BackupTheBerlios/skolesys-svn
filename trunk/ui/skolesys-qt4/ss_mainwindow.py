@@ -43,13 +43,14 @@ class ss_MainWindow(mainwin.MainWindow):
 		self.setupMenus()
 		self.setupToolBars()
 		self.startPermissionMonitor()
+		self.setWindowTitle(self.tr('SkoleSYS Administration'))
 		
 		self.btn_closetab = QtGui.QToolButton(self.tabwidget)
 		self.btn_closetab.setAutoRaise(True)
 		self.btn_closetab.setIcon(QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/close.svg'),10,10)))
 		self.connect(self.btn_closetab,QtCore.SIGNAL('clicked()'),self.removeTab)
 		self.tabwidget.setCornerWidget(self.btn_closetab)
-		self.setWindowIcon(QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/logo-non-gradient.svg'),10,10)))
+		self.setWindowIcon(QtGui.QIcon(paths.path_to('art/icons/hicolor/22x22/apps/skolesys-qt4.png')))
 		self.setupPermissions(cm.get_proxy_handle().list_my_permissions())
 
 

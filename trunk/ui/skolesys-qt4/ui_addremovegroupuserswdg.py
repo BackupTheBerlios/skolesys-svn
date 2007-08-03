@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_addremovegroupuserswdg.ui'
 #
-# Created: Thu Jul 19 19:06:30 2007
+# Created: Fri Aug  3 08:57:21 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!

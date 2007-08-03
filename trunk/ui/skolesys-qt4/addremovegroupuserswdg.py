@@ -26,6 +26,7 @@ import pyqtui4.pluggablemodelhelper as pmh
 import ss_mainwindow as mainwin
 import skolesys.definitions.groupdef as groupdef
 import pickle
+import accesstools
 
 
 class AddRemoveGroupUsersWdg(QtGui.QDialog, baseui.Ui_AddRemoveGroupUsersWdg):
@@ -38,6 +39,12 @@ class AddRemoveGroupUsersWdg(QtGui.QDialog, baseui.Ui_AddRemoveGroupUsersWdg):
 		self.btn_ok.setEnabled(False)
 		self.connect(self.btn_ok,QtCore.SIGNAL('clicked()'),self.accept)
 		self.connect(self.btn_cancel,QtCore.SIGNAL('clicked()'),self.reject)
+		
+		# Setup Permissions
+		if not accesstools.check_permission('membership.create',False):
+			self.trv_add.setEnabled(False)
+		if not accesstools.check_permission('membership.remove',False):
+			self.trv_remove.setEnabled(False)
 		
 		
 	def setupModels(self):
@@ -144,21 +151,23 @@ class AddRemoveGroupUsersWdg(QtGui.QDialog, baseui.Ui_AddRemoveGroupUsersWdg):
 		step_factor = 100.0/steps
 		step = 0
 		
-		for uid in add_users:
-			for grp in groups:
-				proxy.groupadd(uid,grp)
-				touched_users[uid] = 1
-				touched_groups[grp] = 1
-				progress.setValue(int(step*step_factor))
-				step+=1
+		if accesstools.check_permission('membership.create',False):
+			for uid in add_users:
+				for grp in groups:
+					proxy.groupadd(uid,grp)
+					touched_users[uid] = 1
+					touched_groups[grp] = 1
+					progress.setValue(int(step*step_factor))
+					step+=1
 			
-		for uid in del_users:
-			for grp in groups:
-				proxy.groupdel(uid,grp)
-				touched_users[uid] = 1
-				touched_groups[grp] = 1
-				progress.setValue(int(step*step_factor))
-				step+=1
+		if accesstools.check_permission('membership.remove',False):
+			for uid in del_users:
+				for grp in groups:
+					proxy.groupdel(uid,grp)
+					touched_users[uid] = 1
+					touched_groups[grp] = 1
+					progress.setValue(int(step*step_factor))
+					step+=1
 		
 		for uid in touched_users.keys():
 			mainwin.get_mainwindow().emitUserMembershipsChanged(uid)

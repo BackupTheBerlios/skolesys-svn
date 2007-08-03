@@ -24,6 +24,7 @@ import skolesys.definitions.groupdef as groupdef
 import connectionmanager as cm
 import pyqtui4.pluggablemodelhelper as pmh
 import pickle
+import accesstools
 import ss_mainwindow as mainwin
 
 
@@ -54,6 +55,10 @@ class GroupViewWdg(QtGui.QWidget, ui_gvwdg.Ui_GroupViewWdg):
 		self.connect(editaction,QtCore.SIGNAL('triggered()'),self.editGroups)
 		editaction = menu.addAction(self.tr('Edit memberships...'))
 		self.connect(editaction,QtCore.SIGNAL('triggered()'),self.editMemberships)
+		menu.addSeparator()
+		editaction = menu.addAction(self.tr('Delete groups...'))
+		self.connect(editaction,QtCore.SIGNAL('triggered()'),self.deleteGroups)
+
 		menu.exec_(QtGui.QCursor.pos())
 
 	
@@ -78,6 +83,11 @@ class GroupViewWdg(QtGui.QWidget, ui_gvwdg.Ui_GroupViewWdg):
 			ss_mainwin.get_mainwindow().editGroup(g['groupname'],g['displayed_name'])
 
 	def editMemberships(self):
+		# Check if the user has propper permissions and present a nice message if not
+		# This is ofcourse also checked on the server side.
+		if not accesstools.check_permission_multi_or(('membership.create','membership.remove')):
+			return
+
 		mimedata = self.groupmodel.generateMimeData(self.trv_grouplist.selectedIndexes())
 		groups = pickle.loads(mimedata['application/x-skolesysgroups-pyobj'])
 		if not len(groups):
@@ -86,6 +96,18 @@ class GroupViewWdg(QtGui.QWidget, ui_gvwdg.Ui_GroupViewWdg):
 		
 		import addremovegroupuserswdg as memberships
 		m = memberships.AddRemoveGroupUsersWdg(groups,self)
+		m.exec_()
+
+
+	def deleteGroups(self):
+		mimedata = self.groupmodel.generateMimeData(self.trv_grouplist.selectedIndexes())
+		groups = pickle.loads(mimedata['application/x-skolesysgroups-pyobj'])
+		if not len(groups):
+			# No users selected
+			return
+		
+		import removegroupswdg
+		m = removegroupswdg.RemoveGroupsWdg(groups,self)
 		m.exec_()
 
 	def setupGroupView(self):

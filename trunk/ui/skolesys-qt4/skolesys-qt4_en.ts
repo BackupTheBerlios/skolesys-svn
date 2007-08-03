@@ -285,6 +285,122 @@
     </message>
 </context>
 <context>
+    <name>FileManagerWdg</name>
+    <message>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minimum file size threshold:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> KB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>  +  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> MB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>  =  </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0 KB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Content type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Backup...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All</source>
+        <comment>plural users</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All</source>
+        <comment>plural groups</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All content types</source>
+        <comment>plural content types</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Movies (mpg,avi,wmv,...)</source>
+        <comment>Content types</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sound (mp3,wav,ogg,...)</source>
+        <comment>Content types</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Windows executables (exe,dll,bat,...)</source>
+        <comment>Content types</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OpenOffice docs (odt,ods,odb,...)</source>
+        <comment>Content types</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MS Office docs (doc,xls,mdb,...)</source>
+        <comment>Content types</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Archives (zip,rar,cab,...)</source>
+        <comment>Content types</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1  B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 KB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>GroupEditWdg</name>
     <message>
         <source>Form</source>
@@ -721,6 +837,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Access Manager...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SkoleSYS Administration</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
