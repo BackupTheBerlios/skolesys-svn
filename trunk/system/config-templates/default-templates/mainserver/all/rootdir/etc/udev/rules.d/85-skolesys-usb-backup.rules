@@ -1,2 +1,2 @@
-ACTION=="add", BUS=="usb", SUBSYSTEM=="block", RUN+="ss_udevparser"
-ACTION=="remove", SUBSYSTEM=="block", RUN+="ss_udevparser"
+ACTION=="add", BUS=="usb", SUBSYSTEM=="block", RUN+="/usr/sbin/ss_udevparser"
+ACTION=="remove", SUBSYSTEM=="block", RUN+="/usr/sbin/ss_udevparser"
