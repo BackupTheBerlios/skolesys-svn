@@ -1,0 +1,2 @@
+ACTION=="add", BUS=="usb", SUBSYSTEM=="block", RUN+="ss_udevparser"
+ACTION=="remove", SUBSYSTEM=="block", RUN+="ss_udevparser"

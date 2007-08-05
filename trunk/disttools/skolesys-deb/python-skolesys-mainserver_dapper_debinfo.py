@@ -47,6 +47,7 @@ perm = {'soap/server.py': '755',
 	'lib/groupcommands.py': '755',
 	'lib/hostcommands.py': '755',
 	'cfmachine/cfinstaller.py': '755',
+	'tools/udevparser.py': '755',
 	'config-templates/default-templates': 'u+wrX,g-wx+rX,o-wx+rX',
 	'config-templates/default-templates/common/rootdir/etc/ldap.secret':'g-r,o-r',
 	'config-templates/default-templates/common/rootdir/etc/pam_ldap.secret':'g-r,o-r',
@@ -79,6 +80,7 @@ links = {
 	'/usr/sbin/ss_accessmanager': '../share/python-support/python-skolesys-mainserver/skolesys/lib/accesscommands.py',
 	'/usr/sbin/ss_soapserver': '../share/python-support/python-skolesys-mainserver/skolesys/soap/server.py',
 	'/usr/sbin/ss_installer': '../share/python-support/python-skolesys-mainserver/skolesys/cfmachine/cfinstaller.py',
+	'/usr/sbin/ss_udevparser': '../share/python-support/python-skolesys-mainserver/skolesys/tools/udevparser.py',
 	'/etc/init.d/skolesysd': '/usr/share/python-support/python-skolesys-mainserver/skolesys/soap/skolesysd',
 	'/etc/rc0.d/K01skolesys': '../init.d/skolesysd',
 	'/etc/rc2.d/S99skolesys': '../init.d/skolesysd',
@@ -99,7 +101,7 @@ if [ "$1" = "configure" ] && which update-python-modules >/dev/null 2>&1; then
 fi
 
 /etc/init.d/slapd restart
-
+sleep 5
 ss_accessmanager add_access_identifier user.create -i
 ss_accessmanager add_access_identifier user.remove -i
 ss_accessmanager add_access_identifier user.modify -i

@@ -21,7 +21,9 @@ control = {
 
 perm = {'skolesys-qt4.py': '755'}
 
-copy = {'.': '/usr/lib/skolesys-qt4/'}
+copy = {'.': '/usr/lib/skolesys-qt4/',
+	'art/icons': '/usr/share/',
+	'skolesys-qt4.desktop': '/usr/share/applications/'}
 
 links = {'/usr/bin/skolesys-qt4': '../lib/skolesys-qt4/skolesys-qt4.py'}
 
