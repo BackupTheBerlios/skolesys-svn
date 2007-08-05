@@ -32,7 +32,7 @@ def reset_partition_props():
 		'REMOVE_SCRIPT' : None }
 
 conf = ConfigParser.ConfigParser()
-conf.read('/home/skolesys/backup.conf')
+conf.read('/etc/skolesys/backup.conf')
 sections = conf.sections()
 
 rx_partno = re.compile('.*([0-9]+)')
