@@ -48,6 +48,7 @@ perm = {'soap/server.py': '755',
 	'lib/hostcommands.py': '755',
 	'cfmachine/cfinstaller.py': '755',
 	'tools/udevparser.py': '755',
+	'misc/var/spool/samba': '777',
 	'config-templates/default-templates': 'u+wrX,g-wx+rX,o-wx+rX',
 	'config-templates/default-templates/common/rootdir/etc/ldap.secret':'g-r,o-r',
 	'config-templates/default-templates/common/rootdir/etc/pam_ldap.secret':'g-r,o-r',
@@ -71,7 +72,8 @@ copy = {
 	'config-templates/www': '/etc/skolesys/',
 	'locale': '/usr/share/',
 	'misc/etc/skolesys': '/etc/',
-	'misc/etc/ldap/schema': '/etc/ldap/'}
+	'misc/etc/ldap/schema': '/etc/ldap/',
+	'misc/var': '/'}
 
 links = {
 	'/usr/sbin/ss_usermanager': '../share/python-support/python-skolesys-mainserver/skolesys/lib/usercommands.py',
