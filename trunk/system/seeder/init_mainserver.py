@@ -168,6 +168,7 @@ def init_mainserver():
 	for l in lines:
 		l = l.replace('<domain_name>',domain_name)
 		l = l.replace('<domain_name_prefix>',domain_name_prefix)
+		l = l.replace('<uc_domain_name_prefix>', domain_name_prefix.upper())
 		l = l.replace('<schooladmin_passwd>',in_schooladminpw)
 		l = l.replace('<lang>',lang)
 		f.write(l)

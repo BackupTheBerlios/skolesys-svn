@@ -5,6 +5,7 @@
 domain_name = <domain_name>
 local_domain_name = localnet
 fs_encodings = UTF-8:ISO-8859-1
+samba_domain_name = <uc_domain_name_prefix>
 
 homes_host  = mainserver.localnet
 domain_root  = /skolesys
