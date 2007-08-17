@@ -196,15 +196,16 @@ class UserManager (LDAPUtil):
 		w.close()
 		r.close()
 		
-		# Generate an SSH2 DSA private/public keypair and a putty ppk version
-		linux_home_path = home_path + '/.linux'
-		os.system('expect -f /etc/skolesys/keygen_expect_script %s %s' % (linux_home_path,uid) ) 
-		f=open('%s/.ssh/authorized_keys' % linux_home_path,'r')
-		pubkey = f.read()
-		f.close()
-		f=open('%s/.ssh/authorized_keys' % linux_home_path,'w')
-		f.write('no-port-forwarding,no-X11-forwarding,no-agent-forwarding,permitopen="%s:22",command="sleep 10000" %s' % (conf.get('TERMINAL_SERVICE','freenx'),pubkey))
-		f.close()
+		## Generate an SSH2 DSA private/public keypair and a putty ppk version
+		## Temporarly disabled
+		#linux_home_path = home_path + '/.linux'
+		#os.system('expect -f /etc/skolesys/keygen_expect_script %s %s' % (linux_home_path,uid) ) 
+		#f=open('%s/.ssh/authorized_keys' % linux_home_path,'r')
+		#pubkey = f.read()
+		#f.close()
+		#f=open('%s/.ssh/authorized_keys' % linux_home_path,'w')
+		#f.write('no-port-forwarding,no-X11-forwarding,no-agent-forwarding,permitopen="%s:22",command="sleep 10000" %s' % (conf.get('TERMINAL_SERVICE','freenx'),pubkey))
+		#f.close()
 		
 		# Deliver ownership
 		os.system('chown %d.%d %s -R -f' % (posix_uid,int(primarygid),os.path.normpath(home_path)))
