@@ -194,6 +194,9 @@ def init_mainserver():
 	shutil.copy('%s/seeder/skolesys.schema' % location,'/etc/ldap/schema/')
 	shutil.copy('%s/seeder/samba.schema' % location,'/etc/ldap/schema/')
 	
+	if not os.path.exists('/skolesys/misc_backup'):
+		os.makedirs('/skolesys/misc_backup')
+
 	if not os.path.exists('/skolesys/%s/groups' % domain_name):
 		os.makedirs('/skolesys/%s/groups' % domain_name)
 	if not os.path.exists('/skolesys/%s/users' % domain_name):
@@ -201,7 +204,10 @@ def init_mainserver():
 	if not os.path.exists('/skolesys/%s/profiles' % domain_name):
 		os.makedirs('/skolesys/%s/profiles' % domain_name)
 	if not os.path.exists('/skolesys/%s/services' % domain_name):
-		os.makedirs('/skolesys/%s/services' % domain_name)	
+		os.makedirs('/skolesys/%s/services' % domain_name)
+	if not os.path.exists('/skolesys/%s/smbshares' % domain_name):
+		os.makedirs('/skolesys/%s/smbshares' % domain_name)
+
 	from skolesys.lib.conf import conf
 	
 	res = os.system('/etc/init.d/slapd stop')

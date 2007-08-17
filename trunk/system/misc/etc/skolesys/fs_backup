@@ -3,8 +3,18 @@
 # This script uses rdiff-backup to create incremental backups of the importent mainserver files
 # /etc, /skolesys, /var/lib/ldap
 
+# LDAP export
+if [ ! -e /skolesys/misc_backup ]
+then
+  mkdir /skolesys/misc_backup
+fi
 
-/etc/init.d/slapd stop
+if [ ! -e /skolesys/misc_backup/ldap ]
+then
+  mkdir /skolesys/misc_backup/ldap
+  chmod 700 /skolesys/misc_backup/ldap
+fi
+slapcat -f /etc/ldap/slapd.conf -l /skolesys/misc_backup/ldap/backup.ldif
+
+# Backup
 rdiff-backup --print-statistics --exclude /skolesys/backup --include /skolesys --include /etc --include /var/lib/ldap --exclude '**' / /skolesys/backup > /tmp/backup_statistics
-/etc/init.d/slapd start
-
