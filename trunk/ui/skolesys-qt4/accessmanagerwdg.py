@@ -94,7 +94,7 @@ class AccessManagerWdg(QtGui.QDialog, ui_amwdg.Ui_AccessManagerWdg):
 			
 	def userChanged(self,sender,idx):
 		self.disconnect(self.trw_access_idents,QtCore.SIGNAL('itemChanged ( QTreeWidgetItem * , int )'),self.accessChanged)
-		uidnumber = idx.data(QtCore.Qt.UserRole).toInt()[0]
+		uidnumber = idx.model().index(idx.row(),0).data(QtCore.Qt.UserRole).toInt()[0]
 		uid = self.usermodel.users[uidnumber]['uid']
 		self.current_uid = uid
 		binded_uid = cm.get_binded_user()
