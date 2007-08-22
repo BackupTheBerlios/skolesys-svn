@@ -48,10 +48,9 @@ perm = {'soap/server.py': '755',
 	'lib/hostcommands.py': '755',
 	'cfmachine/cfinstaller.py': '755',
 	'tools/udevparser.py': '755',
-	'misc/var/spool/samba': '777',
 	'config-templates/default-templates': 'u+wrX,g-wx+rX,o-wx+rX',
-	'config-templates/default-templates/common/rootdir/etc/ldap.secret':'g-r,o-r',
-	'config-templates/default-templates/common/rootdir/etc/pam_ldap.secret':'g-r,o-r',
+	'config-templates/default-templates/common/rootdir/etc/ldap.secret':'600',
+	'config-templates/default-templates/common/rootdir/etc/pam_ldap.secret':'600',
 	'config-templates/default-templates/ltspserver/rootdir/etc/firestarter/configuration':'g-r,o-r',
 	'config-templates/default-templates/ltspserver/rootdir/etc/firestarter/inbound':'g-Xr,o-Xr',
 	'config-templates/default-templates/ltspserver/rootdir/etc/cron.hourly/ss_update-hosts':'u+rwx,g-rw,o-rw',
@@ -126,6 +125,7 @@ ss_accessmanager add_access_identifier membership.create -i
 ss_accessmanager add_access_identifier membership.remove -i
 
 /etc/init.d/skolesysd restart
+chmod 777 /var/spool/samba
 """
 
 prerm = """#!/bin/sh

@@ -263,6 +263,13 @@ class UserManager (LDAPUtil):
 		
 		self.bind(conf.get('LDAPSERVER','admin'),conf.get('LDAPSERVER','passwd'))
 		self.touch_by_dict({path:change_dict})
+		if passwd:
+			w,r = os.popen2('smbpasswd %s -s' % uid)
+			w.write('%s\n' % passwd)
+			w.write('%s\n' % passwd)
+			w.close()
+			r.close()
+
 		return 0
 
 		
