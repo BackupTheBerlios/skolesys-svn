@@ -130,7 +130,7 @@ class FileManager:
 		return filelist
 
 
-	def find(self,user=None,group=None,minsize=None,extensions=None,regex=None,only_files=True,order=''):
+	def make_where_clause(self,user=None,group=None,minsize=None,extensions=None,regex=None,only_files=True,order='')
 		regexopt,useropt,groupopt,typeopt,sizeopt = '','','','',''
 		#if only_files:
 		#	typeopt = '-type f'
@@ -177,8 +177,63 @@ class FileManager:
 
 		if extensions!=None:
 			clause_list += ["(name like '%." + "' or name like '%.".join(extensions) + "')"]
+			
+		return clause_list
 
+
+	def count(self,user=None,group=None,minsize=None,extensions=None,regex=None,only_files=True,order=''):
+		"""
+		Fetch the amount of files matching a certain filter. Result is returned as an int >=0 if 
+		the task is successful or -1 if something failed.
+		@type	user: string
+		@param	user: Only look at files owned by this user
+		@type	group: string
+		@param	group: Only look at files belonging to this group
+		@type	minsize: int
+		@param	minsize: Only include files larger than this value in bytes
+		@type	extensions: list
+		@param	extensions: Include files having one of following extensions
+		"""
+		clause_list = self.make_where_clause(user,group,minsize,extensions,regex,only_files,order)
+		stmt = ["select count(*) from file f, directory d where f.dir_md5sum=d.md5sum"]
+		if len(clause_list)>0:
+			stmt += [' and '.join(clause_list)]
+		
+		stmt = ' and '.join(stmt)
+
+		filecount = -1
+		self.thread_lock.acquire()
+		try:
+			# We must catch errors in order to release the lock
+			con = pysqlite.connect(self.db_file)
+			cur = con.cursor()
+			cur.execute(stmt)
+
+			res = cur.fetchone()
+			if len(res):
+				filecount = res[0]
+		except:
+			pass
+
+		self.thread_lock.release()		
+		return filecount
+	
+
+	def find(self,user=None,group=None,minsize=None,extensions=None,regex=None,only_files=True,order=''):
+		"""
+		Fetch a list of files matching a certain filter with stat info. Result is returned as a
+		list of dictionaries.
+		@type	user: string
+		@param	user: Only look at files owned by this user
+		@type	group: string
+		@param	group: Only look at files belonging to this group
+		@type	minsize: int
+		@param	minsize: Only include files larger than this value in bytes
+		@type	extensions: list
+		@param	extensions: Include files having one of following extensions
+		clause_list = self.make_where_clause(user,group,minsize,extensions,regex,only_files,order)
 		stmt = ["select f.uid,f.gid,d.path,f.name,'na',f.size from file f, directory d where f.dir_md5sum=d.md5sum"]
+		"""
 		if len(clause_list)>0:
 			stmt += [' and '.join(clause_list)]
 		

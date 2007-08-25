@@ -41,7 +41,8 @@ class FileManagerWdg(QtGui.QWidget, baseui.Ui_FileManagerWdg):
 		self.setupContentTypeFilterCombo()
 		
 		# Update file view
-		self.updateFileView()
+		# Jakob: disabled preloading of file info sice it takes too long with no filters setup
+		#self.updateFileView()
 		
 		# Connect threshold sliders
 		#self.connect(self.sld_kb_minsize,QtCore.SIGNAL('valueChanged(int)'),self.updateFileView)
@@ -168,7 +169,18 @@ class FileManagerWdg(QtGui.QWidget, baseui.Ui_FileManagerWdg):
 				# contenttype filter set to "All"
 				contenttypefilter = None
 			print contenttypefilter
-		self.fileinfomodel.loadFileInfo(username=userfilter,groupname=groupfilter,extensions=contenttypefilter,minsize=minsize)
+		cnt = self.proxy.countfiles(userfilter,groupfilter,minsize,contenttypefilter,regex=None,order='')
+		go_ahead = True
+		if cnt>1000:
+			answer = QtGui.QMessageBox.question(self,
+				self.tr('Remove group(s)'),
+				self.tr('Are you sure you want to perform this remove operation?'),
+				QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
+			if answer==QtGui.QMessageBox.No:
+				go_ahead = False
+		
+		if go_ahead:
+			self.fileinfomodel.loadFileInfo(username=userfilter,groupname=groupfilter,extensions=contenttypefilter,minsize=minsize)
 		#for colidx in xrange(self.fileinfomodel.columnCount()):
 			#self.trv_files.resizeColumnToContents(colidx)
 		QtGui.QApplication.restoreOverrideCursor()

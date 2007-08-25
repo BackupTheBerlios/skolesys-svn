@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_loginwdg.ui'
 #
-# Created: Fri Aug  3 08:57:21 2007
+# Created: Sun Aug 26 00:46:23 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,45 +13,33 @@ from PyQt4 import QtCore, QtGui
 class Ui_LoginWdg(object):
     def setupUi(self, LoginWdg):
         LoginWdg.setObjectName("LoginWdg")
-        LoginWdg.resize(QtCore.QSize(QtCore.QRect(0,0,274,146).size()).expandedTo(LoginWdg.minimumSizeHint()))
-
-        self.gridlayout = QtGui.QGridLayout(LoginWdg)
-        self.gridlayout.setMargin(9)
-        self.gridlayout.setSpacing(6)
-        self.gridlayout.setObjectName("gridlayout")
+        LoginWdg.resize(QtCore.QSize(QtCore.QRect(0,0,428,243).size()).expandedTo(LoginWdg.minimumSizeHint()))
 
         self.btn_login = QtGui.QPushButton(LoginWdg)
+        self.btn_login.setGeometry(QtCore.QRect(240,190,75,27))
         self.btn_login.setObjectName("btn_login")
-        self.gridlayout.addWidget(self.btn_login,1,1,1,1)
 
-        spacerItem = QtGui.QSpacerItem(151,20,QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Minimum)
-        self.gridlayout.addItem(spacerItem,1,0,1,1)
-
-        self.groupBox = QtGui.QGroupBox(LoginWdg)
-        self.groupBox.setObjectName("groupBox")
-
-        self.gridlayout1 = QtGui.QGridLayout(self.groupBox)
-        self.gridlayout1.setMargin(9)
-        self.gridlayout1.setSpacing(6)
-        self.gridlayout1.setObjectName("gridlayout1")
-
-        self.label_2 = QtGui.QLabel(self.groupBox)
+        self.label_2 = QtGui.QLabel(LoginWdg)
+        self.label_2.setGeometry(QtCore.QRect(83,160,61,23))
         self.label_2.setObjectName("label_2")
-        self.gridlayout1.addWidget(self.label_2,1,0,1,1)
 
-        self.label = QtGui.QLabel(self.groupBox)
-        self.label.setObjectName("label")
-        self.gridlayout1.addWidget(self.label,0,0,1,1)
-
-        self.ed_passwd = QtGui.QLineEdit(self.groupBox)
+        self.ed_passwd = QtGui.QLineEdit(LoginWdg)
+        self.ed_passwd.setGeometry(QtCore.QRect(150,160,167,23))
         self.ed_passwd.setEchoMode(QtGui.QLineEdit.Password)
         self.ed_passwd.setObjectName("ed_passwd")
-        self.gridlayout1.addWidget(self.ed_passwd,1,1,1,1)
 
-        self.ed_username = QtGui.QLineEdit(self.groupBox)
+        self.label = QtGui.QLabel(LoginWdg)
+        self.label.setGeometry(QtCore.QRect(83,129,61,23))
+        self.label.setObjectName("label")
+
+        self.ed_username = QtGui.QLineEdit(LoginWdg)
+        self.ed_username.setGeometry(QtCore.QRect(150,129,167,23))
         self.ed_username.setObjectName("ed_username")
-        self.gridlayout1.addWidget(self.ed_username,0,1,1,1)
-        self.gridlayout.addWidget(self.groupBox,0,0,1,2)
+
+        self.label_3 = QtGui.QLabel(LoginWdg)
+        self.label_3.setGeometry(QtCore.QRect(10,10,400,108))
+        self.label_3.setPixmap(QtGui.QPixmap("art/biglogo.png"))
+        self.label_3.setObjectName("label_3")
 
         self.retranslateUi(LoginWdg)
         QtCore.QMetaObject.connectSlotsByName(LoginWdg)
@@ -61,7 +49,6 @@ class Ui_LoginWdg(object):
     def retranslateUi(self, LoginWdg):
         LoginWdg.setWindowTitle(QtGui.QApplication.translate("LoginWdg", "Login", None, QtGui.QApplication.UnicodeUTF8))
         self.btn_login.setText(QtGui.QApplication.translate("LoginWdg", "Login", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox.setTitle(QtGui.QApplication.translate("LoginWdg", "Type credentials", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("LoginWdg", "Password", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("LoginWdg", "Username", None, QtGui.QApplication.UnicodeUTF8))
 

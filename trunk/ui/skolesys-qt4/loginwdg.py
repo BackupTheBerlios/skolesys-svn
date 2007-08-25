@@ -34,6 +34,7 @@ class LoginWdg(QtGui.QDialog, baseui.Ui_LoginWdg):
 		self.connect(self.ed_passwd,QtCore.SIGNAL("returnPressed()"),self.accept)
 		self.btn_login.setDefault(False)
 		self.btn_login.setAutoDefault(False)
+		self.setFixedSize(self.size())
 		
 	
 def get_credentials():

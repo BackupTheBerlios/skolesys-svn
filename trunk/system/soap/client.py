@@ -355,6 +355,9 @@ class SkoleSYS_Client:
 	
 	
 	# FileManager
+	def countfiles(self,username=None,groupname=None,minsize=None,extensions=None,regex=None,order=''):
+		return pload(self.server.countfiles(pdump(self.session_id),pdump(username),pdump(groupname),pdump(minsize),pdump(extensions),pdump(regex),pdump(order)))
+	
 	def findfiles(self,username=None,groupname=None,minsize=None,extensions=None,regex=None,order=''):
 		return pload(self.server.findfiles(pdump(self.session_id),pdump(username),pdump(groupname),pdump(minsize),pdump(extensions),pdump(regex),pdump(order)))
 

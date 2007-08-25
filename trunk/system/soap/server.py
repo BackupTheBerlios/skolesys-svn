@@ -619,6 +619,23 @@ def unset_groupservice_option(session_id,groupname,servicename,variable):
 	return pdump(gm.unset_service_option(groupname,servicename,variable))
 
 
+def countfiles(session_id,username,groupname,minsize,extensions,regex,order):
+	global fm
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	if not has_perm(session_uid(pload(session_id)),'file.browse'):
+		return pdump(-9999) # Access denied
+
+	username = pload(username)
+	groupname = pload(groupname)
+	minsize = pload(minsize)
+	extensions = pload(extensions)
+	regex = pload(regex)
+	order = pload(order)
+	
+	return pdump(fm.count(user=username,group=groupname,minsize=minsize,extensions=extensions,regex=regex,order=order))
+
 def findfiles(session_id,username,groupname,minsize,extensions,regex,order):
 	global fm
 	if not session_valid(pload(session_id)):
@@ -882,6 +899,7 @@ def startserver():
 	server.registerFunction(getconf)
 	
 	# File Management
+	server.registerFunction(countfiles)
 	server.registerFunction(findfiles)
 	server.registerFunction(removefiles)
 	
