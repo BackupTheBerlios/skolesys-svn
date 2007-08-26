@@ -136,8 +136,8 @@ class FileManagerWdg(QtGui.QWidget, baseui.Ui_FileManagerWdg):
 
 	
 	def updateFileView(self):
-		QtGui.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 		# Calculate minimum size threshold
+		QtGui.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 		kb = 2**10
 		mb = 2**20
 		minsize = kb*self.sbx_kb_minsize.value()
@@ -171,19 +171,22 @@ class FileManagerWdg(QtGui.QWidget, baseui.Ui_FileManagerWdg):
 			print contenttypefilter
 		cnt = self.proxy.countfiles(userfilter,groupfilter,minsize,contenttypefilter,regex=None,order='')
 		go_ahead = True
+		QtGui.QApplication.restoreOverrideCursor()
 		if cnt>1000:
 			answer = QtGui.QMessageBox.question(self,
-				self.tr('Remove group(s)'),
-				self.tr('Are you sure you want to perform this remove operation?'),
+				self.tr('Load File info...'),
+				self.tr('The current filter will fetch info for %1 files, this operation may take minutes. '+
+					'Do you want to continue?').arg(cnt),
 				QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
 			if answer==QtGui.QMessageBox.No:
 				go_ahead = False
-		
+		QtGui.QApplication.processEvents()
 		if go_ahead:
+			QtGui.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 			self.fileinfomodel.loadFileInfo(username=userfilter,groupname=groupfilter,extensions=contenttypefilter,minsize=minsize)
+			QtGui.QApplication.restoreOverrideCursor()
 		#for colidx in xrange(self.fileinfomodel.columnCount()):
 			#self.trv_files.resizeColumnToContents(colidx)
-		QtGui.QApplication.restoreOverrideCursor()
 	
 	# Actions on files
 	def removeFiles(self):
