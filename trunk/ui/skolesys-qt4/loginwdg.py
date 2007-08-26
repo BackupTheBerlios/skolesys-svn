@@ -35,6 +35,7 @@ class LoginWdg(QtGui.QDialog, baseui.Ui_LoginWdg):
 		self.btn_login.setDefault(False)
 		self.btn_login.setAutoDefault(False)
 		self.setFixedSize(self.size())
+		self.lbl_logo.setPixmap(QtGui.QPixmap(paths.path_to('art/biglogo.png'),'PNG'))
 		
 	
 def get_credentials():

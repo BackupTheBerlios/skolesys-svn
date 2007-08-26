@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_removegroupswdg.ui'
 #
-# Created: Sun Aug 26 02:03:26 2007
+# Created: Sun Aug 26 13:54:02 2007
 #      by: PyQt4 UI code generator 4.1
 #
 # WARNING! All changes made in this file will be lost!
