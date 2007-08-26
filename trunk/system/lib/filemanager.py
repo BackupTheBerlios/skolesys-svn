@@ -138,36 +138,20 @@ class FileManager:
 		stmt = []		
 		clause_list = []
 
-		user_dict = {}
-		group_dict = {}
 		if group!=None:
 			try:
-				clause_list += [ 'f.gid=%d' % grp.getgrnam(group)[2] ]
 				g = grp.getgrnam(group)
-				group_dict[g[0]] = g[2]
-				group_dict[g[2]] = g[0]
+				clause_list += [ 'f.gid=%d' % g[2] ]
 			except:
 				clause_list += [ 'f.gid=-1' ]
-		else:
-			all_groups = grp.getgrall()
-			for g in all_groups:
-				group_dict[g[0]] = g[2]
-				group_dict[g[2]] = g[0]
 
 
 		if user!=None:
 			try:
-				clause_list += [ 'f.uid=%d' % pwd.getpwnam(user)[2] ]
 				u = pwd.getpwnam(user)
-				user_dict[u[0]] = u[2]
-				user_dict[u[2]] = u[0]
+				clause_list += [ 'f.uid=%d' % u[2] ]
 			except:
 				clause_list += [ 'f.uid=-1' ]
-		else:
-			all_users = pwd.getpwall()
-			for u in all_users:
-				user_dict[u[0]] = u[2]
-				user_dict[u[2]] = u[0]
 
 		if minsize!=None:
 			if type(minsize) == int:
@@ -232,6 +216,28 @@ class FileManager:
 		@type	extensions: list
 		@param	extensions: Include files having one of following extensions
 		"""
+		group_dict = {}
+		if group!=None:
+			g = grp.getgrnam(group)
+			group_dict[g[0]] = g[2]
+			group_dict[g[2]] = g[0]
+		else:
+			all_groups = grp.getgrall()
+			for g in all_groups:
+				group_dict[g[0]] = g[2]
+				group_dict[g[2]] = g[0]
+		
+		user_dict = {}
+		if group!=None:
+			u = pwd.getpwnam(user)
+			user_dict[u[0]] = u[2]
+			user_dict[u[2]] = u[0]
+		else:
+			all_users = pwd.getpwall()
+			for u in all_users:
+				user_dict[u[0]] = u[2]
+				user_dict[u[2]] = u[0]
+
 
 		clause_list = self.make_where_clause(user,group,minsize,extensions,regex,only_files,order)
 		stmt = ["select f.uid,f.gid,d.path,f.name,'na',f.size from file f, directory d where f.dir_md5sum=d.md5sum"]
