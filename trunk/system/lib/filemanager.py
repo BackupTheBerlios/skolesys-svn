@@ -130,7 +130,7 @@ class FileManager:
 		return filelist
 
 
-	def make_where_clause(self,user=None,group=None,minsize=None,extensions=None,regex=None,only_files=True,order='')
+	def make_where_clause(self,user=None,group=None,minsize=None,extensions=None,regex=None,only_files=True,order=''):
 		regexopt,useropt,groupopt,typeopt,sizeopt = '','','','',''
 		#if only_files:
 		#	typeopt = '-type f'
@@ -231,9 +231,10 @@ class FileManager:
 		@param	minsize: Only include files larger than this value in bytes
 		@type	extensions: list
 		@param	extensions: Include files having one of following extensions
+		"""
+
 		clause_list = self.make_where_clause(user,group,minsize,extensions,regex,only_files,order)
 		stmt = ["select f.uid,f.gid,d.path,f.name,'na',f.size from file f, directory d where f.dir_md5sum=d.md5sum"]
-		"""
 		if len(clause_list)>0:
 			stmt += [' and '.join(clause_list)]
 		
