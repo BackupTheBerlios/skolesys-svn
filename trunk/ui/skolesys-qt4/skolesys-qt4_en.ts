@@ -399,6 +399,14 @@
         <source>%1 MB</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Load File info...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The current filter will fetch info for %1 files, this operation may take minutes. Do you want to continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>GroupEditWdg</name>
@@ -531,15 +539,15 @@
         <comment>plural</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Delete groups...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LoginWdg</name>
     <message>
         <source>Login</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Type credentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

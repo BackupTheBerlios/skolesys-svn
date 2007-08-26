@@ -172,7 +172,7 @@ class FileManagerWdg(QtGui.QWidget, baseui.Ui_FileManagerWdg):
 		cnt = self.proxy.countfiles(userfilter,groupfilter,minsize,contenttypefilter,regex=None,order='')
 		go_ahead = True
 		QtGui.QApplication.restoreOverrideCursor()
-		if cnt>1000:
+		if cnt>10000:
 			answer = QtGui.QMessageBox.question(self,
 				self.tr('Load File info...'),
 				self.tr('The current filter will fetch info for %1 files, this operation may take minutes. '+
