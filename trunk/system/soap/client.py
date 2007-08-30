@@ -423,6 +423,12 @@ class SkoleSYS_Client:
 		"""
 		return pload(self.server.tr(pdump(domain),pdump(msg),pdump(lang)))
 	
+	# Admin tools
+	def update_permissions(self,users=False,groups=False):
+		"""
+		Do an update of all permissions for groups and/or users
+		"""
+		return pload(self.server.update_permissions(pdump(domain),pdump(msg),pdump(lang)))
 
 if __name__=='__main__':
     c=SkoleSYS_Client('https://127.0.0.1',10033)

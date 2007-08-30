@@ -48,6 +48,7 @@ perm = {'soap/server.py': '755',
 	'lib/hostcommands.py': '755',
 	'cfmachine/cfinstaller.py': '755',
 	'tools/udevparser.py': '755',
+	'tools/admintools.py': '755',
 	'config-templates/default-templates': 'u+wrX,g-wx+rX,o-wx+rX',
 	'config-templates/default-templates/common/rootdir/etc/ldap.secret':'600',
 	'config-templates/default-templates/common/rootdir/etc/pam_ldap.secret':'600',
@@ -72,7 +73,8 @@ copy = {
 	'locale': '/usr/share/',
 	'misc/etc/skolesys': '/etc/',
 	'misc/etc/ldap/schema': '/etc/ldap/',
-	'misc/var': '/'}
+	'misc/var': '/',
+	'misc/usr': '/'}
 
 links = {
 	'/usr/sbin/ss_usermanager': '../share/python-support/python-skolesys-mainserver/skolesys/lib/usercommands.py',
@@ -82,6 +84,7 @@ links = {
 	'/usr/sbin/ss_soapserver': '../share/python-support/python-skolesys-mainserver/skolesys/soap/server.py',
 	'/usr/sbin/ss_installer': '../share/python-support/python-skolesys-mainserver/skolesys/cfmachine/cfinstaller.py',
 	'/usr/sbin/ss_udevparser': '../share/python-support/python-skolesys-mainserver/skolesys/tools/udevparser.py',
+	'/usr/sbin/ss_admintools': '../share/python-support/python-skolesys-mainserver/skolesys/tools/admintools.py',
 	'/etc/init.d/skolesysd': '/usr/share/python-support/python-skolesys-mainserver/skolesys/soap/skolesysd',
 	'/etc/rc0.d/K01skolesys': '../init.d/skolesysd',
 	'/etc/rc2.d/S99skolesys': '../init.d/skolesysd',

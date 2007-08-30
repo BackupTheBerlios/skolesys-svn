@@ -33,7 +33,7 @@ def make_root_block(dir):
 	execute('chown root.root %s/.root_block -R' % dir)
 	execute('chmod u-x,u+Xrw,g-rwx,o-rwx %s/.root_block -R' % dir)
 
-def fix_user_permissions(verbose=False):
+def update_user_permissions(verbose=False):
 	from skolesys.lib.conf import conf
 	import skolesys.lib.usermanager as userman
 	um = userman.UserManager()
@@ -61,7 +61,7 @@ def fix_user_permissions(verbose=False):
 		make_root_block(documents)
 		
 
-def fix_group_permissions(verbose=False):
+def update_group_permissions(verbose=False):
 	from skolesys.lib.conf import conf
 	import skolesys.lib.groupmanager as groupman
 
@@ -80,6 +80,12 @@ def fix_group_permissions(verbose=False):
 
 		execute('chgrp %s %s -R -f' % (gid,home))
 		execute('chmod o-rwx,g-x,g+X,u-x,u+X %s -R -f' % home)
+
+def update_permissions(users=False,groups=False,verbose=False):
+	if users:
+		update_user_permissions(verbose)
+	if groups:
+		update_group_permissions(verbose)
 
 
 if __name__=='__main__':
@@ -115,11 +121,11 @@ if __name__=='__main__':
 	something_done = False
 
 	if options.groups==True or options.all==True:
-		fix_group_permissions(options.verbose)
+		update_group_permissions(options.verbose)
 		something_done = True
 
 	if options.users==True or options.all==True:
-		fix_user_permissions(options.verbose)
+		update_user_permissions(options.verbose)
 		something_done = True
 
 	if not something_done:

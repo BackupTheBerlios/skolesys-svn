@@ -15,7 +15,7 @@
 # the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA 02110-1301, USA.
 
-__all__ = ["confhelper","schooltime","mkpasswd","charmapping"]
+__all__ = ["confhelper","schooltime","mkpasswd","charmapping","admintools","lang","sysinfo"]
 
 def _get_exports_list(module):
     try:

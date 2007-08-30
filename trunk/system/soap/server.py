@@ -31,6 +31,7 @@ import skolesys.lib.filemanager as fileman
 import skolesys.lib.accessmanager as accessman
 import skolesys.lib.hostmanager as hostman
 import skolesys.tools.lang
+import skolesys.tools.admintools
 import skolesys.definitions.hostdef as hostdef
 from skolesys.cfmachine.configbuilder import ConfigBuilder
 from M2Crypto import SSL
@@ -783,6 +784,25 @@ def tr(domain,msg,lang):
 	return pdump(skolesys.tools.lang.tr(domain,msg,lang))
 
 
+def update_permissions(users,groups):
+	"""
+	Fetch all access identities for the domain
+	"""
+	if not session_valid(pload(session_id)):
+		return pdump(False)
+
+	#if not has_perm(session_uid(pload(session_id)),''):
+	#	return pdump(-9999) # Access denied
+	
+	uid = pload(uid)
+	access_ident = pload(access_ident)
+
+	users = pload(users)
+	groups = pload(groups)
+		
+	return pdump(skolesys.tools.admintools.update_permissions(users,groups))
+
+
 class MyServer(SOAPpy.SOAPServer):
     def __init__(self,addr=('localhost', 8000), ssl_context=None):
         SOAPpy.SOAPServer.__init__(self,addr,ssl_context=ssl_context)
@@ -902,6 +922,9 @@ def startserver():
 	server.registerFunction(countfiles)
 	server.registerFunction(findfiles)
 	server.registerFunction(removefiles)
+	
+	# Tools
+	server.registerFunction(update_permissions)
 	
 	# Translation
 	server.registerFunction(tr)
