@@ -73,8 +73,7 @@ copy = {
 	'locale': '/usr/share/',
 	'misc/etc/skolesys': '/etc/',
 	'misc/etc/ldap/schema': '/etc/ldap/',
-	'misc/var': '/',
-	'misc/usr': '/'}
+	'misc/var': '/'}
 
 links = {
 	'/usr/sbin/ss_usermanager': '../share/python-support/python-skolesys-mainserver/skolesys/lib/usercommands.py',
