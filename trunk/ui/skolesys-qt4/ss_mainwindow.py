@@ -23,7 +23,7 @@ import pyqtui4.qt4tools as qt4tools
 import skolesys.definitions.userdef as userdef
 import skolesys.definitions.groupdef as groupdef
 import connectionmanager as cm
-import os
+import os,time
 import paths
 import accesstools
 
@@ -88,6 +88,10 @@ class ss_MainWindow(mainwin.MainWindow):
 		self.connect(a,QtCore.SIGNAL('triggered()'),self.execAccessManager)
 		a.setIcon(QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/access.svg'),16,16)))
 
+		a = self.addAction('exec_update_permissions',self.tr('Update permissions...'))
+		self.connect(a,QtCore.SIGNAL('triggered()'),self.execUpdatePermissions)
+		#a.setIcon(QtGui.QIcon(qt4tools.svg2pixmap(paths.path_to('art/access.svg'),16,16)))
+		
 		a = self.addAction('show_users',self.tr('Show Users'))
 		a.setCheckable(True)
 		self.connect(a,QtCore.SIGNAL('toggled(bool)'),self.showUserView)
@@ -158,6 +162,8 @@ class ss_MainWindow(mainwin.MainWindow):
 		self.insertMenuItem('tools','exec_creategroupwizard')
 		self.insertMenuSeparator('tools')
 		self.insertMenuItem('tools','exec_accessmanager')
+		self.insertMenuSeparator('tools')
+		self.insertMenuItem('tools','exec_update_permissions')
 
 	def setupToolBars(self):
 		self.addToolBar('tools',self.tr('Tools'))
@@ -286,6 +292,15 @@ class ss_MainWindow(mainwin.MainWindow):
 	
 	def exportGroups(self):
 		pass
+	
+	def execUpdatePermissions(self):
+		self.statusBar().showMessage(self.tr("Please wait while updating the user/group permissions and ownerships..."))
+		self.statusBar().setVisible(True)
+		time.sleep(.2)
+		QtGui.QApplication.processEvents()
+		conn = cm.get_connection()
+		conn.proxy.update_permissions(True,True)
+		self.statusBar().clearMessage()
 	
 	def execCreateUserWizard(self):
 		# Check if the user has propper permissions and present a nice message if not
