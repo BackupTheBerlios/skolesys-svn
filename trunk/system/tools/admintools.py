@@ -33,12 +33,15 @@ def make_root_block(dir):
 	execute('chown root.root %s/.root_block -R' % dir)
 	execute('chmod u-x,u+Xrw,g-rwx,o-rwx %s/.root_block -R' % dir)
 
-def fix_user_permissions():
+def fix_user_permissions(verbose=False):
+	from skolesys.lib.conf import conf
+	import skolesys.lib.usermanager as userman
 	um = userman.UserManager()
 	userinfo = um.list_users(None)
 	homes_root = "%s/%s/users" % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'))
 	for uid,info in userinfo.items():
-		print 'Fixing user permissions for "%s"...' % uid
+		if verbose:
+			print 'Fixing user permissions for "%s"...' % uid
 		gid = int(info['gidNumber'])
 		home = "%s/%s" % (homes_root,uid)
 
@@ -58,12 +61,16 @@ def fix_user_permissions():
 		make_root_block(documents)
 		
 
-def fix_group_permissions():
+def fix_group_permissions(verbose=False):
+	from skolesys.lib.conf import conf
+	import skolesys.lib.groupmanager as groupman
+
 	gm = groupman.GroupManager()
 	groupinfo = gm.list_groups('service')
 	groups_root = "%s/%s/groups" % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'))
 	for gid,info in groupinfo.items():
-		print 'Fixing group permissions for "%s"...' % gid
+		if verbose:
+			print 'Fixing group permissions for "%s"...' % gid
 		home = "%s/%s" % (groups_root,gid)
 		
 		if not os.path.exists(home):
@@ -84,10 +91,6 @@ if __name__=='__main__':
 		print "This command requires root priviledges"
 		sys.exit(0)
 
-	from skolesys.lib.conf import conf
-	import skolesys.lib.usermanager as userman
-	import skolesys.lib.groupmanager as groupman
-
 	parser = OptionParser(usage="usage: %s options" % shell_cmd_name)
 
 	parser.add_option("-g", "--groups",
@@ -102,16 +105,21 @@ if __name__=='__main__':
 		action="store_true", dest="all", default=False,
 		help="Update all permissions and ownerships")
 
+	parser.add_option("-v", "--verbose",
+		action="store_true", dest="verbose", default=False,
+		help="Print progress messages to stdout")
+
+
 	(options, args) = parser.parse_args()
 
 	something_done = False
 
 	if options.groups==True or options.all==True:
-		fix_group_permissions()
+		fix_group_permissions(options.verbose)
 		something_done = True
 
 	if options.users==True or options.all==True:
-		fix_user_permissions()
+		fix_user_permissions(options.verbose)
 		something_done = True
 
 	if not something_done:
