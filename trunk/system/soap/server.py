@@ -784,7 +784,7 @@ def tr(domain,msg,lang):
 	return pdump(skolesys.tools.lang.tr(domain,msg,lang))
 
 
-def update_permissions(users,groups):
+def update_permissions(session_id,users,groups):
 	"""
 	Fetch all access identities for the domain
 	"""
@@ -794,9 +794,6 @@ def update_permissions(users,groups):
 	#if not has_perm(session_uid(pload(session_id)),''):
 	#	return pdump(-9999) # Access denied
 	
-	uid = pload(uid)
-	access_ident = pload(access_ident)
-
 	users = pload(users)
 	groups = pload(groups)
 		
