@@ -197,15 +197,22 @@ class UserManager (LDAPUtil):
 		r.close()
 		
 		## Generate an SSH2 DSA private/public keypair and a putty ppk version
-		## Temporarly disabled
-		#linux_home_path = home_path + '/.linux'
-		#os.system('expect -f /etc/skolesys/keygen_expect_script %s %s' % (linux_home_path,uid) ) 
-		#f=open('%s/.ssh/authorized_keys' % linux_home_path,'r')
-		#pubkey = f.read()
-		#f.close()
-		#f=open('%s/.ssh/authorized_keys' % linux_home_path,'w')
-		#f.write('no-port-forwarding,no-X11-forwarding,no-agent-forwarding,permitopen="%s:22",command="sleep 10000" %s' % (conf.get('TERMINAL_SERVICE','freenx'),pubkey))
-		#f.close()
+		linux_home_path = home_path + '/.linux'
+		if not os.path.exists(os.path.normpath('%s/.ssh/' % linux_home_path)):
+			# Create profile directory
+			os.makedirs('%s/.ssh/' % linux_home_path)
+		os.system('cp /etc/skolesys/ssh/id_dsa* %s/.ssh/' % linux_home_path)
+		os.system('ssh-keygen -p -N %s -f %s/.ssh/id_dsa' % (passwd,linux_home_path))
+
+		f=open('%s/.ssh/id_dsa.pub' % linux_home_path,'r')
+		pubkey = f.read()
+		f.close()
+
+		f=open('%s/.ssh/authorized_keys' % linux_home_path,'w')
+		f.write('no-port-forwarding,no-X11-forwarding,no-agent-forwarding,permitopen="%s:22",command="sleep 10000" %s' % (conf.get('TERMINAL_SERVICE','freenx'),pubkey))
+		f.close()
+
+		os.system('chmod 600 %s/.ssh/*' % linux_home_path)
 		
 		# Deliver ownership
 		os.system('chown %d.%d %s -R -f' % (posix_uid,int(primarygid),os.path.normpath(home_path)))
@@ -255,8 +262,7 @@ class UserManager (LDAPUtil):
 			change_dict['userPassword'] = mkpasswd(passwd,3,'ssha')
 			
 			# Generate an SSH2 DSA private/public keypair and a putty ppk version
-			#linux_home_path = '%s/%s/users/%s/.linux' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
-			#os.system('expect -f /etc/skolesys/keygen_expect_script %s %s' % (linux_home_path,uid) ) 
+			
 		
 		#if userdef.usertype_as_id(usertype) == userdef.usertype_as_id('student') and firstyear != None:
 		#	change_dict['firstSchoolYear'] = str(firstyear)

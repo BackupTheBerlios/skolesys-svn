@@ -70,7 +70,7 @@ def init_mainserver():
 	
 	
 	
-	# Create certificate
+	# Create certificate and master ssh keypair
 	
 	f = open('%s/seeder/cert.cnf_template' % location )
 	cert_cnf_lines = f.readlines()
@@ -116,7 +116,17 @@ def init_mainserver():
 		print "SkoleSYS Seeder - failed while copying certificate into place"
 		sys.exit(1)
 	
+	# Create the master ssh keypair
+	if not os.path.exists('/etc/skolesys/ssh/'):
+		os.makedirs('/etc/skolesys/ssh/')	
+	res = os.system('ssh-keygen -b 1024 -t dsa -N "" -f /etc/skolesys/ssh/id_dsa')
+	if not res==0:
+		print
+		print "SkoleSYS Seeder - failed while creating the master ssh keypair"
+		sys.exit(1)
+
 	
+
 	# Read template files before they are removed
 	f = open('%s/seeder/slapd.conf_template' % location)
 	slapd_conf_lines = f.readlines()

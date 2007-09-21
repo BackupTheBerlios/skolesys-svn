@@ -151,14 +151,24 @@ if __name__=='__main__':
 			options.primarygroup = gl[options.primarygroup]['gidNumber']
 		else:
 			print "Group does not exist"
-			exit(0)
+			exit(-1)
 			
-		if not options.password:
-			options.password = getpass("User's password: ")
-			again = getpass("Cornfirm password: ")
+		while not options.password or len(options.password)<5:
+			if options.password and len(options.password)<5:
+				print "Password is too short - please retype."
+				options.password = None
+			
+			try:
+				options.password = getpass("User's password: ")
+				again = getpass("Cornfirm password: ")
+				print 
+			except KeyboardInterrupt:
+				exit(-1)
+				
 			if options.password != again:
 				print "Passwords did not match"
-				exit(0)
+				options.password = None
+			
 		
 		try:
 			useradd_res = um.createuser(username,options.givenname,options.familyname,options.password,\
@@ -221,6 +231,11 @@ if __name__=='__main__':
 			print "The given username is invalid."
 			exit(0)
 		print "Username: %s" % username
+
+		if len(options.password)<5:
+			print "Password is too short."
+			options.password = None
+			exit(1)
 
 		primarygid=None
 		if options.primarygroup:

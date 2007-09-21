@@ -32,7 +32,7 @@ class ChangePasswordWdg(QtGui.QDialog, baseui.Ui_ChangePasswordWdg):
 		self.connect(self.btn_cancel,QtCore.SIGNAL('clicked()'),self.reject)
 		
 	def textChanged(self,txt):
-		if len(str(self.led_passwd.text().toUtf8()))>=3 and self.led_passwd.text() == self.led_passwd_confirm.text():
+		if len(str(self.led_passwd.text().toUtf8()))>=5 and self.led_passwd.text() == self.led_passwd_confirm.text():
 			self.btn_ok.setEnabled(True)
 		else:
 			self.btn_ok.setEnabled(False)
