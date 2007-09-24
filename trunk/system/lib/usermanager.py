@@ -226,6 +226,7 @@ class UserManager (LDAPUtil):
 		The usertype must be one of the constants TEACHER,STUDENT,PARENT or OTHER
 		"""
 		# check if the group exists already
+
 		change_dict = {}
 		user_info = self.list_users(None,uid)
 		if not user_info.has_key(uid):
@@ -259,11 +260,35 @@ class UserManager (LDAPUtil):
 		if mail:
 			change_dict['mail'] = mail
 		if passwd:
+			try:
+				user_info = pwd.getpwnam(uid)
+			except Exception, e:
+				print e
+				return -10102 # user not in accessable through nsswitch
+			
 			change_dict['userPassword'] = mkpasswd(passwd,3,'ssha')
+
+			home_path = "%s/%s/users/%s" % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
+			linux_home_path = home_path + '/.linux'
+			os.system('cp /etc/skolesys/ssh/id_dsa* %s/.ssh/' % linux_home_path)
+			os.system('ssh-keygen -p -N %s -f %s/.ssh/id_dsa' % (passwd,linux_home_path))
+
+			f=open('%s/.ssh/id_dsa.pub' % linux_home_path,'r')
+			pubkey = f.read()
+			f.close()
+
+			f=open('%s/.ssh/authorized_keys' % linux_home_path,'w')
+			f.write('no-port-forwarding,no-X11-forwarding,no-agent-forwarding,permitopen="%s:22",command="sleep 10000" %s' % (conf.get('TERMINAL_SERVICE','freenx'),pubkey))
+			f.close()
 			
 			# Generate an SSH2 DSA private/public keypair and a putty ppk version
 			
-		
+			os.system('chmod 600 %s/.ssh/*' % linux_home_path)
+	
+			# Deliver ownership
+			os.system('chown %d.%d %s/.ssh -R -f' % (user_info[2],user_info[3],os.path.normpath(linux_home_path)))
+			
+			
 		#if userdef.usertype_as_id(usertype) == userdef.usertype_as_id('student') and firstyear != None:
 		#	change_dict['firstSchoolYear'] = str(firstyear)
 		
