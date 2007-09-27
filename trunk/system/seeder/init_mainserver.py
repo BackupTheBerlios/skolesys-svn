@@ -183,7 +183,7 @@ def init_mainserver():
 		l = l.replace('<lang>',lang)
 		f.write(l)
 	f.close()
-	os.system('chmod 600 /etc/skolesys/skolesys.conf')
+	os.system('chmod 644 /etc/skolesys/skolesys.conf')
 	
 	# Replace python-skolesys-seeder with python-skolesys-mainserver
 	os.environ['DEBIAN_FRONTEND'] = 'noninteractive'

@@ -9,6 +9,8 @@ firestarter
 samba
 apache2
 libapache2-mod-auth-pam
+libapache2-mod-python
+libapache2-mod-php5
 dnsmasq
 expect
 putty-tools

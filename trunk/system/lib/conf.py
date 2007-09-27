@@ -15,15 +15,25 @@
 # the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA 02110-1301, USA.
 
-import os.path
+
+import sys,os
 from ConfigParser import ConfigParser
 if os.path.exists('./skolesys.conf'):
-	conf = ConfigParser()
-	conf.readfp(open('./skolesys.conf'))
-	
+        conf = ConfigParser()
+        conf.readfp(open('./skolesys.conf'))
+
 elif os.path.exists('/etc/skolesys/skolesys.conf'):
-	conf = ConfigParser()
-	conf.readfp(open('/etc/skolesys/skolesys.conf'))
+        conf = ConfigParser()
+        conf.readfp(open('/etc/skolesys/skolesys.conf'))
 else:
-	print "skolesys.conf could be read"
+        print "skolesys.conf could not be read"
+        sys.exit()
+
+# Check root privilegdes
+if os.getuid()==0:
+        f = open('/etc/pam_ldap.secret')
+        passwd = f.readline().strip()
+        f.close()
+        conf.set('LDAPSERVER','passwd',passwd)
+
 

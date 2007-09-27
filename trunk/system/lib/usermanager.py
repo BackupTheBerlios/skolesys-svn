@@ -201,6 +201,7 @@ class UserManager (LDAPUtil):
 		if not os.path.exists(os.path.normpath('%s/.ssh/' % linux_home_path)):
 			# Create profile directory
 			os.makedirs('%s/.ssh/' % linux_home_path)
+
 		os.system('cp /etc/skolesys/ssh/id_dsa* %s/.ssh/' % linux_home_path)
 		os.system('ssh-keygen -p -N %s -f %s/.ssh/id_dsa' % (passwd,linux_home_path))
 
@@ -270,6 +271,10 @@ class UserManager (LDAPUtil):
 
 			home_path = "%s/%s/users/%s" % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid)
 			linux_home_path = home_path + '/.linux'
+			if not os.path.exists(os.path.normpath('%s/.ssh/' % linux_home_path)):
+				# Create profile directory
+				os.makedirs('%s/.ssh/' % linux_home_path)
+
 			os.system('cp /etc/skolesys/ssh/id_dsa* %s/.ssh/' % linux_home_path)
 			os.system('ssh-keygen -p -N %s -f %s/.ssh/id_dsa' % (passwd,linux_home_path))
 

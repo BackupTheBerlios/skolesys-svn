@@ -44,7 +44,6 @@ ltspserver_dynamic_iprange = 192.168.1.1 192.168.1.254
 host = mainserver.localnet
 basedn = dc=<domain_name_prefix>,dc=skolesys,dc=org
 admin = cn=admin,dc=<domain_name_prefix>,dc=skolesys,dc=org
-passwd = <schooladmin_passwd>
 
 # Users
 students_ou = ou=Students
