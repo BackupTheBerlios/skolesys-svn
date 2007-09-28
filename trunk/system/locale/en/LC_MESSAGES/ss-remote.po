@@ -1,0 +1,49 @@
+# This file is part of the SkoleSYS libraries
+# Copyright (C) 2007 Jakob Simon-Gaarde <info at skolesys.dk>
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Library General Public
+# License version 2 as published by the Free Software Foundation.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Library General Public License for more details.
+#
+# You should have received a copy of the GNU Library General Public License
+# along with this library; see the file COPYING.LIB.  If not, write to
+# the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+# Boston, MA 02110-1301, USA.
+
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2007-07-05\n"
+"Project-Id-Version: SkoleSYS\n"
+"Last-Translator: Jakob Simon-Gaarde <jakob@sskolesys.dk>\n"
+"Language-Team: Enlish\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+msgid "clients_available"
+msgstr "You have the following remote access packages available for download."
+
+msgid "no_clients_available"
+msgstr "You have no remote access packages available for download."
+
+msgid "win32_client_desc"
+msgstr "Your personal SkoleSYS remote access package for Windows. This package include your private key file which is required in order to login to the SkoleSYS mainserver."
+
+msgid "download_oneshot_info"
+msgstr "Remote access packages can only be downloaded once after which it is automatically deleted by the system. this is a security precaution that makes sure that only one person can download the private key for your account. Therfore keep your package in a safe place after you have downloadet it, so you don't loose it. When you start the download process it is important that you don't cancel it because the package will deleted anyway."
+
+msgid "important"
+msgstr "Important"
+
+msgid "possible_security_breech"
+msgstr "If your remote access package is not available and this is the first time you have logged in after your account has been create or password changed, then there is a risc that your key file has fallen into the wrong hands. In this case you must emmidiately contact a person responsible for user management on the system and have your password changed. When your password has been changed you will be able to download your remote access packages again with an updated private key file."
+
+msgid "win32_na"
+msgstr "Your personal SkoleSYS remote access package for Windows is not available. Please contact a person responsible for user management on the system and have your password changed, this will automatically regenerate your remote access package."
+

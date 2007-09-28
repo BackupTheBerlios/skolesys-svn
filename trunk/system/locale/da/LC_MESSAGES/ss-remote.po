@@ -1,0 +1,48 @@
+# This file is part of the SkoleSYS libraries
+# Copyright (C) 2007 Jakob Simon-Gaarde <info at skolesys.dk>
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Library General Public
+# License version 2 as published by the Free Software Foundation.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Library General Public License for more details.
+#
+# You should have received a copy of the GNU Library General Public License
+# along with this library; see the file COPYING.LIB.  If not, write to
+# the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+# Boston, MA 02110-1301, USA.
+
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2007-07-05\n"
+"Project-Id-Version: SkoleSYS\n"
+"Last-Translator: Jakob Simon-Gaarde <jakob@sskolesys.dk>\n"
+"Language-Team: Danish\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "clients_available"
+msgstr "Du har følgende fjernadgangspakker tilgængelige til at blive hentet."
+
+msgid "no_clients_available"
+msgstr "Du har ingen fjernadgangspakker tilgængelige til at blive hentet."
+
+msgid "win32_client_desc"
+msgstr "Din personlige SkoleSYS fjernadgangspakke til Windows. Pakken indeholder din private nøglefil som SkoleSYS serveren kræver for at logge dig ind."
+
+msgid "download_oneshot_info"
+msgstr "Fjernadgangspakker kan kun hentes én gang hvorefter den slettes fra systemet. Dette er en sikkerhedsforanstaltning som bevirker at der kun er én person som kan have hentet den gældende nøglefil for din brugerkonto. Pas derfor godt på pakken når du har hentet den, så den ikke bliver væk. Når du henter pakken er det vigtigt at du lader den blive færdig, da den bliver slettet også selv om du vælger at annullere midt i operationen."
+
+msgid "important"
+msgstr "Vigtigt"
+
+msgid "possible_security_breech"
+msgstr "Hvis din fjernadgangspakke ikke er tilgængelig og det er første gang du har logget ind på denne side efter din bruger er blevet oprettet eller din adgangskode ændret, så er der risiko for at din nøglefil er faldet i de forkerte hænder. I så fald skal du øjeblikkeligt kontakte personen som er ansvarlig for at vedligeholde brugere på systemet og få ændret din adgangskode. Når din adgangskode er blevet ændret vil du igen kunne hente din fjernadgangspakke med en opdateret privat nøglefil."
+
+msgid "win32_na"
+msgstr "Din personlige Windows fjernadgangspakke til SkoleSYS er ikke tilgængelig. Kontakt venligst administratoren med henblik på at opdatere din adgangskode hvorved pakken automatisk bliver genoprettet."
+
