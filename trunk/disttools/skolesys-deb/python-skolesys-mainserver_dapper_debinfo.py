@@ -49,6 +49,7 @@ perm = {'soap/server.py': '755',
 	'cfmachine/cfinstaller.py': '755',
 	'tools/udevparser.py': '755',
 	'tools/admintools.py': '755',
+	'misc/skolesys/www/ss-remote/tools/mkremote.py': '755',
 	'config-templates/default-templates': 'u+wrX,g-wx+rX,o-wx+rX',
 	'config-templates/default-templates/common/rootdir/etc/ldap.secret':'600',
 	'config-templates/default-templates/common/rootdir/etc/pam_ldap.secret':'600',
@@ -73,7 +74,8 @@ copy = {
 	'locale': '/usr/share/',
 	'misc/etc/skolesys': '/etc/',
 	'misc/etc/ldap/schema': '/etc/ldap/',
-	'misc/var': '/'}
+	'misc/var': '/',
+	'misc/skolesys': '/'}
 
 links = {
 	'/usr/sbin/ss_usermanager': '../share/python-support/python-skolesys-mainserver/skolesys/lib/usercommands.py',
@@ -84,6 +86,7 @@ links = {
 	'/usr/sbin/ss_installer': '../share/python-support/python-skolesys-mainserver/skolesys/cfmachine/cfinstaller.py',
 	'/usr/sbin/ss_udevparser': '../share/python-support/python-skolesys-mainserver/skolesys/tools/udevparser.py',
 	'/usr/sbin/ss_admintools': '../share/python-support/python-skolesys-mainserver/skolesys/tools/admintools.py',
+	'/usr/sbin/ss_mkremote': '/skolesys/www/ss-remote/tools/mkremote.py',
 	'/etc/init.d/skolesysd': '/usr/share/python-support/python-skolesys-mainserver/skolesys/soap/skolesysd',
 	'/etc/rc0.d/K01skolesys': '../init.d/skolesysd',
 	'/etc/rc2.d/S99skolesys': '../init.d/skolesysd',
@@ -98,6 +101,8 @@ rm default-templates -Rf
 
 postinst = """#!/bin/sh
 set -e
+
+chown www-data.www-data /skolesys/www -R
 
 if [ "$1" = "configure" ] && which update-python-modules >/dev/null 2>&1; then
         update-python-modules -a -f -i /usr/share/python-support/python-skolesys-mainserver

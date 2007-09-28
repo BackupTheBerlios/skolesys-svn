@@ -1,0 +1,14 @@
+	Alias /ss-remote "/skolesys/www/ss-remote/htdocs"
+	<Directory /skolesys/www/ss-remote/htdocs>
+		AllowOverride FileInfo
+		
+		DirectoryIndex ss-remote.cgi
+		AddHandler cgi-script .cgi
+		
+		AuthPAM_Enabled on
+		AuthType Basic
+		AuthName "SkoleSYS Remote"
+		require valid-user
+	
+	</Directory>
+
