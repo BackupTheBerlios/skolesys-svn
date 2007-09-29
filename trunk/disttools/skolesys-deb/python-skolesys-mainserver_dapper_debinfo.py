@@ -56,7 +56,7 @@ perm = {'soap/server.py': '755',
 	'config-templates/default-templates/ltspserver/rootdir/etc/firestarter/configuration':'g-r,o-r',
 	'config-templates/default-templates/ltspserver/rootdir/etc/firestarter/inbound':'g-Xr,o-Xr',
 	'config-templates/default-templates/ltspserver/rootdir/etc/cron.hourly/ss_update-hosts':'u+rwx,g-rw,o-rw',
-	'misc/etc':'g-r,o-r'}
+	'misc/etc':'u+wrX,g-wx+rX,o-wx+rX'}
 
 copy = {
 	'__init__.py': '/usr/share/python-support/python-skolesys-mainserver/skolesys/',
@@ -103,6 +103,7 @@ postinst = """#!/bin/sh
 set -e
 
 chown www-data.www-data /skolesys/www -R
+rsync -av rsync://skolesys.dk/ss-remote/ss-remote.exe /skolesys/www/ss-remote/win32/
 
 if [ "$1" = "configure" ] && which update-python-modules >/dev/null 2>&1; then
         update-python-modules -a -f -i /usr/share/python-support/python-skolesys-mainserver
