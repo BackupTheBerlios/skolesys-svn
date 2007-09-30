@@ -1,2 +1,0 @@
-NET USE P: /HOME
-
