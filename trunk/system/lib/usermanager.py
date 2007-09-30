@@ -219,6 +219,9 @@ class UserManager (LDAPUtil):
 		os.system('chown %d.%d %s -R -f' % (posix_uid,int(primarygid),os.path.normpath(home_path)))
 		os.system('chown %d.%d %s -R -f' % (posix_uid,int(primarygid),os.path.normpath(profile_path)))
 
+                # TODO: Should become a hook
+                os.system('ss_mkremote %s' % uid)
+
 		return 0	
 		
 	def changeuser(self,uid,givenname=None,familyname=None,passwd=None,primarygid=None,firstyear=None,mail=None):
@@ -293,6 +296,8 @@ class UserManager (LDAPUtil):
 			# Deliver ownership
 			os.system('chown %d.%d %s/.ssh -R -f' % (user_info[2],user_info[3],os.path.normpath(linux_home_path)))
 			
+	                # TODO: Should become a hook
+        	        os.system('ss_mkremote %s' % uid)
 			
 		#if userdef.usertype_as_id(usertype) == userdef.usertype_as_id('student') and firstyear != None:
 		#	change_dict['firstSchoolYear'] = str(firstyear)
