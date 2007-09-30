@@ -1,6 +1,7 @@
-	Alias /ss-remote "/skolesys/www/ss-remote/htdocs"
-	<Directory /skolesys/www/ss-remote/htdocs>
+	Alias /ss-remote "/skolesys/www/ss-remote/htdocs/"
+	<Directory /skolesys/www/ss-remote/htdocs/>
 		AllowOverride FileInfo
+		Options +ExecCGI
 		
 		DirectoryIndex ss-remote.cgi
 		AddHandler cgi-script .cgi
