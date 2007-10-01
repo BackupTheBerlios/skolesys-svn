@@ -62,6 +62,7 @@ conf_dict = ic_inst.get_collection()
 tmp_platforms = [{'platform': 'win32'}]
 platforms = []
 plat_files = {'win32' : 'ss-remote.exe'}
+plat_icons = {'win32' : 'images/ss-remote-win32.png'}
 
 for platform in list(tmp_platforms):
 	if os.path.exists('/skolesys/www/ss-remote/userclients/%s/%s/%s' % (os.environ['REMOTE_USER'],platform['platform'],plat_files[platform['platform']])):
@@ -70,6 +71,7 @@ for platform in list(tmp_platforms):
 data = {}
 data['conf'] = conf_dict['conf']
 data['plat_files'] = plat_files
+data['plat_icons'] = plat_icons
 data['platforms'] = platforms
 data['translate'] = translate
 

@@ -6,42 +6,52 @@
 	</head>
 	<body>
 		<center>
-			<table style="width: 650px;">
-				<tr>
-					<td><h1>$translate("welcome") $ldap.displayName</h1></td>
-				</tr>
-				<tr>
+			<table style="height: 100%">
+				<tr valign="center">
 					<td>
-#if $len($platforms)
-						<b>$translate("clients_available")</b>
-						<table>
-	#for $platitem in $platforms
-							<tr valign="top">
-	
-								<td><a href="ss-remote.cgi?action=fetch_$[platitem.platform]_client">$[plat_files[$platitem.platform]]</a></td>
-								<td>$translate('%s_client_desc' % $platitem.platform)</td>
-							</tr>
-	#end for
-						</table>
-#else
-						<b>$translate("no_clients_available")</b>
-#end if
-					</td>
-				</tr>
-				<tr>
-					<td>
-						$translate("download_oneshot_info")
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<table>
-							<tr valign="top">
+						<table class="ss_remote_menu">
+							<thead>
+								<th><h1>$translate("welcome") $ldap.displayName</h1></th>
+							</thead>
+							<tr>
 								<td>
-									<b>$translate("important"):</b>
+			#if $len($platforms)
+									<b>$translate("clients_available")</b>
+									<table>
+				#for $platitem in $platforms
+										<tr valign="middle">
+				
+											<td>
+												<a href="ss-remote.cgi?action=fetch_$[platitem.platform]_client">
+													<img src="$[plat_icons[$platitem.platform]]" />
+												</a>
+											</td>
+											<td>$translate('%s_client_desc' % $platitem.platform)</td>
+										</tr>
+				#end for
+									</table>
+			#else
+									<b>$translate("no_clients_available")</b>
+			#end if
 								</td>
+							</tr>
+							<tr>
 								<td>
-									$translate("possible_security_breech")
+									$translate("download_oneshot_info")
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<table>
+										<tr valign="top">
+											<td>
+												<b>$translate("important"):</b>
+											</td>
+											<td>
+												$translate("possible_security_breech")
+											</td>
+										</tr>
+									</table>
 								</td>
 							</tr>
 						</table>
