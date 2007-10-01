@@ -1,9 +1,11 @@
 #!/usr/bin/python
 
-import os,mimetypes,cgi,gettext
+import os,mimetypes,cgi,gettext,sys
 from skolesys.tools.lang import tr
 from skolesys.lib.conf import conf
+import skolesys.cfmachine.infocollection as ic
 import skolesys.lib.usermanager as userman
+from Cheetah.Template import Template
 
 lang = 'en'
 if conf.has_option('OPTIONS','default_lang'):
@@ -53,34 +55,32 @@ if fields.has_key('action'):
 print "Content-Type: text/html; charset=UTF-8"
 print "\n"
 
+import skolesys.cfmachine.infocollection as ic
+ic_inst = ic.InfoCollection()
+conf_dict = ic_inst.get_collection()
+
+tmp_platforms = [{'platform': 'win32'}]
+platforms = []
+plat_files = {'win32' : 'ss-remote.exe'}
+
+for platform in list(tmp_platforms):
+	if os.path.exists('/skolesys/www/ss-remote/userclients/%s/%s/%s' % (os.environ['REMOTE_USER'],platform['platform'],plat_files[platform['platform']])):
+		platforms += [platform]
+
+data = {}
+data['conf'] = conf_dict['conf']
+data['plat_files'] = plat_files
+data['platforms'] = platforms
+data['translate'] = translate
+
 um=userman.UserManager()
 userinfo = um.list_users(usertype=None,uid=username)
 if userinfo and userinfo.has_key(username) and userinfo[username].has_key('displayName'):
-	print '<h1>Velkommen %s</h1>' % userinfo[username]['displayName']
+	data['ldap'] = userinfo[username]
 
 if error:
 	print error
 
-platforms = ['win32']
-plat_files = {'win32' : 'ss-remote.exe'}
+t = Template(file="templates/index.tmpl",searchList=[data])
+print t
 
-for platform in list(platforms):
-	if not os.path.exists('/skolesys/www/ss-remote/userclients/%s/%s/%s' % (os.environ['REMOTE_USER'],platform,plat_files[platform])):
-		platforms.remove(platform)
-
-if len(platforms):
-	print "<b>%s</b>" % translate('clients_available')
-	print "<br>"
-	print "<table>"
-	for platform in platforms:
-		print '<tr valign="top">'
-		print '<td><a href="ss-remote.cgi?action=fetch_%s_client">%s</a></td>' % (platform,plat_files[platform])
-		print '<td>%s</td>' % translate('%s_client_desc' % platform)
-		print '</tr>'
-	print "</table><br>"
-else:
-	print "<b>%s</b><br>" % translate('no_clients_available')
-
-print translate('download_oneshot_info')
-print "<br><br><b>%s:</b>" % translate('important')
-print translate('possible_security_breech')

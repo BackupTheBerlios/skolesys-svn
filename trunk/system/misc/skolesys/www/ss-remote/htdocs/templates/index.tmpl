@@ -1,0 +1,53 @@
+
+<html>
+	<head>
+		<title>$translate("web_title") $conf.domain.samba_domain_name</title>
+		<link href="css/style.css" type="text/css" rel="StyleSheet" />
+	</head>
+	<body>
+		<center>
+			<table style="width: 650px;">
+				<tr>
+					<td><h1>$translate("welcome") $ldap.displayName</h1></td>
+				</tr>
+				<tr>
+					<td>
+#if $len($platforms)
+						<b>$translate("clients_available")</b>
+						<table>
+	#for $platitem in $platforms
+							<tr valign="top">
+	
+								<td><a href="ss-remote.cgi?action=fetch_$[platitem.platform]_client">$[plat_files[$platitem.platform]]</a></td>
+								<td>$translate('%s_client_desc' % $platitem.platform)</td>
+							</tr>
+	#end for
+						</table>
+#else
+						<b>$translate("no_clients_available")</b>
+#end if
+					</td>
+				</tr>
+				<tr>
+					<td>
+						$translate("download_oneshot_info")
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<table>
+							<tr valign="top">
+								<td>
+									<b>$translate("important"):</b>
+								</td>
+								<td>
+									$translate("possible_security_breech")
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</center>
+	</body>
+</html>

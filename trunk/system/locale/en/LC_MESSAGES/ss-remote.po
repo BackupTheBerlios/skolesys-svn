@@ -25,6 +25,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "welcome"
+msgstr "Welcome"
+
+msgid "web_title"
+msgstr "Remote access to"
 
 msgid "clients_available"
 msgstr "You have the following remote access packages available for download."

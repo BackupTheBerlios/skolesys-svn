@@ -25,6 +25,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid "welcome"
+msgstr "Velkommen"
+
+msgid "web_title"
+msgstr "Fjernadgang til"
+
 msgid "clients_available"
 msgstr "Du har følgende fjernadgangspakker tilgængelige til at blive hentet."
 
