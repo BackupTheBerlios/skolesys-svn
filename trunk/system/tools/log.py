@@ -15,11 +15,11 @@
 # the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 # Boston, MA 02110-1301, USA.
 
-__all__ = ["usermanager", "hostmanager", "groupmanager", "hookmanager", "sambamanager", "filemanager"]
+__author__ = "Jakob Simon-Gaarde <jakob@skolesys.dk>"
 
-def _get_exports_list(module):
-    try:
-        return list(module.__all__)
-    except AttributeError:
-        return [n for n in dir(module) if n[0] != '_']
+import syslog
 
+def write(msg,context='skolesys'):
+	syslog.openlog(context)
+	syslog.syslog(msg)
+	syslog.closelog()

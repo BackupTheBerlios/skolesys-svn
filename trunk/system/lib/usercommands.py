@@ -119,8 +119,6 @@ if __name__=='__main__':
 			print "The user %s already exists" % username
 			exit(0)
 		
-		print "Username: %s" % username
-		
 		if not options.givenname:
 			options.givenname = raw_input("Input the user's given name (first name): ")
 		if not options.familyname:
@@ -220,6 +218,9 @@ if __name__=='__main__':
 		parser.add_option("-p", "--password", dest="password",default=None,
 			help="users password - avoid using this we dont like passwords in clear text!",
 			metavar="PASSWORD")
+		parser.add_option("-P", "--prompt-password",
+			action="store_true", dest="prompt_password", default=False,
+			help="Prompt for password change")
 		
 		(options, args) = parser.parse_args()
 
@@ -230,12 +231,21 @@ if __name__=='__main__':
 		if not username:
 			print "The given username is invalid."
 			exit(0)
-		print "Username: %s" % username
 
-		if len(options.password)<5:
+		if options.password!=None and len(options.password)<5:
 			print "Password is too short."
-			options.password = None
 			exit(1)
+
+		while options.prompt_password==True and (not options.password or len(options.password)<5):
+			options.password = getpass("New password: ")
+			confirm = getpass("Confirm password: ")
+			if not options.password==confirm:
+				print "Confirmation failed: mismatch"
+				options.password = ''
+				continue
+			if len(options.password)<5:
+				print "Password is too short."
+
 
 		primarygid=None
 		if options.primarygroup:
@@ -284,7 +294,6 @@ if __name__=='__main__':
 		if not username:
 			print "The given username is invalid."
 			exit(0)
-		print "Username: %s" % username
 		
 		um = UserManager()
 		try:
@@ -324,8 +333,6 @@ if __name__=='__main__':
 		if not username:
 			print "The given username is invalid."
 			exit(0)
-		print "Username: %s" % username
-		print "Groupname: %s" % groupname
 		
 		um = UserManager()
 		try:
@@ -365,8 +372,6 @@ if __name__=='__main__':
 		if not username:
 			print "The given username is invalid."
 			exit(0)
-		print "Username: %s" % username
-		print "Groupname: %s" % groupname
 		
 		um = UserManager()
 		try:
@@ -456,7 +461,6 @@ if __name__=='__main__':
 		if not options.password:
 			options.password = getpass("User's password: ")
 						
-		print "Username: %s" % username
 		
 		um = UserManager()
 		try:

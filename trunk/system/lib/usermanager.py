@@ -19,6 +19,7 @@
 
 from conf import conf
 from ldaptools import LDAPUtil
+import hooks
 import pwd,os,ldap
 from skolesys.tools.mkpasswd import mkpasswd
 import skolesys.definitions.userdef as userdef
@@ -311,6 +312,8 @@ class UserManager (LDAPUtil):
 			w.close()
 			r.close()
 
+		hooks.Hooks().call_hooks('lib.usermanager.changeuser',uid=uid,givenname=givenname,familyname=familyname,passwd=passwd)
+		
 		return 0
 
 		

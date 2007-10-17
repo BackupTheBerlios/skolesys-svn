@@ -66,7 +66,6 @@ def _inspect_services():
 	
 
 def create_groupserviceinterface(servicename,groupname):
-	print "iofjoiwef"
 	if not groupservices().count(servicename):
 		print 'The group service "%s" does not exist.' % servicename
 		return None
