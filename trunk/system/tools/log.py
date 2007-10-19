@@ -18,8 +18,25 @@
 __author__ = "Jakob Simon-Gaarde <jakob@skolesys.dk>"
 
 import syslog
+from skolesys.lib.conf import conf
 
-def write(msg,context='skolesys'):
-	syslog.openlog(context)
+cur_loglevel = 0 	# by default logging is off
+if conf.has_option('DOMAIN','loglevel'):
+	loglevel = conf.get('DOMAIN','loglevel')
+	if loglevel.isdigit():
+		cur_loglevel = int(loglevel)
+
+
+def write(msg,loglevel=3,context=None,force=False):
+	global cur_loglevel
+	if cur_loglevel<loglevel and force==False:
+		# Log level filters out this message
+		return
+	
+	ident = "skolesys"
+	if context:
+		ident = "skolesys-%s" % str(context)
+
+	syslog.openlog(ident)
 	syslog.syslog(msg)
 	syslog.closelog()

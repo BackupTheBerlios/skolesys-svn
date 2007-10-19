@@ -108,7 +108,7 @@ class Hooks:
 						hookfile = os.path.join(hook_path,f)
 						exec(open(os.path.join(hook_path,f)).read())
 					except Exception, e:
-						log.write('Failed to parse "%s": %s' % (f,e),context="skolesys-hooks")
+						log.write('Failed to parse "%s": %s' % (f,e),context="hooks")
 						continue
 					
 					# Check for required hook function
@@ -126,5 +126,5 @@ class Hooks:
 			try:
 				h(**args)
 			except Exception, e:
-				log.write('Failed while executing "%s": %s' % (f,e),context="skolesys-hooks")
+				log.write('Failed while executing "%s": %s' % (f,e),context="hooks")
 				continue

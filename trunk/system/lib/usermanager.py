@@ -150,9 +150,11 @@ class UserManager (LDAPUtil):
 		if uidnumber == None:
 			return -10007 # failed to pick an uidnumber
 		
+		cn = '%s %s' % (givenname,familyname)
+
 		user_info = {'uid':uid,
 			'givenname':'%s' % givenname,
-			'cn':'%s %s' % (givenname,familyname),
+			'cn':cn,
 			'gidNumber': str(primarygid),
 			'uidnumber': str(uidnumber),
 			'homeDirectory':'%s/%s/users/%s/.linux' % (conf.get('DOMAIN','domain_root'),conf.get('DOMAIN','domain_name'),uid),
@@ -220,8 +222,10 @@ class UserManager (LDAPUtil):
 		os.system('chown %d.%d %s -R -f' % (posix_uid,int(primarygid),os.path.normpath(home_path)))
 		os.system('chown %d.%d %s -R -f' % (posix_uid,int(primarygid),os.path.normpath(profile_path)))
 
-                # TODO: Should become a hook
-                os.system('ss_mkremote %s' % uid)
+		hooks.Hooks().call_hooks('lib.usermanager.createuser',
+			uid=uid, givenname=givenname, familyname=familyname,
+			passwd=passwd, primarygid=primarygid, firstyear=firstyear,
+			cn=cn,title=title,usertype=usertype,dn=path)
 
 		return 0	
 		
@@ -258,9 +262,10 @@ class UserManager (LDAPUtil):
 		if familyname:
 			cur_sn = familyname
 			change_dict['sn'] = familyname
-				
-		change_dict['cn'] = cur_givenname + " " + cur_sn
-		change_dict['displayName'] = cur_givenname + " " + cur_sn
+		
+		cn = cur_givenname + " " + cur_sn
+		change_dict['cn'] = cn
+		change_dict['displayName'] = cn
 		
 		if mail:
 			change_dict['mail'] = mail
@@ -296,10 +301,7 @@ class UserManager (LDAPUtil):
 	
 			# Deliver ownership
 			os.system('chown %d.%d %s/.ssh -R -f' % (user_info[2],user_info[3],os.path.normpath(linux_home_path)))
-			
-	                # TODO: Should become a hook
-        	        os.system('ss_mkremote %s' % uid)
-			
+				
 		#if userdef.usertype_as_id(usertype) == userdef.usertype_as_id('student') and firstyear != None:
 		#	change_dict['firstSchoolYear'] = str(firstyear)
 		
@@ -312,7 +314,10 @@ class UserManager (LDAPUtil):
 			w.close()
 			r.close()
 
-		hooks.Hooks().call_hooks('lib.usermanager.changeuser',uid=uid,givenname=givenname,familyname=familyname,passwd=passwd)
+		hooks.Hooks().call_hooks('lib.usermanager.changeuser',
+			uid=uid, givenname=givenname, familyname=familyname,
+			passwd=passwd, primarygid=primarygid, firstyear=firstyear,
+			mail=mail,cn=cn, displayname=cn, dn=path)
 		
 		return 0
 
