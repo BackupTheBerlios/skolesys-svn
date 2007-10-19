@@ -1,0 +1,8 @@
+import os
+import skolesys.tools.log as log
+
+def hook(**args):
+	if args['passwd']!=None:
+		log.write('creating ss-remote for "%s"' % args['uid'],context="ss-remote")
+		os.system('ss_mkremote %s' % args['uid'])
+
