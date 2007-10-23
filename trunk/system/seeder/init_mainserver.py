@@ -179,7 +179,6 @@ def init_mainserver():
 		l = l.replace('<domain_name>',domain_name)
 		l = l.replace('<domain_name_prefix>',domain_name_prefix)
 		l = l.replace('<uc_domain_name_prefix>', domain_name_prefix.upper())
-		l = l.replace('<schooladmin_passwd>',in_schooladminpw)
 		l = l.replace('<lang>',lang)
 		f.write(l)
 	f.close()
@@ -219,6 +218,7 @@ def init_mainserver():
 		os.makedirs('/skolesys/%s/smbshares' % domain_name)
 
 	from skolesys.lib.conf import conf
+	conf.set('LDAPSERVER','passwd',in_adminpw)
 	
 	res = os.system('/etc/init.d/slapd stop')
 	if not res==0:

@@ -31,9 +31,10 @@ else:
 
 # Check root privilegdes
 if os.getuid()==0:
-        f = open('/etc/pam_ldap.secret')
-        passwd = f.readline().strip()
-        f.close()
-        conf.set('LDAPSERVER','passwd',passwd)
+	if os.path.exists('/etc/pam_ldap.secret'):
+	        f = open('/etc/pam_ldap.secret')
+        	passwd = f.readline().strip()
+	        f.close()
+        	conf.set('LDAPSERVER','passwd',passwd)
 
 
