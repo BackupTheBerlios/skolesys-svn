@@ -67,6 +67,15 @@ def init_mainserver():
 	
 	print
 	lang = raw_input("What should be the default language (ex. da=danish, en=english): ")
+
+	print
+	package_group = None
+	while not package_group:
+		package_group = raw_input("Choose which package group to use for this server (testing,stable) [stable]: ")
+		if package_group == '':
+			package_group = 'stable'
+		if not ['testing','stable'].count(package_group):
+			package_group = None
 	
 	
 	
@@ -147,7 +156,7 @@ def init_mainserver():
 	
 	# ensure some entries in sources.list
 	apt_source_entries = [
-		{'type':'deb','uri':'http://archive.skolesys.dk/stable','distribution':codename,'components':['main']},
+		{'type':'deb','uri':'http://archive.skolesys.dk/%s' % package_group,'distribution':codename,'components':['main']},
 		{'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':codename,'components':['main','restricted','universe']},
 		{'type':'deb-src','uri':'http://archive.ubuntu.com/ubuntu/','distribution':codename,'components':['main','restricted','universe']},
 		{'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'%s-backports' % codename ,'components':['main','restricted','universe','multiverse']},
@@ -179,6 +188,7 @@ def init_mainserver():
 		l = l.replace('<domain_name>',domain_name)
 		l = l.replace('<domain_name_prefix>',domain_name_prefix)
 		l = l.replace('<uc_domain_name_prefix>', domain_name_prefix.upper())
+		l = l.replace('<package_group>',package_group)
 		l = l.replace('<lang>',lang)
 		f.write(l)
 	f.close()
@@ -217,8 +227,10 @@ def init_mainserver():
 	if not os.path.exists('/skolesys/%s/smbshares' % domain_name):
 		os.makedirs('/skolesys/%s/smbshares' % domain_name)
 
+	f = open('/etc/pam_ldap.secret','w')
+	f.write('%s\n' % in_adminpw)
+	f.close()
 	from skolesys.lib.conf import conf
-	conf.set('LDAPSERVER','passwd',in_adminpw)
 	
 	res = os.system('/etc/init.d/slapd stop')
 	if not res==0:

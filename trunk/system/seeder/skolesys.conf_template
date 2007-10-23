@@ -80,7 +80,7 @@ session_timeout = 1200
 [CFMACHINE]
 
 template_basedir = /etc/skolesys
-package_group = stable
+package_group = <package_group>
 
 
 [OPTIONS]
