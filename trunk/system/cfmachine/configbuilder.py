@@ -205,12 +205,12 @@ class ConfigBuilder:
 				pass
 			
 			if siz > 0:
+				print "Parsing: %s" % v
 				t = Template(file=v, searchList=[self.infocollection.get_collection()])
 			else:
 				t = ''
 
 			f=open(destfile,'w')
-			print "Fil: %s" % v
 			try:
 				f.write(t.__str__())
 			except Exception, e:
