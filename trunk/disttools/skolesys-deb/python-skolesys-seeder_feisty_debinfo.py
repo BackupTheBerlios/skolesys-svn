@@ -8,7 +8,7 @@ control = {
 	'Section': 'python',
 	'Priority': 'optional',
 	'Architecture': 'all',
-	'Depends': 'python-support (>= 0.2), python-soappy, python-m2crypto',
+	'Depends': 'python-support (>= 0.2), python-soappy, python-m2crypto, openssl',
 	'Replaces': 'python2.4-skolesys-seeder',
 	'Conflicts': 'python2.4-skolesys-mainserver, python2.4-skolesys-client,python-skolesys-mainserver, python-skolesys-client',
 	'Provides': 'python2.5-skolesys-seeder, python2.3-skolesys-seeder, python2.4-skolesys-seeder',

@@ -8,7 +8,7 @@ control = {
 	'Section': 'python',
 	'Priority': 'optional',
 	'Architecture': 'all',
-	'Depends': 'python-support, m2crypto',
+	'Depends': 'python-support, m2crypto, openssl',
 	'Recommends': '',
 	'Maintainer': 'Jakob Simon-Gaarde <jakob@skolesys.dk>',
 	'Description': 'The SkoleSYS seeder package',
