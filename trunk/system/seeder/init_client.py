@@ -36,6 +36,14 @@ def init_client(clienttype,hostname=None):
 		print "-------------------------------------------------------------------------------"
 		hostname = raw_input('%s hostname: ' % clienttype)
 	
+	package_group = raw_input('What package group do you wish to run (testing/stable) [stable]: ')
+	if package_group == '':
+		package_group = 'stable'
+
+	if not ['testing','stable'].count(package_group):
+		print "%s is not a valid package group"
+		sys.exit(1)
+	
 	# INSTALL
 	
 	# Wipe sources.list on mainserver install
