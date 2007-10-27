@@ -54,7 +54,7 @@ def init_client(clienttype,hostname=None):
 
 	# ensure some entries in sources.list
 	apt_source_entries = [
-		{'type':'deb','uri':'http://archive.skolesys.dk/testing' % package_group,'distribution':codename,'components':['main']},
+		{'type':'deb','uri':'http://archive.skolesys.dk/%s' % package_group,'distribution':codename,'components':['main']},
 		{'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':codename,'components':['main','restricted','universe']},
 		{'type':'deb-src','uri':'http://archive.ubuntu.com/ubuntu/','distribution':codename,'components':['main','restricted','universe']},
 		{'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'%s-backports' % codename ,'components':['main','restricted','universe','multiverse']},
