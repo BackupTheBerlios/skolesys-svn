@@ -388,5 +388,5 @@ def init_mainserver():
 	print "Add system groups..."
 	
 	os.system('ss_groupmanager creategroup ssadmin -n "SkoleSYS Administrator" -t primary')
-	os.system('ss_usermanager createuser ssadmin -n "SkoleSYS Administrator" -g SkoleSYS -f Admin -t other -G ssadmin -p %s' % in_adminpw)
-	os.system('ss_accessmanager grant_acces ssadmin access.soap.bind')	
+	os.system('ss_usermanager createuser ssadmin -g SkoleSYS -f Admin -t other -G ssadmin -p %s' % in_adminpw)
+	os.system('ss_accessmanager grant_access ssadmin access.soap.bind')	
