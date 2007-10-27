@@ -41,7 +41,7 @@ def init_client(clienttype,hostname=None):
 		package_group = 'stable'
 
 	if not ['testing','stable'].count(package_group):
-		print "%s is not a valid package group"
+		print "%s is not a valid package group" % package_group
 		sys.exit(1)
 	
 	# INSTALL
@@ -54,7 +54,7 @@ def init_client(clienttype,hostname=None):
 
 	# ensure some entries in sources.list
 	apt_source_entries = [
-		{'type':'deb','uri':'http://archive.skolesys.dk/stable','distribution':codename,'components':['main']},
+		{'type':'deb','uri':'http://archive.skolesys.dk/testing' % package_group,'distribution':codename,'components':['main']},
 		{'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':codename,'components':['main','restricted','universe']},
 		{'type':'deb-src','uri':'http://archive.ubuntu.com/ubuntu/','distribution':codename,'components':['main','restricted','universe']},
 		{'type':'deb','uri':'http://archive.ubuntu.com/ubuntu/','distribution':'%s-backports' % codename ,'components':['main','restricted','universe','multiverse']},
