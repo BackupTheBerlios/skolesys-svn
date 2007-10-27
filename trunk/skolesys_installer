@@ -1,6 +1,5 @@
 #! /usr/bin/python
-import os,re
-
+import os,re,sys
 
 class SourcesList:
 	
@@ -121,8 +120,16 @@ def get_dist_codename():
 
 if __name__=='__main__':
 	dist_codename = get_dist_codename()
+	usage = "skolesys_installer [testing|stable] (default: stable)"
+	package_group = 'stable'
+	if len(sys.argv)>1:
+		package_group = sys.argv[1]
 
-	skolesys_rep='http://archive.skolesys.dk/stable'
+	if not ['testing','stable'].count(package_group):
+		print usage
+		sys.exit(1)
+
+	skolesys_rep='http://archive.skolesys.dk/%s' % package_group
 	os.environ['LANG']='C'
 
 	os.system('wget %s/skolesys.gpg.asc --directory-prefix=/tmp' % skolesys_rep)
