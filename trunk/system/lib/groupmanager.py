@@ -65,8 +65,8 @@ class GroupManager (LDAPUtil):
 				if k=='objectClass':
 					for grouptype_id,objectclasses in grouptype_objectclasses.items():
 						had_all_classes = True
-						for objcls in v:
-							if not objectclasses.count(objcls):
+						for objcls in objectclasses:
+							if not v.count(objcls):
 								had_all_classes = False
 								break
 						if had_all_classes == True:
