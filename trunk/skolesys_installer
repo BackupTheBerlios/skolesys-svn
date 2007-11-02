@@ -121,13 +121,22 @@ def get_dist_codename():
 if __name__=='__main__':
 	dist_codename = get_dist_codename()
 	usage = "skolesys_installer [testing|stable] (default: stable)"
-	package_group = 'stable'
+	package_group = None
 	if len(sys.argv)>1:
 		package_group = sys.argv[1]
 
-	if not ['testing','stable'].count(package_group):
-		print usage
-		sys.exit(1)
+		if not ['testing','stable'].count(package_group):
+			print usage
+			sys.exit(1)
+
+	if not package_group:
+		package_group = raw_input('What package group do you wish to run (testing/stable) [stable]: ')
+		if package_group == '':
+			package_group = 'stable'
+
+		if not ['testing','stable'].count(package_group):
+			print "%s is not a valid package group" % package_group
+			sys.exit(1)
 
 	skolesys_rep='http://archive.skolesys.dk/%s' % package_group
 	os.environ['LANG']='C'
